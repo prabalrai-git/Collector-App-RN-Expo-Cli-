@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "collecytor-app-v1",
-    "slug": "collecytor-app-v1",
+    "name": "collector-app-v1",
+    "slug": "collector-app-v1",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
