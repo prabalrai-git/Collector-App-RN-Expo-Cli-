@@ -6,6 +6,7 @@ import CollectSampleHomeScreen from '../screens/CollectSample'
 import EnterFormScreen from '../screens/CollectSample/EnterFormScreen'
 import SignatureCanvas from '../screens/CollectSample/SignatureCanvas'
 import MapScreenn from '../screens/MapScreenn'
+import TaskHomeScreen from '../screens/Tasks/TaskHomeScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -66,8 +67,19 @@ const MapStackNavigator = () => {
   )
 }
 
+const TaskNavigator = () => {
+  return(
+    <Stack.Navigator>
+      <Stack.Screen 
+        name='TaskScreen'
+        component={TaskHomeScreen}
+      />
+    </Stack.Navigator>
+  )
+}
 
 
-export { MainStackNavigator, CollectSampleNavigator ,MapStackNavigator }
+
+export { MainStackNavigator, CollectSampleNavigator ,MapStackNavigator ,TaskNavigator}
 
 const styles = StyleSheet.create({})

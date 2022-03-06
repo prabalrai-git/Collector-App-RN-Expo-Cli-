@@ -28,7 +28,7 @@ const navData = [
   {
     id: 4,
     name: 'Today Task',
-    pathName: 'TodayTask'
+    pathName: 'task'
   },
 ]
 
@@ -37,10 +37,6 @@ const HomeScreen = () => {
   const [location, setLocation] = useState(null);
   const [errorMsg, seterrorMsg] = useState(null);
   const navigation = useNavigation();
-
-
-
-
 
 
   const renderItem = ({ item }) => (
