@@ -5,6 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import DraweNavigator from './navigation/DraweNavigator';
 import * as Location from "expo-location"
+import MainStackNavigator from './navigation/MainStackNavigator';
 
 
 export default function App() {
@@ -12,7 +13,8 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <DraweNavigator/>
+        {/* <DraweNavigator/> */}
+        <MainStackNavigator/>
       </NavigationContainer>
     </SafeAreaProvider>
 

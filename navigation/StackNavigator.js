@@ -5,8 +5,11 @@ import HomeScreen from '../screens/HomeScreen'
 import CollectSampleHomeScreen from '../screens/CollectSample'
 import EnterFormScreen from '../screens/CollectSample/EnterFormScreen'
 import SignatureCanvas from '../screens/CollectSample/SignatureCanvas'
-import MapScreenn from '../screens/MapScreenn'
+// import MapScreenn from '../screens/Tasks/MapScreenn'
 import TaskHomeScreen from '../screens/Tasks/TaskHomeScreen'
+import TaskInfoScreen from '../screens/Tasks/TaskInfoScreen'
+import MapScreen from '../screens/Tasks/MapScreen'
+import LoginScreen from '../screens/LogInScreen/LoginScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -53,19 +56,19 @@ const CollectSampleNavigator = () => {
     </Stack.Navigator>
   )
 }
-const MapStackNavigator = () => {
-  return(
-    <Stack.Navigator>
-      <Stack.Screen 
-        name='MapScreenn'
-        component={MapScreenn}
-        // options={{
-        //   headerShown: false,
-        // }}
-      />
-    </Stack.Navigator>
-  )
-}
+// const MapStackNavigator = () => {
+//   return(
+//     <Stack.Navigator>
+//       <Stack.Screen 
+//         name='MapScreenn'
+//         component={MapScreenn}
+//         // options={{
+//         //   headerShown: false,
+//         // }}
+//       />
+//     </Stack.Navigator>
+//   )
+// }
 
 const TaskNavigator = () => {
   return(
@@ -74,12 +77,22 @@ const TaskNavigator = () => {
         name='TaskScreen'
         component={TaskHomeScreen}
       />
-    </Stack.Navigator>
+    
+    <Stack.Screen 
+      name='TaskInfoScreen'
+      component={TaskInfoScreen}
+    />
+    <Stack.Screen 
+      name='MapScreen'
+      component={MapScreen}
+    />
+  </Stack.Navigator>
   )
 }
 
 
 
-export { MainStackNavigator, CollectSampleNavigator ,MapStackNavigator ,TaskNavigator}
+
+export { MainStackNavigator, CollectSampleNavigator ,TaskNavigator}
 
 const styles = StyleSheet.create({})
