@@ -12,13 +12,13 @@ const windowWidth = Dimensions.get('window').width * 0.95;
 const navData = [
   {
     id: 1,
-    name: 'Collect Sample',
-    pathName: 'CollectSample'
+    name: 'Add Patient',
+    pathName: 'AddPatient'
   },
   {
     id: 2,
-    name: 'Drop Sample',
-    pathName: 'DropSample'
+    name: 'Collect Sample ',
+    pathName: 'CollectSample'
   },
   {
     id: 3,

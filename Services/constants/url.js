@@ -1,6 +1,6 @@
 export const DEV_URL = 'https://lunivacare.ddns.net/CarelabDataMetricService_qc/';
 
-export const BASE_URL = `${DEV_URL}Api/`;
+export const BASE_URL = `${DEV_URL}/`;
 
 export const GetValidCollectorLoginForApp ='GetValidCollectorLoginForApp';
 /**

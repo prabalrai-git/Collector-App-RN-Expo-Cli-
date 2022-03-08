@@ -10,6 +10,7 @@ import TaskHomeScreen from '../screens/Tasks/TaskHomeScreen'
 import TaskInfoScreen from '../screens/Tasks/TaskInfoScreen'
 import MapScreen from '../screens/Tasks/MapScreen'
 import LoginScreen from '../screens/LogInScreen/LoginScreen'
+import AddPatietHomeScreen from '../screens/AddPatient/AddPatietHomeScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -90,9 +91,19 @@ const TaskNavigator = () => {
   )
 }
 
+const AddPatietNavigator = () => {
+  return(
+    <Stack.Navigator>
+      <Stack.Screen 
+        name='AddPatietHomeScreen'
+        component={AddPatietHomeScreen}
+      />
+    </Stack.Navigator>
+  )
+}
 
 
 
-export { MainStackNavigator, CollectSampleNavigator ,TaskNavigator}
+export { MainStackNavigator, CollectSampleNavigator ,TaskNavigator, AddPatietNavigator}
 
 const styles = StyleSheet.create({})

@@ -8,13 +8,13 @@ const MainStackNavigator = () => {
   const Stack = createNativeStackNavigator()
   return (
     <Stack.Navigator>
-      <Stack.Screen
+      {/* <Stack.Screen
         name='LoginScreen'
         component={LoginScreen}
         options={{
           headerShown: false,
         }}
-      />
+      /> */}
       <Stack.Screen
         name='DraweNavigator'
         component={DraweNavigator}

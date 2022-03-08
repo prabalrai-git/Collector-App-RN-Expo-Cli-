@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
-import { CollectSampleNavigator, MainStackNavigator, TaskNavigator } from './StackNavigator'
+import { AddPatietNavigator, CollectSampleNavigator, MainStackNavigator, TaskNavigator } from './StackNavigator'
 
 const DraweNavigator = () => {
   const Drawer = createDrawerNavigator()
@@ -28,6 +28,13 @@ const DraweNavigator = () => {
       <Drawer.Screen
         name='task'
         component={TaskNavigator}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name='AddPatient'
+        component={AddPatietNavigator}
         options={{
           headerShown: false,
         }}
