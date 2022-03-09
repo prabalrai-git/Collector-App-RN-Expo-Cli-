@@ -11,6 +11,7 @@ const profile = createSlice({
   reducers: {
     storeUserData: (state, action) => {
       state.userData = action.payload
+      // console('reducer', action.payload)
     },
     storeAuthToken: (state, action) => {
 

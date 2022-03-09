@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import { getLoginApi } from '../../Services/appServices/loginService'
 import { Icon, Text } from 'react-native-elements'
 import AppButton from '../../components/ui/AppButton'
+import { storeUserData } from '../../Services/store/slices/profileSlice'
 
 const windowWidth = Dimensions.get('window').width * 0.9;
 
@@ -33,6 +34,7 @@ const LoginScreen = () => {
         let andd = val?.validuserDetails;
         if (andd[0]?.usrUserId > 0) {
           navigation.navigate('DraweNavigator')
+          dispatch(storeUserData(andd[0]))
         } else {
           console.log('Username or password didnt matched');
         }
@@ -125,7 +127,7 @@ const styles = StyleSheet.create({
   icon: {
     width: 40,
     height: 40,
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: '#FF7F00',
     borderRadius: 10,
     justifyContent: 'center',

@@ -1,7 +1,7 @@
 
-import { AssignCollectorForSampleCollection, GetRequestorForCollection } from '../constants/url';
+import { AssignCollectorForSampleCollection, GetReferredDoctorListForCollector, GetRequestorForCollection } from '../constants/url';
 import { generateUrlEncodedData } from '../utils/generateUrlEncodedData';
-import { store } from '../utils/httpUtil'
+import { store,fetch } from '../utils/httpUtil'
 
 export const AssignPatient = (data, returnData) => {
   return async dispatch => {
@@ -26,8 +26,23 @@ export const GetRequestor = (sucessCallback) => {
     try{
       const response = await fetch(GetRequestorForCollection);
       if(response?.status === 200){
-        // sucessCallback(response?.data)
-        console.log(response?.data)
+        sucessCallback(response?.data)
+      }else{
+        sucessCallback([])
+      }
+    }catch(error){
+
+    }
+  }
+}
+
+
+export const GetReferred = (sucessCallback) => {
+  return async dispatch => {
+    try{
+      const response = await fetch(GetReferredDoctorListForCollector);
+      if(response?.status === 200){
+        sucessCallback(response?.data)
       }else{
         sucessCallback([])
       }
