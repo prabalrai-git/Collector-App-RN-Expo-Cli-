@@ -39,7 +39,7 @@ const AddPatietHomeScreen = () => {
   const [PatientRequestorBy, setPatientRequestorBy] = useState();
   const [PatientNationalId, setPatientNationalId] = useState();
   const [Remarks, setRemarks] = useState();
-  const [EntryDate, setEntryDate] = useState();
+  const [EntryDate, setEntryDate] = useState(() => new Date().toLocaleTimeString());
   const [EnterBy, setEnterBy] = useState();
   const [CollectionReqDate, setCollectionReqDate] = useState();
   const [reqestorList, setRequestorlist] = useState();
@@ -49,6 +49,7 @@ const AddPatietHomeScreen = () => {
   const [butDis, setButDis] = useState(false);
 
   const [date, setDate] = useState(new Date());
+  console.log(date);
   const [newDate, setNewDate] = useState();
   const [time, setTime] = useState()
   const [mode, setMode] = useState('date');
@@ -120,126 +121,127 @@ const AddPatietHomeScreen = () => {
 
 
   return (
-    <View>
-      <ScrollView style={styles.container}>
-        <View style={styles.TextInput}>
+    <ScrollView style={styles.container}>
+      <View style={styles.TextInput}>
         <TextInput
           placeholder='Patient First Name'
           onChangeText={(fname) => setPatientFName(fname)}
         ></TextInput>
-        </View>
-        <TextInput
-          style={styles.TextInput}
-          placeholder='Patient Middle Name'
-          onChangeText={(mname) => setPatientMName(mname)}
-        ></TextInput>
-        <TextInput
-          style={styles.TextInput}
-          placeholder='Patient Last Name'
-          onChangeText={(lname) => setPatientLName(lname)}
-        ></TextInput>
-        <Picker
-          selectedValue={PatientGender}
-          placeholder='gender'
-          onValueChange={(itemValue, itemIndex) => setPatientGender(itemValue)}
-        >
-          <Picker.Item label='male' value="male" />
-          <Picker.Item label='female' value="female" />
-        </Picker>
-        <TextInput
-          style={styles.TextInput}
-          placeholder='email'
-          onChangeText={(email) => setPatientEmailId(email)}
-        ></TextInput>
-        <TextInput
-          style={styles.TextInput}
-          placeholder='address'
-          onChangeText={(address) => setPatientAddress(address)}
-        ></TextInput>
-        {/* <TextInput
+      </View>
+      <TextInput
+        style={styles.TextInput}
+        placeholder='Patient Middle Name'
+        onChangeText={(mname) => setPatientMName(mname)}
+      ></TextInput>
+      <TextInput
+        style={styles.TextInput}
+        placeholder='Patient Last Name'
+        onChangeText={(lname) => setPatientLName(lname)}
+      ></TextInput>
+      <Picker
+        selectedValue={PatientGender}
+        placeholder='gender'
+        style={styles.TextInput}
+        onValueChange={(itemValue, itemIndex) => setPatientGender(itemValue)}
+      >
+        <Picker.Item label='male' value="male" />
+        <Picker.Item label='female' value="female" />
+      </Picker>
+      <TextInput
+        style={styles.TextInput}
+        placeholder='email'
+        onChangeText={(email) => setPatientEmailId(email)}
+      ></TextInput>
+      <TextInput
+        style={styles.TextInput}
+        placeholder='address'
+        onChangeText={(address) => setPatientAddress(address)}
+      ></TextInput>
+      {/* <TextInput
         style={styles.TextInput}
         placeholder='refered by'
         onChangeText={(e) => setPatientReferedBy(e)}
       ></TextInput> */}
-        <Picker
-          // selectedValue={PatientRequestorBy}
-          style={styles.TextInput}
-          onValueChange={(itemValue, itemIndex) => setPatientRequestorBy(itemValue)}
-        >
-          <Picker.Item label={'select requestor'} value={''} />
-          {
-            reqestorList !== undefined ?
-              reqestorList.map((item) => (
-                <Picker.Item label={item.Requestor} value={item.Id} key={item.Id} />
-              )) : ''
-          }
-        </Picker>
-        <Picker
-          selectedValue={PatientReferedBy}
-          onValueChange={(itemValue, itemIndex) => setPatientReferedBy(itemValue)}
-        >
-          <Picker.Item label={'select referer'} value={''} />
-          {
-            referedList !== undefined ?
-              referedList.map((item) => (
-                <Picker.Item label={item.Name} value={item.Id} key={item.Id} />
-              )) : ''
-          }
-        </Picker>
-        <TextInput
-          style={styles.TextInput}
-          placeholder='patient national id'
-          onChangeText={(e) => setPatientNationalId(e)}
-        ></TextInput>
-        <TextInput
-          style={styles.TextInput}
-          placeholder='remarks'
-          onChangeText={(e) => setRemarks(e)}
-        ></TextInput>
-        <TextInput
-          style={styles.TextInput}
-          placeholder='entry date'
-          onChangeText={(e) => setEntryDate(e)}
-        ></TextInput>
-        <TextInput
-          style={styles.TextInput}
-          placeholder='enter by'
-          onChangeText={(age) => setEnterBy(age)}
-        ></TextInput>
-        {/* <TextInput
+      <Picker
+        selectedValue={PatientRequestorBy}
+        style={styles.TextInput}
+        onValueChange={(itemValue) => setPatientRequestorBy(itemValue)}
+      >
+        <Picker.Item label={'select requestor'} value={''} />
+        {
+          reqestorList !== undefined ?
+            reqestorList.map((item, index) => (
+              <Picker.Item label={item.Requestor} value={item.Id} key={index} />
+            )) : null
+        }
+      </Picker>
+      <Picker
+        selectedValue={PatientReferedBy}
+        style={styles.TextInput}
+        onValueChange={(itemValue) => setPatientReferedBy(itemValue)}
+      >
+        <Picker.Item label={'select referer'} value={''} />
+        {
+          referedList !== undefined ?
+            referedList.map((item, index) => (
+              <Picker.Item label={item.Name} value={item.Id} key={index} />
+            )) : null
+        }
+      </Picker>
+      <TextInput
+        style={styles.TextInput}
+        placeholder='patient national id'
+        onChangeText={(e) => setPatientNationalId(e)}
+      ></TextInput>
+      <TextInput
+        style={styles.TextInput}
+        placeholder='remarks'
+        onChangeText={(e) => setRemarks(e)}
+      ></TextInput>
+      <TextInput
+        style={styles.TextInput}
+        placeholder='entry date'
+        onChangeText={(e) => setEntryDate(e)}
+      ></TextInput>
+      <TextInput
+        style={styles.TextInput}
+        placeholder='enter by'
+        onChangeText={(age) => setEnterBy(age)}
+      ></TextInput>
+      {/* <TextInput
           style={styles.TextInput}
           placeholder='Collection Date'
           onChangeText={(e) => setCollectionReqDate(e)}
           keyboardType='numeric'
         ></TextInput> */}
 
-        <TouchableOpacity
-          onPress={showDatepicker}
-          style={styles.TextInput}
-        >
-          <Text>{newDate === undefined ? 'date..' : newDate}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={showTimepicker}
-          style={styles.TextInput}
-        >
-          <Text>{time === undefined ? 'time..' : time}</Text>
-        </TouchableOpacity>
-        {show &&
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={date}
-            mode={mode}
-            is24Hour={false}
-            display="default"
-            onChange={onChange}
-          />
-        }
+      <TouchableOpacity
+        onPress={showDatepicker}
+        style={styles.TextInput}
+      >
+        <Text>{newDate === undefined ? 'date..' : newDate}, {time === undefined ? 'time..' : time}</Text>
+      </TouchableOpacity>
+      {/* <TouchableOpacity
+        onPress={showTimepicker}
+        style={styles.TextInput}
+      >
+        <Text>{time === undefined ? 'time..' : time}</Text>
+      </TouchableOpacity> */}
+      {show &&
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          is24Hour={false}
+          display="default"
+          onChange={onChange}
+        />
+      }
 
-
-      </ScrollView>
       <Button disabled={true} title='Submit' onPress={hndleSubmit}></Button>
-    </View>
+    </ScrollView>
+
+
   )
 }
 
@@ -249,7 +251,7 @@ const styles = StyleSheet.create({
   container: {
     // flex: 1,
     // alignItems: 'center',
-    paddingVertical: 40,
+    marginVertical: 40,
     paddingBottom: 1,
     paddingLeft: 1,
     paddingRight: 1,
