@@ -10,8 +10,8 @@ const profile = createSlice({
   initialState,
   reducers: {
     storeUserData: (state, action) => {
+      // console.log('reducer', action.payload)
       state.userData = action.payload
-      // console('reducer', action.payload)
     },
     storeAuthToken: (state, action) => {
 
