@@ -31,6 +31,11 @@ export const AssignCollectorForSampleCollection = 'AssignCollectorForSampleColle
   "CollectionReqDate": "2022-03-07T15:17:07.2334899+05:45"
 }
  */
+export const GetCollectionRequestPatientDetails = 'GetCollectionRequestPatientDetailsBy'
+/**
+ * @desc: get patiet List for sample collection
+ * @param: ?id={id}
+ */
 
 export const GetRequestorForCollection = 'GetRequestorForCollection'
 /**

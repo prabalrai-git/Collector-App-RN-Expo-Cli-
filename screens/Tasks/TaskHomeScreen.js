@@ -1,57 +1,29 @@
 import { FlatList, ScrollView, StyleSheet, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text } from 'react-native-elements'
 import TaskCard from '../../components/ui/TaskCard'
+import { useDispatch } from 'react-redux'
+import { GetPatientList } from '../../Services/appServices/AssignPatient'
 
-const tData = [
-  {
-    id: 1,
-    title: "To do task 1",
-    dis: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolores illo commodi harum, nam ea ducimus iure ab at aliquam!',
-    location: {
-      latitude: 27.7172 ,
-      longitude: 85.3240 
-    }
-  },
-  {
-    id: 2,
-    title: "To do task 2",
-    dis: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolores illo commodi harum, nam ea ducimus iure ab at aliquam!',
-    location: {
-      latitude: 27.7172 ,
-      longitude: 85.3240 
-    }
-  },
-  {
-    id: 3,
-    title: "To do task 3",
-    dis: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolores illo commodi harum, nam ea ducimus iure ab at aliquam!',
-    location: {
-      latitude: 27.7172 ,
-      longitude: 85.3240 
-    }
-  },
-  {
-    id: 4,
-    title: "To do task 4",
-    dis: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolores illo commodi harum, nam ea ducimus iure ab at aliquam!',
-    location: {
-      latitude: 27.7172 ,
-      longitude: 85.3240 
-    }
-  },
-
-]
 
 const renderItem = ({ item }) => (
   <TaskCard data={item} />
 )
 
 const TaskHomeScreen = () => {
+  const [PatietList, setPatietList] = useState();
+
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(GetPatientList((res) => {
+      setPatietList(res.requestorcollectionList);
+    }))
+  }, [])
+  
   return (
     <View style={styles.mainContainer}>
       <FlatList
-        data={tData}
+        data={PatietList}
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />

@@ -11,8 +11,8 @@ const windowWidth = Dimensions.get('window').width * 0.9;
 
 const LoginScreen = () => {
   const navigation = useNavigation()
-  const [username, setUserName] = useState();
-  const [password, setPassword] = useState();
+  const [username, setUserName] = useState('pacific');
+  const [password, setPassword] = useState('pacific123');
   const dispatch = useDispatch()
 
   const handleLogin = () => {

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, View, ScrollView, Button, TouchableOpacity, Platform } from 'react-native'
+import { StyleSheet, Text, TextInput, View, ScrollView, Button, TouchableOpacity, Platform, Dimensions } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { AssignPatient, GetReferred, GetRequestor } from '../../Services/appServices/AssignPatient';
@@ -38,9 +38,6 @@ const AddPatietHomeScreen = () => {
   const [PatientRequestorBy, setPatientRequestorBy] = useState();
   const [PatientNationalId, setPatientNationalId] = useState();
   const [Remarks, setRemarks] = useState();
-  const [EntryDate, setEntryDate] = useState();
-  const [EnterBy, setEnterBy] = useState();
-  const [CollectionReqDate, setCollectionReqDate] = useState();
   const [reqestorList, setRequestorlist] = useState();
   const [referedList, setReferedList] = useState();
 
@@ -83,89 +80,110 @@ const AddPatietHomeScreen = () => {
     }
   };
 
-    const showMode = (currentMode) => {
-      setShow(true);
-      setMode(currentMode);
-    };
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
 
-    const showDatepicker = () => {
-      showMode('date');
-    };
+  const showDatepicker = () => {
+    showMode('date');
+  };
 
-    const showTimepicker = () => {
-      showMode('time');
-    };
+  const showTimepicker = () => {
+    showMode('time');
+  };
 
-    useEffect(() => {
-      dispatch(GetRequestor((res) => {
-        // console.log(res);
-        setRequestorlist(res?.requestorList)
-      }))
-      dispatch(GetReferred((res) => {
-        // console.log(res);
-        setReferedList(res?.ReferredDoctorList)
+  useEffect(() => {
+    dispatch(GetRequestor((res) => {
+      // console.log(res);
+      setRequestorlist(res?.requestorList)
+    }))
+    dispatch(GetReferred((res) => {
+      // console.log(res);
+      setReferedList(res?.ReferredDoctorList)
 
-      }))
-    }, [])
+    }))
+  }, [])
 
 
-    const hndleSubmit = () => {
+  const hndleSubmit = () => {
 
-      let today = new Date();
-      const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-      const newTime = today.toLocaleTimeString();
-      const fialEntryDate = newDate + 'T' + newTime;
+    let today = new Date();
+    const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    const newTime = today.toLocaleTimeString();
+    const fialEntryDate = newDate + 'T' + newTime;
 
-      // const fialReportReqDate = date.toLocaleDateString + 'T' + time.toLocaleTimeString;
-      // console.log(time.toLocaleTimeString());
+    // const fialReportReqDate = date.toLocaleDateString + 'T' + time.toLocaleTimeString;
+    // console.log(time.toLocaleTimeString());
 
-      setButDis(true)
-      let data = {
-        "CId": 0,
-        "CollectorId": user.userData.usrUserId,
-        "PatientFName": PatientFName,
-        "PatientMName": PatientMName,
-        "PatientLName": PatientLName,
-        "PatientAge": PatientAge,
-        "PatientGender": PatientGender,
-        "PatientEmailId": PatientEmailId,
-        "PatientAddress": PatientAddress,
-        "PatientReferedBy": PatientReferedBy,
-        "PatientRequestorBy": PatientRequestorBy,
-        "PatientNationalId": PatientNationalId,
-        "Remarks": Remarks,
-        "EntryDate": fialEntryDate,
-        "EnterBy": user.userData.usrUserId,
-        "CollectionReqDate": `${time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate()}T${time.toLocaleTimeString()}`
-      }
-      dispatch(AssignPatient(data, (res) => {
-        if (res?.CreatedId > 0 && res?.SuccessMsg === true) {
-          console.log('message', res?.Message);
-
-        }
-      }))
-      // console.log("data", data)
+    setButDis(true)
+    let data = {
+      "CId": 0,
+      "CollectorId": user.userData.usrUserId,
+      "PatientFName": PatientFName,
+      "PatientMName": PatientMName,
+      "PatientLName": PatientLName,
+      "PatientAge": PatientAge,
+      "PatientGender": PatientGender,
+      "PatientEmailId": PatientEmailId,
+      "PatientAddress": PatientAddress,
+      "PatientReferedBy": PatientReferedBy,
+      "PatientRequestorBy": PatientRequestorBy,
+      "PatientNationalId": PatientNationalId,
+      "Remarks": Remarks,
+      "EntryDate": fialEntryDate,
+      "EnterBy": user.userData.usrUserId,
+      "CollectionReqDate": `${time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate()}T${time.toLocaleTimeString()}`
     }
+    dispatch(AssignPatient(data, (res) => {
+      if (res?.CreatedId > 0 && res?.SuccessMsg === true) {
+        console.log('message', res?.Message);
+        setPatientFName('');
+        setPatientMName('');
+        setPatientLName('');
+        setPatientAge('');
+        setPatientGender('');
+        setPatientEmailId('');
+        setPatientAddress('');
+        setPatientReferedBy('');
+        setPatientRequestorBy('');
+        setPatientNationalId('');
+        setRemarks('');
+
+      } else {
+        console.log('no data saved');
+      }
+      setButDis(false);
+    }))
+    // console.log("data", data)
+  }
 
 
-    return (
-      <ScrollView style={styles.container}>
+  return (
+    <View style={styles.container}>
+      <ScrollView>
         <View style={styles.TextInput}>
           <TextInput
+            value={PatientFName}
             placeholder='Patient First Name'
             onChangeText={(fname) => setPatientFName(fname)}
           ></TextInput>
         </View>
-        <TextInput
-          style={styles.TextInput}
-          placeholder='Patient Middle Name'
-          onChangeText={(mname) => setPatientMName(mname)}
-        ></TextInput>
-        <TextInput
-          style={styles.TextInput}
-          placeholder='Patient Last Name'
-          onChangeText={(lname) => setPatientLName(lname)}
-        ></TextInput>
+        <View style={styles.TextInput}>
+          <TextInput
+            value={PatientMName}
+            placeholder='Patient Middle Name'
+            onChangeText={(mname) => setPatientMName(mname)}
+          ></TextInput>
+        </View>
+        <View style={styles.TextInput}>
+          <TextInput
+            value={PatientLName}
+            placeholder='Patient Last Name'
+            onChangeText={(lname) => setPatientLName(lname)}
+          ></TextInput>
+        </View>
+
         <Picker
           selectedValue={PatientGender}
           placeholder='gender'
@@ -175,21 +193,28 @@ const AddPatietHomeScreen = () => {
           <Picker.Item label='male' value="male" />
           <Picker.Item label='female' value="female" />
         </Picker>
-        <TextInput
-          style={styles.TextInput}
-          placeholder='email'
-          onChangeText={(email) => setPatientEmailId(email)}
-        ></TextInput>
-        <TextInput
-          style={styles.TextInput}
-          placeholder='address'
-          onChangeText={(address) => setPatientAddress(address)}
-        ></TextInput>
-        <TextInput
-          style={styles.TextInput}
-          placeholder='patient age'
-          onChangeText={(e) => setPatientAge(e)}
-        ></TextInput>
+        <View style={styles.TextInput}>
+          <TextInput
+            value={PatientEmailId}
+            placeholder='email'
+            onChangeText={(email) => setPatientEmailId(email)}
+          ></TextInput>
+        </View>
+        <View style={styles.TextInput}>
+          <TextInput
+            value={PatientAddress}
+            placeholder='address'
+            onChangeText={(address) => setPatientAddress(address)}
+          ></TextInput>
+        </View>
+        <View style={styles.TextInput}>
+          <TextInput
+            value={PatientAge}
+            placeholder='patient age'
+            onChangeText={(e) => setPatientAge(e)}
+            keyboardType='number-pad'
+          ></TextInput>
+        </View>
         <Picker
           selectedValue={PatientRequestorBy}
           style={styles.TextInput}
@@ -226,70 +251,77 @@ const AddPatietHomeScreen = () => {
         setItems={setItems}
         searchable={true}
       /> */}
-        <TextInput
-          style={styles.TextInput}
-          placeholder='patient national id'
-          onChangeText={(e) => setPatientNationalId(e)}
-        ></TextInput>
-        <TextInput
-          style={styles.TextInput}
-          placeholder='remarks'
-          onChangeText={(e) => setRemarks(e)}
-        ></TextInput>
-
+        <View style={styles.TextInput}>
+          <TextInput
+            value={PatientNationalId}
+            placeholder='patient national id'
+            onChangeText={(e) => setPatientNationalId(e)}
+          ></TextInput>
+        </View>
+        <View style={styles.TextInput}>
+          <TextInput
+            value={Remarks}
+            placeholder='remarks'
+            onChangeText={(e) => setRemarks(e)}
+          ></TextInput>
+        </View>
         <TouchableOpacity
           onPress={showDatepicker}
           style={styles.TextInput}
         >
           <Text>{date === '' ? 'date..' : date.toLocaleDateString()}, {time === '' ? 'time..' : time.toLocaleTimeString()}</Text>
         </TouchableOpacity>
-        
+
         {show &&
           <DateTimePicker
-          testID="dateTimePicker"
-          // timeZoneOffsetInMinutes={0}
-          value={date}
-          mode={mode}
-          is24Hour={true}
-          display="default"
-          onChange={onChange}
+            testID="dateTimePicker"
+            // timeZoneOffsetInMinutes={0}
+            value={date}
+            mode={mode}
+            is24Hour={true}
+            display="default"
+            onChange={onChange}
           />
         }
 
 
 
-        <Button disabled={false} title='Submit' onPress={hndleSubmit}></Button>
+        <Button disabled={butDis} title='Submit' onPress={hndleSubmit}></Button>
       </ScrollView>
 
+    </View>
+  )
+}
 
-    )
-  }
+export default AddPatietHomeScreen
 
-  export default AddPatietHomeScreen
+const styles = StyleSheet.create({
+  container: {
+    // flex: 1,
+    // alignItems: 'center',
+    // marginVertical: 40,
+    // paddingBottom: 1,
+    // paddingLeft: 1,
+    // paddingRight: 1,
+    // backgroundColor: '#fefefe',
+    backgroundColor: '#fefefe'
 
-  const styles = StyleSheet.create({
-    container: {
-      // flex: 1,
-      // alignItems: 'center',
-      marginVertical: 40,
-      paddingBottom: 1,
-      paddingLeft: 1,
-      paddingRight: 1,
-      backgroundColor: '#fefefe'
-    },
-    title: {
-      fontSize: 24,
-      textTransform: 'capitalize',
-      marginBottom: 20,
-      fontWeight: 'bold',
-    },
-    TextInput: {
-      borderWidth: 1,
-      width: '80%',
-      padding: 10,
-      marginBottom: 20,
-      borderColor: '#f1f1df',
-      color: '#4c4747',
-      borderRadius: 4,
-    },
-  })
+  },
+  title: {
+    fontSize: 24,
+    textTransform: 'capitalize',
+    marginBottom: 20,
+    fontWeight: 'bold',
+  },
+  TextInput: {
+    borderWidth: 1,
+    width: Dimensions.get('window').width * 0.96,
+    padding: 10,
+    marginBottom: 20,
+    color: '#4c4747',
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#95957abd',
+    backgroundColor: '#fefefe'
+  },
+})

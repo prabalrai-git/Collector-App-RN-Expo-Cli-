@@ -3,18 +3,26 @@ import React from 'react'
 import DraweNavigator from './DraweNavigator'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import LoginScreen from '../screens/LogInScreen/LoginScreen'
+import AddPatientMap from '../screens/AddPatient/AddPatientMap'
 
 const MainStackNavigator = () => {
   const Stack = createNativeStackNavigator()
   return (
     <Stack.Navigator>
-      <Stack.Screen
+      {/* <Stack.Screen
+        name='AddPatientMap'
+        component={AddPatientMap}
+        options={{
+          headerShown: false,
+        }}
+      /> */}
+      {/* <Stack.Screen
         name='LoginScreen'
         component={LoginScreen}
         options={{
           headerShown: false,
         }}
-      />
+      /> */}
       <Stack.Screen
         name='DraweNavigator'
         component={DraweNavigator}

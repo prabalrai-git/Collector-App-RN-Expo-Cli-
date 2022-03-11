@@ -5,7 +5,7 @@ export const fetch = (url, params) => {
 }
 
 export const store = (url, params) => {
-  return httpBase().post(`/${url}`, data);
+  return httpBase().post(`/${url}`, params);
 }
 
 export const update = (url, params) =>{
