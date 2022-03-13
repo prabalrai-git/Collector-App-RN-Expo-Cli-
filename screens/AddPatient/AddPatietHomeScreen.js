@@ -1,9 +1,12 @@
-import { StyleSheet, Text, TextInput, View, ScrollView, Button, TouchableOpacity, Platform, Dimensions } from 'react-native'
+import { StyleSheet, Text, TextInput, View, ScrollView, TouchableOpacity, Platform, Dimensions, Image, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { AssignPatient, GetReferred, GetRequestor } from '../../Services/appServices/AssignPatient';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
+import { BottomSheet, Button } from 'react-native-elements';
+import MapView from 'react-native-maps';
+import { useNavigation } from '@react-navigation/native';
 
 // {
 //   "CId": 1,
@@ -27,8 +30,9 @@ import { Picker } from '@react-native-picker/picker';
 const AddPatietHomeScreen = () => {
   // const [CId, setCId] = useState();
   // const [CollectorId, setCollectorId] = useState();
+  const navigation = useNavigation()
   const [PatientFName, setPatientFName] = useState();
-  const [PatientMName, setPatientMName] = useState();
+  const [PatientMName, setPatientMName] = useState('');
   const [PatientLName, setPatientLName] = useState();
   const [PatientAge, setPatientAge] = useState();
   const [PatientGender, setPatientGender] = useState();
@@ -63,7 +67,13 @@ const AddPatietHomeScreen = () => {
   // ]);
 
   const user = useSelector(state => state.storeUserData);
-  // console.log("user", user.userData.usrUserId);
+  const [isVisible, setIsVisible] = useState(false);
+  const [region, setRegion] = useState({
+    latitude: 27.7172,
+    longitude: 85.3240,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
 
   const onChange = (event, selectedValue) => {
     setShow(Platform.OS === 'ios');
@@ -105,6 +115,15 @@ const AddPatietHomeScreen = () => {
     }))
   }, [])
 
+  const handleAddress = (lat, long) => {
+    const temp = {
+      'latitude': lat,
+      'longitude': long
+    }
+    setPatientAddress(temp);
+    setIsVisible(!isVisible);
+  }
+
 
   const hndleSubmit = () => {
 
@@ -126,7 +145,7 @@ const AddPatietHomeScreen = () => {
       "PatientAge": PatientAge,
       "PatientGender": PatientGender,
       "PatientEmailId": PatientEmailId,
-      "PatientAddress": PatientAddress,
+      "PatientAddress": JSON.stringify(PatientAddress),
       "PatientReferedBy": PatientReferedBy,
       "PatientRequestorBy": PatientRequestorBy,
       "PatientNationalId": PatientNationalId,
@@ -135,27 +154,59 @@ const AddPatietHomeScreen = () => {
       "EnterBy": user.userData.usrUserId,
       "CollectionReqDate": `${time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate()}T${time.toLocaleTimeString()}`
     }
-    dispatch(AssignPatient(data, (res) => {
-      if (res?.CreatedId > 0 && res?.SuccessMsg === true) {
-        console.log('message', res?.Message);
-        setPatientFName('');
-        setPatientMName('');
-        setPatientLName('');
-        setPatientAge('');
-        setPatientGender('');
-        setPatientEmailId('');
-        setPatientAddress('');
-        setPatientReferedBy('');
-        setPatientRequestorBy('');
-        setPatientNationalId('');
-        setRemarks('');
+    if (
+      typeof data.CollectorId !== 'undefined' &&
+      typeof data.PatientFName !== 'undefined' &&
+      typeof data.PatientLName !== 'undefined' &&
+      typeof data.PatientAge !== 'undefined' &&
+      typeof data.PatientGender !== 'undefined' &&
+      typeof data.PatientEmailId !== 'undefined' &&
+      typeof data.PatientAddress !== 'undefined' &&
+      typeof data.PatientReferedBy !== 'undefined' &&
+      typeof data.PatientRequestorBy !== 'undefined' &&
+      typeof data.PatientNationalId !== 'undefined' &&
+      typeof data.CollectionReqDate !== 'undefined'
+      ) {
+      dispatch(AssignPatient(data, (res) => {
+        if (res?.CreatedId > 0 && res?.SuccessMsg === true) {
+          console.log('message', res?.Message);
+          setPatientFName('');
+          setPatientMName('');
+          setPatientLName('');
+          setPatientAge('');
+          setPatientGender('');
+          setPatientEmailId('');
+          setPatientAddress('');
+          setPatientReferedBy('');
+          setPatientRequestorBy('');
+          setPatientNationalId('');
+          setRemarks('');
+          
+          Alert.alert(
+            "Saved !",
+            [
+              { text: "OK", onPress: () => navigation.navigate('Home')}
+            ]
+          );
+          
+        } else {
+          console.log('no data saved');
+          
+        }
+        setButDis(false);
+      }))
+    }else{
+      
+      Alert.alert(
+        "Erroe !",
+        "Data not saved",
+        [
+          { text: "OK", onPress: () => setButDis(false) }
+        ]
+      );
+    }
 
-      } else {
-        console.log('no data saved');
-      }
-      setButDis(false);
-    }))
-    // console.log("data", data)
+
   }
 
 
@@ -190,8 +241,9 @@ const AddPatietHomeScreen = () => {
           style={styles.TextInput}
           onValueChange={(itemValue, itemIndex) => setPatientGender(itemValue)}
         >
-          <Picker.Item label='male' value="male" />
-          <Picker.Item label='female' value="female" />
+          <Picker.Item label='select gender' value='select gender' />
+          <Picker.Item label='male' value='male' />
+          <Picker.Item label='female' value='female' />
         </Picker>
         <View style={styles.TextInput}>
           <TextInput
@@ -201,11 +253,17 @@ const AddPatietHomeScreen = () => {
           ></TextInput>
         </View>
         <View style={styles.TextInput}>
-          <TextInput
+          {/* <TextInput
             value={PatientAddress}
             placeholder='address'
             onChangeText={(address) => setPatientAddress(address)}
-          ></TextInput>
+          
+          ></TextInput> */}
+          <View>
+            <Text>latitude:{JSON.stringify(region.latitude)}</Text>
+            <Text>longitude:{JSON.stringify(region.longitude)}</Text>
+          </View>
+          <Button title='address' onPress={() => setIsVisible(true)}></Button>
         </View>
         <View style={styles.TextInput}>
           <TextInput
@@ -289,6 +347,43 @@ const AddPatietHomeScreen = () => {
         <Button disabled={butDis} title='Submit' onPress={hndleSubmit}></Button>
       </ScrollView>
 
+      <BottomSheet modalProps={{}} isVisible={isVisible}>
+        <View style={{ flex: 1 }}>
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              // latitude: geolocation.latitude === null ? 27.7172 : geolocation.latitude,
+              // longitude: geolocation.longitude === null ? 85.3240 : geolocation.longitude,
+              latitude: 27.7172,
+              longitude: 85.3240,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+            onRegionChangeComplete={(region) => setRegion(region)}
+          >
+            {console.log(region)}
+          </MapView>
+          <View style={styles.cMarker}>
+            <Image
+              source={require('../../assets/images/collector.png')}
+              style={styles.cMarkerImg}
+            ></Image>
+          </View>
+          <View
+            style={styles.bSheet}
+          >
+            <Button title='cancle' onPress={() => setIsVisible(false)} color={'#ffc107'} buttonStyle={{backgroundColor: 'yellow'}}/>
+            <View>
+              <Text>latitude:{JSON.stringify(region.latitude)}</Text>
+              <Text>longitude:{JSON.stringify(region.longitude)}</Text>
+            </View>
+            <Button title='save' onPress={() => handleAddress(region.latitude, region.longitude)} />
+          </View>
+
+        </View>
+
+      </BottomSheet>
+
     </View>
   )
 }
@@ -324,4 +419,47 @@ const styles = StyleSheet.create({
     borderColor: '#95957abd',
     backgroundColor: '#fefefe'
   },
+  btn: {
+    marginTop: 10,
+  },
+  map: {
+    flex: 1,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+  },
+  bSheet: {
+    position: 'absolute',
+    bottom: 0,
+    left: 10,
+    right: 10,
+    // height: 100,
+    backgroundColor: '#fefefe',
+    borderTopRightRadius: 18,
+    borderTopLeftRadius: 18,
+    paddingHorizontal: 10,
+    paddingVertical: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+  },
+  cMarker: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center'
+
+  },
+  cMarkerImg: {
+    width: 20,
+    resizeMode: 'contain',
+  }
 })

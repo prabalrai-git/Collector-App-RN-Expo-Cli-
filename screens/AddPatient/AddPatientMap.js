@@ -1,12 +1,19 @@
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, StyleSheet, Text, View, Image } from 'react-native'
 import React, { useState } from 'react'
-import { BottomSheet, Button, ListItem } from 'react-native-elements';
+import { BottomSheet, Button } from 'react-native-elements';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import MapView, { Marker } from 'react-native-maps';
+import MapView from 'react-native-maps';
+import { useNavigation } from '@react-navigation/native';
 
-const AddPatientMap = () => {
+const AddPatientMap = (props) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [lat, setlat] = useState()
+  const [region, setRegion] = useState({
+    latitude: 27.7172,
+    longitude: 85.3240,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
+  const navigation = useNavigation();
   return (
     <SafeAreaProvider>
       <View style={styles.container}>
@@ -28,18 +35,24 @@ const AddPatientMap = () => {
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}
+              onRegionChangeComplete={(region) => setRegion(region)}
             >
-              <Marker draggable
-                coordinate={lat}
-                onDragEnd={(e) => setlat({ x: e.nativeEvent.coordinate })}
-              />
+              {console.log(region)}
             </MapView>
+            <View style={styles.cMarker}>
+              <Image
+                source={require('../../assets/images/collector.png')}
+                style={styles.cMarkerImg}
+              ></Image>
+            </View>
             <View
               style={styles.bSheet}
             >
-              <Button title='cancle' />
+              <Button title='cancle' onPress={() => navigation.navigate('AddPatietHomeScreen')}/>
+              <Text>{JSON.stringify(region)}</Text>
               <Button title='save' />
             </View>
+
           </View>
 
         </BottomSheet>
@@ -83,5 +96,19 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.29,
     shadowRadius: 4.65,
+  },
+  cMarker: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center'
+    
+  },
+  cMarkerImg: {
+    width: 20,
+    resizeMode: 'contain',
   }
 })

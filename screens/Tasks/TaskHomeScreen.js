@@ -25,7 +25,7 @@ const TaskHomeScreen = () => {
       <FlatList
         data={PatietList}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.CId}
       />
     </View>
   )

@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 const windowWidth = Dimensions.get('window').width * 0.95;
 
 const TaskCard = ({ data }) => {
-  console.log('data', data);
+  // console.log('data', data);
   
   const navigatoin = useNavigation()
   return (
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   remarks: {
-    color: "#25353",
+    color: "#253539",
     fontSize: 14,
     letterSpacing: 2,
     marginBottom: 5,

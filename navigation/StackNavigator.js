@@ -11,6 +11,7 @@ import TaskInfoScreen from '../screens/Tasks/TaskInfoScreen'
 import MapScreen from '../screens/Tasks/MapScreen'
 import LoginScreen from '../screens/LogInScreen/LoginScreen'
 import AddPatietHomeScreen from '../screens/AddPatient/AddPatietHomeScreen'
+import AddPatientMap from '../screens/AddPatient/AddPatientMap'
 
 const Stack = createNativeStackNavigator()
 
@@ -97,6 +98,10 @@ const AddPatietNavigator = () => {
       <Stack.Screen 
         name='AddPatietHomeScreen'
         component={AddPatietHomeScreen}
+      />
+      <Stack.Screen
+        name='AddPatientMap'
+        component={AddPatientMap}
       />
     </Stack.Navigator>
   )
