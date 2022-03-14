@@ -13,22 +13,30 @@ const navData = [
   {
     id: 1,
     name: 'Add Patient',
-    pathName: 'AddPatient'
+    pathName: 'AddPatient',
+    img: '../../assets/images/doctor.png',
+    // img: require('../../assets/images/doct`or.png')
   },
   {
     id: 2,
     name: 'Collect Sample ',
-    pathName: 'CollectSample'
+    pathName: 'CollectSample',
+    img: '../../assets/images/collectSample.png',
+    // img: require('../../assets/images/collectSample.png')
   },
   {
     id: 3,
     name: 'Total Sample',
-    pathName: 'TotalSample'
+    pathName: 'TotalSample',
+    img: '../../assets/images/BookLabTest.png',
+    // img: require('../../assets/images/BookLabTest.png')
   },
   {
     id: 4,
     name: 'Today Task',
-    pathName: 'task'
+    pathName: 'task',
+    img: '../../assets/images/task.png',
+    // img: require('../../assets/images/task.png')
   },
 ]
 
@@ -61,14 +69,16 @@ export default HomeScreen
 
 const styles = StyleSheet.create({
   mainContainer: {
-    justifyContent: 'center',
+    flex: 1,
+    // justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 10,
+    // marginTop: 10,
     // flexDirection: 'column'
+    paddingVertical: 10,
+    backgroundColor: '#ffffff',
   },
   cardContainer: {
     flexDirection: "row",
-    // flexWrap: "wrap",
     marginTop: 10,
     justifyContent: 'space-between',
     alignItems: 'center',

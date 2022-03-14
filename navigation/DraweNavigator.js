@@ -10,6 +10,9 @@ const DraweNavigator = () => {
       <Drawer.Screen
         name='Home'
         component={MainStackNavigator}
+        //  options={{
+        //   headerShown: false,
+        // }}
       />
       <Drawer.Screen
         name='CollectSample'

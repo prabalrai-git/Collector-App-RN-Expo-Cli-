@@ -4,12 +4,14 @@ import { useNavigation } from '@react-navigation/native';
 
 const CardButton = ({data}) => {
   const navigation = useNavigation()
+  console.log(data.img);
   return (
     <TouchableOpacity onPress={()=>navigation.navigate(`${data.pathName}`)} style={{marginBottom: 15}}>
 
     <View style={styles.container} >
         <ImageBackground
-          source={require('../../assets/images/BookLabTest.png')}
+          source={require(data.img)}
+          // source={{uri: '../../assets/images/doctor.png'}}
           resizeMode="cover"
           style={styles.image}
         >

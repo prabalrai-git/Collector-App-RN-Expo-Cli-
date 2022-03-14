@@ -9,7 +9,7 @@ const GreetingCard = () => {
     <View style={styles.cardContainer}>
       <View style={styles.dis}>
         <Text h3 style={styles.title}>Good Moring</Text>
-        <Text style={styles.disText}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus, natus! Sequi.</Text>
+        <Text style={styles.disText}>Your target for today is to keep positive mindset and smile to everyone you meet.</Text>
       </View>
       <Avatar
         size={64}
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: windowWidth,
     justifyContent: 'space-between',
-    backgroundColor: '#fefefe',
+    backgroundColor: '#9DD4E9',
     borderRadius: 18,
     paddingHorizontal: 20,
     paddingVertical: 30,
@@ -36,11 +36,12 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.65,
   },
   title:{
-    color: '#205072',
+    color: '#fefefe',
+    // FF7F00
     marginBottom: 7,
   },
   disText: {
-    color: "#2e3133",
+    color: "#205072",
     letterSpacing: 2,
   }
 })

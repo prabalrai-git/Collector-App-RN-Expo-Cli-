@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const TestCard = () => {
+const TestCard = ({data}) => {
   return (
     <View>
-      <Text>TestCard</Text>
+      <Text>{data.Requestor}</Text>
     </View>
   )
 }
