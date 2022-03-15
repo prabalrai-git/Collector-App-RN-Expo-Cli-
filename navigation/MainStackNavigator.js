@@ -4,6 +4,7 @@ import DraweNavigator from './DraweNavigator'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import LoginScreen from '../screens/LogInScreen/LoginScreen'
 import AddPatientMap from '../screens/AddPatient/AddPatientMap'
+import TabNavigator from './TabNavigator'
 
 const MainStackNavigator = () => {
   const Stack = createNativeStackNavigator()
@@ -17,9 +18,16 @@ const MainStackNavigator = () => {
           headerShown: false,
         }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name='DraweNavigator'
         component={DraweNavigator}
+        options={{
+          headerShown: false,
+        }}
+      /> */}
+      <Stack.Screen
+        name='TabNavigator'
+        component={TabNavigator}
         options={{
           headerShown: false,
         }}

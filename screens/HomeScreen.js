@@ -1,4 +1,4 @@
-import { Dimensions, PermissionsAndroid, FlatList, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, PermissionsAndroid, FlatList, StyleSheet, Text, View, ImageBackground } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import GreetingCard from '../components/ui/GreetingCard'
 import CardButton from '../components/ui/CardButton'
@@ -14,29 +14,33 @@ const navData = [
     id: 1,
     name: 'Add Patient',
     pathName: 'AddPatient',
-    img: '../../assets/images/doctor.png',
-    // img: require('../../assets/images/doct`or.png')
+    // img: '../../assets/images/doctor.png',
+    // img: require('../../assets/images/doct`or.png'),
+    color: '#9985FF'
   },
   {
     id: 2,
-    name: 'Collect Sample ',
-    pathName: 'CollectSample',
-    img: '../../assets/images/collectSample.png',
-    // img: require('../../assets/images/collectSample.png')
+    name: 'Book Test ',
+    pathName: 'BookTestHomeScreen',
+    // img: '../../assets/images/collectSample.png',
+    // img: require('../../assets/images/collectSample.png'),
+    color: '#FF8585'
   },
   {
     id: 3,
     name: 'Total Sample',
     pathName: 'TotalSample',
-    img: '../../assets/images/BookLabTest.png',
-    // img: require('../../assets/images/BookLabTest.png')
+    // img: '../../assets/images/BookLabTest.png',
+    // img: require('../../assets/images/BookLabTest.png'),
+    color: '#FFC285'
   },
   {
     id: 4,
     name: 'Today Task',
     pathName: 'task',
-    img: '../../assets/images/task.png',
-    // img: require('../../assets/images/task.png')
+    // img: '../../assets/images/task.png',
+    // img: require('../../assets/images/task.png'),
+    color: '#4688B3'
   },
 ]
 
@@ -51,7 +55,10 @@ const HomeScreen = () => {
     <CardButton data={item} />
   )
   return (
-    <View style={styles.mainContainer}>
+    <View
+      // source={require('../assets/images/cat.png')}
+      style={styles.mainContainer}
+    >
       <GreetingCard />
       <View style={styles.cardContainer} >
         <FlatList
@@ -76,6 +83,7 @@ const styles = StyleSheet.create({
     // flexDirection: 'column'
     paddingVertical: 10,
     backgroundColor: '#ffffff',
+
   },
   cardContainer: {
     flexDirection: "row",

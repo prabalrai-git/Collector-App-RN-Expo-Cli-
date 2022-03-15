@@ -7,6 +7,7 @@ import MarkerCostome from '../../components/ui/MarkerCostome'
 import { Avatar, Button, Text } from 'react-native-elements'
 import { useDispatch, useSelector } from 'react-redux'
 import { UpdateCollectorLocation } from '../../Services/appServices/Collector'
+import AppButton from '../../components/ui/AppButton'
 // import MapboxGL from '@react-native-mapbox-gl/maps'
 
 // MapboxGL.setAccessToken('pk.eyJ1IjoiOThtYXJlIiwiYSI6ImNsMDBrcnNwbTBhNHUzY3J5eGN6MGgwZm8ifQ.IQosi4_gB8CXD9q31fl7RQ');
@@ -112,9 +113,9 @@ const MapScreen = ({ route }) => {
     if (isActive === true) {
       // console.log(data);
       dispatch(UpdateCollectorLocation(data, (res) => {
-        if (res?.CreatedId > 0 && res?.SuccessMsg === true){
+        if (res?.CreatedId > 0 && res?.SuccessMsg === true) {
           console.log(res)
-        }else{
+        } else {
           console.log('some error occured while dispatch');
         }
       }))
@@ -165,6 +166,7 @@ const MapScreen = ({ route }) => {
         />
       </MapView>
       <View style={styles.bSheet}>
+        <View style={styles.bSheetTop}>
         <View style={styles.avatar}>
           <Avatar
             size={64}
@@ -174,8 +176,11 @@ const MapScreen = ({ route }) => {
         </View>
 
         <View style={styles.details}>
-          <Text h4>Suman Sunuwar</Text>
-          <Text>sample collction for covid</Text>
+          <View>
+            <Text h4>Suman Sunuwar</Text>
+            <Text>sample collction for covid</Text>
+          </View>
+
           <Switch
             trackColor={{ false: "#767577", true: "#81b0ff" }}
             thumbColor={isActive ? "#f5dd4b" : "#f4f3f4"}
@@ -183,8 +188,10 @@ const MapScreen = ({ route }) => {
             onValueChange={toggleSwitch}
             value={isActive}
           />
-          <Button title={isActive != false ? 'stop' : "start"}></Button>
         </View>
+        </View>
+        {/* <Button title={isActive != false ? 'stop' : "start"}></Button> */}
+        <AppButton title='collct sample'></AppButton>
       </View>
     </View>
   )
@@ -208,14 +215,11 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 10,
     right: 10,
-    // height: 100,
     backgroundColor: '#fefefe',
     borderTopRightRadius: 18,
     borderTopLeftRadius: 18,
     paddingHorizontal: 10,
     paddingVertical: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -226,8 +230,15 @@ const styles = StyleSheet.create({
 
     elevation: 7,
   },
+  bSheetTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
   details: {
     width: Dimensions.get('window').width * 0.65,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   avatar: {
     width: Dimensions.get('window').width * 0.25,

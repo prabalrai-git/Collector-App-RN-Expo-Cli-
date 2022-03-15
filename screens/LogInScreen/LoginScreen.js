@@ -34,7 +34,7 @@ const LoginScreen = () => {
         let andd = val?.validuserDetails;
         if (andd[0]?.usrUserId > 0) {
           dispatch(storeUserData(andd[0]))
-          navigation.navigate('DraweNavigator')
+          navigation.navigate('TabNavigator')
           
         } else {
           console.log('Username or password didnt matched');

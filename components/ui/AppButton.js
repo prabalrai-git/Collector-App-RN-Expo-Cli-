@@ -1,11 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 
 const AppButton = (props) => {
   return (
     <>
       <TouchableOpacity onPress={props.onPress} style={styles.primaryBtn}>
-       
           <Text style={styles.txt}>{props.title}</Text>
       </TouchableOpacity>
     </>
@@ -17,6 +16,8 @@ export default AppButton
 
 const styles = StyleSheet.create({
   primaryBtn: {
+    justifyContent: 'center',
+    alignItems:'center',
     paddingHorizontal: 30,
     paddingVertical: 10,
     backgroundColor: '#205072',
@@ -29,6 +30,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
     elevation: 3,
+    maxWidth: Dimensions.get('window').width * 0.95
 
   },
   txt: {

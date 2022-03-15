@@ -9,6 +9,7 @@ import MapView from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 import Filter from '../../components/ui/Filter';
 import TestCard from '../../components/ui/TestCard';
+import AppButton from '../../components/ui/AppButton';
 
 // {
 //   "CId": 1,
@@ -143,7 +144,7 @@ const AddPatietHomeScreen = () => {
       "CId": 0,
       "CollectorId": user.userData.usrUserId,
       "PatientFName": PatientFName,
-      "PatientMName": PatientMName,
+      "PatientMName": PatientMName === undefined || PatientMName === '' ? ' ' : ' ',
       "PatientLName": PatientLName,
       "PatientAge": PatientAge,
       "PatientGender": PatientGender,
@@ -186,7 +187,8 @@ const AddPatietHomeScreen = () => {
           setRemarks('');
 
           Alert.alert(
-            "Saved !",
+            "Saved!",
+            "Data saved Sucessfully",
             [
               { text: "OK", onPress: () => navigation.navigate('Home') }
             ]
@@ -194,14 +196,13 @@ const AddPatietHomeScreen = () => {
 
         } else {
           console.log('no data saved');
-
         }
         setButDis(false);
       }))
     } else {
 
       Alert.alert(
-        "Erroe !",
+        "Error !",
         "Data not saved",
         [
           { text: "OK", onPress: () => setButDis(false) }
@@ -217,6 +218,7 @@ const AddPatietHomeScreen = () => {
     <SafeAreaView>
       <View style={styles.maincontainer}>
         <View style={styles.container}>
+          <Text style={styles.title}>Add Patient</Text>
           <ScrollView>
             <View style={styles.TextInput}>
               <TextInput
@@ -242,17 +244,21 @@ const AddPatietHomeScreen = () => {
                 onChangeText={(lname) => setPatientLName(lname)}
               ></TextInput>
             </View>
+            <View style={styles.TextInput}>
+              <View style={styles.PickerTextInput}>
+                <Picker
+                  selectedValue={PatientGender}
+                  placeholder='gender'
+                  onValueChange={(itemValue, itemIndex) => setPatientGender(itemValue)}
+                  mode='dropdown'
+                >
+                  <Picker.Item label='select gender' value='select gender' />
+                  <Picker.Item label='male' value='male' />
+                  <Picker.Item label='female' value='female' />
+                </Picker>
+              </View>
+            </View>
 
-            <Picker
-              selectedValue={PatientGender}
-              placeholder='gender'
-              style={styles.TextInput}
-              onValueChange={(itemValue, itemIndex) => setPatientGender(itemValue)}
-            >
-              <Picker.Item label='select gender' value='select gender' />
-              <Picker.Item label='male' value='male' />
-              <Picker.Item label='female' value='female' />
-            </Picker>
             <View style={styles.TextInput}>
               <TextInput
                 value={PatientEmailId}
@@ -261,20 +267,24 @@ const AddPatietHomeScreen = () => {
                 style={styles.inputField}
               ></TextInput>
             </View>
-            <TouchableOpacity style={styles.TextInput} onPress={() => setIsVisible(true)}>
-              <View style={{
-                flexDirection: 'row'
-              }}>
-                <Text>latitude:{JSON.stringify(region.latitude)}, </Text>
-                <Text>longitude:{JSON.stringify(region.longitude)}</Text>
-              </View>
-              <Icon
-                name='location-pin'
-                color={'#FF7F00'}
-                type='entypo'
-                style={styles.icon}
-              ></Icon>
-            </TouchableOpacity>
+
+            <View style={styles.TextInput}>
+              <TouchableOpacity style={styles.inputField} onPress={() => setIsVisible(true)}>
+                <View style={{
+                  flexDirection: 'row'
+                }}>
+                  <Text>latitude:{JSON.stringify(region.latitude)}, </Text>
+                  <Text>longitude:{JSON.stringify(region.longitude)}</Text>
+                </View>
+                <Icon
+                  name='location-pin'
+                  color={'#FF7F00'}
+                  type='entypo'
+                  style={styles.icon}
+                ></Icon>
+              </TouchableOpacity>
+            </View>
+
             <View style={styles.TextInput}>
               <TextInput
                 value={PatientAge}
@@ -284,34 +294,42 @@ const AddPatietHomeScreen = () => {
                 style={styles.inputField}
               ></TextInput>
             </View>
-            <Picker
-              selectedValue={PatientRequestorBy}
-              style={styles.TextInput}
-              onValueChange={(itemValue) => setPatientRequestorBy(itemValue)}
-              mode='dropdown'
-            >
-              <Picker.Item label={'select requestor'} value={''} />
-              {
-                reqestorList !== undefined ?
-                  reqestorList.map((item, index) => (
-                    <Picker.Item label={item.Requestor} value={item.Id} key={index} />
-                  )) : null
-              }
-            </Picker>
-            <Picker
-              selectedValue={PatientReferedBy}
-              style={styles.TextInput}
-              onValueChange={(itemValue) => setPatientReferedBy(itemValue)}
-              mode='dropdown'
-            >
-              <Picker.Item label={'select referer'} value={''} />
-              {
-                referedList !== undefined ?
-                  referedList.map((item, index) => (
-                    <Picker.Item label={item.Name} value={item.Id} key={index} />
-                  )) : null
-              }
-            </Picker>
+            <View style={styles.TextInput}>
+              <View style={styles.PickerTextInput}>
+                <Picker
+                  selectedValue={PatientRequestorBy}
+                  // style={styles.TextInput}
+                  onValueChange={(itemValue) => setPatientRequestorBy(itemValue)}
+                  mode='dropdown'
+                >
+                  <Picker.Item label={'select requestor'} value={''} />
+                  {
+                    reqestorList !== undefined ?
+                      reqestorList.map((item, index) => (
+                        <Picker.Item label={item.Requestor} value={item.Id} key={index} />
+                      )) : null
+                  }
+                </Picker>
+              </View>
+            </View>
+            <View style={styles.TextInput}>
+              <View style={styles.PickerTextInput}>
+                <Picker
+                  selectedValue={PatientReferedBy}
+                  // style={styles.TextInput}
+                  onValueChange={(itemValue) => setPatientReferedBy(itemValue)}
+                  mode='dropdown'
+                >
+                  <Picker.Item label={'select referer'} value={''} />
+                  {
+                    referedList !== undefined ?
+                      referedList.map((item, index) => (
+                        <Picker.Item label={item.Name} value={item.Id} key={index} />
+                      )) : null
+                  }
+                </Picker>
+              </View>
+            </View>
             <View style={styles.TextInput}>
               <TextInput
                 value={PatientNationalId}
@@ -332,7 +350,15 @@ const AddPatietHomeScreen = () => {
               onPress={showDatepicker}
               style={styles.TextInput}
             >
-              <Text>{date === '' ? 'date..' : date.toLocaleDateString()}, {time === '' ? 'time..' : time.toLocaleTimeString()}</Text>
+              <View style={styles.inputField}>
+                <Text>{date === '' ? 'date..' : date.toLocaleDateString()}, {time === '' ? 'time..' : time.toLocaleTimeString()}</Text>
+                <Icon
+                  name='calendar'
+                  color={'#FF7F00'}
+                  type='entypo'
+                  style={styles.icon}
+                ></Icon>
+              </View>
             </TouchableOpacity>
 
             {show &&
@@ -347,7 +373,15 @@ const AddPatietHomeScreen = () => {
               />
             }
 
-            <Button disabled={butDis} title='Submit' onPress={hndleSubmit}></Button>
+            {/* <Button disabled={butDis} title='Submit' onPress={hndleSubmit}></Button> */}
+            <View style={styles.TextInput}>
+              <AppButton
+                disabled={butDis}
+                title='Submit'
+              onPress={hndleSubmit} 
+              ></AppButton>
+            </View>
+
           </ScrollView>
 
           <BottomSheet modalProps={{}} isVisible={isVisible}>
@@ -400,35 +434,51 @@ const styles = StyleSheet.create({
     backgroundColor: '#fefefe',
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingBottom: 15,
-    
+    // alignItems: 'center',
+    paddingBottom: 50,
+    // height: '100%',
+    paddingTop: 30,
+    // flex: 1,
+
   },
   container: {
     backgroundColor: '#fefefe',
-    width: Dimensions.get('window').width * 0.90,
-
+    width: Dimensions.get('window').width * 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   title: {
     fontSize: 24,
     textTransform: 'capitalize',
-    marginBottom: 20,
+    marginBottom: 10,
+    marginTop: 10,
     fontWeight: 'bold',
+    color: "#205072"
   },
   TextInput: {
-    borderWidth: 1,
-    padding: 10,
-    marginBottom: 20,
+    paddingHorizontal: 10,
+    marginBottom: 10,
     color: '#4c4747',
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: '#95957abd',
     backgroundColor: '#fefefe',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    width: Dimensions.get('window').width * 1
 
   },
   inputField: {
-    width: Dimensions.get('window').width * 0.90,
+    width: Dimensions.get('window').width - 20,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#95957abd',
+    paddingHorizontal: 10,
+    paddingVertical: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  PickerTextInput: {
+    width: Dimensions.get('window').width - 20,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#95957abd',
+    paddingHorizontal: 10,
   },
   btn: {
     marginTop: 10,
