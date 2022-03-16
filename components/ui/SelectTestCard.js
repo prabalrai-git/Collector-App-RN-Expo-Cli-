@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useEffect } from 'react';
 import { CheckBox } from 'react-native-elements';
 
-const SelectTestCard = ({ data, retData,arrData }) => {
+const SelectTestCard = ({ data, retData, arrData }) => {
   const [slected, setSelected] = useState(false);
   // console.log(data,);
   const selectedFun =(e) => {
@@ -12,15 +12,17 @@ const SelectTestCard = ({ data, retData,arrData }) => {
   }
   return (
     <View style={styles.container}>
-      <View style={[styles.card, arrData.includes(data.id) ? styles.selected : styles.unSelected]}>
+      <View style={styles.card}>
         <View style={styles.left}>
-          <Text>{data.title}</Text>
-          <Text>Rs. {data.price}</Text>
+          <Text style={styles.title}>{data.title}</Text>
+          <Text style={styles.price}>Rs. {data.price}</Text>
         </View>
         <View style={styles.right}>
           <CheckBox
             checked={slected}
             onPress={() => selectedFun(data)}
+            checkedColor={'#4688B3'}
+            uncheckedColor={'dimgray'}
           />
         </View>
       </View>
@@ -33,23 +35,25 @@ export default SelectTestCard
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 10,
-    marginBottom: 10,
+    marginVertical: 5,
   },
   card: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingVertical: 15,
-    borderRadius: 10
+    paddingVertical: 10,
+    borderRadius: 10,
+    backgroundColor: '#fefefe',
+    alignItems:'center'
   },
   'card:last-child': {
     marginBottom: 100,
   },
-  selected: {
-    backgroundColor: '#c2f7f7',
+  title: {
+    fontSize: 16,
   },
-  unSelected: {
-    backgroundColor: '#fefefe',
+  price:{
+    color: '#FFC285'
   }
 
 })

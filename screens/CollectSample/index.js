@@ -1,8 +1,8 @@
 import { Button, FlatList, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
-import SelectTestCard from './SelectTestCard';
 import { useNavigation } from '@react-navigation/native';
 import AppButton from '../../components/ui/AppButton'
+import SelectTestCard from '../../components/ui/SelectTestCard';
 
 const data = [
   {
