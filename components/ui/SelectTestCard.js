@@ -1,7 +1,9 @@
-import { Button, StyleSheet, Text, View } from 'react-native'
+import { Button, Dimensions, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import { useEffect } from 'react';
 import { CheckBox } from 'react-native-elements';
+
+const windowWidth = Dimensions.get('window').width * 0.65;
 
 const SelectTestCard = ({ data, retData, arrData }) => {
   const [slected, setSelected] = useState(false);
@@ -14,8 +16,8 @@ const SelectTestCard = ({ data, retData, arrData }) => {
     <View style={styles.container}>
       <View style={styles.card}>
         <View style={styles.left}>
-          <Text style={styles.title}>{data.title}</Text>
-          <Text style={styles.price}>Rs. {data.price}</Text>
+          <Text style={styles.title}>{data.Test}</Text>
+          <Text style={styles.price}>Rs. {data.Price}</Text>
         </View>
         <View style={styles.right}>
           <CheckBox
@@ -50,7 +52,8 @@ const styles = StyleSheet.create({
     marginBottom: 100,
   },
   title: {
-    fontSize: 16,
+    fontSize: 14,
+    width: windowWidth,
   },
   price:{
     color: '#FFC285'

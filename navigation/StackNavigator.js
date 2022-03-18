@@ -13,6 +13,7 @@ import AddPatietHomeScreen from '../screens/AddPatient/AddPatietHomeScreen'
 import AddPatientMap from '../screens/AddPatient/AddPatientMap'
 import BookTestHomeScreen from '../screens/BookTest/BookTestHomeScreen'
 import SelectTest from '../screens/BookTest/SelectTest'
+import BilligScreen from '../screens/BookTest/BilligScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -130,6 +131,13 @@ const BookTestNavigator = () => {
         <Stack.Screen
           name='SelectTest'
           component={SelectTest}
+          options={{
+            headerShown: false
+          }}
+        />
+        <Stack.Screen
+          name='BilligScreen'
+          component={BilligScreen}
           options={{
             headerShown: false
           }}

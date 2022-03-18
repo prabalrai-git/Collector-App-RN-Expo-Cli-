@@ -12,7 +12,7 @@ const PatientCard = ({data}) => {
     <View style={styles.mainContainer}>
     <TouchableOpacity onPress={()=> navigation.navigate('BookTest', {
       screen: 'SelectTest',
-      params: { data: data.CId}
+      params: { data: data}
     })}>
       <View style={styles.cardContainer}>
         <Avatar
