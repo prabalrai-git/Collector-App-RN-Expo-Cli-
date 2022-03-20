@@ -2,7 +2,7 @@ export const DEV_URL = 'https://lunivacare.ddns.net/CarelabDataMetricService_qc/
 
 export const BASE_URL = `${DEV_URL}/Api/`;
 
-export const GetValidCollectorLoginForApp ='GetValidCollectorLoginForApp';
+export const GetValidCollectorLoginForApp = 'GetValidCollectorLoginForApp';
 /**
  * @desc: login username passeord
  * @param: ?username={userame} & ?Password={password}
@@ -71,10 +71,68 @@ export const GetlocationofCollectorByDate = 'GetlocationofCollectorByDate'
  * @param: ?entrydate={entrydate}&userId={userId}
  */
 
- export const GetTestListforHomeCollection = 'GetTestListforHomeCollection'
+export const GetTestListforHomeCollection = 'GetTestListforHomeCollection'
 
- /**
-  * @desc: get Referer List for collector to select
-  * @param: ?entrydate={entrydate}&userId={userId}
-  */
- 
+/**
+ * @desc: get Referer List for collector to select
+ * @param: ?entrydate={entrydate}&userId={userId}
+ */
+
+export const InsertUpdateHomeCollectionRequest = 'InsertUpdateHomeCollectionRequest'
+
+/**
+ * @desc: book list of test of patien and billing
+ * @param: 
+ */
+//  {
+//   "_HomeRequest": {
+//     "RId": 1,
+//     "PatId": 2,
+//     "TestTotalAmount": 3.0,
+//     "CollectionCharge": 4.0,
+//     "DiscountAmount": 5.0,
+//     "GrandTotal": 6.0,
+//     "Remarks": "sample string 7",
+//     "UserId": 8,
+//     "IsActive": true,
+//     "CollectorId": 1
+//   },
+//   "_HomeCollectionTestList": [
+//     {
+//       "SId": 1,
+//       "PatId": 2,
+//       "RequestId": 3,
+//       "TestId": 4,
+//       "TestName": "sample string 5",
+//       "TestPrice": 6.0,
+//       "ClientId": 7,
+//       "IsActive": true,
+//       "EntryDate": "2022-03-20T11:18:35.1476613+05:45",
+//       "UserId": 10
+//     },
+//     {
+//       "SId": 1,
+//       "PatId": 2,
+//       "RequestId": 3,
+//       "TestId": 4,
+//       "TestName": "sample string 5",
+//       "TestPrice": 6.0,
+//       "ClientId": 7,
+//       "IsActive": true,
+//       "EntryDate": "2022-03-20T11:18:35.1476613+05:45",
+//       "UserId": 10
+//     },
+//     {
+//       "SId": 1,
+//       "PatId": 2,
+//       "RequestId": 3,
+//       "TestId": 4,
+//       "TestName": "sample string 5",
+//       "TestPrice": 6.0,
+//       "ClientId": 7,
+//       "IsActive": true,
+//       "EntryDate": "2022-03-20T11:18:35.1476613+05:45",
+//       "UserId": 10
+//     }
+//   ]
+// }

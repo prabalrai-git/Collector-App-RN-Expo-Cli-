@@ -202,7 +202,7 @@ const SelectTest = ({ route }) => {
           userData: route.params.data,
           tests: {
             total: total,
-            tests: selected
+            testList: selected
           }
         }
 
