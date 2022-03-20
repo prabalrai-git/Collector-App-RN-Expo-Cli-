@@ -142,9 +142,9 @@ const AddPatietHomeScreen = () => {
     setButDis(true)
     let data = {
       "CId": 0,
-      "CollectorId": user.userData.usrUserId,
+      "CollectorId":  user.userData.usrUserId,
       "PatientFName": PatientFName,
-      "PatientMName": PatientMName === undefined || PatientMName === '' ? ' ' : ' ',
+      "PatientMName": PatientMName === undefined || PatientMName === '' ? ' ' : PatientMName,
       "PatientLName": PatientLName,
       "PatientAge": PatientAge,
       "PatientGender": PatientGender,
@@ -156,7 +156,7 @@ const AddPatietHomeScreen = () => {
       "Remarks": Remarks,
       "EntryDate": fialEntryDate,
       "EnterBy": user.userData.usrUserId,
-      "CollectionReqDate": `${time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate()}T${time.toLocaleTimeString()}`
+      "CollectionReqDate": `${time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate()}T${time.toLocaleTimeString()}`,
     }
     if (
       typeof data.CollectorId !== 'undefined' &&
@@ -173,7 +173,7 @@ const AddPatietHomeScreen = () => {
     ) {
       dispatch(AssignPatient(data, (res) => {
         if (res?.CreatedId > 0 && res?.SuccessMsg === true) {
-          // console.log('message', res?.Message);
+          console.log('message', res?.Message);
           setPatientFName('');
           setPatientMName('');
           setPatientLName('');
@@ -195,7 +195,13 @@ const AddPatietHomeScreen = () => {
           );
 
         } else {
-          console.log('no data saved');
+          Alert.alert(
+            "Failure",
+            "no Data Saved",
+            [
+              { text: "OK" }
+            ]
+          );
         }
         setButDis(false);
       }))
@@ -378,7 +384,7 @@ const AddPatietHomeScreen = () => {
               <AppButton
                 disabled={butDis}
                 title='Submit'
-              onPress={hndleSubmit} 
+                onPress={hndleSubmit}
               ></AppButton>
             </View>
 

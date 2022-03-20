@@ -1,7 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, TextInput, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import AppButton from '../../components/ui/AppButton'
+import { useDispatch } from 'react-redux'
+import { InsertUpdateHomeCollection } from '../../Services/appServices/AssignPatient'
+import { Button } from 'react-native-elements'
 // "_HomeRequest": {
-//   "RId": 1,
+//   "RId": 1, //?? =0
 //   "PatId": 2,
 //   "TestTotalAmount": 3.0,
 //   "CollectionCharge": 4.0,
@@ -14,9 +18,9 @@ import React from 'react'
 // },
 // "_HomeCollectionTestList": [
 //   {
-//     "SId": 1,
+//     "SId": 1, //?? =0
 //     "PatId": 2,
-//     "RequestId": 3,
+//     "RequestId": 3, //?? =0
 //     "TestId": 4,
 //     "TestName": "sample string 5",
 //     "TestPrice": 6.0,
@@ -29,7 +33,7 @@ import React from 'react'
 
 // new  from route Object {
 //   "tests": Object {
-//     "tests": Array [
+//     "testList": Array [
 //       Object {
 //         "Id": 1,
 //         "Price": 7000,
@@ -66,25 +70,126 @@ import React from 'react'
 // }
 
 const BilligScreen = ({ route }) => {
-  console.log('new data', route.params)
+  console.log('new data', route.params);
+
+  const [CollectionCharge, setCollectionCharge] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [TotalAmount, setTotalAmount] = useState(route.params.tests.total);
+  const [Remarks, setRemarks]= useState('')
+
+  const dispatch = useDispatch();
+
+
+  useEffect(() => {
+    let temp = Number(route.params.tests.total) + Number(CollectionCharge) - Number(discount)
+    setTotalAmount(temp)
+  }, [discount])
+
   const handleSubmit = () => {
-    const uData = {
+
+    let today = new Date();
+    const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    const newTime = today.toLocaleTimeString();
+    const fialEntryDate = newDate + 'T' + newTime;
+
+    const _HomeRequest = {
       "RId": 0,
-      "PatId": 2,
-      "TestTotalAmount": 3.0,
-      "CollectionCharge": 4.0,
-      "DiscountAmount": 5.0,
-      "GrandTotal": 6.0,
-      "Remarks": "sample string 7",
-      "UserId": 8,
+      "PatId": route.params.userData.CId,
+      "TestTotalAmount": route.params.tests.total,
+      "CollectionCharge": CollectionCharge,
+      "DiscountAmount": discount,
+      "GrandTotal": TotalAmount,
+      "Remarks": Remarks,
+      "UserId": route.params.userData.EnterBy,
       "IsActive": true,
-      "CollectorId": 1
+      "CollectorId": route.params.userData.CollectorId
     };
-    const testData = []
+    // array of testdata
+    const _HomeCollectionTestList = []
+    route.params.tests.testList.map(e => {
+      _HomeCollectionTestList.push(
+        {
+          "SId": 0,
+          "PatId": route.params.userData.CId,
+          "RequestId": 0,
+          "TestId": route.params.tests.testList.Id,
+          "TestName": route.params.tests.testList.Test,
+          "TestPrice": route.params.tests.testList.Price,
+          "ClientId": 7,
+          "IsActive": true,
+          "EntryDate": fialEntryDate,
+          "UserId": 10
+        }
+      )
+    })
+    // console.log(_HomeCollectionTestList);
+    // fial object to sed
+
+    const finalData = {
+      _HomeRequest,
+      _HomeCollectionTestList
+    }
+
+    console.log(finalData)
+
+    // dispatch(InsertUpdateHomeCollection(finalData, (res) => {
+    //   if(res?.SuccessMsg === true){
+    //     console.log('data saved');
+    //   }
+    //   else{
+    //     console.log('error')
+    //   }
+    // }))
   }
   return (
-    <View>
+    <View style={styles.mainContainer}>
       <Text>BilligScreen</Text>
+      <View style={styles.contaienr}>
+        <Text>Test Total Amount</Text>
+        <Text>{route.params.tests.total}</Text>
+
+        <View style={styles.TextInput}>
+          <Text>Collector Charge</Text>
+          <TextInput
+            value={CollectionCharge}
+            placeholder='Collector Charge'
+            onChangeText={(e) => setCollectionCharge(e)}
+            style={styles.inputField}
+            keyboardType='numeric'
+          ></TextInput>
+        </View>
+
+        <View style={styles.TextInput}>
+          <Text>Discount Amount</Text>
+          <TextInput
+            value={discount}
+            placeholder='Discount Amount'
+            onChangeText={(e) => setDiscount(e)}
+            style={styles.inputField}
+            keyboardType='numeric'
+          ></TextInput>
+        </View>
+
+        <View style={styles.TextInput}>
+          <Text>Total Amount</Text>
+          <Text>{TotalAmount}</Text>
+        </View>
+
+        <View style={styles.TextInput}>
+          <Text>Remarks</Text>
+          <TextInput
+            value={Remarks}
+            placeholder='Remarks'
+            onChangeText={(e) => setRemarks(e)}
+            style={styles.inputField}
+            // keyboardType='numeric'
+          ></TextInput>
+        </View>
+      </View>
+
+
+      <Text>Test list</Text>
+      <Button title='handleSubmit' onPress={() => handleSubmit()}></Button>
     </View>
   )
 }
