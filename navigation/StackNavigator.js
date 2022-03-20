@@ -9,10 +9,11 @@ import SignatureCanvas from '../screens/CollectSample/SignatureCanvas'
 import TaskHomeScreen from '../screens/Tasks/TaskHomeScreen'
 import TaskInfoScreen from '../screens/Tasks/TaskInfoScreen'
 import MapScreen from '../screens/Tasks/MapScreen'
-import LoginScreen from '../screens/LogInScreen/LoginScreen'
 import AddPatietHomeScreen from '../screens/AddPatient/AddPatietHomeScreen'
 import AddPatientMap from '../screens/AddPatient/AddPatientMap'
 import BookTestHomeScreen from '../screens/BookTest/BookTestHomeScreen'
+import SelectTest from '../screens/BookTest/SelectTest'
+import BilligScreen from '../screens/BookTest/BilligScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -34,28 +35,29 @@ const MainStackNavigator = () => {
 const CollectSampleNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name='CollectSampleHomeScreen'
-        component={CollectSampleHomeScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name='EnterFormScreen'
-        component={EnterFormScreen}
-      // options={{
-      //   headerShown: false,
-      // }}
-      />
-      <Stack.Screen
-        name='SignatureCanvas'
-        component={SignatureCanvas}
-      // options={{
-      //   headerShown: false,
-      // }}
-      />
-
+      <Stack.Group>
+        <Stack.Screen
+          name='CollectSampleHomeScreen'
+          component={CollectSampleHomeScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name='EnterFormScreen'
+          component={EnterFormScreen}
+        // options={{
+        //   headerShown: false,
+        // }}
+        />
+        <Stack.Screen
+          name='SignatureCanvas'
+          component={SignatureCanvas}
+        // options={{
+        //   headerShown: false,
+        // }}
+        />
+      </Stack.Group>
     </Stack.Navigator>
   )
 }
@@ -76,19 +78,21 @@ const CollectSampleNavigator = () => {
 const TaskNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name='TaskScreen'
-        component={TaskHomeScreen}
-      />
+      <Stack.Group>
+        <Stack.Screen
+          name='TaskScreen'
+          component={TaskHomeScreen}
+        />
 
-      <Stack.Screen
-        name='TaskInfoScreen'
-        component={TaskInfoScreen}
-      />
-      <Stack.Screen
-        name='MapScreen'
-        component={MapScreen}
-      />
+        <Stack.Screen
+          name='TaskInfoScreen'
+          component={TaskInfoScreen}
+        />
+        <Stack.Screen
+          name='MapScreen'
+          component={MapScreen}
+        />
+      </Stack.Group>
     </Stack.Navigator>
   )
 }
@@ -96,25 +100,49 @@ const TaskNavigator = () => {
 const AddPatietNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name='AddPatietHomeScreen'
-        component={AddPatietHomeScreen}
-        options={{
-          headerShown: false
-        }}
-        
-      />
-      <Stack.Screen
-        name='AddPatientMap'
-        component={AddPatientMap}
-      />
-      <Stack.Screen
-        name='BookTestHomeScreen'
-        component={BookTestHomeScreen}
-        options={{
-          headerShown: false
-        }}
-      />
+      <Stack.Group>
+        <Stack.Screen
+          name='AddPatietHomeScreen'
+          component={AddPatietHomeScreen}
+          options={{
+            headerShown: false
+          }}
+
+        />
+        <Stack.Screen
+          name='AddPatientMap'
+          component={AddPatientMap}
+        />
+      </Stack.Group>
+    </Stack.Navigator>
+  )
+}
+const BookTestNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Group>
+        <Stack.Screen
+          name='BookTestHomeScreen'
+          component={BookTestHomeScreen}
+          options={{
+            headerShown: false
+          }}
+        />
+        <Stack.Screen
+          name='SelectTest'
+          component={SelectTest}
+          options={{
+            headerShown: false
+          }}
+        />
+        <Stack.Screen
+          name='BilligScreen'
+          component={BilligScreen}
+          options={{
+            headerShown: false
+          }}
+        />
+      </Stack.Group>
     </Stack.Navigator>
   )
 }
@@ -123,6 +151,6 @@ const AddPatietNavigator = () => {
 
 
 
-export { MainStackNavigator, CollectSampleNavigator, TaskNavigator, AddPatietNavigator }
+export { MainStackNavigator, CollectSampleNavigator, TaskNavigator, AddPatietNavigator, BookTestNavigator }
 
 const styles = StyleSheet.create({})

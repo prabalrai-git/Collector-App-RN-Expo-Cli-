@@ -20,8 +20,8 @@ const navData = [
   },
   {
     id: 2,
-    name: 'Book Test ',
-    pathName: 'BookTestHomeScreen',
+    name: 'Book Test',
+    pathName: 'BookTest',
     // img: '../../assets/images/collectSample.png',
     // img: require('../../assets/images/collectSample.png'),
     color: '#FF8585'

@@ -1,5 +1,5 @@
 
-import { AssignCollectorForSampleCollection, GetCollectionRequestPatientDetails, GetReferredDoctorListForCollector, GetRequestorForCollection } from '../constants/url';
+import { AssignCollectorForSampleCollection, GetCollectionRequestPatientDetails, GetReferredDoctorListForCollector, GetRequestorForCollection, GetTestListforHomeCollection } from '../constants/url';
 import { generateUrlEncodedData } from '../utils/generateUrlEncodedData';
 import { store,fetch } from '../utils/httpUtil'
 
@@ -59,6 +59,20 @@ export const GetReferred = (sucessCallback) => {
   return async dispatch => {
     try{
       const response = await fetch(GetReferredDoctorListForCollector);
+      if(response?.status === 200){
+        sucessCallback(response?.data)
+      }else{
+        sucessCallback([])
+      }
+    }catch(error){
+
+    }
+  }
+}
+export const GetTestList = (sucessCallback) => {
+  return async dispatch => {
+    try{
+      const response = await fetch(GetTestListforHomeCollection);
       if(response?.status === 200){
         sucessCallback(response?.data)
       }else{

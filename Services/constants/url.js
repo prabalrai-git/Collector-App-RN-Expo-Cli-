@@ -1,6 +1,6 @@
 export const DEV_URL = 'https://lunivacare.ddns.net/CarelabDataMetricService_qc/';
 
-export const BASE_URL = `${DEV_URL}/`;
+export const BASE_URL = `${DEV_URL}/Api/`;
 
 export const GetValidCollectorLoginForApp ='GetValidCollectorLoginForApp';
 /**
@@ -70,3 +70,11 @@ export const GetlocationofCollectorByDate = 'GetlocationofCollectorByDate'
  * @desc: get Referer List for collector to select
  * @param: ?entrydate={entrydate}&userId={userId}
  */
+
+ export const GetTestListforHomeCollection = 'GetTestListforHomeCollection'
+
+ /**
+  * @desc: get Referer List for collector to select
+  * @param: ?entrydate={entrydate}&userId={userId}
+  */
+ 

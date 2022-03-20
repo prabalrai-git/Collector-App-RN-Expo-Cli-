@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { AddPatietNavigator, CollectSampleNavigator, MainStackNavigator, TaskNavigator } from './StackNavigator';
+import { AddPatietNavigator, BookTestNavigator, CollectSampleNavigator, MainStackNavigator, TaskNavigator } from './StackNavigator';
 import { Icon } from 'react-native-elements';
 
 
@@ -31,7 +31,7 @@ const TabNavigator = () => {
         }}
 
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name='CollectSample'
         component={CollectSampleNavigator}
         options={{
@@ -45,13 +45,6 @@ const TabNavigator = () => {
               style={styles.icon}
             ></Icon>
           )
-        }}
-      />
-      {/* <Tab.Screen
-        name='map'
-        component={MapStackNavigator}
-        options={{
-          headerShown: false,
         }}
       /> */}
       <Tab.Screen
@@ -76,6 +69,22 @@ const TabNavigator = () => {
         options={{
           headerShown: false,
           tabBarLabel: 'Add Patient',
+          tabBarIcon: ({ size, color }) => (
+            <Icon
+              name='new-message'
+              color={'#FF7F00'}
+              type='entypo'
+              style={styles.icon}
+            ></Icon>
+          )
+        }}
+      />
+      <Tab.Screen
+        name='BookTest'
+        component={BookTestNavigator}
+        options={{
+          headerShown: false,
+          tabBarLabel: 'Boook test',
           tabBarIcon: ({ size, color }) => (
             <Icon
               name='new-message'
