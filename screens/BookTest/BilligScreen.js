@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { Dimensions, FlatList, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AppButton from '../../components/ui/AppButton'
 import { useDispatch } from 'react-redux'
@@ -69,13 +69,15 @@ import { Button } from 'react-native-elements'
 //   },
 // }
 
+const windowWidth = Dimensions.get('window').width;
+
 const BilligScreen = ({ route }) => {
-  console.log('new data', route.params);
+  // console.log('new data', route.params);
 
   const [CollectionCharge, setCollectionCharge] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [TotalAmount, setTotalAmount] = useState(route.params.tests.total);
-  const [Remarks, setRemarks]= useState('')
+  const [Remarks, setRemarks] = useState('')
 
   const dispatch = useDispatch();
 
@@ -84,6 +86,13 @@ const BilligScreen = ({ route }) => {
     let temp = Number(route.params.tests.total) + Number(CollectionCharge) - Number(discount)
     setTotalAmount(temp)
   }, [discount])
+
+  const renderItem = (({ item }) => (
+    <View style={styles.testContainer}>
+      <Text style={styles.testTitle}>{item.Test}</Text>
+      <Text style={styles.testPrice}>Rs.{item.Price}</Text>
+    </View>
+  ))
 
   const handleSubmit = () => {
 
@@ -115,10 +124,10 @@ const BilligScreen = ({ route }) => {
           "TestId": route.params.tests.testList.Id,
           "TestName": route.params.tests.testList.Test,
           "TestPrice": route.params.tests.testList.Price,
-          "ClientId": 7,
+          "ClientId": route.params.userData.CId,
           "IsActive": true,
           "EntryDate": fialEntryDate,
-          "UserId": 10
+          "UserId": route.params.userData.EnterBy
         }
       )
     })
@@ -132,22 +141,28 @@ const BilligScreen = ({ route }) => {
 
     console.log(finalData)
 
-    // dispatch(InsertUpdateHomeCollection(finalData, (res) => {
-    //   if(res?.SuccessMsg === true){
-    //     console.log('data saved');
-    //   }
-    //   else{
-    //     console.log('error')
-    //   }
-    // }))
+    dispatch(InsertUpdateHomeCollection(finalData, (res) => {
+      if (res?.SuccessMsg === true) {
+        console.log('data saved');
+      }
+      else {
+        console.log('error')
+      }
+    }))
   }
   return (
     <View style={styles.mainContainer}>
       <Text>BilligScreen</Text>
+      <FlatList
+        data={route.params.tests.testList}
+        renderItem={renderItem}
+        keyExtractor={item => item.Id}
+      ></FlatList>
       <View style={styles.contaienr}>
-        <Text>Test Total Amount</Text>
-        <Text>{route.params.tests.total}</Text>
-
+        <View style={styles.TextInput}>
+          <Text>Test Total Amount</Text>
+          <Text style={styles.inputField}>{route.params.tests.total}</Text>
+        </View>
         <View style={styles.TextInput}>
           <Text>Collector Charge</Text>
           <TextInput
@@ -172,7 +187,7 @@ const BilligScreen = ({ route }) => {
 
         <View style={styles.TextInput}>
           <Text>Total Amount</Text>
-          <Text>{TotalAmount}</Text>
+          <Text style={styles.inputField}>{TotalAmount}</Text>
         </View>
 
         <View style={styles.TextInput}>
@@ -182,7 +197,7 @@ const BilligScreen = ({ route }) => {
             placeholder='Remarks'
             onChangeText={(e) => setRemarks(e)}
             style={styles.inputField}
-            // keyboardType='numeric'
+          // keyboardType='numeric'
           ></TextInput>
         </View>
       </View>
@@ -196,4 +211,39 @@ const BilligScreen = ({ route }) => {
 
 export default BilligScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  mainContainer: {
+    paddingTop: 40,
+  },
+  TextInput: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    marginBottom: 10,
+  },
+  inputField: {
+    borderWidth: 1,
+    borderColor: '#232325',
+    borderRadius: 5,
+    // backgroundColor: 'red'
+    width: windowWidth * 0.45,
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+  },
+  testContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: windowWidth * 0.95,
+    marginBottom: 5,
+    alignItems: 'center',
+  },
+  testTitle: {
+    width: windowWidth * 0.6,
+    fontSize: 14,
+    letterSpacing: 1
+  },
+  testPrice: {
+    color: '#FFC285',
+    fontSize: 14
+  }
+})

@@ -133,7 +133,7 @@ const windowWidth = Dimensions.get('window').width * 0.55;
 // ]
 
 const SelectTest = ({ route }) => {
-  console.log(route.params.data);
+  // console.log(route.params.data);
   const [data, setData] = useState([])
   const [selected, setSelected] = useState([]);
   const [total, setTotal] = useState(0);
