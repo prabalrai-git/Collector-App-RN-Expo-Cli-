@@ -1,5 +1,5 @@
 
-import { AssignCollectorForSampleCollection, GetCollectionRequestPatientDetails, GetReferredDoctorListForCollector, GetRequestorForCollection, GetTestListforHomeCollection, InsertUpdateHomeCollectionRequest } from '../constants/url';
+import { AssignCollectorForSampleCollection, GetCollectionRequestPatientDetails, GetHomeCollectionTestRequestTestListByRequestId, GetReferredDoctorListForCollector, GetRequestorForCollection, GetSampleRequestListByCollectorIdAndDateRange, GetSampleRequestStatus, GetTestListforHomeCollection, InsertUpdateHomeCollectionRequest } from '../constants/url';
 import { generateUrlEncodedData } from '../utils/generateUrlEncodedData';
 import { store,fetch, storeNested } from '../utils/httpUtil'
 
@@ -75,6 +75,9 @@ export const GetReferred = (sucessCallback) => {
     }
   }
 }
+
+// Boook test
+
 export const GetTestList = (sucessCallback) => {
   return async dispatch => {
     try{
@@ -97,6 +100,7 @@ export const InsertUpdateHomeCollection = (data, returnData) => {
       const response = await storeNested(InsertUpdateHomeCollectionRequest, JSON.stringify(data))
       if(response?.status === 200){
         console.log('test added')
+        returnData(response?.data)
       }else{
         console.log('big big error')
       }
@@ -104,5 +108,52 @@ export const InsertUpdateHomeCollection = (data, returnData) => {
 
     }
   
+  }
+}
+
+export const GetStatus = (sucessCallback) => {
+  return async dispatch => {
+    try{
+      const response = await fetch(GetSampleRequestStatus);
+      if(response?.status === 200){
+        sucessCallback(response?.data)
+      }else{
+        sucessCallback([])
+      }
+    }catch(error){
+
+    }
+  }
+}
+
+export const GetSampleRequestListByCollector = (data, sucessCallback) => {
+  console.log(data);
+  return async dispatch => {
+    try {
+      const response = await fetch(`${GetSampleRequestListByCollectorIdAndDateRange}?collectorId=${data.collectorId}&fromdate=${data.fromDate}&todate=${data.toDate}`);
+      if(response?.status === 200){
+        sucessCallback(response?.data);
+      }else{
+        sucessCallback([])
+      }
+    }catch(error){
+
+    }
+  }
+}
+
+export const GetHomeCollectionTestRequestTestList = (data, sucessCallback) => {
+  console.log(data);
+  return async dispatch => {
+    try {
+      const response = await fetch(`${GetHomeCollectionTestRequestTestListByRequestId}?requestId=${data}`);
+      if(response?.status === 200){
+        sucessCallback(response?.data);
+      }else{
+        sucessCallback([])
+      }
+    }catch(error){
+
+    }
   }
 }

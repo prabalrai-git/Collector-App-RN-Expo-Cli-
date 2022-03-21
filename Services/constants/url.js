@@ -136,3 +136,21 @@ export const InsertUpdateHomeCollectionRequest = 'InsertUpdateHomeCollectionRequ
 //     }
 //   ]
 // }
+
+export const GetSampleRequestStatus = 'GetSampleRequestStatus'
+/**
+ * @desc: get sample request status
+ * @param: 
+ */
+
+export const GetSampleRequestListByCollectorIdAndDateRange = 'GetSampleRequestListByCollectorIdAndDateRange'
+/**
+ * @desc: get sample request list of collector *
+ *  @param: ?collectorId={collectorId}&fromdate={fromdate}&todate={todate}
+ */
+
+export const GetHomeCollectionTestRequestTestListByRequestId = 'GetHomeCollectionTestRequestTestListByRequestId'
+/**
+ * @desc: get homw collectio test request test list by request ID *
+ *  @param: ?requestId={requestId}
+ */

@@ -1,9 +1,11 @@
-import { Dimensions, FlatList, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Alert, Dimensions, FlatList, StyleSheet, Switch, Text, TextInput, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AppButton from '../../components/ui/AppButton'
 import { useDispatch } from 'react-redux'
-import { InsertUpdateHomeCollection } from '../../Services/appServices/AssignPatient'
-import { Button } from 'react-native-elements'
+import { GetStatus, InsertUpdateHomeCollection } from '../../Services/appServices/AssignPatient'
+import { Picker } from '@react-native-picker/picker'
+import { useNavigation } from '@react-navigation/native'
+
 // "_HomeRequest": {
 //   "RId": 1, //?? =0
 //   "PatId": 2,
@@ -70,21 +72,32 @@ import { Button } from 'react-native-elements'
 // }
 
 const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const BilligScreen = ({ route }) => {
-  // console.log('new data', route.params);
+  // console.log('new data', route.params.userData);
 
   const [CollectionCharge, setCollectionCharge] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [TotalAmount, setTotalAmount] = useState(route.params.tests.total);
-  const [Remarks, setRemarks] = useState('')
-
+  const [Remarks, setRemarks] = useState('');
+  const [isPaid, SetisPaid] = useState(false);
+  const toggleSwitch = () => SetisPaid(previousState => !previousState);
+  const [Status, setStatus] = useState();
+  const [StatusList, setStatusList] = useState()
   const dispatch = useDispatch();
-
+  const navigation = useNavigation();
 
   useEffect(() => {
-    let temp = Number(route.params.tests.total) + Number(CollectionCharge) - Number(discount)
-    setTotalAmount(temp)
+    dispatch(GetStatus((res) => {
+      setStatusList(res?.sampleStatus);
+    }))
+  }, [])
+
+  useEffect(() => {
+    let temp = Number(route.params.tests.total) + Number(CollectionCharge) - Number(discount);
+    setTotalAmount(temp);
+
   }, [discount])
 
   const renderItem = (({ item }) => (
@@ -111,7 +124,10 @@ const BilligScreen = ({ route }) => {
       "Remarks": Remarks,
       "UserId": route.params.userData.EnterBy,
       "IsActive": true,
-      "CollectorId": route.params.userData.CollectorId
+      "CollectorId": route.params.userData.CollectorId,
+      "CollectedDate": fialEntryDate,
+      "IsPaid": isPaid,
+      "RequestStatus": Status
     };
     // array of testdata
     const _HomeCollectionTestList = []
@@ -121,10 +137,10 @@ const BilligScreen = ({ route }) => {
           "SId": 0,
           "PatId": route.params.userData.CId,
           "RequestId": 0,
-          "TestId": route.params.tests.testList.Id,
-          "TestName": route.params.tests.testList.Test,
-          "TestPrice": route.params.tests.testList.Price,
-          "ClientId": route.params.userData.CId,
+          "TestId": e.Id,
+          "TestName": e.Test,
+          "TestPrice": e.Price,
+          "ClientId": 1,
           "IsActive": true,
           "EntryDate": fialEntryDate,
           "UserId": route.params.userData.EnterBy
@@ -143,28 +159,42 @@ const BilligScreen = ({ route }) => {
 
     dispatch(InsertUpdateHomeCollection(finalData, (res) => {
       if (res?.SuccessMsg === true) {
-        console.log('data saved');
+        Alert.alert(
+          "Saved!",
+          "Test booked Sucessfully",
+          [
+            { text: "OK", onPress: () => navigation.navigate('Home') }
+          ]
+        );
       }
       else {
-        console.log('error')
+        Alert.alert(
+          "Failed!",
+          "Test booked Failed",
+          [
+            { text: "OK"}
+          ]
+        );
       }
     }))
   }
   return (
     <View style={styles.mainContainer}>
-      <Text>BilligScreen</Text>
-      <FlatList
-        data={route.params.tests.testList}
-        renderItem={renderItem}
-        keyExtractor={item => item.Id}
-      ></FlatList>
+      <View style={styles.fatlistfContainer}>
+        <FlatList
+          data={route.params.tests.testList}
+          renderItem={renderItem}
+          keyExtractor={item => item.Id}
+        ></FlatList>
+      </View>
+
       <View style={styles.contaienr}>
         <View style={styles.TextInput}>
-          <Text>Test Total Amount</Text>
+          <Text style={styles.formLabel}>Test Total Amount</Text>
           <Text style={styles.inputField}>{route.params.tests.total}</Text>
         </View>
         <View style={styles.TextInput}>
-          <Text>Collector Charge</Text>
+          <Text style={styles.formLabel}>Collector Charge</Text>
           <TextInput
             value={CollectionCharge}
             placeholder='Collector Charge'
@@ -175,7 +205,7 @@ const BilligScreen = ({ route }) => {
         </View>
 
         <View style={styles.TextInput}>
-          <Text>Discount Amount</Text>
+          <Text style={styles.formLabel}>Discount Amount</Text>
           <TextInput
             value={discount}
             placeholder='Discount Amount'
@@ -186,12 +216,12 @@ const BilligScreen = ({ route }) => {
         </View>
 
         <View style={styles.TextInput}>
-          <Text>Total Amount</Text>
+          <Text style={styles.formLabel}>Total Amount</Text>
           <Text style={styles.inputField}>{TotalAmount}</Text>
         </View>
 
         <View style={styles.TextInput}>
-          <Text>Remarks</Text>
+          <Text style={styles.formLabel}>Remarks</Text>
           <TextInput
             value={Remarks}
             placeholder='Remarks'
@@ -200,11 +230,42 @@ const BilligScreen = ({ route }) => {
           // keyboardType='numeric'
           ></TextInput>
         </View>
+        <View style={styles.TextInput}>
+          <Text style={styles.formLabel}>Status</Text>
+          <View style={styles.inputField}>
+
+            <Picker
+              selectedValue={Status}
+              // style={styles.TextInput}
+              onValueChange={(itemValue) => setStatus(itemValue)}
+              mode='dropdown'
+            >
+              <Picker.Item label={'select Status'} value={''} />
+              {
+                StatusList !== undefined ?
+                  StatusList.map((item, index) => (
+                    <Picker.Item label={item.SampleStatus} value={item.StId} key={index} />
+                  )) : null
+              }
+            </Picker>
+          </View>
+        </View>
+
+
+        <View style={styles.TextInput}>
+          <Text style={styles.formLabel}>IsPaid</Text>
+          <Switch
+            trackColor={{ false: "#767577", true: "#81b0ff" }}
+            thumbColor={isPaid ? "#f5dd4b" : "#f4f3f4"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitch}
+            value={isPaid}
+          />
+        </View>
+        <AppButton title='handleSubmit' onPress={() => handleSubmit()}></AppButton>
       </View>
 
 
-      <Text>Test list</Text>
-      <Button title='handleSubmit' onPress={() => handleSubmit()}></Button>
     </View>
   )
 }
@@ -214,36 +275,68 @@ export default BilligScreen
 const styles = StyleSheet.create({
   mainContainer: {
     paddingTop: 40,
+    backgroundColor: '#4688B3',
+    justifyContent: 'center',
+    // alignItems: 'center',
+    flex: 1,
+
   },
   TextInput: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
     marginBottom: 10,
+    width: windowWidth,
+
   },
   inputField: {
     borderWidth: 1,
-    borderColor: '#232325',
+    borderColor: '#f1f1df',
     borderRadius: 5,
     // backgroundColor: 'red'
     width: windowWidth * 0.45,
+    height: 40,
+    justifyContent: 'center',
     paddingHorizontal: 4,
-    paddingVertical: 2,
   },
   testContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: windowWidth * 0.95,
+    width: windowWidth * 0.9,
     marginBottom: 5,
     alignItems: 'center',
+    
   },
   testTitle: {
     width: windowWidth * 0.6,
     fontSize: 14,
-    letterSpacing: 1
+    letterSpacing: 1,
+    color: '#fefefe'
   },
   testPrice: {
     color: '#FFC285',
     fontSize: 14
+  },
+  contaienr: {
+    backgroundColor: '#fefefe',
+    borderTopLeftRadius: 18,
+    borderTopRightRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 15,
+  },
+  formLabel: {
+    color: "#4688B3",
+    fontSize: 16,
+    letterSpacing: 1,
+    fontWeight: 'bold'
+  },
+  fatlistfContainer: {
+    height: windowHeight * 0.43,
+    width: windowWidth,
+    backgroundColor: '#4688B3',
+    paddingVertical: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 })

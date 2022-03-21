@@ -1,8 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { AddPatietNavigator, BookTestNavigator, CollectSampleNavigator, MainStackNavigator, TaskNavigator } from './StackNavigator';
+import { AddPatietNavigator, BookTestNavigator, CollectSampleNavigator, MainStackNavigator, SampleCollectionNavigator, TaskNavigator } from './StackNavigator';
 import { Icon } from 'react-native-elements';
+import SampleHomeScreen from '../screens/Sample/SampleHomeScreen';
 
 
 
@@ -83,8 +84,27 @@ const TabNavigator = () => {
         name='BookTest'
         component={BookTestNavigator}
         options={{
+          // tabBarHideOnKeyboard: true,
           headerShown: false,
           tabBarLabel: 'Boook test',
+          tabBarIcon: ({ size, color }) => (
+            <Icon
+              name='new-message'
+              color={'#FF7F00'}
+              type='entypo'
+              style={styles.icon}
+            ></Icon>
+          )
+        }}
+      />
+
+      <Tab.Screen
+        name='SampleHome'
+        component={SampleCollectionNavigator}
+        options={{
+          // tabBarHideOnKeyboard: true,
+          headerShown: false,
+          tabBarLabel: 'Total Sample',
           tabBarIcon: ({ size, color }) => (
             <Icon
               name='new-message'

@@ -14,20 +14,30 @@ import AddPatientMap from '../screens/AddPatient/AddPatientMap'
 import BookTestHomeScreen from '../screens/BookTest/BookTestHomeScreen'
 import SelectTest from '../screens/BookTest/SelectTest'
 import BilligScreen from '../screens/BookTest/BilligScreen'
+import SampleHomeScreen from '../screens/Sample/SampleHomeScreen'
+import PatietInfoScreen from '../screens/Sample/PatietInfoScreen'
 
 const Stack = createNativeStackNavigator()
 
 const MainStackNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name='HomeScreen'
-        component={HomeScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
-
+      <Stack.Group>
+        <Stack.Screen
+          name='HomeScreen'
+          component={HomeScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        {/* <Stack.Screen
+          name='SampleHomeScreen'
+          component={SampleHomeScreen}
+          options={{
+            headerShown: false,
+          }}
+        /> */}
+      </Stack.Group>
     </Stack.Navigator>
   )
 }
@@ -147,10 +157,34 @@ const BookTestNavigator = () => {
   )
 }
 
+const SampleCollectionNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Group>
+        <Stack.Screen
+          name='SampleHomeScreen'
+          component={SampleHomeScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name='PatietInfoScreen'
+          component={PatietInfoScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Stack.Group>
+    </Stack.Navigator>
+  )
+}
 
 
 
 
-export { MainStackNavigator, CollectSampleNavigator, TaskNavigator, AddPatietNavigator, BookTestNavigator }
+
+
+export { MainStackNavigator, CollectSampleNavigator, TaskNavigator, AddPatietNavigator, BookTestNavigator, SampleCollectionNavigator }
 
 const styles = StyleSheet.create({})

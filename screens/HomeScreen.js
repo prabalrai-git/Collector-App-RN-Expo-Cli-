@@ -29,7 +29,7 @@ const navData = [
   {
     id: 3,
     name: 'Total Sample',
-    pathName: 'TotalSample',
+    pathName: 'SampleHome',
     // img: '../../assets/images/BookLabTest.png',
     // img: require('../../assets/images/BookLabTest.png'),
     color: '#FFC285'
