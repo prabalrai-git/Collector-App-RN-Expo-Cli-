@@ -1,9 +1,11 @@
-import { Button, Dimensions, FlatList, Image, StyleSheet, Text, View } from 'react-native'
+import { Alert, Button, Dimensions, FlatList, Image, Modal, StyleSheet, Switch, Text, TextInput, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import AppButton from '../../components/ui/AppButton'
 import { useDispatch } from 'react-redux';
-import { GetHomeCollectionTestRequestTestList } from '../../Services/appServices/AssignPatient';
+import { GetHomeCollectionTestRequestTestList, GetStatus, UpdateStatus } from '../../Services/appServices/AssignPatient';
+import Signature from "react-native-signature-canvas";
+import StatusBadge from '../../components/ui/StatusBadge';
 // "RId": 10,
 // "PatId": 12,
 // "CollectorId": 3,
@@ -21,21 +23,102 @@ import { GetHomeCollectionTestRequestTestList } from '../../Services/appServices
 // "CollectedDate": "2022-03-21T12:28:10"
 
 const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
+const style = `.m-signature-pad--footer
+.button {
+  background-color: green;
+  color: #FFF;
+}`;
 
 const PatietInfoScreen = ({ route }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation();
   const [TestList, setTestList] = useState();
-  console.log(route.params.data)
+  console.log("status", route.params.data)
   const text = route.params.data.CollectionReqDate;
   const temp = text.split('T');
+  const [CollectedStatus, setCollectedStatus] = useState();
+  const [Remarks, setRemarks] = useState('');
+  const [isVisible, setIsVisible] = useState(false);
+  const [signature, setSign] = useState(null);
+  const [btnDis, setbtnDis] = useState(false);
+  const [isPaid, setisPaid] = useState(route.params.data.IsPaid);
+  const toggleSwitch = () => setisPaid(previousState => !previousState);
 
   useEffect(() => {
     dispatch(GetHomeCollectionTestRequestTestList(route.params.data.RId, (res) => {
       setTestList(res?.RequestTestList);
     }))
+    dispatch(GetStatus((res) => {
+      setCollectedStatus(res.sampleStatus[4]);
+    }))
   }, [])
+
+  // {
+  //   "SrId": 1,
+  //   "RequestId": 2,
+  //   "RequestStatusId": 3,
+  //   "EntryDate": "2022-03-22T10:57:37.8717928+05:45",
+  //   "UserId": 5,
+  //   "Remarks": "sample string 6"
+  // }
+
+  const handleSubmit = (signature) => {
+
+    let today = new Date();
+    const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    const newTime = today.toLocaleTimeString();
+    const fianlEntryDate = newDate + 'T' + newTime;
+    setSign(signature)
+
+    const data = {
+      "SrId": 0,
+      "RequestId": route.params.data.RId,
+      "RequestStatusId": CollectedStatus?.StId,
+      "EntryDate": fianlEntryDate,
+      "UserId": route.params.data.CollectorId,
+      "Remarks": Remarks !== '' ? Remarks : '',
+      // "signature": signature
+    }
+    // console.log(data);
+
+    dispatch(UpdateStatus(data, (res) => {
+      if (res?.SuccessMsg === true) {
+        // console.log('data saved suucess');
+        Alert.alert(
+          'Sucess',
+          'sample Collected sucessful',
+          [
+            {
+              text: 'ok',
+              onPress: () => navigation.navigate('SampleHomeScreen')
+            }
+          ]
+        )
+      } else {
+        Alert.alert(
+          'Failed',
+          'sample not collected',
+          [
+            {
+              text: 'ok',
+              onPress: () => setIsVisible(false)
+            }
+          ]
+        )
+      }
+    }))
+
+  }
+  const handleEmpty = () => {
+    // console.log("Empty");
+    setSign(null)
+  };
+  const hadleProceed = () => {
+    setIsVisible(!isVisible);
+    setbtnDis(!btnDis)
+  }
 
   return (
     <View style={styles.mainContainer}>
@@ -46,13 +129,35 @@ const PatietInfoScreen = ({ route }) => {
         ></Image>
         <View style={styles.right}>
           <Text style={styles.name}>{route.params.data.PatientFName} {route.params.data.PatientMName} {route.params.data.PatientLName}</Text>
-          <Text>Client ID : {route.params.data.RId}</Text>
-          <Text>Collection Date : {temp[0]}</Text>
-          <Text>Collection Time : {temp[1]}</Text>
+          <View style={{ flexDirection: 'row' }}>
+            <Text >Request ID :</Text>
+            <Text style={{ color: "#FF7F00" }}> {route.params.data.RId}</Text>
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <Text >Cliet ID : </Text>
+            <Text style={{ color: "#FF7F00" }}>{route.params.data.PatId}</Text>
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <Text >Collection Date : </Text>
+            <Text style={{ color: "#FF7F00" }}>{temp[0]}</Text>
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <Text >Collection Time : </Text>
+            <Text style={{ color: "#FF7F00" }}>{temp[1]}</Text>
+          </View>
+
+
+
         </View>
 
       </View>
-      <View style={styles.testList}>
+      <View style={styles.statusCotnainer}>
+        <StatusBadge data={route.params.data.RequestStatus}></StatusBadge>
+        <StatusBadge data={'Collected'}></StatusBadge>
+        <StatusBadge data={'Lab Received'}></StatusBadge>
+        <StatusBadge data={'Report Dispatched'}></StatusBadge>
+      </View>
+      <View style={styles.flatListContainer}>
         <Text style={styles.title}>Tests</Text>
         <FlatList
           data={TestList}
@@ -68,21 +173,101 @@ const PatietInfoScreen = ({ route }) => {
                 backgroundColor: '#205072',
               }}>{index + 1}</Text>
               <Text style={styles.testsText}>{item.TestName}</Text>
+              <Text style={styles.testsPrice}>Rs.{item.TestPrice}</Text>
             </View>
           }
           keyExtractor={item => item.SId}
         />
-        <View style={styles.container}>
-          <Button title='Cancle' color={'#e0c945'}></Button>
-          <AppButton title='location' onPress={() => navigation.navigate('MapScreen',
-            {
-              data: route.params.data
-            }
-          )}></AppButton>
+        <View style={styles.testCard}>
+          <Text style={styles.titleText}>Total</Text>
+          <Text style={styles.finsltestsPrice}>Rs.{route.params.data.TestTotalAmount}</Text>
+        </View>
+        <View style={styles.testCard}>
+          <Text style={styles.titleText}>Collection Charge</Text>
+          <Text style={styles.finsltestsPrice}>Rs.{route.params.data.TestTotalAmount}</Text>
+        </View>
+        <View style={styles.testCard}>
+          <Text style={styles.titleText}>Discount Amout</Text>
+          <Text style={styles.finsltestsPrice}>Rs.{route.params.data.DiscountAmount}</Text>
+        </View>
+        <View style={styles.testCard}>
+          <Text style={styles.titleText}>Grand Total</Text>
+          <Text style={styles.finsltestsPrice}>Rs.{route.params.data.GrandTotal}</Text>
         </View>
       </View>
 
 
+      {
+        route.params.data.RequestStatus === 'Requested' ?
+          <View style={styles.testList}>
+            <View style={styles.TextInput}>
+              <Text style={styles.formLabel}>IsPaid</Text>
+              <Switch
+                trackColor={{ false: "#767577", true: "#81b0ff" }}
+                thumbColor={isPaid ? "#f5dd4b" : "#f4f3f4"}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={toggleSwitch}
+                value={isPaid}
+                disabled={true}
+              />
+            </View>
+            <View style={styles.TextInput}>
+              <TextInput
+                value={Remarks}
+                placeholder='remarks'
+                onChangeText={(e) => setRemarks(e)}
+                style={styles.inputField}
+                multiline={true}
+              ></TextInput>
+            </View>
+            <AppButton title='proceed' onPress={() => hadleProceed()} disable={btnDis}></AppButton>
+            {/* <Button disabled></Button> */}
+          </View>
+          : <Text></Text>
+      }
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isVisible}
+        onRequestClose={() => {
+          setbtnDis(!btnDis)
+          setSign(null);
+          setIsVisible(!isVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modelCotainer}>
+            <View style={styles.preview}>
+              {signature ? (
+                <Image
+                  resizeMode={"contain"}
+                  style={{ width: 335, height: 114 }}
+                  source={{ uri: signature }}
+                />
+              ) : null}
+            </View>
+            <Signature
+              onOK={handleSubmit}
+              onEmpty={handleEmpty}
+              descriptionText="Sign"
+              clearText="Clear"
+              confirmText="Save"
+              webStyle={style}
+              style={styles.previewText}
+            />
+            <View
+              style={styles.bSheet}
+            >
+              <AppButton title='cancle' onPress={() => {
+                setSign(null)
+                setIsVisible(false)
+                setbtnDis(!btnDis)
+              }} color={'#ffc107'} buttonStyle={{ backgroundColor: 'yellow' }} />
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   )
 }
@@ -92,18 +277,11 @@ export default PatietInfoScreen
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    flexDirection: 'column',
-    paddingTop: 40,
-    backgroundColor: '#9DD4E9'
-    // justifyContent: 'center',
-    // alignItems: 'center'
+    // paddingTop: 40,
+    // backgroundColor: '#9DD4E9'
+    backgroundColor: '#fefefe',
   },
 
-  container: {
-    flexDirection: 'row',
-    padding: 30,
-    justifyContent: 'space-between'
-  },
   profile: {
     // flex: 1,
     flexDirection: 'row',
@@ -120,19 +298,22 @@ const styles = StyleSheet.create({
   name: {
     width: windowWidth * 0.5,
     color: '#205072',
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 'bold',
     letterSpacing: 1.3,
-    marginBottom: 10
+    marginBottom: 6
   },
   testList: {
-    backgroundColor: '#fefefe',
+    // backgroundColor: '#fefefe',
+    position: 'absolute',
+    bottom: 0,
+    backgroundColor: '#9DD4E9',
     marginTop: 20,
     paddingHorizontal: 15,
     paddingVertical: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    flex: 1,
+    borderTopLeftRadius: 18,
+    borderTopRightRadius: 18,
+
   },
   title: {
     fontSize: 20,
@@ -141,19 +322,88 @@ const styles = StyleSheet.create({
     letterSpacing: 1.3,
     marginBottom: 10
   },
+  flatListContainer: {
+    width: windowWidth - 20,
+    marginHorizontal: 10,
+  },
   testCard: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     marginVertical: 3,
     paddingHorizontal: 5,
-    // paddingVertical: 4,
     borderRadius: 5,
-    width: windowWidth * 0.8
+    width: windowWidth,
+
   },
   testsText: {
     color: "#232325",
     fontSize: 14,
     letterSpacing: 1.2,
+    marginLeft: 20,
+    width: windowWidth * 0.6
+  },
+  testsPrice: {
+    width: windowWidth * 0.4,
+    color: '#FF7F00'
+  },
+  inputField: {
+    borderWidth: 1,
+    borderColor: '#fefefe',
+    width: windowWidth * 0.92,
+    minHeight: 100,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 10,
+    marginBottom: 10,
 
+  },
+  centeredView: {
+    height: windowHeight,
+    width: windowWidth,
+    backgroundColor: '#fefefe',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  modelCotainer: {
+    height: windowHeight,
+    width: windowWidth,
+  },
+  preview: {
+    width: '100%',
+    height: 400,
+    backgroundColor: "#F8F8F8",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  previewText: {
+    flex: 1,
+    overflow: 'hidden',
+    width: '100%'
+  },
+  statusCotnainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  formLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    letterSpacing: 1,
+  },
+  TextInput: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  titleText: {
+    fontSize: 16,
+    width: windowWidth * 0.6,
+  },
+  finsltestsPrice: {
+    borderWidth: 1,
+    borderColor: '#efed11',
+    width: 100,
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    borderRadius: 3,
   }
+
 })

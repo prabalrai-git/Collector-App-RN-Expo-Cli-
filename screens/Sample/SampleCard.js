@@ -6,21 +6,44 @@ import { useNavigation } from '@react-navigation/native';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const SampleCard = ({item}) => {
+const SampleCard = ({ item }) => {
+  // console.log(item.RequestStatus === Requested);
   const navigation = useNavigation();
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('PatietInfoScreen', {data: item})}>
-    <View style={styles.cardContainer}>
-      <Avatar
-        size={64}
-        rounded
-        source={require('../../assets/images/user.png')}
-      />
-      <View style={styles.dis}>
-        <Text style={styles.title}>{item.PatientFName} {item.PatientMName} {item.PatientLName}</Text>
-        <Text style={styles.disText}>RId: {item.RId}</Text>
+    <TouchableOpacity onPress={() => navigation.navigate('PatietInfoScreen', { data: item })}>
+      <View style={styles.cardContainer}>
+        <Avatar
+          size={64}
+          rounded
+          source={require('../../assets/images/user.png')}
+        />
+        <View style={styles.dis}>
+          <Text style={styles.title}>{item.PatientFName} {item.PatientMName} {item.PatientLName}</Text>
+          <Text style={styles.disText}>RId: {item.RId}</Text>
+        </View>
+        <View>
+          {
+            item.RequestStatus === 'Collected' ?
+              <Text style={{
+                backgroundColor: 'green',
+                color: '#fefefe',
+                padding: 3,
+                borderRadius: 20,
+                fontSize: 10,
+              }}>collected</Text>
+              : <Text
+                style={{
+                  backgroundColor: 'yellow',
+                  color: '#fefefe',
+                  padding: 3,
+                  borderRadius: 20,
+                  fontSize: 10,
+                }}
+              >pending</Text>
+          }
+
+        </View>
       </View>
-    </View>
     </TouchableOpacity>
   )
 }
@@ -47,6 +70,6 @@ const styles = StyleSheet.create({
     letterSpacing: 1.5,
     marginBottom: 3,
     color: "#205072",
-    width: windowWidth * 0.65,
+    width: windowWidth * 0.5,
   },
 })

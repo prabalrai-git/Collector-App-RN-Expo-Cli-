@@ -1,23 +1,25 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { createDrawerNavigator } from '@react-navigation/drawer'
-import { AddPatietNavigator, BookTestNavigator, CollectSampleNavigator, MainStackNavigator, SampleCollectionNavigator, TaskNavigator } from './StackNavigator'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { AddPatietNavigator, BookTestNavigator, CollectSampleNavigator, MainStackNavigator, SampleCollectionNavigator, TaskNavigator } from './StackNavigator';
+import { Icon } from 'react-native-elements';
+import SampleHomeScreen from '../screens/Sample/SampleHomeScreen';
 
-const DraweNavigator = () => {
-  const Drawer = createDrawerNavigator()
+
+
+const TabNavigator = () => {
+  const Tab = createBottomTabNavigator();
   return (
-    <Drawer.Navigator
-      
-      drawerPosition="right"
+    <Tab.Navigator
       screenOptions={{
         tabBarActiveTintColor: '#FF7F00',
       }}
     >
-      <Drawer.Screen
+      <Tab.Screen
         name='Home'
         component={MainStackNavigator}
         options={{
-          // headerShown: false,
+          headerShown: false,
           tabBarLabel: 'Home',
           tabBarIcon: ({ size, color }) => (
             <Icon
@@ -30,7 +32,7 @@ const DraweNavigator = () => {
         }}
 
       />
-      {/* <Drawer.Screen
+      {/* <Tab.Screen
         name='CollectSample'
         component={CollectSampleNavigator}
         options={{
@@ -46,11 +48,27 @@ const DraweNavigator = () => {
           )
         }}
       /> */}
-      <Drawer.Screen
+      <Tab.Screen
+        name='task'
+        component={TaskNavigator}
+        options={{
+          headerShown: false,
+          tabBarLabel: 'Task',
+          tabBarIcon: ({ size, color }) => (
+            <Icon
+              name='list'
+              color={'#FF7F00'}
+              type='entypo'
+              style={styles.icon}
+            ></Icon>
+          )
+        }}
+      />
+      <Tab.Screen
         name='AddPatient'
         component={AddPatietNavigator}
         options={{
-          // headerShown: false,
+          headerShown: false,
           tabBarLabel: 'Add Patient',
           tabBarIcon: ({ size, color }) => (
             <Icon
@@ -62,14 +80,12 @@ const DraweNavigator = () => {
           )
         }}
       />
-
-
-      <Drawer.Screen
+      <Tab.Screen
         name='BookTest'
         component={BookTestNavigator}
         options={{
           // tabBarHideOnKeyboard: true,
-          // headerShown: false,
+          headerShown: false,
           tabBarLabel: 'Boook test',
           tabBarIcon: ({ size, color }) => (
             <Icon
@@ -82,12 +98,12 @@ const DraweNavigator = () => {
         }}
       />
 
-      <Drawer.Screen
+      <Tab.Screen
         name='SampleHome'
         component={SampleCollectionNavigator}
         options={{
           // tabBarHideOnKeyboard: true,
-          // headerShown: false,
+          headerShown: false,
           tabBarLabel: 'Total Sample',
           tabBarIcon: ({ size, color }) => (
             <Icon
@@ -99,26 +115,10 @@ const DraweNavigator = () => {
           )
         }}
       />
-      <Drawer.Screen
-        name='task'
-        component={TaskNavigator}
-        options={{
-          // headerShown: false,
-          tabBarLabel: 'Task',
-          tabBarIcon: ({ size, color }) => (
-            <Icon
-              name='list'
-              color={'#FF7F00'}
-              type='entypo'
-              style={styles.icon}
-            ></Icon>
-          )
-        }}
-      />
-    </Drawer.Navigator>
+    </Tab.Navigator>
   )
 }
 
-export default DraweNavigator
+export default TabNavigator
 
 const styles = StyleSheet.create({})

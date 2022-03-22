@@ -142,6 +142,18 @@ export const GetSampleRequestStatus = 'GetSampleRequestStatus'
  * @desc: get sample request status
  * @param: 
  */
+export const UpdateSampleRequestStatus = 'UpdateSampleRequestStatus'
+/**
+ * @desc: update sample request status
+ * @param: {
+ "SrId": 1,
+ "RequestId": 2,
+ "RequestStatusId": 3,
+ "EntryDate": "2022-03-22T10:57:37.8717928+05:45",
+ "UserId": 5,
+ "Remarks": "sample string 6"
+}
+ */
 
 export const GetSampleRequestListByCollectorIdAndDateRange = 'GetSampleRequestListByCollectorIdAndDateRange'
 /**

@@ -1,5 +1,5 @@
 
-import { AssignCollectorForSampleCollection, GetCollectionRequestPatientDetails, GetHomeCollectionTestRequestTestListByRequestId, GetReferredDoctorListForCollector, GetRequestorForCollection, GetSampleRequestListByCollectorIdAndDateRange, GetSampleRequestStatus, GetTestListforHomeCollection, InsertUpdateHomeCollectionRequest } from '../constants/url';
+import { AssignCollectorForSampleCollection, GetCollectionRequestPatientDetails, GetHomeCollectionTestRequestTestListByRequestId, GetReferredDoctorListForCollector, GetRequestorForCollection, GetSampleRequestListByCollectorIdAndDateRange, GetSampleRequestStatus, GetTestListforHomeCollection, InsertUpdateHomeCollectionRequest, UpdateSampleRequestStatus } from '../constants/url';
 import { generateUrlEncodedData } from '../utils/generateUrlEncodedData';
 import { store,fetch, storeNested } from '../utils/httpUtil'
 
@@ -113,6 +113,7 @@ export const InsertUpdateHomeCollection = (data, returnData) => {
 
 export const GetStatus = (sucessCallback) => {
   return async dispatch => {
+    
     try{
       const response = await fetch(GetSampleRequestStatus);
       if(response?.status === 200){
@@ -126,8 +127,27 @@ export const GetStatus = (sucessCallback) => {
   }
 }
 
+export const UpdateStatus = (data, sucessCallback) => {
+  return async dispatch => {
+    // console.log('data', data);
+    let formData = generateUrlEncodedData(data)
+    try{
+      const response = await store(UpdateSampleRequestStatus, formData);
+      if(response?.status === 200){
+        sucessCallback(response?.data)
+        console.log('sucess');
+      }else{
+        sucessCallback([])
+      }
+    }catch(error){
+
+    }
+  }
+}
+
+
 export const GetSampleRequestListByCollector = (data, sucessCallback) => {
-  console.log(data);
+  // console.log(data);
   return async dispatch => {
     try {
       const response = await fetch(`${GetSampleRequestListByCollectorIdAndDateRange}?collectorId=${data.collectorId}&fromdate=${data.fromDate}&todate=${data.toDate}`);
@@ -143,7 +163,7 @@ export const GetSampleRequestListByCollector = (data, sucessCallback) => {
 }
 
 export const GetHomeCollectionTestRequestTestList = (data, sucessCallback) => {
-  console.log(data);
+  // console.log(data);
   return async dispatch => {
     try {
       const response = await fetch(`${GetHomeCollectionTestRequestTestListByRequestId}?requestId=${data}`);

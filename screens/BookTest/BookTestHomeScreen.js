@@ -33,6 +33,6 @@ export default BookTestHomeScreen
 
 const styles = StyleSheet.create({
   mainContainer: {
-    paddingTop: 40,
+    // paddingTop: 10,
   }
 })

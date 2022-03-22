@@ -31,10 +31,8 @@ const SampleHomeScreen = () => {
   const dispatch = useDispatch();
   const [RequestList, setRequestList] = useState();
   const user = useSelector(state => state.storeUserData);
-  console.log(user.userData.usrUserId);
+  // console.log(user.userData.usrUserId);
  
-
-  // const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [toshow, setToShow] = useState(false);
@@ -171,7 +169,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     // justifyContent: 'space-between',
     // alignItems: 'center'
-    paddingTop: 40,
+    // paddingTop: 40,
   },
   dateFiltercontainer: {
     flexDirection: 'row',

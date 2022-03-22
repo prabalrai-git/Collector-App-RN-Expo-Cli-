@@ -92,15 +92,24 @@ const TaskNavigator = () => {
         <Stack.Screen
           name='TaskScreen'
           component={TaskHomeScreen}
+          options={{
+            headerShown: false
+          }}
         />
 
         <Stack.Screen
           name='TaskInfoScreen'
           component={TaskInfoScreen}
+          options={{
+            headerShown: false
+          }}
         />
         <Stack.Screen
           name='MapScreen'
           component={MapScreen}
+          options={{
+            headerShown: false
+          }}
         />
       </Stack.Group>
     </Stack.Navigator>

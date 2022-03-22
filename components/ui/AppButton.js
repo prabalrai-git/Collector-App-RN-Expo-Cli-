@@ -1,12 +1,12 @@
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Button, Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 
 const AppButton = (props) => {
   return (
     <>
-      <TouchableOpacity onPress={props.onPress} style={styles.primaryBtn}>
-          <Text style={styles.txt}>{props.title}</Text>
-      </TouchableOpacity>
+      <Button title={props.title} disabled={props.disable} onPress={props.onPress} style={styles.primaryBtn}>
+          {/* <Text style={styles.txt}>{props.title}</Text> */}
+      </Button>
     </>
 
   )

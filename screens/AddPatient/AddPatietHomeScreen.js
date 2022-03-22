@@ -224,7 +224,7 @@ const AddPatietHomeScreen = () => {
     <SafeAreaView>
       <View style={styles.maincontainer}>
         <View style={styles.container}>
-          <Text style={styles.title}>Add Patient</Text>
+          {/* <Text style={styles.title}>Add Patient</Text> */}
           <ScrollView>
             <View style={styles.TextInput}>
               <TextInput
@@ -441,9 +441,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     // alignItems: 'center',
-    paddingBottom: 50,
+    // paddingBottom: 50,
     // height: '100%',
-    paddingTop: 30,
+    // paddingTop: 30,
     // flex: 1,
 
   },

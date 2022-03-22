@@ -293,7 +293,7 @@ export default SelectTest
 const styles = StyleSheet.create({
   mainCotnainer: {
     // height: windowHeight,
-    paddingTop: 40,
+    // paddingTop: 40,
     // backgroundColor: '#fefefe'
   },
   midContainer: {

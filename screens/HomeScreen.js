@@ -28,7 +28,7 @@ const navData = [
   },
   {
     id: 3,
-    name: 'Total Sample',
+    name: 'Sample',
     pathName: 'SampleHome',
     // img: '../../assets/images/BookLabTest.png',
     // img: require('../../assets/images/BookLabTest.png'),
@@ -36,7 +36,7 @@ const navData = [
   },
   {
     id: 4,
-    name: 'Today Task',
+    name: 'Asigned Task',
     pathName: 'task',
     // img: '../../assets/images/task.png',
     // img: require('../../assets/images/task.png'),

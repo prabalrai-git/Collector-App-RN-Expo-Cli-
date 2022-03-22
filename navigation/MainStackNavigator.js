@@ -18,20 +18,20 @@ const MainStackNavigator = () => {
           headerShown: false,
         }}
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name='DraweNavigator'
         component={DraweNavigator}
         options={{
           headerShown: false,
         }}
-      /> */}
-      <Stack.Screen
+      />
+      {/* <Stack.Screen
         name='TabNavigator'
         component={TabNavigator}
         options={{
           headerShown: false,
         }}
-      />
+      /> */}
     </Stack.Navigator>
   )
 }
