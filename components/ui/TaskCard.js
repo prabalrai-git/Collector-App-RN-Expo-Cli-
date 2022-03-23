@@ -1,8 +1,7 @@
-import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal } from 'react-native'
+import { Button, Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal } from 'react-native'
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import AppButton from './AppButton';
-import { Button } from 'react-native-elements';
 
 const windowWidth = Dimensions.get('window').width * 0.95;
 
@@ -19,7 +18,7 @@ const TaskCard = ({ data }) => {
     // })
   }
 
-  const navigatoin = useNavigation()
+  const navigation = useNavigation()
   return (
     <>
       <TouchableOpacity onPress={() => hadleEvent()}>
@@ -34,16 +33,13 @@ const TaskCard = ({ data }) => {
         animationType="slide"
         transparent={true}
         visible={isVisibe}
-        style={styles.centeredView}
         onRequestClose={() => {
           setisVisibe(!isVisibe)
         }}
       >
-
         <View style={styles.centeredView}>
-
-          <View style={styles.container}>
-            <Button title='Cancle' color={'#e0c945'}></Button>
+          <View style={styles.module}>
+            <Button title='Cancle' color={'#e0c945'} onPress={() => setisVisibe(false)}></Button>
             <AppButton title='Accept' onPress={() => navigation.navigate('MapScreen',
               {
                 data: route.params.data
@@ -101,6 +97,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#ff7f00",
     borderRadius: 10,
     width: 'auto'
+  },
+  centeredView: {
+    width: "100%",
+    height: "100%",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fefefe'
+  },
+  module: {
+    // width: 200,
+    // height: 200,
+    flexDirection: 'row'
   }
 
 })
