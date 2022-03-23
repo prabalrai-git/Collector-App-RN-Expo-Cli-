@@ -1,4 +1,4 @@
-import { Button, Dimensions, Image, StatusBar, StyleSheet, TextInput, View } from 'react-native'
+import { ActivityIndicator, Alert, Button, Dimensions, Image, Modal, StatusBar, StyleSheet, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch } from 'react-redux'
@@ -13,6 +13,8 @@ const LoginScreen = () => {
   const navigation = useNavigation()
   const [username, setUserName] = useState('pacific');
   const [password, setPassword] = useState('pacific123');
+  const [isLoading, setIsLoading] = useState(false);
+  const [btnDis, setBtDis] = useState(false)
   const dispatch = useDispatch()
 
   const handleLogin = () => {
@@ -25,6 +27,8 @@ const LoginScreen = () => {
     //         "usrFullName": "Pacific"
     //     }
     // ]
+    setBtDis(true)
+    setIsLoading(true);
     let data = {
       user: username,
       pass: password
@@ -33,14 +37,26 @@ const LoginScreen = () => {
       if (val.length !== 0) {
         let andd = val?.validuserDetails;
         if (andd[0]?.usrUserId > 0) {
+          setIsLoading(false);
           dispatch(storeUserData(andd[0]))
           navigation.navigate('DraweNavigator')
-          
+
         } else {
-          console.log('Username or password didnt matched');
+          console.log('Username or password didnt matched 1');
+          setIsLoading(false);
+          Alert.alert(
+            'Log in failed',
+            'User and Password didnt matched'
+          )
+          setBtDis(false)
         }
       } else {
-        console.log('useame or passowrd didnt matched')
+        setIsLoading(false);
+        Alert.alert(
+          'Log in failed',
+          'User and Password didnt matched'
+        )
+        setBtDis(false)
       }
     }))
   }
@@ -79,17 +95,39 @@ const LoginScreen = () => {
           type='fontisto'
           style={styles.icon}
         ></Icon>
-      <TextInput
-        style={styles.TextInput}
-        placeholder='password..'
-        onChangeText={(password) => setPassword(password)}
-        // keyboardType='visible-password'
-        secureTextEntry
-        textContentType='password'
-      ></TextInput>
+        <TextInput
+          style={styles.TextInput}
+          placeholder='password..'
+          onChangeText={(password) => setPassword(password)}
+          // keyboardType='visible-password'
+          secureTextEntry
+          textContentType='password'
+        ></TextInput>
       </View>
-      {/* <Button title='login' onPress={handleLogin}></Button> */}
-      <AppButton title='login' onPress={handleLogin} />
+      <AppButton title='login' onPress={handleLogin} disabled={btnDis}/>
+      {/* <Modal
+        animationType="fade"
+        transparent={true}
+        visible={true}
+      >
+        <View style={styles.centeredView}>
+          <ActivityIndicator size="large" color="#FF7F00" />
+        </View>
+      </Modal> */}
+
+      {
+        isLoading &&
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={isLoading}
+          style={styles.centeredView}>
+          <View style={styles.centeredView}>
+        
+          <ActivityIndicator size="large" color="#FF7F00" />
+          </View>
+        </Modal>
+      }
     </View>
   )
 }
@@ -118,7 +156,7 @@ const styles = StyleSheet.create({
     borderColor: '#f1f1df',
     width: windowWidth,
     flexDirection: 'row',
-    justifyContent:'space-evenly',
+    justifyContent: 'space-evenly',
     borderRadius: 10,
     alignItems: 'center',
     paddingHorizontal: 10,
@@ -137,7 +175,7 @@ const styles = StyleSheet.create({
   TextInput: {
     // borderWidth: 1,
     // borderColor: '#f1f1df',
-    width: windowWidth - 60 ,
+    width: windowWidth - 60,
     marginLeft: 10,
     backgroundColor: "#FFFFFF",
     color: '#4c4747',
@@ -164,5 +202,10 @@ const styles = StyleSheet.create({
   span2: {
     fontWeight: 'bold',
   },
-
+  centeredView: {
+    width: '100%',
+    height: "100%",
+    backgroundColor: '#fefefeb5',
+    justifyContent: 'center'
+  }
 })

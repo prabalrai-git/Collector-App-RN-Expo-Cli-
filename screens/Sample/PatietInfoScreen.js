@@ -44,6 +44,7 @@ const PatietInfoScreen = ({ route }) => {
   const [signature, setSign] = useState(null);
   const [btnDis, setbtnDis] = useState(false);
   const [isPaid, setisPaid] = useState(route.params.data.IsPaid);
+  // const [switchDis, setSwitchDis] = useState(isPaid);
   const toggleSwitch = () => setisPaid(previousState => !previousState);
 
   useEffect(() => {
@@ -184,7 +185,7 @@ const PatietInfoScreen = ({ route }) => {
         </View>
         <View style={styles.testCard}>
           <Text style={styles.titleText}>Collection Charge</Text>
-          <Text style={styles.finsltestsPrice}>Rs.{route.params.data.TestTotalAmount}</Text>
+          <Text style={styles.finsltestsPrice}>Rs.{route.params.data.CollectionCharge}</Text>
         </View>
         <View style={styles.testCard}>
           <Text style={styles.titleText}>Discount Amout</Text>
@@ -208,7 +209,7 @@ const PatietInfoScreen = ({ route }) => {
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={toggleSwitch}
                 value={isPaid}
-                disabled={true}
+                disabled={isPaid}
               />
             </View>
             <View style={styles.TextInput}>

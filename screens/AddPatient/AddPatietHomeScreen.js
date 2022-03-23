@@ -214,6 +214,7 @@ const AddPatietHomeScreen = () => {
           { text: "OK", onPress: () => setButDis(false) }
         ]
       );
+      setButDis(false);
     }
 
 
@@ -279,8 +280,8 @@ const AddPatietHomeScreen = () => {
                 <View style={{
                   flexDirection: 'row'
                 }}>
-                  <Text>latitude:{JSON.stringify(region.latitude)}, </Text>
-                  <Text>longitude:{JSON.stringify(region.longitude)}</Text>
+                  <Text>{JSON.stringify(region.latitude)}, </Text>
+                  <Text>{JSON.stringify(region.longitude)}</Text>
                 </View>
                 <Icon
                   name='location-pin'
@@ -466,7 +467,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: '#4c4747',
     backgroundColor: '#fefefe',
-    width: Dimensions.get('window').width * 1
+    width: Dimensions.get('window').width * 1,
 
   },
   inputField: {
@@ -478,6 +479,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    overflow: 'hidden'
   },
   PickerTextInput: {
     width: Dimensions.get('window').width - 20,

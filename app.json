@@ -20,10 +20,16 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "lunivaApp.collector",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "config":
+      {"googleMaps": 
+        {
+        "apiKey": "AIzaSyBHsFY2CvPEIBknY3KKQZBjUNPxgLqWV2U"
+      }}
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -87,6 +87,7 @@ const BilligScreen = ({ route }) => {
   const [StatusList, setStatusList] = useState()
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [btnDis, setBtnDis] = useState(false);
 
   useEffect(() => {
     dispatch(GetStatus((res) => {
@@ -108,7 +109,7 @@ const BilligScreen = ({ route }) => {
   ))
 
   const handleSubmit = () => {
-
+    setBtnDis(true);
     let today = new Date();
     const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     const newTime = today.toLocaleTimeString();
@@ -154,9 +155,6 @@ const BilligScreen = ({ route }) => {
       _HomeRequest,
       _HomeCollectionTestList
     }
-
-    console.log(finalData)
-
     dispatch(InsertUpdateHomeCollection(finalData, (res) => {
       if (res?.SuccessMsg === true) {
         Alert.alert(
@@ -172,11 +170,12 @@ const BilligScreen = ({ route }) => {
           "Failed!",
           "Test booked Failed",
           [
-            { text: "OK"}
+            { text: "OK", onPress: () => setBtnDis(false)}
           ]
         );
       }
     }))
+    setBtnDis(false)
   }
   return (
     <View style={styles.mainContainer}>
@@ -262,7 +261,7 @@ const BilligScreen = ({ route }) => {
             value={isPaid}
           />
         </View>
-        <AppButton title='handleSubmit' onPress={() => handleSubmit()}></AppButton>
+        <AppButton title='handleSubmit' onPress={() => handleSubmit()} disabled={btnDis}></AppButton>
       </View>
 
 
@@ -274,9 +273,9 @@ export default BilligScreen
 
 const styles = StyleSheet.create({
   mainContainer: {
-    paddingTop: 40,
+    // paddingTop: 40,
     backgroundColor: '#4688B3',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     // alignItems: 'center',
     flex: 1,
 
@@ -318,6 +317,8 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   contaienr: {
+    position: 'absolute',
+    bottom: 0,
     backgroundColor: '#fefefe',
     borderTopLeftRadius: 18,
     borderTopRightRadius: 18,
@@ -332,7 +333,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   fatlistfContainer: {
-    height: windowHeight * 0.43,
+    height: windowHeight * 0.45,
+    paddingBottom: 30,
     width: windowWidth,
     backgroundColor: '#4688B3',
     paddingVertical: 10,

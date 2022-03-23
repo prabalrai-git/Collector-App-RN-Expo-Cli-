@@ -1,23 +1,58 @@
-import { Dimensions, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal } from 'react-native'
+import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
+import AppButton from './AppButton';
+import { Button } from 'react-native-elements';
 
 const windowWidth = Dimensions.get('window').width * 0.95;
 
+
 const TaskCard = ({ data }) => {
   // console.log('data', data);
-  
+  const [isVisibe, setisVisibe] = useState(false);
+
+  const hadleEvent = () => {
+    setisVisibe(true)
+    console.log("potato");
+    // navigatoin.navigate('TaskInfoScreen', {
+    //   data: data
+    // })
+  }
+
   const navigatoin = useNavigation()
   return (
-    <TouchableOpacity onPress={() => navigatoin.navigate('TaskInfoScreen', {
-      data: data
-    })}>
-      <View style={styles.cardBody}>
-        <Text style={styles.ctitle}>{data.PatientFName} {data.PatientLName}</Text>
-        <Text style={styles.remarks}>{data.Remarks}</Text>
-        <Text style={styles.cDate}>{data.CollectionReqDate}</Text>
-      </View>
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity onPress={() => hadleEvent()}>
+        <View style={styles.cardBody}>
+          <Text style={styles.ctitle}>{data.PatientFName} {data.PatientLName}</Text>
+          <Text style={styles.remarks}>{data.Remarks}</Text>
+          <Text style={styles.cDate}>{data.CollectionReqDate}</Text>
+        </View>
+      </TouchableOpacity>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isVisibe}
+        style={styles.centeredView}
+        onRequestClose={() => {
+          setisVisibe(!isVisibe)
+        }}
+      >
+
+        <View style={styles.centeredView}>
+
+          <View style={styles.container}>
+            <Button title='Cancle' color={'#e0c945'}></Button>
+            <AppButton title='Accept' onPress={() => navigation.navigate('MapScreen',
+              {
+                data: route.params.data
+              }
+            )}></AppButton>
+          </View>
+        </View>
+      </Modal>
+    </>
   )
 }
 
