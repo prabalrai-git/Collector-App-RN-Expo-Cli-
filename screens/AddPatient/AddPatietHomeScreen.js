@@ -6,7 +6,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { BottomSheet, Button, Icon, Input } from 'react-native-elements';
 import MapView from 'react-native-maps';
-import { useNavigation } from '@react-navigation/native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import Filter from '../../components/ui/Filter';
 import TestCard from '../../components/ui/TestCard';
 import AppButton from '../../components/ui/AppButton';
@@ -272,11 +272,13 @@ const AddPatietHomeScreen = () => {
   //   handleError(null, 'PatientNationalId')
   //   handleError(null, 'Remarks')
   // }, [])
-  const onBackPress = ()=> {
-    handleError(null, errors)
-
-  }
-  BackHandler.addEventListener('hardwareBackPress', onBackPress)
+//   const onBackPress = ()=> {
+//     CommonActions.reset({
+//       index: 1,
+//       routes: [{ name: 'Home' }],       
+//  })
+//   }
+//   BackHandler.addEventListener('hardwareBackPress', onBackPress)
 
   return (
     <SafeAreaView>
