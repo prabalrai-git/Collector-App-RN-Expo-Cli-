@@ -1,6 +1,7 @@
-import { Dimensions, StyleSheet, View } from 'react-native'
+import { Text, Dimensions, StyleSheet, View } from 'react-native'
 import React from 'react'
-import { Avatar, Text } from 'react-native-elements'
+import { Avatar} from 'react-native-elements'
+import { GlobalStyles } from '../../GlobalStyle';
 
 const windowWidth = Dimensions.get('window').width * 0.95;
 
@@ -8,8 +9,8 @@ const GreetingCard = () => {
   return (
     <View style={styles.cardContainer}>
       <View style={styles.dis}>
-        <Text h3 style={styles.title}>Good Moring</Text>
-        <Text style={styles.disText}>Your target for today is to keep positive mindset and smile to everyone you meet.</Text>
+        <Text style={[GlobalStyles.header, {color: '#fefefe'}]}>Good Moring</Text>
+        <Text style={[GlobalStyles.body, {color: '#205072'}]}>Your target for today is to keep positive mindset and smile to everyone you meet.</Text>
       </View>
       <Avatar
         size={64}
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: windowWidth,
     justifyContent: 'space-between',
-    backgroundColor: '#9DD4E9',
+    backgroundColor: global.secodaryCardColor,
     borderRadius: 18,
     paddingHorizontal: 20,
     paddingVertical: 30,
@@ -35,13 +36,4 @@ const styles = StyleSheet.create({
   dis:{
     width: windowWidth * 0.65,
   },
-  title:{
-    color: '#fefefe',
-    // FF7F00
-    marginBottom: 7,
-  },
-  disText: {
-    color: "#205072",
-    letterSpacing: 2,
-  }
 })

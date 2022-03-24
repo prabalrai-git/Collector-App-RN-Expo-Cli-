@@ -18,15 +18,6 @@ const LoginScreen = () => {
   const dispatch = useDispatch()
 
   const handleLogin = () => {
-    // ()=> navigation.navigate('DraweNavigator')
-    //   "validuserDetails": [
-    //     {
-    //         "usrUserId": 3,
-    //         "usrusername": "pacific",
-    //         "usrrole": 3,
-    //         "usrFullName": "Pacific"
-    //     }
-    // ]
     setBtDis(true)
     setIsLoading(true);
     let data = {
@@ -42,7 +33,6 @@ const LoginScreen = () => {
           navigation.navigate('DraweNavigator')
 
         } else {
-          console.log('Username or password didnt matched 1');
           setIsLoading(false);
           Alert.alert(
             'Log in failed',
@@ -62,7 +52,6 @@ const LoginScreen = () => {
   }
   return (
     <View style={styles.container}>
-      {/* <StatusBar style="auto" /> */}
       <View style={styles.componyInfo}>
         <Image
           source={require('../../assets/images/logo.png')}
@@ -77,7 +66,7 @@ const LoginScreen = () => {
       <View style={styles.TextInputcontainer}>
         <Icon
           name='user'
-          color={'#FF7F00'}
+          color={global.secondary}
           type='entypo'
           style={styles.icon}
         ></Icon>
@@ -91,7 +80,7 @@ const LoginScreen = () => {
       <View style={styles.TextInputcontainer}>
         <Icon
           name='key'
-          color={'#FF7F00'}
+          color={global.secondary}
           type='fontisto'
           style={styles.icon}
         ></Icon>
@@ -105,15 +94,6 @@ const LoginScreen = () => {
         ></TextInput>
       </View>
       <AppButton title='login' onPress={handleLogin} disabled={btnDis}/>
-      {/* <Modal
-        animationType="fade"
-        transparent={true}
-        visible={true}
-      >
-        <View style={styles.centeredView}>
-          <ActivityIndicator size="large" color="#FF7F00" />
-        </View>
-      </Modal> */}
 
       {
         isLoading &&
@@ -124,7 +104,7 @@ const LoginScreen = () => {
           style={styles.centeredView}>
           <View style={styles.centeredView}>
         
-          <ActivityIndicator size="large" color="#FF7F00" />
+          <ActivityIndicator size="large" color={global.secondary} />
           </View>
         </Modal>
       }
@@ -173,8 +153,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   TextInput: {
-    // borderWidth: 1,
-    // borderColor: '#f1f1df',
     width: windowWidth - 60,
     marginLeft: 10,
     backgroundColor: "#FFFFFF",

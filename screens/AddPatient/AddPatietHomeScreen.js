@@ -1,10 +1,10 @@
-import { StyleSheet, Text, TextInput, View, ScrollView, TouchableOpacity, Platform, Dimensions, Image, Alert, FlatList, KeyboardAvoidingView, SafeAreaView } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { StyleSheet, Text, TextInput, View, ScrollView, TouchableOpacity, Platform, Dimensions, Image, Alert, FlatList, KeyboardAvoidingView, SafeAreaView, Keyboard, BackHandler } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { AssignPatient, GetReferred, GetRequestor } from '../../Services/appServices/AssignPatient';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
-import { BottomSheet, Button, Icon } from 'react-native-elements';
+import { BottomSheet, Button, Icon, Input } from 'react-native-elements';
 import MapView from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 import Filter from '../../components/ui/Filter';
@@ -62,6 +62,7 @@ const AddPatietHomeScreen = () => {
   // const [isSearchVisible, setIsSearchVisible] = useState(false);
   // const [data, setData] = useState();
   // const [newList, serNewList] = useState();
+  const shakeInput = useRef();
 
   const [region, setRegion] = useState({
     latitude: 27.7172,
@@ -142,13 +143,13 @@ const AddPatietHomeScreen = () => {
     setButDis(true)
     let data = {
       "CId": 0,
-      "CollectorId":  user.userData.usrUserId,
+      "CollectorId": user.userData.usrUserId,
       "PatientFName": PatientFName,
-      "PatientMName": PatientMName === undefined || PatientMName === '' ? ' ' : PatientMName,
+      "PatientMName": PatientMName !== '' ? PatientMName : '',
       "PatientLName": PatientLName,
       "PatientAge": PatientAge,
       "PatientGender": PatientGender,
-      "PatientEmailId": PatientEmailId,
+      "PatientEmailId": PatientEmailId !== '' ? PatientEmailId : '',
       "PatientAddress": JSON.stringify(PatientAddress),
       "PatientReferedBy": PatientReferedBy,
       "PatientRequestorBy": PatientRequestorBy,
@@ -158,13 +159,14 @@ const AddPatietHomeScreen = () => {
       "EnterBy": user.userData.usrUserId,
       "CollectionReqDate": `${time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate()}T${time.toLocaleTimeString()}`,
     }
+    console.log(data);
+    return
     if (
       typeof data.CollectorId !== 'undefined' &&
       typeof data.PatientFName !== 'undefined' &&
       typeof data.PatientLName !== 'undefined' &&
       typeof data.PatientAge !== 'undefined' &&
       typeof data.PatientGender !== 'undefined' &&
-      typeof data.PatientEmailId !== 'undefined' &&
       typeof data.PatientAddress !== 'undefined' &&
       typeof data.PatientReferedBy !== 'undefined' &&
       typeof data.PatientRequestorBy !== 'undefined' &&
@@ -180,7 +182,7 @@ const AddPatietHomeScreen = () => {
           setPatientAge('');
           setPatientGender('');
           setPatientEmailId('');
-          setPatientAddress('');
+          setPatientAddress(''); ``
           setPatientReferedBy('');
           setPatientRequestorBy('');
           setPatientNationalId('');
@@ -195,9 +197,10 @@ const AddPatietHomeScreen = () => {
           );
 
         } else {
+
           Alert.alert(
             "Failure",
-            "no Data Saved",
+            "no Data Saved 1",
             [
               { text: "OK" }
             ]
@@ -209,7 +212,7 @@ const AddPatietHomeScreen = () => {
 
       Alert.alert(
         "Error !",
-        "Data not saved",
+        "Data not saved 2",
         [
           { text: "OK", onPress: () => setButDis(false) }
         ]
@@ -221,36 +224,93 @@ const AddPatietHomeScreen = () => {
   }
 
 
+  // const [inputs, setInputs] = useState({
+  //   email: '',
+  //   fullname: '',
+  //   phone: '',
+  //   password: '',
+  //   Remarks: ''
+  // });
+  const [errors, setErrors] = useState({});
+  const [isValid, setisValid] = useState(true);
+
+  const validate = () => {
+    Keyboard.dismiss();
+
+    if (PatientFName === '' || PatientFName === undefined) {
+      handleError('please enter valid First Name', 'PatientFName')
+      setisValid(false);
+    }
+    if (PatientLName === '' || PatientLName === undefined) {
+      handleError('please enter valid Middle Name', 'PatientLName')
+      setisValid(false);
+    }
+    if (PatientAge === '' || PatientAge === undefined) {
+      handleError('please enter valid Middle Name', 'PatientAge')
+      setisValid(false);
+    }
+    if (PatientNationalId === '' || PatientNationalId === undefined) {
+      handleError('please enter valid Middle Name', 'PatientNationalId')
+      setisValid(false);
+    }
+    if (Remarks === '' || Remarks === undefined) {
+      handleError('please enter valid remarks', 'Remarks')
+      setisValid(false);
+    }
+  }
+  const handleError = (error, input) => {
+    setErrors(prevState =>
+      ({ ...prevState, [input]: error }));
+    console.log(input);
+  };
+
+  // console.log(errors); PatientLName PatientAge PatientNationalId
+  // useEffect(() => {
+  //   handleError(null, 'PatientFName')
+  //   handleError(null, 'PatientLName')
+  //   handleError(null, 'PatientAge')
+  //   handleError(null, 'PatientNationalId')
+  //   handleError(null, 'Remarks')
+  // }, [])
+  const onBackPress = ()=> {
+    handleError(null, errors)
+
+  }
+  BackHandler.addEventListener('hardwareBackPress', onBackPress)
+
   return (
     <SafeAreaView>
       <View style={styles.maincontainer}>
         <View style={styles.container}>
           {/* <Text style={styles.title}>Add Patient</Text> */}
           <ScrollView>
-            <View style={styles.TextInput}>
-              <TextInput
-                value={PatientFName}
-                placeholder='First Name'
-                style={styles.inputField}
-                onChangeText={(fname) => setPatientFName(fname)}
-              ></TextInput>
-            </View>
-            <View style={styles.TextInput}>
-              <TextInput
-                value={PatientMName}
-                placeholder='Middle Name'
-                style={styles.inputField}
-                onChangeText={(mname) => setPatientMName(mname)}
-              ></TextInput>
-            </View>
-            <View style={styles.TextInput}>
-              <TextInput
-                value={PatientLName}
-                placeholder='Last Name'
-                style={styles.inputField}
-                onChangeText={(lname) => setPatientLName(lname)}
-              ></TextInput>
-            </View>
+            <Input
+              value={PatientFName}
+              placeholder='First Name'
+              onChangeText={(fname) => setPatientFName(fname)}
+              onFocus={() => handleError(null, 'PatientFName')}
+              label="Full Name"
+              errorMessage={errors.PatientFName}
+            />
+
+            <Input
+              value={PatientMName}
+              placeholder='Middle Name'
+              onChangeText={(mname) => setPatientMName(mname)}
+              onFocus={() => handleError(null, 'PatientMName')}
+              label="Middle Name"
+              errorMessage={errors.PatientMName}
+            />
+
+            <Input
+              value={PatientLName}
+              placeholder='Last Name'
+              onChangeText={(lname) => setPatientLName(lname)}
+              onFocus={() => handleError(null, 'PatientLName')}
+              label="Middle Name"
+              errorMessage={errors.PatientLName}
+            />
+
             <View style={styles.TextInput}>
               <View style={styles.PickerTextInput}>
                 <Picker
@@ -266,14 +326,14 @@ const AddPatietHomeScreen = () => {
               </View>
             </View>
 
-            <View style={styles.TextInput}>
-              <TextInput
-                value={PatientEmailId}
-                placeholder='email'
-                onChangeText={(email) => setPatientEmailId(email)}
-                style={styles.inputField}
-              ></TextInput>
-            </View>
+            <Input
+              value={PatientEmailId}
+              placeholder='email'
+              onChangeText={(email) => setPatientEmailId(email)}
+              onFocus={() => handleError(null, 'PatientEmailId')}
+              label="email"
+              errorMessage={errors.PatientEmailId}
+            />
 
             <View style={styles.TextInput}>
               <TouchableOpacity style={styles.inputField} onPress={() => setIsVisible(true)}>
@@ -292,15 +352,17 @@ const AddPatietHomeScreen = () => {
               </TouchableOpacity>
             </View>
 
-            <View style={styles.TextInput}>
-              <TextInput
-                value={PatientAge}
-                placeholder='patient age'
-                onChangeText={(e) => setPatientAge(e)}
-                keyboardType='number-pad'
-                style={styles.inputField}
-              ></TextInput>
-            </View>
+            <Input
+              value={PatientAge}
+              placeholder='Age'
+              onChangeText={(e) => setPatientAge(e)}
+              keyboardType='number-pad'
+              onFocus={() => handleError(null, 'PatientAge')}
+              label="Age"
+              errorMessage={errors.PatientAge}
+            />
+
+
             <View style={styles.TextInput}>
               <View style={styles.PickerTextInput}>
                 <Picker
@@ -337,22 +399,25 @@ const AddPatietHomeScreen = () => {
                 </Picker>
               </View>
             </View>
-            <View style={styles.TextInput}>
-              <TextInput
-                value={PatientNationalId}
-                placeholder='patient national id'
-                onChangeText={(e) => setPatientNationalId(e)}
-                style={styles.inputField}
-              ></TextInput>
-            </View>
-            <View style={styles.TextInput}>
-              <TextInput
-                value={Remarks}
-                placeholder='remarks'
-                onChangeText={(e) => setRemarks(e)}
-                style={styles.inputField}
-              ></TextInput>
-            </View>
+
+            <Input
+              value={PatientNationalId}
+              placeholder='National id'
+              onChangeText={(e) => setPatientNationalId(e)}
+              keyboardType='number-pad'
+              onFocus={() => handleError(null, 'PatientNationalId')}
+              label="Natiional Id"
+              errorMessage={errors.PatientNationalId}
+            />
+
+            <Input
+              value={Remarks}
+              placeholder='remarks'
+              onChangeText={(e) => setRemarks(e)}
+              onFocus={() => handleError(null, 'Remarks')}
+              label="remarks"
+              errorMessage={errors.Remarks}
+            />
             <TouchableOpacity
               onPress={showDatepicker}
               style={styles.TextInput}
@@ -388,6 +453,9 @@ const AddPatietHomeScreen = () => {
                 onPress={hndleSubmit}
               ></AppButton>
             </View>
+
+
+            <Button title="Register" onPress={validate} />
 
           </ScrollView>
 
@@ -427,6 +495,7 @@ const AddPatietHomeScreen = () => {
             </View>
 
           </BottomSheet>
+
 
         </View>
       </View>

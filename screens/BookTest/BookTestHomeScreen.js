@@ -11,7 +11,6 @@ const BookTestHomeScreen = () => {
   useEffect(() => {
     dispatch(GetPatientList((res) => {
       setPatietList(res.requestorcollectionList);
-
     }))
   }, [])
 

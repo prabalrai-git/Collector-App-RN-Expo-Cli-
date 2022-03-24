@@ -1,15 +1,16 @@
 import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native';
+import { GlobalStyles } from '../../GlobalStyle';
 
 const CardButton = ({ data }) => {
   const navigation = useNavigation()
   return (
-    <TouchableOpacity onPress={() => navigation.navigate(`${data.pathName}`)} style={{ marginBottom: 4 }}>
-      <View style={[styles.container, {
-        backgroundColor: data.color
-      }]}  >
-        <Text style={styles.text}>{data.name}</Text>
+    <TouchableOpacity onPress={() => navigation.navigate(`${data.pathName}`)} style={[styles.container, {
+      backgroundColor: data.color
+    }]} >
+      <View  >
+        <Text style={[styles.text, GlobalStyles.title2, {color: '#fefefe'}]}>{data.name}</Text>
       </View>
     </TouchableOpacity>
   )
@@ -26,14 +27,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     margin: 4,
-    
     justifyContent: 'center',
     alignItems: 'center'
   },
-  text: {
-    color: "#fefefe",
-    fontSize: 20,
-    fontWeight: 'bold',
-    letterSpacing: 1,
-  }
 })

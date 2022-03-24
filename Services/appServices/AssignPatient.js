@@ -10,18 +10,13 @@ export const AssignPatient = (data, returnData) => {
     try {
       let formData = generateUrlEncodedData(data)
       console.log(data);
-      const response = await store(AssignCollectorForSampleCollection, formData);
+      const response = await storeNested(AssignCollectorForSampleCollection, JSON.stringify(data));
       console.log(response);
       if(response?.status === 200){
         returnData(response?.data)
-        console.log('sucess full', response?.status)
       }else{
         returnData([])
-        // console.log('failure')
-        console.log('failure', response?.status)
       }
-      // returnData(response?.data)
-
     }catch(error){
 
     }

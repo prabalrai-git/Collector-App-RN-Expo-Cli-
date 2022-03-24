@@ -27,16 +27,8 @@ const styles = StyleSheet.create({
     alignItems:'center',
     paddingHorizontal: 30,
     paddingVertical: 10,
-    backgroundColor: '#205072',
+    backgroundColor: global.primary,
     borderRadius: 8,
-    // shadowColor: "#000",
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 1,
-    // },
-    // shadowOpacity: 0.22,
-    // shadowRadius: 2.22,
-    // elevation: 3,
     maxWidth: Dimensions.get('window').width * 0.95
 
   },

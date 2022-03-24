@@ -1,27 +1,26 @@
-import { Button, Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal } from 'react-native'
+import { Button, Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput } from 'react-native'
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import AppButton from './AppButton';
 
-const windowWidth = Dimensions.get('window').width * 0.95;
+const windowWidth = Dimensions.get('window').width
 
 
 const TaskCard = ({ data }) => {
-  // console.log('data', data);
+  console.log('data', data);
   const [isVisibe, setisVisibe] = useState(false);
+  const [isRemarksVisible, setisRemarksVisible] = useState(false);
+  const [Remarks, setRemarks] = useState('');
 
   const hadleEvent = () => {
     setisVisibe(true)
-    console.log("potato");
-    // navigatoin.navigate('TaskInfoScreen', {
-    //   data: data
-    // })
+    
   }
 
   const navigation = useNavigation()
   return (
     <>
-      <TouchableOpacity onPress={() => hadleEvent()}>
+      <TouchableOpacity onPress={() => hadleEvent()} style={styles.cardCotainer}>
         <View style={styles.cardBody}>
           <Text style={styles.ctitle}>{data.PatientFName} {data.PatientLName}</Text>
           <Text style={styles.remarks}>{data.Remarks}</Text>
@@ -35,19 +34,46 @@ const TaskCard = ({ data }) => {
         visible={isVisibe}
         onRequestClose={() => {
           setisVisibe(!isVisibe)
+          setisRemarksVisible(false)
         }}
       >
         <View style={styles.centeredView}>
-          <View style={styles.module}>
-            <Button title='Cancle' color={'#e0c945'} onPress={() => setisVisibe(false)}></Button>
-            <AppButton title='Accept' onPress={() => navigation.navigate('MapScreen',
-              {
-                data: route.params.data
-              }
-            )}></AppButton>
-          </View>
+          {
+            isRemarksVisible ?
+              <View style={styles.TextInput}>
+                <Text style={styles.formLabel}>Remarks</Text>
+                <TextInput
+                  value={Remarks}
+                  placeholder='Remarks'
+                  onChangeText={(e) => setRemarks(e)}
+                  style={styles.inputField}
+                // keyboardType='numeric'
+                ></TextInput>
+
+                <AppButton title='Send' onPress={() => {
+                  setisVisibe(!isVisibe)
+                  setisRemarksVisible(false)
+                  }}></AppButton>
+              </View>
+
+              :
+              <View style={styles.module}>
+                <Button title='Reject' color={'#e0c945'} onPress={() => setisRemarksVisible(true)}></Button>
+                <Text>   </Text>
+                <AppButton title='Accept' onPress={() => {
+                  setisVisibe(false)
+                  navigation.navigate('MapScreen',
+                  {
+                    data: data
+                  }
+                )}}></AppButton>
+              </View>
+
+
+          }
         </View>
       </Modal>
+
     </>
   )
 }
@@ -55,12 +81,16 @@ const TaskCard = ({ data }) => {
 export default TaskCard
 
 const styles = StyleSheet.create({
+  cardCotainer: {
+    width: windowWidth,
+    paddingHorizontal: 10,
+  },
   cardBody: {
     backgroundColor: "#fefefe",
     marginVertical: 8,
     paddingHorizontal: 15,
     paddingVertical: 10,
-    width: windowWidth,
+
     borderTopRightRadius: 12,
     borderBottomRightRadius: 12,
     borderLeftWidth: 4,
