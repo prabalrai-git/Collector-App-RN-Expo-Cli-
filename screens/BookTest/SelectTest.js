@@ -9,128 +9,7 @@ import { GetTestList } from '../../Services/appServices/AssignPatient';
 
 const windowHeight = Dimensions.get('window').height * 0.95;
 const windowWidth = Dimensions.get('window').width * 0.55;
-// const data = [
-//   {
-//     "Id": 1,
-//     "TestType": "Executive",
-//     "Test": "EXECUTIVE HEALTH CHECK UP CATEGORY A",
-//     "Price": 7000
-// },
-// {
-//     "Id": 2,
-//     "TestType": "Executive",
-//     "Test": "EXECUTIVE HEALTH CHECK UP CATEGORY B",
-//     "Price": 5500
-// },
-// {
-//     "Id": 3,
-//     "TestType": "Executive",
-//     "Test": "COMPREHENSIVE DIABETIC CHECK UP (CDC)",
-//     "Price": 4200
-// },
-// {
-//     "Id": 4,
-//     "TestType": "Executive",
-//     "Test": "COMPREHENSIVE EXECUTIVE HEALTH CHECK UP(MALE)",
-//     "Price": 18000
-// },
-// {
-//     "Id": 6,
-//     "TestType": "Executive",
-//     "Test": "COMPREHENSIVE EXECUTIVE HEALTH CHECK UP(FEMALE)",
-//     "Price": 18000
-// },
-// {
-//     "Id": 7,
-//     "TestType": "Executive",
-//     "Test": "BASIC HEALTH- SCREENING PACKAGE",
-//     "Price": 2100
-// },
-// {
-//     "Id": 8,
-//     "TestType": "Executive",
-//     "Test": "INDIAN EMBASSY PACKAGE",
-//     "Price": 3200
-// },
-// {
-//     "Id": 9,
-//     "TestType": "Executive",
-//     "Test": "INHALATION PANEL",
-//     "Price": 3650
-// },
-// {
-//     "Id": 10,
-//     "TestType": "Executive",
-//     "Test": "FOOD PANEL",
-//     "Price": 3650
-// },
-// {
-//     "Id": 11,
-//     "TestType": "Executive",
-//     "Test": "Diabetes Control Package",
-//     "Price": 950
-// },
-// {
-//     "Id": 12,
-//     "TestType": "Executive",
-//     "Test": "Annual Health Check Up",
-//     "Price": 0
-// },
-// {
-//     "Id": 13,
-//     "TestType": "Executive",
-//     "Test": "Senior Citizen Executive Health Package- Male",
-//     "Price": 5200
-// },
-// {
-//     "Id": 14,
-//     "TestType": "Executive",
-//     "Test": "Senior Citizen Executive Health Package- Female",
-//     "Price": 5300
-// },
-// {
-//     "Id": 15,
-//     "TestType": "Executive",
-//     "Test": "Child Health Checkup",
-//     "Price": 4000
-// },
-// {
-//     "Id": 16,
-//     "TestType": "Executive",
-//     "Test": "Platinum Health Check-up",
-//     "Price": 10000
-// },
-// {
-//     "Id": 17,
-//     "TestType": "Executive",
-//     "Test": "Executive Health Check Up Category C",
-//     "Price": 4000
-// },
-// {
-//     "Id": 18,
-//     "TestType": "Executive",
-//     "Test": "Gout Panel",
-//     "Price": 2700
-// },
-// {
-//     "Id": 19,
-//     "TestType": "Executive",
-//     "Test": "Sexual Dysfunction Test male",
-//     "Price": 10500
-// },
-// {
-//     "Id": 20,
-//     "TestType": "Executive",
-//     "Test": "Sexual Dysfunction Test Female",
-//     "Price": 11000
-// },
-// {
-//     "Id": 21,
-//     "TestType": "Executive",
-//     "Test": "Annual Health CheckUp Package(NRL Staff)",
-//     "Price": 0
-// }
-// ]
+
 
 const SelectTest = ({ route }) => {
   // console.log(route.params.data);
@@ -180,6 +59,7 @@ const SelectTest = ({ route }) => {
     }
     setSelected(arr);
     // console.log('selected', selected);
+    
   }
 
 
@@ -217,7 +97,7 @@ const SelectTest = ({ route }) => {
 
   return (
     <View style={styles.mainCotnainer}>
-      <Filter data={data} returnData={handleChange}></Filter>
+      <Filter data={data} returnData={handleChange} selectTestFilter></Filter>
       <View style={styles.midContainer}>
         <FlatList
           style={styles.container}

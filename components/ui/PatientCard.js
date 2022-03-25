@@ -24,7 +24,7 @@ const PatientCard = ({data}) => {
           <Text style={styles.title}>{data.PatientFName} {data.PatientMName} {data.PatientLName}</Text>
           <Text style={styles.disText}>Cid: 1231</Text>
         </View>
-        <Text style={styles.testBook}>Bookded</Text>
+        <Text style={styles.testBook}>Book</Text>
       </View>
     </TouchableOpacity>
     </View>

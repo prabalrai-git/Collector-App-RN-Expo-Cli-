@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, View, ScrollView, TouchableOpacity, Platform, Dimensions, Image, Alert, FlatList, KeyboardAvoidingView, SafeAreaView, Keyboard, BackHandler } from 'react-native'
+import { StyleSheet, Text, TextInput, View, ScrollView, TouchableOpacity, Platform, Dimensions, Image, Alert, FlatList, KeyboardAvoidingView, SafeAreaView, Keyboard, BackHandler, Modal, ActivityIndicator } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { AssignPatient, GetReferred, GetRequestor } from '../../Services/appServices/AssignPatient';
@@ -33,6 +33,7 @@ import AppButton from '../../components/ui/AppButton';
 const AddPatietHomeScreen = () => {
   // const [CId, setCId] = useState();
   // const [CollectorId, setCollectorId] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation()
   const [PatientFName, setPatientFName] = useState();
   const [PatientMName, setPatientMName] = useState('');
@@ -40,7 +41,12 @@ const AddPatietHomeScreen = () => {
   const [PatientAge, setPatientAge] = useState();
   const [PatientGender, setPatientGender] = useState();
   const [PatientEmailId, setPatientEmailId] = useState();
-  const [PatientAddress, setPatientAddress] = useState();
+  const [PatientAddress, setPatientAddress] = useState(
+    {
+      'latitude': 27.7172,
+      'longitude': 85.3240,
+    }
+  );
   const [PatientReferedBy, setPatientReferedBy] = useState();
   const [PatientRequestorBy, setPatientRequestorBy] = useState();
   const [PatientNationalId, setPatientNationalId] = useState();
@@ -59,10 +65,8 @@ const AddPatietHomeScreen = () => {
   const user = useSelector(state => state.storeUserData);
   const [isVisible, setIsVisible] = useState(false);
 
-  // const [isSearchVisible, setIsSearchVisible] = useState(false);
-  // const [data, setData] = useState();
-  // const [newList, serNewList] = useState();
-  const shakeInput = useRef();
+  const [errors, setErrors] = useState({});
+  const [isValid, setisValid] = useState(false);
 
   const [region, setRegion] = useState({
     latitude: 27.7172,
@@ -131,16 +135,14 @@ const AddPatietHomeScreen = () => {
 
 
   const hndleSubmit = () => {
-
+    setButDis(true)
+    setIsLoading(true);
+    console.log('pressed');
     let today = new Date();
     const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     const newTime = today.toLocaleTimeString();
     const fialEntryDate = newDate + 'T' + newTime;
 
-    // const fialReportReqDate = date.toLocaleDateString + 'T' + time.toLocaleTimeString;
-    // console.log(time.toLocaleTimeString());
-
-    setButDis(true)
     let data = {
       "CId": 0,
       "CollectorId": user.userData.usrUserId,
@@ -149,7 +151,7 @@ const AddPatietHomeScreen = () => {
       "PatientLName": PatientLName,
       "PatientAge": PatientAge,
       "PatientGender": PatientGender,
-      "PatientEmailId": PatientEmailId !== '' ? PatientEmailId : '',
+      "PatientEmailId": PatientEmailId !== '' || PatientEmailId !== undefined ? PatientEmailId : '',
       "PatientAddress": JSON.stringify(PatientAddress),
       "PatientReferedBy": PatientReferedBy,
       "PatientRequestorBy": PatientRequestorBy,
@@ -159,126 +161,123 @@ const AddPatietHomeScreen = () => {
       "EnterBy": user.userData.usrUserId,
       "CollectionReqDate": `${time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate()}T${time.toLocaleTimeString()}`,
     }
-    console.log(data);
-    return
-    if (
-      typeof data.CollectorId !== 'undefined' &&
-      typeof data.PatientFName !== 'undefined' &&
-      typeof data.PatientLName !== 'undefined' &&
-      typeof data.PatientAge !== 'undefined' &&
-      typeof data.PatientGender !== 'undefined' &&
-      typeof data.PatientAddress !== 'undefined' &&
-      typeof data.PatientReferedBy !== 'undefined' &&
-      typeof data.PatientRequestorBy !== 'undefined' &&
-      typeof data.PatientNationalId !== 'undefined' &&
-      typeof data.CollectionReqDate !== 'undefined'
-    ) {
-      dispatch(AssignPatient(data, (res) => {
-        if (res?.CreatedId > 0 && res?.SuccessMsg === true) {
-          console.log('message', res?.Message);
-          setPatientFName('');
-          setPatientMName('');
-          setPatientLName('');
-          setPatientAge('');
-          setPatientGender('');
-          setPatientEmailId('');
-          setPatientAddress(''); ``
-          setPatientReferedBy('');
-          setPatientRequestorBy('');
-          setPatientNationalId('');
-          setRemarks('');
+    validate()
+    if (isValid) {
+      
+      console.log('isvalid');
+      if (
+        typeof data.CollectorId !== 'undefined' &&
+        typeof data.PatientFName !== 'undefined' &&
+        typeof data.PatientLName !== 'undefined' &&
+        typeof data.PatientAge !== 'undefined' &&
+        typeof data.PatientGender !== 'undefined' &&
+        typeof data.PatientAddress !== 'undefined' &&
+        typeof data.PatientReferedBy !== 'undefined' &&
+        typeof data.PatientRequestorBy !== 'undefined' &&
+        typeof data.PatientNationalId !== 'undefined' &&
+        typeof data.CollectionReqDate !== 'undefined'
+      ) {
+        dispatch(AssignPatient(data, (res) => {
+          if (res?.CreatedId > 0 && res?.SuccessMsg === true) {
+            console.log('message', res?.Message);
+            setPatientFName(undefined);
+            setPatientMName('');
+            setPatientLName(undefined);
+            setPatientAge(undefined);
+            setPatientGender(undefined);
+            setPatientEmailId(undefined);
+            setPatientAddress(undefined);
+            setPatientReferedBy(undefined);
+            setPatientRequestorBy(undefined);
+            setPatientNationalId(undefined);
+            setRemarks(undefined);
 
-          Alert.alert(
-            "Saved!",
-            "Data saved Sucessfully",
-            [
-              { text: "OK", onPress: () => navigation.navigate('Home') }
-            ]
-          );
 
-        } else {
+            setIsLoading(false);
+            Alert.alert(
+              "Saved!",
+              "Data saved Sucessfully",
+              [
+                { text: "OK", onPress: () => navigation.navigate('Home') }
+              ]
+            );
 
-          Alert.alert(
-            "Failure",
-            "no Data Saved 1",
-            [
-              { text: "OK" }
-            ]
-          );
-        }
+          } else {
+            setIsLoading(false);
+            Alert.alert(
+              "Failure",
+              "Data not saved",
+              [
+                { text: "OK" }
+              ]
+            );
+          }
+          setButDis(false);
+        }))
+      } else {
+        setIsLoading(false);
+        Alert.alert(
+          "Error !",
+          "Please fill up the input values",
+          [
+            { text: "OK", onPress: () => setButDis(false) }
+          ]
+        );
         setButDis(false);
-      }))
-    } else {
-
-      Alert.alert(
-        "Error !",
-        "Data not saved 2",
-        [
-          { text: "OK", onPress: () => setButDis(false) }
-        ]
-      );
+      }
+    } else{
       setButDis(false);
+      setIsLoading(false);
     }
 
-
+    
   }
 
 
-  // const [inputs, setInputs] = useState({
-  //   email: '',
-  //   fullname: '',
-  //   phone: '',
-  //   password: '',
-  //   Remarks: ''
-  // });
-  const [errors, setErrors] = useState({});
-  const [isValid, setisValid] = useState(true);
-
   const validate = () => {
     Keyboard.dismiss();
-
+    
+    let isOpValid = true
     if (PatientFName === '' || PatientFName === undefined) {
       handleError('please enter valid First Name', 'PatientFName')
-      setisValid(false);
+      isOpValid = false
     }
     if (PatientLName === '' || PatientLName === undefined) {
       handleError('please enter valid Middle Name', 'PatientLName')
-      setisValid(false);
+      isOpValid = false
     }
     if (PatientAge === '' || PatientAge === undefined) {
       handleError('please enter valid Middle Name', 'PatientAge')
-      setisValid(false);
+      isOpValid = false
     }
     if (PatientNationalId === '' || PatientNationalId === undefined) {
       handleError('please enter valid Middle Name', 'PatientNationalId')
-      setisValid(false);
+      isOpValid = false
     }
     if (Remarks === '' || Remarks === undefined) {
       handleError('please enter valid remarks', 'Remarks')
-      setisValid(false);
+      isOpValid = false
     }
+    setisValid(isOpValid);
   }
   const handleError = (error, input) => {
     setErrors(prevState =>
       ({ ...prevState, [input]: error }));
-    console.log(input);
   };
 
   // console.log(errors); PatientLName PatientAge PatientNationalId
   // useEffect(() => {
+
+  //   setErrors({})
+  // }, [])
+  // const onBackPress = () => {
   //   handleError(null, 'PatientFName')
   //   handleError(null, 'PatientLName')
   //   handleError(null, 'PatientAge')
   //   handleError(null, 'PatientNationalId')
   //   handleError(null, 'Remarks')
-  // }, [])
-//   const onBackPress = ()=> {
-//     CommonActions.reset({
-//       index: 1,
-//       routes: [{ name: 'Home' }],       
-//  })
-//   }
-//   BackHandler.addEventListener('hardwareBackPress', onBackPress)
+  // }
+  // BackHandler.addEventListener('hardwareBackPress', onBackPress)
 
   return (
     <SafeAreaView>
@@ -293,6 +292,7 @@ const AddPatietHomeScreen = () => {
               onFocus={() => handleError(null, 'PatientFName')}
               label="Full Name"
               errorMessage={errors.PatientFName}
+
             />
 
             <Input
@@ -410,6 +410,7 @@ const AddPatietHomeScreen = () => {
               onFocus={() => handleError(null, 'PatientNationalId')}
               label="Natiional Id"
               errorMessage={errors.PatientNationalId}
+              inputContainerStyle={styles.PickerTextInput}
             />
 
             <Input
@@ -457,7 +458,7 @@ const AddPatietHomeScreen = () => {
             </View>
 
 
-            <Button title="Register" onPress={validate} />
+            {/* <Button title="Register" onPress={validate} /> */}
 
           </ScrollView>
 
@@ -497,6 +498,19 @@ const AddPatietHomeScreen = () => {
             </View>
 
           </BottomSheet>
+          {
+        isLoading &&
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={isLoading}
+          style={styles.centeredView}>
+          <View style={styles.centeredView}>
+        
+          <ActivityIndicator size="large" color={global.secondary} />
+          </View>
+        </Modal>
+      }
 
 
         </View>
@@ -543,10 +557,11 @@ const styles = StyleSheet.create({
   },
   inputField: {
     width: Dimensions.get('window').width - 20,
-    borderRadius: 4,
+    // borderRadius: 4,
     borderWidth: 1,
-    borderColor: '#95957abd',
-    paddingHorizontal: 10,
+    borderColor: '#fefefe',
+    borderBottomColor: '#95957abd',
+    // paddingHorizontal: 10,
     paddingVertical: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -554,10 +569,10 @@ const styles = StyleSheet.create({
   },
   PickerTextInput: {
     width: Dimensions.get('window').width - 20,
-    borderRadius: 4,
     borderWidth: 1,
-    borderColor: '#95957abd',
-    paddingHorizontal: 10,
+    borderColor: '#fefefe',
+    borderBottomColor: '#95957abd',
+    // paddingHorizontal: 10,
   },
   btn: {
     marginTop: 10,

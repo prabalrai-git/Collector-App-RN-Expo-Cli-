@@ -1,4 +1,4 @@
-import { Dimensions, PermissionsAndroid, FlatList, StyleSheet, Text, View, ImageBackground, Switch } from 'react-native'
+import { Dimensions, PermissionsAndroid, FlatList, StyleSheet, Text, View, ImageBackground, Switch, Linking } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import GreetingCard from '../components/ui/GreetingCard'
 import CardButton from '../components/ui/CardButton'
@@ -6,7 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 import * as Location from "expo-location"
 
 import { Alert, Platform } from 'react-native'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { UpdateCollectorLocation } from '../Services/appServices/Collector';
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -43,11 +44,30 @@ const HomeScreen = () => {
   const user = useSelector(state => state.storeUserData);
   const navigation = useNavigation();
   const [isActive, setIsActive] = useState(false);
-  const toggleSwitch = () => setIsActive(previousState => !previousState);
+  const dispatch = useDispatch();
+  
   const [geolocation, setGeolocation] = useState({
     'latitude': null,
     'longitude': null
   });
+  const [gLocationStatus, setgLocationStatus] = useState(false);
+  const toggleSwitch = () => {
+    if (gLocationStatus !== false) {
+      setIsActive(previousState => !previousState)
+
+    }else{
+      Alert.alert(
+        'Location !',
+        'Please allow location to, to find.',
+        [
+          { text: 'Cancel' },
+          // we can automatically open our app in their settings
+          // so there's less friction in turning geolocation on
+          { text: 'Enable Geolocation', onPress: () => Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings() }
+        ]
+      )
+    }
+  };
 
 
   const hasGeolocationPermission = async () => {
@@ -59,27 +79,28 @@ const HomeScreen = () => {
         const userLocation = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest, maximumAge: 10000 })
         // console.log("location 1st", userLocation);
         temp(userLocation);
+        setgLocationStatus(true);
       }
-      if (finalStatus !== 'granted') {
-        Alert.alert(
-          'Warning',
-          'You will not search if you do not enable geolocation in this app. If you would like to search, please enable geolocation for Fin in your settings.',
-          [
-            { text: 'Cancel' },
-            // we can automatically open our app in their settings
-            // so there's less friction in turning geolocation on
-            { text: 'Enable Geolocation', onPress: () => Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings() }
-          ]
-        )
-        return false;
-
-      }
+      // if (finalStatus !== 'granted') {
+      //   Alert.alert(
+      //     'Warning',
+      //     'You will not search if you do not enable geolocation in this app. If you would like to search, please enable geolocation for Fin in your settings.',
+      //     [
+      //       { text: 'Cancel' },
+      //       // we can automatically open our app in their settings
+      //       // so there's less friction in turning geolocation on
+      //       { text: 'Enable Geolocation', onPress: () => Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings() }
+      //     ]
+      //   )
+      //   return false;
+      // }
     } catch (error) {
-      Alert.alert(
-        'Error',
-        'Something went wrong while check your geolocation permissions, please try again later.'
-      );
-      return false;
+      // Alert.alert(
+      //   'Error',
+      //   'Something went wrong while check your geolocation permissions, please try again later.',
+      //  [ { text: 'Enable Geolocation', onPress: () => Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings() }]
+      // );
+      // return false;
     }
   }
 
@@ -93,7 +114,8 @@ const HomeScreen = () => {
   const setCollectorData = () => {
     hasGeolocationPermission()
     let today = new Date();
-    const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.toLocaleTimeString();
+
     const data = {
       "LId": 0,
       "UserId": user.userData.usrUserId,
@@ -107,11 +129,10 @@ const HomeScreen = () => {
         if (res?.CreatedId > 0 && res?.SuccessMsg === true) {
           console.log(res)
         } else {
-          console.log('some error occured while dispatch');
+          console.log('some error occured while dispatch user location');
         }
       }))
     } else {
-      // console.log('no data');
     }
 
   }
@@ -119,10 +140,23 @@ const HomeScreen = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCollectorData()
-    }, 5000);
+    }, 20000);
     return () => clearInterval(interval)
   }, [geolocation])
   useEffect(() => {
+    // if (gLocationStatus === false) {
+    //   console.log('big potato');
+    //   Alert.alert(
+    //     'Location !',
+    //     'Please allow location to, to find.',
+    //     [
+    //       { text: 'Cancel' },
+    //       // we can automatically open our app in their settings
+    //       // so there's less friction in turning geolocation on
+    //       { text: 'Enable Geolocation', onPress: () => Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings() }
+    //     ]
+    //   )
+    // }
     hasGeolocationPermission()
   }, [])
 

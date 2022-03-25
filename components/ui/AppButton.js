@@ -7,7 +7,7 @@ const AppButton = (props) => {
     <>
       <Button
        title={props.title} 
-       disabled={props.disable} 
+       disabled={props.disabled} 
        onPress={props.onPress} 
        
        buttonStyle={styles.primaryBtn}
