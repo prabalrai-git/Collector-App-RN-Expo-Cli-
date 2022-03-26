@@ -135,6 +135,10 @@ const AddPatietHomeScreen = () => {
 
 
   const hndleSubmit = () => {
+    // navigation.navigate('AddPatientSelectTest', {
+    //   patinetId: 51
+    // })
+    // return
     setButDis(true)
     setIsLoading(true);
     console.log('pressed');
@@ -163,7 +167,7 @@ const AddPatietHomeScreen = () => {
     }
     validate()
     if (isValid) {
-      
+
       console.log('isvalid');
       if (
         typeof data.CollectorId !== 'undefined' &&
@@ -179,7 +183,10 @@ const AddPatietHomeScreen = () => {
       ) {
         dispatch(AssignPatient(data, (res) => {
           if (res?.CreatedId > 0 && res?.SuccessMsg === true) {
-            console.log('message', res?.Message);
+            // console.log('message', res);
+            //           "CreatedId": 51,
+            // "Message": "New patient Added",
+            // "SuccessMsg": true,
             setPatientFName(undefined);
             setPatientMName('');
             setPatientLName(undefined);
@@ -198,7 +205,11 @@ const AddPatietHomeScreen = () => {
               "Saved!",
               "Data saved Sucessfully",
               [
-                { text: "OK", onPress: () => navigation.navigate('Home') }
+                {
+                  text: "OK", onPress: () => navigation.navigate('AddPatientSelectTest', {
+                    patinetId: res.CreatedId
+                  })
+                }
               ]
             );
 
@@ -225,18 +236,18 @@ const AddPatietHomeScreen = () => {
         );
         setButDis(false);
       }
-    } else{
+    } else {
       setButDis(false);
       setIsLoading(false);
     }
 
-    
+
   }
 
 
   const validate = () => {
     Keyboard.dismiss();
-    
+
     let isOpValid = true
     if (PatientFName === '' || PatientFName === undefined) {
       handleError('please enter valid First Name', 'PatientFName')
@@ -499,18 +510,18 @@ const AddPatietHomeScreen = () => {
 
           </BottomSheet>
           {
-        isLoading &&
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={isLoading}
-          style={styles.centeredView}>
-          <View style={styles.centeredView}>
-        
-          <ActivityIndicator size="large" color={global.secondary} />
-          </View>
-        </Modal>
-      }
+            isLoading &&
+            <Modal
+              animationType="fade"
+              transparent={true}
+              visible={isLoading}
+              style={styles.centeredView}>
+              <View style={styles.centeredView}>
+
+                <ActivityIndicator size="large" color={global.secondary} />
+              </View>
+            </Modal>
+          }
 
 
         </View>

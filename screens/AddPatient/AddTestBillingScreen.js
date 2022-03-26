@@ -1,7 +1,7 @@
 import { Alert, Button, Dimensions, FlatList, StyleSheet, Switch, Text, TextInput, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AppButton from '../../components/ui/AppButton'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { GetStatus, InsertUpdateHomeCollection } from '../../Services/appServices/AssignPatient'
 import { Picker } from '@react-native-picker/picker'
 import { StackActions, useNavigation } from '@react-navigation/native'
@@ -74,8 +74,10 @@ import { StackActions, useNavigation } from '@react-navigation/native'
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const BilligScreen = ({ route }) => {
-  // console.log('new data', route.params.userData);
+console.log('add billing section')
+
+const AddTestBillingScreen = ({ route }) => {
+  console.log('new data', route.params.patinetId);
 
   const [CollectionCharge, setCollectionCharge] = useState(0);
   const [discount, setDiscount] = useState(0);
@@ -89,17 +91,20 @@ const BilligScreen = ({ route }) => {
   const navigation = useNavigation();
   const [btnDis, setBtnDis] = useState(false);
 
+  const user = useSelector(state => state.storeUserData);
+
   useEffect(() => {
     dispatch(GetStatus((res) => {
-      setStatusList(res?.sampleStatus);
+      setStatusList(res?.sampleStatus[0]);
     }))
   }, [])
+  // console.log(StatusList[0]);
 
   useEffect(() => {
     let temp = Number(route.params.tests.total) + Number(CollectionCharge) - Number(discount);
     setTotalAmount(temp);
 
-  }, [discount, CollectionCharge])
+  }, [discount])
 
   const renderItem = (({ item }) => (
     <View style={styles.testContainer}>
@@ -109,8 +114,6 @@ const BilligScreen = ({ route }) => {
   ))
 
   const handleSubmit = () => {
-
-
     setBtnDis(true);
     let today = new Date();
     const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -119,15 +122,15 @@ const BilligScreen = ({ route }) => {
 
     const _HomeRequest = {
       "RId": 0,
-      "PatId": route.params.userData.CId,
+      "PatId": route.params.patinetId,
       "TestTotalAmount": route.params.tests.total,
       "CollectionCharge": CollectionCharge,
       "DiscountAmount": discount,
       "GrandTotal": TotalAmount,
       "Remarks": Remarks,
-      "UserId": route.params.userData.EnterBy,
+      "UserId": user.userData.usrUserId,
       "IsActive": true,
-      "CollectorId": route.params.userData.CollectorId,
+      "CollectorId": user.userData.usrUserId,
       "CollectedDate": fialEntryDate,
       "IsPaid": isPaid,
       "RequestStatus": Status
@@ -138,7 +141,7 @@ const BilligScreen = ({ route }) => {
       _HomeCollectionTestList.push(
         {
           "SId": 0,
-          "PatId": route.params.userData.CId,
+          "PatId": route.params.patinetId,
           "RequestId": 0,
           "TestId": e.Id,
           "TestName": e.Test,
@@ -146,13 +149,12 @@ const BilligScreen = ({ route }) => {
           "ClientId": 1,
           "IsActive": true,
           "EntryDate": fialEntryDate,
-          "UserId": route.params.userData.EnterBy
+          "UserId": user.userData.usrUserId
         }
       )
     })
     // console.log(_HomeCollectionTestList);
     // fial object to sed
-
     const finalData = {
       _HomeRequest,
       _HomeCollectionTestList
@@ -166,7 +168,12 @@ const BilligScreen = ({ route }) => {
           "Saved!",
           "Test booked Sucessfully",
           [
-            { text: "OK", onPress: () => navigation.navigate('Home') }
+            {
+              text: "OK", onPress: () => {
+                const popAc = StackActions.pop(2);
+                navigation.dispatch(popAc);
+              }
+            }
           ]
         );
       }
@@ -180,7 +187,7 @@ const BilligScreen = ({ route }) => {
         );
       }
     }))
-    setBtnDis(false)
+    // setBtnDis(false)
   }
   return (
     <View style={styles.mainContainer}>
@@ -244,13 +251,17 @@ const BilligScreen = ({ route }) => {
               onValueChange={(itemValue) => setStatus(itemValue)}
               mode='dropdown'
             >
-              <Picker.Item label={'select Status'} value={''} />
               {
+                StatusList !== undefined ?
+                  <Picker.Item label={StatusList.SampleStatus} value={StatusList.StId} key={StatusList.StId} /> : null
+              }
+
+              {/* {
                 StatusList !== undefined ?
                   StatusList.map((item, index) => (
                     <Picker.Item label={item.SampleStatus} value={item.StId} key={index} />
                   )) : null
-              }
+              } */}
             </Picker>
           </View>
         </View>
@@ -279,7 +290,7 @@ const BilligScreen = ({ route }) => {
   )
 }
 
-export default BilligScreen
+export default AddTestBillingScreen
 
 const styles = StyleSheet.create({
   mainContainer: {

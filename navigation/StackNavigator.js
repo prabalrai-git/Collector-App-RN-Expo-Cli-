@@ -16,6 +16,8 @@ import SelectTest from '../screens/BookTest/SelectTest'
 import BilligScreen from '../screens/BookTest/BilligScreen'
 import SampleHomeScreen from '../screens/Sample/SampleHomeScreen'
 import PatietInfoScreen from '../screens/Sample/PatietInfoScreen'
+import AddPatientSelectTest from '../screens/AddPatient/AddPatientSelectTest'
+import AddTestBillingScreen from '../screens/AddPatient/AddTestBillingScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -128,9 +130,23 @@ const AddPatietNavigator = () => {
           }}
 
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name='AddPatientMap'
-          component={AddPatientMap}
+          component={AddPatientMap} AddTestBillingScreen
+        /> */}
+        <Stack.Screen
+          name='AddPatientSelectTest'
+          component={AddPatientSelectTest}
+          options={{
+            headerShown: false
+          }}
+        />
+        <Stack.Screen
+          name='AddTestBillingScreen'
+          component={AddTestBillingScreen}
+          options={{
+            headerShown: false
+          }}
         />
       </Stack.Group>
     </Stack.Navigator>

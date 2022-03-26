@@ -11,8 +11,8 @@ const windowHeight = Dimensions.get('window').height * 0.95;
 const windowWidth = Dimensions.get('window').width * 0.55;
 
 
-const SelectTest = ({ route }) => {
-  // console.log(route.params.data);
+const AddPatientSelectTest = ({ route }) => {
+  console.log(route.params.userId);
   const [data, setData] = useState([])
   const [selected, setSelected] = useState([]);
   const [total, setTotal] = useState(0);
@@ -25,7 +25,7 @@ const SelectTest = ({ route }) => {
     dispatch(GetTestList(res => {
       setData(res.testList);
     }))
-    // setNewData(data)
+    setNewData(data)
   }, [])
 
   // console.log(data);
@@ -74,12 +74,12 @@ const SelectTest = ({ route }) => {
   }
 
   const handleProceed = () => {
-    // const  
+    console.log('potatot potato', selected);
     if (selected.length > 0) {
-      navigation.navigate('BookTest', {
-        screen: 'BilligScreen',
+      navigation.navigate('AddPatient', {
+        screen: 'AddTestBillingScreen',
         params: {
-          userData: route.params.data,
+          patinetId: route.params.patinetId,
           tests: {
             total: total,
             testList: selected
@@ -168,7 +168,7 @@ const SelectTest = ({ route }) => {
   )
 }
 
-export default SelectTest
+export default AddPatientSelectTest
 
 const styles = StyleSheet.create({
   mainCotnainer: {
