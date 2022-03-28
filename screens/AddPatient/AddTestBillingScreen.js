@@ -278,11 +278,11 @@ const AddTestBillingScreen = ({ route }) => {
           />
         </View>
         <AppButton title='handleSubmit' onPress={() => handleSubmit()} disabled={btnDis}></AppButton>
-        <Button title='kill it' onPress={() => {
+        {/* <Button title='kill it' onPress={() => {
 
           const popAc = StackActions.pop(2);
           navigation.dispatch(popAc);
-        }}></Button>
+        }}></Button> */}
       </View>
 
 

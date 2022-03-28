@@ -7,7 +7,7 @@ const DraweNavigator = () => {
   const Drawer = createDrawerNavigator()
   return (
     <Drawer.Navigator
-      
+
       drawerPosition="right"
       screenOptions={{
         tabBarActiveTintColor: '#FF7F00',
@@ -18,7 +18,8 @@ const DraweNavigator = () => {
         component={MainStackNavigator}
         options={{
           // headerShown: false,
-          tabBarLabel: 'Home',
+          // headerShadowVisible: false,
+          title: 'Home',
           tabBarIcon: ({ size, color }) => (
             <Icon
               name='home'
@@ -48,10 +49,11 @@ const DraweNavigator = () => {
       /> */}
       <Drawer.Screen
         name='AddPatient'
+
         component={AddPatietNavigator}
         options={{
           // headerShown: false,
-          tabBarLabel: 'Add Patient',
+          title: 'Add Patient',
           tabBarIcon: ({ size, color }) => (
             <Icon
               name='new-message'
@@ -70,7 +72,7 @@ const DraweNavigator = () => {
         options={{
           // tabBarHideOnKeyboard: true,
           // headerShown: false,
-          tabBarLabel: 'Boook test',
+          title: 'Boook test',
           tabBarIcon: ({ size, color }) => (
             <Icon
               name='new-message'
@@ -88,7 +90,7 @@ const DraweNavigator = () => {
         options={{
           // tabBarHideOnKeyboard: true,
           // headerShown: false,
-          tabBarLabel: 'Total Sample',
+          title: 'Total Sample',
           tabBarIcon: ({ size, color }) => (
             <Icon
               name='new-message'
@@ -104,7 +106,7 @@ const DraweNavigator = () => {
         component={TaskNavigator}
         options={{
           // headerShown: false,
-          tabBarLabel: 'Task',
+          title: 'Task',
           tabBarIcon: ({ size, color }) => (
             <Icon
               name='list'
