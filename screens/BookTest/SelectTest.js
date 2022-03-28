@@ -102,7 +102,7 @@ const SelectTest = ({ route }) => {
         <FlatList
           style={styles.container}
           data={newData}
-          keyExtractor={(item, index) => index}
+          keyExtractor={(item, index) => `${index}${item.Id}${item.Test}`}
           renderItem={renderItem}
         />
       </View>
