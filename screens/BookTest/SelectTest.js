@@ -18,8 +18,12 @@ const SelectTest = ({ route }) => {
   const [total, setTotal] = useState(0);
   const navigation = useNavigation();
   const [newData, setNewData] = useState([]);
+
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
+
+  const [dataCheckStatus, setdataCheckStatus] = useState();
+  // compare newData
 
   useEffect(() => {
     dispatch(GetTestList(res => {
@@ -28,11 +32,13 @@ const SelectTest = ({ route }) => {
     // setNewData(data)
   }, [])
 
-  // console.log(data);
+  // console.log("selected data",selected);
   const renderItem = ({ item }) => (
-
-    <SelectTestCard data={item}
-      retData={retData} arrData={selected}
+    <SelectTestCard
+      data={item}
+      retData={retData}
+      arrData={selected}
+      checked={true}
     />
   );
 
@@ -42,14 +48,24 @@ const SelectTest = ({ route }) => {
 
     if (arr.includes(e)) {
       // for removing speciic data
-      const index = arr.indexOf(e);
-      if (index > -1) {
-        arr.splice(index, 1); // 2nd parameter means remove one item only
-        setTotal(prev => {
-          return (prev >= 0 ?
-            prev - e.Price : 0)
-        })
-      }
+      // const index = arr.indexOf(e);
+      // if (index > -1) {
+      //   arr.splice(index, 1); // 2nd parameter means remove one item only
+      //   setTotal(prev => {
+      //     return (prev >= 0 ?
+      //       prev - e.Price : 0)
+      //   })
+      // }
+      Alert.alert(
+        "Alert",
+        "The slecected test is already added",
+        [
+          {
+            text: "OK",
+            // onPress: () => console.log("OK Pressed") 
+          }
+        ]
+      );
     } else {
       arr.push(e);
       setTotal(prev => (
@@ -58,10 +74,8 @@ const SelectTest = ({ route }) => {
 
     }
     setSelected(arr);
-    // console.log('selected', selected);
-
   }
-
+  console.log(selected)
 
 
   const handleChange = (val) => {
@@ -70,11 +84,9 @@ const SelectTest = ({ route }) => {
     } else {
       setNewData(val)
     }
-    // console.log("redyrned", newData);
   }
 
   const handleProceed = () => {
-    // const  
     if (selected.length > 0) {
       navigation.navigate('BookTest', {
         screen: 'BilligScreen',
@@ -90,7 +102,6 @@ const SelectTest = ({ route }) => {
     } else {
       Alert.alert('please select test')
     }
-
     // setModalVisible(!modalVisible)
   }
 
@@ -102,7 +113,7 @@ const SelectTest = ({ route }) => {
         <FlatList
           style={styles.container}
           data={newData}
-          keyExtractor={(item, index) => `${index}${item.Id}${item.Test}`}
+          keyExtractor={(item) => `${item.Id}${item.Test}`}
           renderItem={renderItem}
         />
       </View>

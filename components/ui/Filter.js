@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { SearchBar } from 'react-native-elements'
 
 const Filter = ({data, returnData, bookTestFilter, selectTestFilter}) => {
-  console.log(data);
+  // console.log(data);
   // console.log("data" ,data.Test);
   const [search, setSearch] = useState("");
 

@@ -40,7 +40,6 @@ const BookTestHomeScreen = () => {
         data={NewData}
         renderItem={renderItem}
         keyExtractor={item => item.CId}
-        
       />
     </View>
   )

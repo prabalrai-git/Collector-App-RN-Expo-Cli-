@@ -1,18 +1,33 @@
-import { Button, Dimensions, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
-import { useEffect } from 'react';
+import { Button, Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import { CheckBox } from 'react-native-elements';
 
 const windowWidth = Dimensions.get('window').width * 0.65;
+// "Id": 22,
+// "Price": 2700,
+// "Seq": 79,
+// "Test": "Buddha Airline Basic Health Check-Up (B)",
+// "TestType": "Executive",
 
-const SelectTestCard = ({ data, retData, arrData }) => {
+const SelectTestCard = ({ data, retData, arrData, index }) => {
   const [slected, setSelected] = useState(false);
-  // console.log(data,);
-  const selectedFun =(e) => {
+  // console.log("arr data",arrData);
+  // console.log("ret data",data);
+  // console.log(index);
+
+  // let keString = `${data.Id}${data.Test}`;
+  // console.log(keString);
+
+  useEffect(() => {
+  }, [])
+  
+  const selectedFun = (e) => {
     retData(e)
-    setSelected(!slected)
+    // setSelected(!slected)e
   }
+
   return (
+    <TouchableOpacity onPress={() => selectedFun(data)}>
     <View style={styles.container}>
       <View style={styles.card}>
         <View style={styles.left}>
@@ -20,15 +35,16 @@ const SelectTestCard = ({ data, retData, arrData }) => {
           <Text style={styles.price}>Rs. {data.Price}</Text>
         </View>
         <View style={styles.right}>
-          <CheckBox
+
+          {/* <CheckBox
             checked={slected}
-            onPress={() => selectedFun(data)}
             checkedColor={'#4688B3'}
             uncheckedColor={'dimgray'}
-          />
+          /> */}
         </View>
       </View>
     </View>
+    </TouchableOpacity>
   )
 }
 
@@ -46,7 +62,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
     backgroundColor: '#fefefe',
-    alignItems:'center'
+    alignItems: 'center'
   },
   'card:last-child': {
     marginBottom: 100,
@@ -55,8 +71,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     width: windowWidth,
   },
-  price:{
+  price: {
     color: '#FFC285'
   }
-
 })
