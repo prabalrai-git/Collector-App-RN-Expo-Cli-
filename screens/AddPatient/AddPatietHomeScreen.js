@@ -116,12 +116,6 @@ const AddPatietHomeScreen = () => {
     //  let temp = {reqestorList, referedList}
   }, [])
 
-  // const handleSearch = (val) => {
-  //   serNewList(val)
-  // }
-  // // const renderItem = ({ item }) => (
-  // //   <TestCard data={item} />
-  // // )
 
 
   const handleAddress = (lat, long) => {
@@ -165,10 +159,12 @@ const AddPatietHomeScreen = () => {
       "EnterBy": user.userData.usrUserId,
       "CollectionReqDate": `${time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate()}T${time.toLocaleTimeString()}`,
     }
+    
     validate()
     if (isValid) {
 
       console.log('isvalid');
+      
       if (
         typeof data.CollectorId !== 'undefined' &&
         typeof data.PatientFName !== 'undefined' &&
@@ -180,13 +176,11 @@ const AddPatietHomeScreen = () => {
         typeof data.PatientRequestorBy !== 'undefined' &&
         typeof data.PatientNationalId !== 'undefined' &&
         typeof data.CollectionReqDate !== 'undefined'
+
       ) {
         dispatch(AssignPatient(data, (res) => {
           if (res?.CreatedId > 0 && res?.SuccessMsg === true) {
-            // console.log('message', res);
-            //           "CreatedId": 51,
-            // "Message": "New patient Added",
-            // "SuccessMsg": true,
+            
             setPatientFName(undefined);
             setPatientMName('');
             setPatientLName(undefined);
@@ -522,6 +516,7 @@ const AddPatietHomeScreen = () => {
               </View>
             </Modal>
           }
+          
 
 
         </View>
@@ -537,11 +532,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fefefe',
     flexDirection: 'row',
     justifyContent: 'center',
-    // alignItems: 'center',
-    // paddingBottom: 50,
-    // height: '100%',
-    // paddingTop: 30,
-    // flex: 1,
 
   },
   container: {

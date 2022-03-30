@@ -1,4 +1,4 @@
-import { Alert, Dimensions, FlatList, Modal, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Alert, Dimensions, FlatList, Modal, Pressable, StyleSheet, Text, View, Button } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import AppButton from '../../components/ui/AppButton';
@@ -22,8 +22,6 @@ const SelectTest = ({ route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
 
-  const [dataCheckStatus, setdataCheckStatus] = useState();
-  // compare newData
 
   useEffect(() => {
     dispatch(GetTestList(res => {
@@ -32,7 +30,6 @@ const SelectTest = ({ route }) => {
     // setNewData(data)
   }, [])
 
-  // console.log("selected data",selected);
   const renderItem = ({ item }) => (
     <SelectTestCard
       data={item}
@@ -75,7 +72,22 @@ const SelectTest = ({ route }) => {
     }
     setSelected(arr);
   }
-  console.log(selected)
+
+  const RemoveItem = (e) => {
+    let tempArr = selected;
+    if (tempArr.includes(e)) {
+      // for removing speciic data
+      const index = tempArr.indexOf(e);
+      if (index > -1) {
+        tempArr.splice(index, 1); // 2nd parameter means remove one item only
+        setTotal(prev => {
+          return (prev >= 0 ?
+            prev - e.Price : 0)
+        })
+      }
+    }
+    setSelected(tempArr);
+  }
 
 
   const handleChange = (val) => {
@@ -84,6 +96,15 @@ const SelectTest = ({ route }) => {
     } else {
       setNewData(val)
     }
+  }
+
+  const popBodule = () => {
+    if (selected.length > 0) {
+      setModalVisible(true)
+    } else {
+      Alert.alert('please select test')
+    }
+    
   }
 
   const handleProceed = () => {
@@ -126,8 +147,8 @@ const SelectTest = ({ route }) => {
           <Text style={styles.tPrice}>Rs.{total}</Text>
         </View>
 
-        <AppButton title='Proceed'
-          onPress={() => handleProceed()}
+        <AppButton title='Cart'
+          onPress={() => popBodule()}
 
         ></AppButton>
       </View>
@@ -149,8 +170,14 @@ const SelectTest = ({ route }) => {
                   {
                     selected.map((e, index) => (
                       <View key={index} style={styles.moduleList}>
-                        <Text style={{ width: windowWidth, fontSize: 14 }}>{e.Test}</Text>
-                        <Text style={{ color: "#FFC285" }}>{e.Price}</Text>
+                        <View className="moduleTest">
+                          <Text style={{ width: windowWidth, fontSize: 12 }}>{e.Test}</Text>
+                          <Text style={{ color: "#FFC285" }}>Rs.{e.Price}</Text>
+                        </View>
+                        <View>
+                          <Button title='remove' onPress={()=> RemoveItem(e)}></Button>
+                        </View>
+
                       </View>
                     ))
                   }
@@ -166,7 +193,7 @@ const SelectTest = ({ route }) => {
                     >
                       <Text style={styles.textStyle}>cancle</Text>
                     </Pressable>
-                    <AppButton title='Save' onPress={() => handleSubmit()}></AppButton>
+                    <AppButton title='Save' onPress={() => handleProceed()}></AppButton>
                   </View>
                 </View>
               </View>

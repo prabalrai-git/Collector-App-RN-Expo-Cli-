@@ -104,7 +104,7 @@ const AddTestBillingScreen = ({ route }) => {
     let temp = Number(route.params.tests.total) + Number(CollectionCharge) - Number(discount);
     setTotalAmount(temp);
 
-  }, [discount])
+  }, [discount, CollectionCharge])
 
   const renderItem = (({ item }) => (
     <View style={styles.testContainer}>

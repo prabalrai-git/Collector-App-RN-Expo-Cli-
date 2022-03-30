@@ -326,6 +326,7 @@ const styles = StyleSheet.create({
   flatListContainer: {
     width: windowWidth - 20,
     marginHorizontal: 10,
+    height: 350
   },
   testCard: {
     flexDirection: 'row',
