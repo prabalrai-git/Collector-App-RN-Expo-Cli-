@@ -17,7 +17,7 @@ const DraweNavigator = () => {
         name='Home'
         component={MainStackNavigator}
         options={{
-          // headerShown: false,
+          headerShown: false,
           // headerShadowVisible: false,
           title: 'Home',
           tabBarIcon: ({ size, color }) => (
@@ -52,7 +52,7 @@ const DraweNavigator = () => {
 
         component={AddPatietNavigator}
         options={{
-          // headerShown: false,
+          headerShown: false,
           title: 'Add Patient',
           tabBarIcon: ({ size, color }) => (
             <Icon
@@ -71,7 +71,8 @@ const DraweNavigator = () => {
         component={BookTestNavigator}
         options={{
           // tabBarHideOnKeyboard: true,
-          // headerShown: false,
+          
+          headerShown: false,
           title: 'Boook test',
           tabBarIcon: ({ size, color }) => (
             <Icon

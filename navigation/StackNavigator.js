@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import HomeScreen from '../screens/HomeScreen'
+// import HomeScreen from '../screens/HomeScreen'
 // import CollectSampleHomeScreen from '../screens/CollectSample'
 // import EnterFormScreen from '../screens/CollectSample/EnterFormScreen'
 // import SignatureCanvas from '../screens/CollectSample/SignatureCanvas'
@@ -18,6 +18,7 @@ import SampleHomeScreen from '../screens/Sample/SampleHomeScreen'
 import PatietInfoScreen from '../screens/Sample/PatietInfoScreen'
 import AddPatientSelectTest from '../screens/AddPatient/AddPatientSelectTest'
 import AddTestBillingScreen from '../screens/AddPatient/AddTestBillingScreen'
+import HomeScreen from '../screens/HomeScreen'
 
 const Stack = createNativeStackNavigator()
 

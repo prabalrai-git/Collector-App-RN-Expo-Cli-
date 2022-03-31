@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     alignItems:'center',
     paddingHorizontal: 30,
     paddingVertical: 10,
-    backgroundColor: global.primary,
+    backgroundColor: '#205072',
     borderRadius: 8,
     maxWidth: Dimensions.get('window').width * 0.95
 

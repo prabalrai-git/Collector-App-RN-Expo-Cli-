@@ -13,6 +13,7 @@ const CardButton = ({ data }) => {
         <Text style={[styles.text, GlobalStyles.title2, {color: '#fefefe'}]}>{data.name}</Text>
       </View>
     </TouchableOpacity>
+    
   )
 }
 

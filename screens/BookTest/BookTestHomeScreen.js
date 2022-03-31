@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, FlatList, ImageBackground, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import PatientCard from '../../components/ui/PatientCard'
 import { useDispatch } from 'react-redux'
@@ -16,6 +16,7 @@ const BookTestHomeScreen = () => {
     if (isFocused) {
       dispatch(GetPatientList((res) => {
         setPatietList(res.requestorcollectionList);
+        setNewData(res.requestorcollectionList)
       }))
     }
   }, [isFocused]);
@@ -35,12 +36,18 @@ const BookTestHomeScreen = () => {
 
   return (
     <View style={styles.mainContainer}>
+      <ImageBackground
+        source={require('../../assets/images/bkg6.png')}
+        resizeMode="cover"
+        style={styles.bkgImg}
+      >
       <Filter data={PatietList} returnData={handleChange} bookTestFilter></Filter>
       <FlatList
         data={NewData}
         renderItem={renderItem}
         keyExtractor={item => item.CId}
       />
+      </ImageBackground>
     </View>
   )
 }
@@ -49,7 +56,11 @@ export default BookTestHomeScreen
 
 const styles = StyleSheet.create({
   mainContainer: {
-    // paddingTop: 10,
     flex: 1
-  }
+  },
+  bkgImg: {
+    paddingTop: 40,
+    width: Dimensions.get('window').width * 1,
+    flex: 1,
+  },
 })
