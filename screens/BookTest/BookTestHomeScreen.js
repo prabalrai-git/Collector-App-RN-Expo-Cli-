@@ -36,6 +36,13 @@ const BookTestHomeScreen = () => {
     // console.log("redyrned", newData);
   }
 
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    // wait(2000).then(() => setRefreshing(false));
+  }, []);
+
   return (
     <View style={styles.mainContainer}>
 
@@ -52,6 +59,9 @@ const BookTestHomeScreen = () => {
             data={NewData}
             renderItem={renderItem}
             keyExtractor={item => item.CId}
+            
+            refreshing ={refreshing}
+            onRefresh={onRefresh}
           />
         </View>
 
@@ -74,5 +84,6 @@ const styles = StyleSheet.create({
   },
   container: {
     marginTop: 40,
+    flex: 1
   }
 })
