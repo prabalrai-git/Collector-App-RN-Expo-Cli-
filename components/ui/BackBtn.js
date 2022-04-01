@@ -12,10 +12,17 @@ const BackBtn = () => {
   return (
     <TouchableOpacity onPress={() => handleButton()} style={styles.backBtn}>
       <Icon
-        name='arrowleft'
-        color={'#ffffff'}
+        name='left'
+        color={'#9DD4E9'}
         type='antdesign'
-        size={30}
+        size={20}
+        backgroundColor={'#ffffff'}
+        style={
+          {
+            borderRadius: 12,
+            padding: 10
+          }
+        }
       ></Icon>
     </TouchableOpacity>
   )
@@ -27,6 +34,6 @@ const styles = StyleSheet.create({
   backBtn: {
     position: 'absolute',
     top: 40,
-    left: 10
+    left: 10,
   },
 })

@@ -15,7 +15,6 @@ const AppButton = (props) => {
           {/* <Text style={styles.txt}>{props.title}</Text> */}
       </Button>
     </>
-
   )
 }
 

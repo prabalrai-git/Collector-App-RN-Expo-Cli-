@@ -1,4 +1,4 @@
-import { Alert, Button, Dimensions, FlatList, Image, Modal, StyleSheet, Switch, Text, TextInput, View } from 'react-native'
+import { Alert, Button, Dimensions, FlatList, Image, ImageBackground, Modal, StyleSheet, Switch, Text, TextInput, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import AppButton from '../../components/ui/AppButton'
@@ -6,6 +6,8 @@ import { useDispatch } from 'react-redux';
 import { GetHomeCollectionTestRequestTestList, GetStatus, UpdateStatus } from '../../Services/appServices/AssignPatient';
 import Signature from "react-native-signature-canvas";
 import StatusBadge from '../../components/ui/StatusBadge';
+import HamMenu from '../../components/ui/HamMenu';
+import BackBtn from '../../components/ui/BackBtn';
 // "RId": 10,
 // "PatId": 12,
 // "CollectorId": 3,
@@ -123,152 +125,161 @@ const PatietInfoScreen = ({ route }) => {
 
   return (
     <View style={styles.mainContainer}>
-      <View style={styles.profile}>
-        <Image
-          source={require('../../assets/images/user.png')}
-          style={styles.profileImg}
-        ></Image>
-        <View style={styles.right}>
-          <Text style={styles.name}>{route.params.data.PatientFName} {route.params.data.PatientMName} {route.params.data.PatientLName}</Text>
-          <View style={{ flexDirection: 'row' }}>
-            <Text >Request ID :</Text>
-            <Text style={{ color: "#FF7F00" }}> {route.params.data.RId}</Text>
-          </View>
-          <View style={{ flexDirection: 'row' }}>
-            <Text >Cliet ID : </Text>
-            <Text style={{ color: "#FF7F00" }}>{route.params.data.PatId}</Text>
-          </View>
-          <View style={{ flexDirection: 'row' }}>
-            <Text >Collection Date : </Text>
-            <Text style={{ color: "#FF7F00" }}>{temp[0]}</Text>
-          </View>
-          <View style={{ flexDirection: 'row' }}>
-            <Text >Collection Time : </Text>
-            <Text style={{ color: "#FF7F00" }}>{temp[1]}</Text>
-          </View>
-
-
-
-        </View>
-
-      </View>
-      <View style={styles.statusCotnainer}>
-        <StatusBadge data={route.params.data.RequestStatus}></StatusBadge>
-        <StatusBadge data={'Collected'}></StatusBadge>
-        <StatusBadge data={'Lab Received'}></StatusBadge>
-        <StatusBadge data={'Report Dispatched'}></StatusBadge>
-      </View>
-      <View style={styles.flatListContainer}>
-        <Text style={styles.title}>Tests</Text>
-        <FlatList
-          data={TestList}
-          renderItem={({ item, index }) =>
-            <View style={styles.testCard}>
-              <Text style={{
-                fontSize: 16,
-                color: '#fefefe',
-                width: 25,
-                height: 25,
-                textAlign: 'center',
-                borderRadius: 50,
-                backgroundColor: '#205072',
-              }}>{index + 1}</Text>
-              <Text style={styles.testsText}>{item.TestName}</Text>
-              <Text style={styles.testsPrice}>Rs.{item.TestPrice}</Text>
-            </View>
-          }
-          keyExtractor={item => item.SId}
-        />
-        <View style={styles.testCard}>
-          <Text style={styles.titleText}>Total</Text>
-          <Text style={styles.finsltestsPrice}>Rs.{route.params.data.TestTotalAmount}</Text>
-        </View>
-        <View style={styles.testCard}>
-          <Text style={styles.titleText}>Collection Charge</Text>
-          <Text style={styles.finsltestsPrice}>Rs.{route.params.data.CollectionCharge}</Text>
-        </View>
-        <View style={styles.testCard}>
-          <Text style={styles.titleText}>Discount Amout</Text>
-          <Text style={styles.finsltestsPrice}>Rs.{route.params.data.DiscountAmount}</Text>
-        </View>
-        <View style={styles.testCard}>
-          <Text style={styles.titleText}>Grand Total</Text>
-          <Text style={styles.finsltestsPrice}>Rs.{route.params.data.GrandTotal}</Text>
-        </View>
-      </View>
-
-
-      {
-        route.params.data.RequestStatus === 'Requested' ?
-          <View style={styles.testList}>
-            <View style={styles.TextInput}>
-              <Text style={styles.formLabel}>IsPaid</Text>
-              <Switch
-                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                thumbColor={isPaid ? "#f5dd4b" : "#f4f3f4"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={toggleSwitch}
-                value={isPaid}
-                disabled={isPaid}
-              />
-            </View>
-            <View style={styles.TextInput}>
-              <TextInput
-                value={Remarks}
-                placeholder='remarks'
-                onChangeText={(e) => setRemarks(e)}
-                style={styles.inputField}
-                multiline={true}
-              ></TextInput>
-            </View>
-            <AppButton title='proceed' onPress={() => hadleProceed()} disable={btnDis}></AppButton>
-            {/* <Button disabled></Button> */}
-          </View>
-          : <Text></Text>
-      }
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isVisible}
-        onRequestClose={() => {
-          setbtnDis(!btnDis)
-          setSign(null);
-          setIsVisible(!isVisible);
-        }}
+      <ImageBackground
+        source={require('../../assets/images/bkg1.png')}
+        resizeMode="cover"
+        style={styles.bkgImg}
       >
-        <View style={styles.centeredView}>
-          <View style={styles.modelCotainer}>
-            <View style={styles.preview}>
-              {signature ? (
-                <Image
-                  resizeMode={"contain"}
-                  style={{ width: 335, height: 114 }}
-                  source={{ uri: signature }}
-                />
-              ) : null}
+        <HamMenu></HamMenu>
+        <BackBtn></BackBtn>
+        <View style={styles.container}>
+          <View style={styles.profile}>
+            <Image
+              source={require('../../assets/images/user.png')}
+              style={styles.profileImg}
+            ></Image>
+            <View style={styles.right}>
+              <Text style={styles.name}>{route.params.data.PatientFName} {route.params.data.PatientMName} {route.params.data.PatientLName}</Text>
+              <View style={{ flexDirection: 'row' }}>
+                <Text >Request ID :</Text>
+                <Text style={{ color: "#FF7F00" }}> {route.params.data.RId}</Text>
+              </View>
+              <View style={{ flexDirection: 'row' }}>
+                <Text >Cliet ID : </Text>
+                <Text style={{ color: "#FF7F00" }}>{route.params.data.PatId}</Text>
+              </View>
+              <View style={{ flexDirection: 'row' }}>
+                <Text >Collection Date : </Text>
+                <Text style={{ color: "#FF7F00" }}>{temp[0]}</Text>
+              </View>
+              <View style={{ flexDirection: 'row' }}>
+                <Text >Collection Time : </Text>
+                <Text style={{ color: "#FF7F00" }}>{temp[1]}</Text>
+              </View>
+
+
+
             </View>
-            <Signature
-              onOK={handleSubmit}
-              onEmpty={handleEmpty}
-              descriptionText="Sign"
-              clearText="Clear"
-              confirmText="Save"
-              webStyle={style}
-              style={styles.previewText}
+
+          </View>
+          <View style={styles.statusCotnainer}>
+            <StatusBadge data={route.params.data.RequestStatus}></StatusBadge>
+            <StatusBadge data={'Collected'}></StatusBadge>
+            <StatusBadge data={'Lab Received'}></StatusBadge>
+            <StatusBadge data={'Report Dispatched'}></StatusBadge>
+          </View>
+          <View style={styles.flatListContainer}>
+            <Text style={styles.title}>Tests</Text>
+            <FlatList
+              data={TestList}
+              renderItem={({ item, index }) =>
+                <View style={styles.testCard}>
+                  <Text style={{
+                    fontSize: 16,
+                    color: '#fefefe',
+                    width: 25,
+                    height: 25,
+                    textAlign: 'center',
+                    borderRadius: 50,
+                    backgroundColor: '#205072',
+                  }}>{index + 1}</Text>
+                  <Text style={styles.testsText}>{item.TestName}</Text>
+                  <Text style={styles.testsPrice}>Rs.{item.TestPrice}</Text>
+                </View>
+              }
+              keyExtractor={item => item.SId}
             />
-            <View
-              style={styles.bSheet}
-            >
-              <AppButton title='cancle' onPress={() => {
-                setSign(null)
-                setIsVisible(false)
-                setbtnDis(!btnDis)
-              }} color={'#ffc107'} buttonStyle={{ backgroundColor: 'yellow' }} />
+            <View style={styles.testCard}>
+              <Text style={styles.titleText}>Total</Text>
+              <Text style={styles.finsltestsPrice}>Rs.{route.params.data.TestTotalAmount}</Text>
+            </View>
+            <View style={styles.testCard}>
+              <Text style={styles.titleText}>Collection Charge</Text>
+              <Text style={styles.finsltestsPrice}>Rs.{route.params.data.CollectionCharge}</Text>
+            </View>
+            <View style={styles.testCard}>
+              <Text style={styles.titleText}>Discount Amout</Text>
+              <Text style={styles.finsltestsPrice}>Rs.{route.params.data.DiscountAmount}</Text>
+            </View>
+            <View style={styles.testCard}>
+              <Text style={styles.titleText}>Grand Total</Text>
+              <Text style={styles.finsltestsPrice}>Rs.{route.params.data.GrandTotal}</Text>
             </View>
           </View>
+
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={isVisible}
+            onRequestClose={() => {
+              setbtnDis(!btnDis)
+              setSign(null);
+              setIsVisible(!isVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modelCotainer}>
+                <View style={styles.preview}>
+                  {signature ? (
+                    <Image
+                      resizeMode={"contain"}
+                      style={{ width: 335, height: 114 }}
+                      source={{ uri: signature }}
+                    />
+                  ) : null}
+                </View>
+                <Signature
+                  onOK={handleSubmit}
+                  onEmpty={handleEmpty}
+                  descriptionText="Sign"
+                  clearText="Clear"
+                  confirmText="Save"
+                  webStyle={style}
+                  style={styles.previewText}
+                />
+                <View
+                  style={styles.bSheet}
+                >
+                  <AppButton title='cancle' onPress={() => {
+                    setSign(null)
+                    setIsVisible(false)
+                    setbtnDis(!btnDis)
+                  }} color={'#ffc107'} buttonStyle={{ backgroundColor: 'yellow' }} />
+                </View>
+              </View>
+            </View>
+          </Modal>
+         
         </View>
-      </Modal>
+      </ImageBackground>
+      {
+            route.params.data.RequestStatus === 'Requested' ?
+              <View style={styles.testList}>
+                <View style={styles.TextInput}>
+                  <Text style={styles.formLabel}>IsPaid</Text>
+                  <Switch
+                    trackColor={{ false: "#767577", true: "#81b0ff" }}
+                    thumbColor={isPaid ? "#f5dd4b" : "#f4f3f4"}
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={toggleSwitch}
+                    value={isPaid}
+                    disabled={isPaid}
+                  />
+                </View>
+                <View style={styles.TextInput}>
+                  <TextInput
+                    value={Remarks}
+                    placeholder='remarks'
+                    onChangeText={(e) => setRemarks(e)}
+                    style={styles.inputField}
+                    multiline={true}
+                  ></TextInput>
+                </View>
+                <AppButton title='proceed' onPress={() => hadleProceed()} disable={btnDis}></AppButton>
+                {/* <Button disabled></Button> */}
+              </View>
+              : <Text></Text>
+          }
     </View>
   )
 }
@@ -281,6 +292,17 @@ const styles = StyleSheet.create({
     // paddingTop: 40,
     // backgroundColor: '#9DD4E9'
     backgroundColor: '#fefefe',
+    position: 'relative'
+  },
+  bkgImg: {
+    width: Dimensions.get('window').width * 1,
+    height: Dimensions.get('window').height * 1.2,
+
+    // flex: 1
+  },
+  container: {
+    paddingTop: 90,
+    flex: 1,
   },
 
   profile: {
@@ -308,6 +330,8 @@ const styles = StyleSheet.create({
     // backgroundColor: '#fefefe',
     position: 'absolute',
     bottom: 0,
+    left: 0,
+    right: 0,
     backgroundColor: '#9DD4E9',
     marginTop: 20,
     paddingHorizontal: 15,

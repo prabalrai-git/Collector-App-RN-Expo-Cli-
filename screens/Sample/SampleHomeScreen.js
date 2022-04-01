@@ -1,4 +1,4 @@
-import { Button, Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Button, Dimensions, FlatList, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { GetSampleRequestListByCollector } from '../../Services/appServices/AssignPatient';
@@ -6,6 +6,8 @@ import { Avatar, Icon } from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AppButton from '../../components/ui/AppButton';
 import SampleCard from './SampleCard';
+import HamMenu from '../../components/ui/HamMenu';
+import BackBtn from '../../components/ui/BackBtn';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -32,7 +34,7 @@ const SampleHomeScreen = () => {
   const [RequestList, setRequestList] = useState();
   const user = useSelector(state => state.storeUserData);
   // console.log(user.userData.usrUserId);
- 
+
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [toshow, setToShow] = useState(false);
@@ -86,76 +88,88 @@ const SampleHomeScreen = () => {
 
 
   const renderItem = ({ item }) => (
-    <SampleCard item={item}/>
+    <SampleCard item={item} />
   )
 
 
 
   return (
     <View style={styles.mainContainer}>
-      <View style={styles.dateFiltercontainer}>
-        <TouchableOpacity
-          onPress={showDatepicker}
-          style={styles.TextInput}
-        >
-          <View style={styles.inputField}>
-            <Text>{FromDate === '' ? 'FromDate..' : FromDate.toLocaleDateString()}</Text>
-            <Icon
-              name='calendar'
-              color={'#FF7F00'}
-              type='entypo'
-              size={20}
-            ></Icon>
+
+      <ImageBackground
+        source={require('../../assets/images/bkg1.png')}
+        resizeMode="cover"
+        style={styles.bkgImg}
+      >
+        <HamMenu></HamMenu>
+        <BackBtn></BackBtn>
+        <View style={styles.container}>
+
+          <View style={styles.dateFiltercontainer}>
+            <TouchableOpacity
+              onPress={showDatepicker}
+              style={styles.TextInput}
+            >
+              <View style={styles.inputField}>
+                <Text>{FromDate === '' ? 'FromDate..' : FromDate.toLocaleDateString()}</Text>
+                <Icon
+                  name='calendar'
+                  color={'#00e1ff68'}
+                  type='entypo'
+                  size={20}
+                ></Icon>
+              </View>
+            </TouchableOpacity>
+            {show &&
+              <DateTimePicker
+                testID="dateTimePicker"
+                // timeZoneOffsetInMinutes={0}
+                value={FromDate}
+                mode={mode}
+                is24Hour={true}
+                display="default"
+                onChange={onChangeFromData}
+
+              />
+            }
+
+            <TouchableOpacity
+              onPress={showToDatepicker}
+              style={styles.TextInput}
+            >
+              <View style={styles.inputField}>
+                <Text>{ToDate === '' ? 'ToDate..' : ToDate.toLocaleDateString()}</Text>
+                <Icon
+                  name='calendar'
+                  color={'#00e1ff67'}
+                  type='entypo'
+                  size={20}
+                ></Icon>
+              </View>
+            </TouchableOpacity>
+            {toshow &&
+              <DateTimePicker
+                testID="dateTimePicker"
+                // timeZoneOffsetInMinutes={0}
+                value={ToDate}
+                mode={mode}
+                is24Hour={true}
+                display="default"
+                onChange={onChangeToData}
+              />
+            }
+            <AppButton title='Search' onPress={() => handleClick()}></AppButton>
           </View>
-        </TouchableOpacity>
-        {show &&
-          <DateTimePicker
-            testID="dateTimePicker"
-            // timeZoneOffsetInMinutes={0}
-            value={FromDate}
-            mode={mode}
-            is24Hour={true}
-            display="default"
-            onChange={onChangeFromData}
 
-          />
-        }
-
-        <TouchableOpacity
-          onPress={showToDatepicker}
-          style={styles.TextInput}
-        >
-          <View style={styles.inputField}>
-            <Text>{ToDate === '' ? 'ToDate..' : ToDate.toLocaleDateString()}</Text>
-            <Icon
-              name='calendar'
-              color={'#FF7F00'}
-              type='entypo'
-              size={20}
-            ></Icon>
+          <View style={styles.listcontainer}>
+            <FlatList
+              data={RequestList}
+              renderItem={renderItem}
+              keyExtractor={item => item.RId}
+            ></FlatList>
           </View>
-        </TouchableOpacity>
-        {toshow &&
-          <DateTimePicker
-            testID="dateTimePicker"
-            // timeZoneOffsetInMinutes={0}
-            value={ToDate}
-            mode={mode}
-            is24Hour={true}
-            display="default"
-            onChange={onChangeToData}
-          />
-        }
-        <AppButton title='Search' onPress={() => handleClick()}></AppButton>
-      </View>
-
-      <View style={styles.listcontainer}>
-        <FlatList
-          data={RequestList}
-          renderItem={renderItem}
-          keyExtractor={item => item.RId}
-        ></FlatList>
-      </View>
+        </View>
+      </ImageBackground>
     </View >
   )
 }
@@ -170,13 +184,24 @@ const styles = StyleSheet.create({
     // justifyContent: 'space-between',
     // alignItems: 'center'
     // paddingTop: 40,
+    position: 'relative'
+  },
+  bkgImg: {
+    width: Dimensions.get('window').width * 1,
+    height: Dimensions.get('window').height * 1.2,
+
+    // flex: 1
+  },
+  container: {
+    paddingTop: 40
   },
   dateFiltercontainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#FF7F00',
+    backgroundColor: '#00e1ff13',
     paddingHorizontal: 10,
-    paddingVertical: 10
+    paddingVertical: 10,
+    marginTop: 40,
   },
   TextInput: {
     width: windowWidth * 0.3,
@@ -192,12 +217,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center'
   },
-  
+
   listcontainer: {
     justifyContent: 'center',
     width: windowWidth,
     height: windowHeight * 0.86,
     flexDirection: 'row',
-    alignItems: 'center',
+    // alignItems: 'center',
   },
 })

@@ -1,4 +1,4 @@
-import { Alert, Dimensions, FlatList, Modal, Pressable, StyleSheet, Text, View, Button } from 'react-native'
+import { Alert, Dimensions, FlatList, Modal, Pressable, StyleSheet, Text, View, Button, ImageBackground } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import AppButton from '../../components/ui/AppButton';
@@ -6,6 +6,9 @@ import SelectTestCard from '../../components/ui/SelectTestCard';
 import Filter from '../../components/ui/Filter';
 import { useDispatch } from 'react-redux';
 import { GetTestList } from '../../Services/appServices/AssignPatient';
+import HamMenu from '../../components/ui/HamMenu';
+import BackBtn from '../../components/ui/BackBtn';
+import CancleBtn from '../../components/ui/CancleBtn';
 
 const windowHeight = Dimensions.get('window').height * 0.95;
 const windowWidth = Dimensions.get('window').width * 0.55;
@@ -102,7 +105,7 @@ const AddPatientSelectTest = ({ route }) => {
     } else {
       Alert.alert('please select test')
     }
-    
+
   }
 
   const handleProceed = () => {
@@ -123,85 +126,95 @@ const AddPatientSelectTest = ({ route }) => {
       Alert.alert('please select test')
     }
 
-    // setModalVisible(!modalVisible)
+    setModalVisible(!modalVisible)
   }
 
 
   return (
     <View style={styles.mainCotnainer}>
-      <Filter data={data} returnData={handleChange} selectTestFilter></Filter>
-      <View style={styles.midContainer}>
-        <FlatList
-          style={styles.container}
-          data={newData}
-          keyExtractor={(item, index) => index}
-          renderItem={renderItem}
-        />
-      </View>
-      <View style={styles.btnContainer}>
-        <View style={{
-          flexDirection: 'row',
-          alignItems: 'center'
-        }}>
-          <Text style={styles.tSum}>Total: </Text>
-          <Text style={styles.tPrice}>Rs.{total}</Text>
+      <ImageBackground
+        source={require('../../assets/images/bkg8.png')}
+        resizeMode="cover"
+        style={styles.bkgImg}
+      >
+        <HamMenu></HamMenu>
+        <BackBtn></BackBtn>
+        <View style={styles.container}>
+          <Filter data={data} returnData={handleChange} selectTestFilter></Filter>
+          <View style={styles.midContainer}>
+            <FlatList
+              // style={styles.container}
+              data={newData}
+              keyExtractor={(item, index) => index}
+              renderItem={renderItem}
+            />
+          </View>
         </View>
+        <View style={styles.btnContainer}>
+          <View style={{
+            flexDirection: 'row',
+            alignItems: 'center'
+          }}>
+            <Text style={styles.tSum}>Total: </Text>
+            <Text style={styles.tPrice}>Rs.{total}</Text>
+          </View>
 
-        <AppButton title='cart'
-          onPress={() => popBodule()}
+          <AppButton title='cart'
+            onPress={() => popBodule()}
 
-        ></AppButton>
-      </View>
-      {
-        modalVisible === true ?
+          ></AppButton>
+        </View>
+        {
+          modalVisible === true ?
 
-          <View style={styles.modalBkg}>
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => {
-                setModalVisible(!modalVisible);
-              }}
-            >
-              <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                  <Text>Test list</Text>
-                  {
-                    selected.map((e, index) => (
-                      <View key={index} style={styles.moduleList}>
-                        <View className="moduleTest">
-                          <Text style={{ width: windowWidth, fontSize: 12 }}>{e.Test}</Text>
-                          <Text style={{ color: "#FFC285" }}>Rs.{e.Price}</Text>
+            <View style={styles.modalBkg}>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    {/* <Text>Test list</Text> */}
+                    {
+                      selected.map((e, index) => (
+                        <View key={index} style={styles.moduleList}>
+                          <View>
+                            <Text style={{ width: windowWidth, fontSize: 12 }}>{e.Test}</Text>
+                            <Text style={{ color: "#FFC285" }}>Rs.{e.Price}</Text>
+                          </View>
+                          <View>
+                          <CancleBtn title='remove' onPress={() => RemoveItem(e)}></CancleBtn>
+                          </View>
+
                         </View>
-                        <View>
-                          <Button title='remove' onPress={()=> RemoveItem(e)}></Button>
-                        </View>
+                      ))
+                    }
+                    <View style={styles.moduleTest}>
+                      <Text style={{color: '#fefefe', fontSize: 16}}>Total</Text>
+                      <Text style={styles.tPrice}>{total}</Text>
+                    </View>
 
-                      </View>
-                    ))
-                  }
-                  <View style={styles.moduleList}>
-                    <Text>Total</Text>
-                    <Text style={styles.tPrice}>{total}</Text>
-                  </View>
-
-                  <View style={styles.moduleList}>
-                    <Pressable
-                      style={[styles.button, styles.buttonClose]}
-                      onPress={() => setModalVisible(!modalVisible)}
-                    >
-                      <Text style={styles.textStyle}>cancle</Text>
-                    </Pressable>
-                    <AppButton title='Save' onPress={() => handleProceed()}></AppButton>
+                    <View style={styles.moduleList}>
+                      {/* <Pressable
+                        style={[styles.button, styles.buttonClose]}
+                        onPress={() => setModalVisible(!modalVisible)}
+                      >
+                        <Text style={styles.textStyle}>cancle</Text>
+                      </Pressable> */}
+                      <CancleBtn title={'cancle'} onPress={() => setModalVisible(!modalVisible)}></CancleBtn>
+                      <AppButton title='proceed' onPress={() => handleProceed()}></AppButton>
+                    </View>
                   </View>
                 </View>
-              </View>
-            </Modal>
-          </View>
-          : <View></View>
-      }
-
+              </Modal>
+            </View>
+            : <View></View>
+        }
+      </ImageBackground>
     </View>
   )
 }
@@ -210,9 +223,17 @@ export default AddPatientSelectTest
 
 const styles = StyleSheet.create({
   mainCotnainer: {
-    // height: windowHeight,
-    // paddingTop: 40,
-    // backgroundColor: '#fefefe'
+    backgroundColor: '#fefefe',
+    flex: 1,
+    position: 'relative'
+  },
+  bkgImg: {
+    paddingTop: 40,
+    width: Dimensions.get('window').width * 1,
+    flex: 1,
+  },
+  container: {
+    marginTop: 40,
   },
   midContainer: {
     height: windowHeight * 0.9,
@@ -229,7 +250,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     backgroundColor: '#fefefe',
     position: 'absolute',
-    bottom: 10,
+    bottom: 0,
     width: '100%',
     shadowColor: "#000",
     shadowOffset: {
@@ -293,6 +314,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: "100%",
-
+    marginBottom: 10,
+  },
+  moduleTest:{
+    // borderWidth: 1,
+    // borderColor: 'red',
+    width: '100%',
+    marginBottom: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderRadius: 2,
+    backgroundColor: '#4688B3'
   }
 })

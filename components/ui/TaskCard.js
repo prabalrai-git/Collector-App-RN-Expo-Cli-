@@ -2,6 +2,7 @@ import { Button, Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, Te
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import AppButton from './AppButton';
+import CancleBtn from './CancleBtn';
 
 const windowWidth = Dimensions.get('window').width
 
@@ -14,7 +15,7 @@ const TaskCard = ({ data }) => {
 
   const hadleEvent = () => {
     setisVisibe(true)
-    
+
   }
 
   const navigation = useNavigation()
@@ -41,32 +42,35 @@ const TaskCard = ({ data }) => {
           {
             isRemarksVisible ?
               <View style={styles.TextInput}>
-                <Text style={styles.formLabel}>Remarks</Text>
+                <Text style={styles.formLabel}>Please write remarks on why you decline</Text>
                 <TextInput
                   value={Remarks}
                   placeholder='Remarks'
                   onChangeText={(e) => setRemarks(e)}
                   style={styles.inputField}
+                  multiline={true}
                 // keyboardType='numeric'
                 ></TextInput>
 
                 <AppButton title='Send' onPress={() => {
                   setisVisibe(!isVisibe)
                   setisRemarksVisible(false)
-                  }}></AppButton>
+                }}></AppButton>
               </View>
 
               :
               <View style={styles.module}>
-                <Button title='Reject' color={'#e0c945'} onPress={() => setisRemarksVisible(true)}></Button>
+
+                <CancleBtn title='Reject' color={'#e0c945'} onPress={() => setisRemarksVisible(true)}></CancleBtn>
                 <Text>   </Text>
                 <AppButton title='Accept' onPress={() => {
                   setisVisibe(false)
                   navigation.navigate('MapScreen',
-                  {
-                    data: data
-                  }
-                )}}></AppButton>
+                    {
+                      data: data
+                    }
+                  )
+                }}></AppButton>
               </View>
 
 
@@ -139,6 +143,15 @@ const styles = StyleSheet.create({
     // width: 200,
     // height: 200,
     flexDirection: 'row'
+  },
+  inputField: {
+    borderWidth: 1,
+    borderColor: 'red',
+    width: windowWidth * 0.92,
+    minHeight: 100,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 10,
+    marginBottom: 10,
   }
-
 })

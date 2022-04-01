@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux'
 import { GetStatus, InsertUpdateHomeCollection } from '../../Services/appServices/AssignPatient'
 import { Picker } from '@react-native-picker/picker'
 import { StackActions, useNavigation } from '@react-navigation/native'
+import HamMenu from '../../components/ui/HamMenu'
+import BackBtn from '../../components/ui/BackBtn'
 
 // "_HomeRequest": {
 //   "RId": 1, //?? =0
@@ -184,6 +186,8 @@ const BilligScreen = ({ route }) => {
   }
   return (
     <View style={styles.mainContainer}>
+      <HamMenu></HamMenu>
+        <BackBtn></BackBtn>
       <View style={styles.fatlistfContainer}>
         <FlatList
           data={route.params.tests.testList}
@@ -266,7 +270,7 @@ const BilligScreen = ({ route }) => {
             value={isPaid}
           />
         </View>
-        <AppButton title='handleSubmit' onPress={() => handleSubmit()} disabled={btnDis}></AppButton>
+        <AppButton title='Submit' onPress={() => handleSubmit()} disabled={btnDis}></AppButton>
         {/* <Button title='kill it' onPress={() => {
 
           const popAc = StackActions.pop(2);
@@ -283,7 +287,7 @@ export default BilligScreen
 
 const styles = StyleSheet.create({
   mainContainer: {
-    // paddingTop: 40,
+    paddingTop: 40,
     backgroundColor: '#4688B3',
     // justifyContent: 'center',
     // alignItems: 'center',

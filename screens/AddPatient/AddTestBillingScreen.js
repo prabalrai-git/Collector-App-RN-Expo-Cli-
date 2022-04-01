@@ -294,7 +294,7 @@ export default AddTestBillingScreen
 
 const styles = StyleSheet.create({
   mainContainer: {
-    // paddingTop: 40,
+    paddingTop: 40,
     backgroundColor: '#4688B3',
     // justifyContent: 'center',
     // alignItems: 'center',

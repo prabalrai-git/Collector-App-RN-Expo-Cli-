@@ -20,7 +20,7 @@ const SelectTestCard = ({ data, retData, arrData, index }) => {
 
   useEffect(() => {
   }, [])
-  
+
   const selectedFun = (e) => {
     retData(e)
     // setSelected(!slected)e
@@ -28,22 +28,22 @@ const SelectTestCard = ({ data, retData, arrData, index }) => {
 
   return (
     <TouchableOpacity onPress={() => selectedFun(data)}>
-    <View style={styles.container}>
-      <View style={styles.card}>
-        <View style={styles.left}>
-          <Text style={styles.title}>{data.Test}</Text>
-          <Text style={styles.price}>Rs. {data.Price}</Text>
-        </View>
-        <View style={styles.right}>
+      <View style={styles.container}>
+        <View style={styles.card}>
+          <View style={styles.left}>
+            <Text style={styles.title}>{data.Test}</Text>
+            <Text style={styles.price}>Rs. {data.Price}</Text>
+          </View>
+          <View style={styles.right}>
 
-          {/* <CheckBox
+            {/* <CheckBox
             checked={slected}
             checkedColor={'#4688B3'}
             uncheckedColor={'dimgray'}
           /> */}
+          </View>
         </View>
       </View>
-    </View>
     </TouchableOpacity>
   )
 }
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 10,
     marginVertical: 5,
+    
   },
   card: {
     flexDirection: 'row',
@@ -62,7 +63,17 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
     backgroundColor: '#fefefe',
-    alignItems: 'center'
+    alignItems: 'center',
+    shadowColor: "#ecdcae",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+  
   },
   'card:last-child': {
     marginBottom: 100,

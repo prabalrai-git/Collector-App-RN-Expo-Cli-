@@ -90,7 +90,7 @@ const DraweNavigator = () => {
         component={SampleCollectionNavigator}
         options={{
           // tabBarHideOnKeyboard: true,
-          // headerShown: false,
+          headerShown: false,
           title: 'Total Sample',
           tabBarIcon: ({ size, color }) => (
             <Icon
@@ -106,7 +106,7 @@ const DraweNavigator = () => {
         name='task'
         component={TaskNavigator}
         options={{
-          // headerShown: false,
+          headerShown: false,
           title: 'Task',
           tabBarIcon: ({ size, color }) => (
             <Icon

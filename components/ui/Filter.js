@@ -65,7 +65,7 @@ const Filter = ({data, returnData, bookTestFilter, selectTestFilter}) => {
         onChangeText={e => setSearch(e)}
         value={search}
         platform= 'ios'
-        containerStyle={{backgroundColor: '#FF7F00'}}
+        containerStyle={{backgroundColor: '#00e1ff13'}}
         inputContainerStyle={{backgroundColor: '#fefefe'}}
         cancelButtonProps={{
           color: '#fefefe'

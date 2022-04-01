@@ -5,13 +5,15 @@ import { useDispatch } from 'react-redux'
 import { GetPatientList } from '../../Services/appServices/AssignPatient'
 import Filter from '../../components/ui/Filter'
 import { useIsFocused } from '@react-navigation/native'
+import HamMenu from '../../components/ui/HamMenu'
+import BackBtn from '../../components/ui/BackBtn'
 
 const BookTestHomeScreen = () => {
   const [PatietList, setPatietList] = useState();
   const [NewData, setNewData] = useState([])
   const isFocused = useIsFocused();
   const dispatch = useDispatch()
-  
+
   useEffect(() => {
     if (isFocused) {
       dispatch(GetPatientList((res) => {
@@ -36,17 +38,23 @@ const BookTestHomeScreen = () => {
 
   return (
     <View style={styles.mainContainer}>
+
       <ImageBackground
-        source={require('../../assets/images/bkg6.png')}
+        source={require('../../assets/images/bkg8.png')}
         resizeMode="cover"
         style={styles.bkgImg}
       >
-      <Filter data={PatietList} returnData={handleChange} bookTestFilter></Filter>
-      <FlatList
-        data={NewData}
-        renderItem={renderItem}
-        keyExtractor={item => item.CId}
-      />
+        <HamMenu></HamMenu>
+        <BackBtn></BackBtn>
+        <View style={styles.container}>
+          <Filter data={PatietList} returnData={handleChange} bookTestFilter></Filter>
+          <FlatList
+            data={NewData}
+            renderItem={renderItem}
+            keyExtractor={item => item.CId}
+          />
+        </View>
+
       </ImageBackground>
     </View>
   )
@@ -61,6 +69,10 @@ const styles = StyleSheet.create({
   bkgImg: {
     paddingTop: 40,
     width: Dimensions.get('window').width * 1,
+    // height: Dimensions.get('window').height * 1,
     flex: 1,
   },
+  container: {
+    marginTop: 40,
+  }
 })

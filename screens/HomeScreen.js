@@ -175,7 +175,7 @@ const HomeScreen = () => {
   return (
     <View style={styles.maincontainer}>
       <ImageBackground
-        source={require('../assets/images/bkg4.png')}
+        source={require('../assets/images/bkg2.png')}
         resizeMode="cover"
         style={styles.bkgImg}
       >
@@ -268,7 +268,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#F57F20',
+    // backgroundColor: '#F57F20',
+    backgroundColor: '#9DD4E9',
     borderTopLeftRadius: 18,
     borderTopRightRadius: 18,
   }
