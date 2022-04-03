@@ -1,124 +1,57 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Dimensions, ImageBackground, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { AddPatietNavigator, BookTestNavigator, CollectSampleNavigator, MainStackNavigator, SampleCollectionNavigator, TaskNavigator } from './StackNavigator';
-import { Icon } from 'react-native-elements';
-import SampleHomeScreen from '../screens/Sample/SampleHomeScreen';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import AcceptedTask from '../screens/Tasks/AcceptedTask';
+import AssignedTask from '../screens/Tasks/AssignedTask';
+import CompletedTask from '../screens/Tasks/CompletedTask';
+import RejectedTask from '../screens/Tasks/RejectedTask';
+import HamMenu from '../components/ui/HamMenu';
+import BackBtn from '../components/ui/BackBtn';
+
 
 
 
 const TabNavigator = () => {
-  const Tab = createBottomTabNavigator();
+  const Tab = createMaterialTopTabNavigator();
   return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarActiveTintColor: '#FF7F00',
-      }}
-    >
-      <Tab.Screen
-        name='Home'
-        component={MainStackNavigator}
-        options={{
-          headerShown: false,
-          tabBarLabel: 'Home',
-          tabBarIcon: ({ size, color }) => (
-            <Icon
-              name='home'
-              color={'#FF7F00'}
-              type='entypo'
-              style={styles.icon}
-            ></Icon>
-          )
-        }}
+    // <ImageBackground
+    //   source={require('../assets/images/bkg1.png')}
+    //   resizeMode="cover"
+    //   style={styles.bkgImg}
+    // >
+    <View style={styles.bkgImg}>
 
-      />
-      {/* <Tab.Screen
-        name='CollectSample'
-        component={CollectSampleNavigator}
-        options={{
-          headerShown: false,
-          tabBarLabel: 'Collect Sample',
-          tabBarIcon: ({ size, color }) => (
-            <Icon
-              name='lab-flask'
-              color={'#FF7F00'}
-              type='entypo'
-              style={styles.icon}
-            ></Icon>
-          )
-        }}
-      /> */}
-      <Tab.Screen
-        name='task'
-        component={TaskNavigator}
-        options={{
-          headerShown: false,
-          tabBarLabel: 'Task',
-          tabBarIcon: ({ size, color }) => (
-            <Icon
-              name='list'
-              color={'#FF7F00'}
-              type='entypo'
-              style={styles.icon}
-            ></Icon>
-          )
-        }}
-      />
-      <Tab.Screen
-        name='AddPatient'
-        component={AddPatietNavigator}
-        options={{
-          headerShown: false,
-          tabBarLabel: 'Add Patient',
-          tabBarIcon: ({ size, color }) => (
-            <Icon
-              name='new-message'
-              color={'#FF7F00'}
-              type='entypo'
-              style={styles.icon}
-            ></Icon>
-          )
-        }}
-      />
-      <Tab.Screen
-        name='BookTest'
-        component={BookTestNavigator}
-        options={{
-          // tabBarHideOnKeyboard: true,
-          headerShown: false,
-          tabBarLabel: 'Boook test',
-          tabBarIcon: ({ size, color }) => (
-            <Icon
-              name='new-message'
-              color={'#FF7F00'}
-              type='entypo'
-              style={styles.icon}
-            ></Icon>
-          )
-        }}
-      />
 
-      <Tab.Screen
-        name='SampleHome'
-        component={SampleCollectionNavigator}
-        options={{
-          // tabBarHideOnKeyboard: true,
-          headerShown: false,
-          tabBarLabel: 'Total Sample',
-          tabBarIcon: ({ size, color }) => (
-            <Icon
-              name='new-message'
-              color={'#FF7F00'}
-              type='entypo'
-              style={styles.icon}
-            ></Icon>
-          )
+      <HamMenu></HamMenu>
+      <BackBtn></BackBtn>
+      <Tab.Navigator
+        screenOptions={{
+          tabBarLabelStyle: { fontSize: 12 },
+          tabBarItemStyle: { width: 100 },
+          tabBarStyle: { backgroundColor: '#b1ddf6' },
+
         }}
-      />
-    </Tab.Navigator>
+      >
+        <Tab.Screen name="AssignedTask" component={AssignedTask} options={{ title: 'Asigned Task' }} />
+        <Tab.Screen name="AcceptedTask" component={AcceptedTask} options={{ title: 'Accepted Task' }} />
+        <Tab.Screen name="CompletedTask" component={CompletedTask} options={{ title: 'Completed Task' }} />
+        <Tab.Screen name="RejectedTask" component={RejectedTask} options={{ title: 'Rejected Task' }} />
+      </Tab.Navigator>
+    </View>
+    // </ImageBackground>
+
   )
 }
 
 export default TabNavigator
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+
+  bkgImg: {
+    width: Dimensions.get('window').width * 1,
+    flex: 1,
+    paddingTop: 90,
+    backgroundColor: '#b1ddf6'
+  },
+  
+})

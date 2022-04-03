@@ -19,6 +19,7 @@ import PatietInfoScreen from '../screens/Sample/PatietInfoScreen'
 import AddPatientSelectTest from '../screens/AddPatient/AddPatientSelectTest'
 import AddTestBillingScreen from '../screens/AddPatient/AddTestBillingScreen'
 import HomeScreen from '../screens/HomeScreen'
+import TabNavigator from './TabNavigator'
 
 const Stack = createNativeStackNavigator()
 
@@ -92,9 +93,16 @@ const TaskNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Group>
-        <Stack.Screen
+        {/* <Stack.Screen
           name='TaskScreen'
           component={TaskHomeScreen}
+          options={{
+            headerShown: false
+          }}
+        /> */}
+        <Stack.Screen
+          name='TaskScreen'
+          component={TabNavigator}
           options={{
             headerShown: false
           }}

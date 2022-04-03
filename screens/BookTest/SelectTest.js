@@ -38,7 +38,6 @@ const SelectTest = ({ route }) => {
       data={item}
       retData={retData}
       arrData={selected}
-      checked={true}
     />
   );
 
@@ -48,24 +47,24 @@ const SelectTest = ({ route }) => {
 
     if (arr.includes(e)) {
       // for removing speciic data
-      // const index = arr.indexOf(e);
-      // if (index > -1) {
-      //   arr.splice(index, 1); // 2nd parameter means remove one item only
-      //   setTotal(prev => {
-      //     return (prev >= 0 ?
-      //       prev - e.Price : 0)
-      //   })
-      // }
-      Alert.alert(
-        "Alert",
-        "The slecected test is already added",
-        [
-          {
-            text: "OK",
-            // onPress: () => console.log("OK Pressed") 
-          }
-        ]
-      );
+      const index = arr.indexOf(e);
+      if (index > -1) {
+        arr.splice(index, 1); // 2nd parameter means remove one item only
+        setTotal(prev => {
+          return (prev >= 0 ?
+            prev - e.Price : 0)
+        })
+      }
+      // Alert.alert(
+      //   "Alert",
+      //   "removed test",
+      //   [
+      //     {
+      //       text: "OK",
+      //       // onPress: () => console.log("OK Pressed") 
+      //     }
+      //   ]
+      // );
     } else {
       arr.push(e);
       setTotal(prev => (

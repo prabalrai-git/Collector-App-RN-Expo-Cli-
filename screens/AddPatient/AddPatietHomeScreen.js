@@ -68,7 +68,6 @@ const AddPatietHomeScreen = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   const [errors, setErrors] = useState({});
-  const [isValid, setisValid] = useState(false);
 
   const [region, setRegion] = useState({
     latitude: 27.7172,
@@ -135,14 +134,17 @@ const AddPatietHomeScreen = () => {
     //   patinetId: 51
     // })
     // return
-    setButDis(true)
+    console.log("1st");
     setIsLoading(true);
-    
+    setButDis(true);
+
     console.log('pressed');
     let today = new Date();
     const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     const newTime = today.toLocaleTimeString();
     const fialEntryDate = newDate + 'T' + newTime;
+
+
 
     let data = {
       "CId": 0,
@@ -163,11 +165,12 @@ const AddPatietHomeScreen = () => {
       "CollectionReqDate": `${time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate()}T${time.toLocaleTimeString()}`,
     }
 
-    validate()
-    if (isValid) {
-
-      console.log('isvalid');
-
+    // console.log('PatientFName 1', isValid);
+    // validate()
+    // console.log('PatientFName 3', isValid);
+    let isValidated = validate();
+    console.log("isValidated", isValidated);
+    if (isValidated) {
       if (
         typeof data.CollectorId !== 'undefined' &&
         typeof data.PatientFName !== 'undefined' &&
@@ -238,13 +241,13 @@ const AddPatietHomeScreen = () => {
       setIsLoading(false);
     }
 
-
+console.log("last");
   }
 
 
   const validate = () => {
     Keyboard.dismiss();
-
+    console.log('PatientFName 3', isValid);
     let isOpValid = true
     if (PatientFName === '' || PatientFName === undefined) {
       handleError('please enter valid First Name', 'PatientFName')
@@ -266,209 +269,199 @@ const AddPatietHomeScreen = () => {
       handleError('please enter valid remarks', 'Remarks')
       isOpValid = false
     }
-    setisValid(isOpValid);
+    return isOpValid;
   }
   const handleError = (error, input) => {
     setErrors(prevState =>
       ({ ...prevState, [input]: error }));
   };
 
-  // console.log(errors); PatientLName PatientAge PatientNationalId
-  // useEffect(() => {
-
-  //   setErrors({})
-  // }, [])
-  // const onBackPress = () => {
-  //   handleError(null, 'PatientFName')
-  //   handleError(null, 'PatientLName')
-  //   handleError(null, 'PatientAge')
-  //   handleError(null, 'PatientNationalId')
-  //   handleError(null, 'Remarks')
-  // }
-  // BackHandler.addEventListener('hardwareBackPress', onBackPress)
-
   return (
     <SafeAreaView>
+
+
       <ImageBackground
         source={require('../../assets/images/bkg1.png')}
         resizeMode="cover"
         style={styles.bkgImg}
       >
+
         <HamMenu></HamMenu>
         <BackBtn></BackBtn>
         <View style={styles.maincontainer}>
           <View style={styles.container}>
-            {/* <Text style={styles.title}>Add Patient</Text> */}
+            <Text style={styles.title}>Add Patient</Text>
             <ScrollView>
-              <Input
-                value={PatientFName}
-                placeholder='First Name'
-                onChangeText={(fname) => setPatientFName(fname)}
-                onFocus={() => handleError(null, 'PatientFName')}
-                label="Full Name"
-                errorMessage={errors.PatientFName}
+              
+              
+                <Input
+                  value={PatientFName}
+                  placeholder='First Name'
+                  onChangeText={(fname) => setPatientFName(fname)}
+                  onFocus={() => handleError(null, 'PatientFName')}
+                  label="Full Name"
+                  errorMessage={errors.PatientFName}
 
-              />
-
-              <Input
-                value={PatientMName}
-                placeholder='Middle Name'
-                onChangeText={(mname) => setPatientMName(mname)}
-                onFocus={() => handleError(null, 'PatientMName')}
-                label="Middle Name"
-                errorMessage={errors.PatientMName}
-              />
-
-              <Input
-                value={PatientLName}
-                placeholder='Last Name'
-                onChangeText={(lname) => setPatientLName(lname)}
-                onFocus={() => handleError(null, 'PatientLName')}
-                label="Middle Name"
-                errorMessage={errors.PatientLName}
-              />
-
-              <View style={styles.TextInput}>
-                <View style={styles.PickerTextInput}>
-                  <Picker
-                    selectedValue={PatientGender}
-                    placeholder='gender'
-                    onValueChange={(itemValue, itemIndex) => setPatientGender(itemValue)}
-                    mode='dropdown'
-                  >
-                    <Picker.Item label='select gender' value='select gender' />
-                    <Picker.Item label='male' value='male' />
-                    <Picker.Item label='female' value='female' />
-                  </Picker>
-                </View>
-              </View>
-
-              <Input
-                value={PatientEmailId}
-                placeholder='email'
-                onChangeText={(email) => setPatientEmailId(email)}
-                onFocus={() => handleError(null, 'PatientEmailId')}
-                label="email"
-                errorMessage={errors.PatientEmailId}
-              />
-
-              <View style={styles.TextInput}>
-                <TouchableOpacity style={styles.inputField} onPress={() => setIsVisible(true)}>
-                  <View style={{
-                    flexDirection: 'row'
-                  }}>
-                    <Text>{JSON.stringify(region.latitude)}, </Text>
-                    <Text>{JSON.stringify(region.longitude)}</Text>
-                  </View>
-                  <Icon
-                    name='location-pin'
-                    color={'#FF7F00'}
-                    type='entypo'
-                    style={styles.icon}
-                  ></Icon>
-                </TouchableOpacity>
-              </View>
-
-              <Input
-                value={PatientAge}
-                placeholder='Age'
-                onChangeText={(e) => setPatientAge(e)}
-                keyboardType='number-pad'
-                onFocus={() => handleError(null, 'PatientAge')}
-                label="Age"
-                errorMessage={errors.PatientAge}
-              />
-
-
-              <View style={styles.TextInput}>
-                <View style={styles.PickerTextInput}>
-                  <Picker
-                    selectedValue={PatientRequestorBy}
-                    // style={styles.TextInput}
-                    onValueChange={(itemValue) => setPatientRequestorBy(itemValue)}
-                    mode='dropdown'
-                  >
-                    <Picker.Item label={'select requestor'} value={''} />
-                    {
-                      reqestorList !== undefined ?
-                        reqestorList.map((item, index) => (
-                          <Picker.Item label={item.Requestor} value={item.Id} key={index} />
-                        )) : null
-                    }
-                  </Picker>
-                </View>
-              </View>
-              <View style={styles.TextInput}>
-                <View style={styles.PickerTextInput}>
-                  <Picker
-                    selectedValue={PatientReferedBy}
-                    // style={styles.TextInput}
-                    onValueChange={(itemValue) => setPatientReferedBy(itemValue)}
-                    mode='dropdown'
-                  >
-                    <Picker.Item label={'select referer'} value={''} />
-                    {
-                      referedList !== undefined ?
-                        referedList.map((item, index) => (
-                          <Picker.Item label={item.Name} value={item.Id} key={index} />
-                        )) : null
-                    }
-                  </Picker>
-                </View>
-              </View>
-
-              <Input
-                value={PatientNationalId}
-                placeholder='National id'
-                onChangeText={(e) => setPatientNationalId(e)}
-                keyboardType='number-pad'
-                onFocus={() => handleError(null, 'PatientNationalId')}
-                label="Natiional Id"
-                errorMessage={errors.PatientNationalId}
-                inputContainerStyle={styles.PickerTextInput}
-              />
-
-              <Input
-                value={Remarks}
-                placeholder='remarks'
-                onChangeText={(e) => setRemarks(e)}
-                onFocus={() => handleError(null, 'Remarks')}
-                label="remarks"
-                errorMessage={errors.Remarks}
-              />
-              <TouchableOpacity
-                onPress={showDatepicker}
-                style={styles.TextInput}
-              >
-                <View style={styles.inputField}>
-                  <Text>{date === '' ? 'date..' : date.toLocaleDateString()}, {time === '' ? 'time..' : time.toLocaleTimeString()}</Text>
-                  <Icon
-                    name='calendar'
-                    color={'#FF7F00'}
-                    type='entypo'
-                    style={styles.icon}
-                  ></Icon>
-                </View>
-              </TouchableOpacity>
-
-              {show &&
-                <DateTimePicker
-                  testID="dateTimePicker"
-                  // timeZoneOffsetInMinutes={0}
-                  value={date}
-                  mode={mode}
-                  is24Hour={true}
-                  display="default"
-                  onChange={onChange}
                 />
-              }
 
-              {/* <Button disabled={butDis} title='Submit' onPress={hndleSubmit}></Button> */}
+                <Input
+                  value={PatientMName}
+                  placeholder='Middle Name'
+                  onChangeText={(mname) => setPatientMName(mname)}
+                  onFocus={() => handleError(null, 'PatientMName')}
+                  label="Middle Name"
+                  errorMessage={errors.PatientMName}
+                />
+
+                <Input
+                  value={PatientLName}
+                  placeholder='Last Name'
+                  onChangeText={(lname) => setPatientLName(lname)}
+                  onFocus={() => handleError(null, 'PatientLName')}
+                  label="Middle Name"
+                  errorMessage={errors.PatientLName}
+                />
+
+                <View style={styles.TextInput}>
+                  <View style={styles.PickerTextInput}>
+                    <Picker
+                      selectedValue={PatientGender}
+                      placeholder='gender'
+                      onValueChange={(itemValue, itemIndex) => setPatientGender(itemValue)}
+                      mode='dropdown'
+                    >
+                      <Picker.Item label='select gender' value='select gender' />
+                      <Picker.Item label='male' value='male' />
+                      <Picker.Item label='female' value='female' />
+                    </Picker>
+                  </View>
+                </View>
+
+                <Input
+                  value={PatientEmailId}
+                  placeholder='email'
+                  onChangeText={(email) => setPatientEmailId(email)}
+                  onFocus={() => handleError(null, 'PatientEmailId')}
+                  label="email"
+                  errorMessage={errors.PatientEmailId}
+                />
+
+                <View style={styles.TextInput}>
+                  <TouchableOpacity style={styles.inputField} onPress={() => setIsVisible(true)}>
+                    <View style={{
+                      flexDirection: 'row'
+                    }}>
+                      <Text>{JSON.stringify(region.latitude)}, </Text>
+                      <Text>{JSON.stringify(region.longitude)}</Text>
+                    </View>
+                    <Icon
+                      name='location-pin'
+                      color={'#FF7F00'}
+                      type='entypo'
+                      style={styles.icon}
+                    ></Icon>
+                  </TouchableOpacity>
+                </View>
+
+                <Input
+                  value={PatientAge}
+                  placeholder='Age'
+                  onChangeText={(e) => setPatientAge(e)}
+                  keyboardType='number-pad'
+                  onFocus={() => handleError(null, 'PatientAge')}
+                  label="Age"
+                  errorMessage={errors.PatientAge}
+                />
+
+
+                <View style={styles.TextInput}>
+                  <View style={styles.PickerTextInput}>
+                    <Picker
+                      selectedValue={PatientRequestorBy}
+                      // style={styles.TextInput}
+                      onValueChange={(itemValue) => setPatientRequestorBy(itemValue)}
+                      mode='dropdown'
+                    >
+                      <Picker.Item label={'select requestor'} value={''} />
+                      {
+                        reqestorList !== undefined ?
+                          reqestorList.map((item, index) => (
+                            <Picker.Item label={item.Requestor} value={item.Id} key={index} />
+                          )) : null
+                      }
+                    </Picker>
+                  </View>
+                </View>
+                <View style={styles.TextInput}>
+                  <View style={styles.PickerTextInput}>
+                    <Picker
+                      selectedValue={PatientReferedBy}
+                      // style={styles.TextInput}
+                      onValueChange={(itemValue) => setPatientReferedBy(itemValue)}
+                      mode='dropdown'
+                    >
+                      <Picker.Item label={'select referer'} value={''} />
+                      {
+                        referedList !== undefined ?
+                          referedList.map((item, index) => (
+                            <Picker.Item label={item.Name} value={item.Id} key={index} />
+                          )) : null
+                      }
+                    </Picker>
+                  </View>
+                </View>
+
+                <Input
+                  value={PatientNationalId}
+                  placeholder='National id'
+                  onChangeText={(e) => setPatientNationalId(e)}
+                  keyboardType='number-pad'
+                  onFocus={() => handleError(null, 'PatientNationalId')}
+                  label="Natiional Id"
+                  errorMessage={errors.PatientNationalId}
+                  inputContainerStyle={styles.PickerTextInput}
+                />
+
+                <Input
+                  value={Remarks}
+                  placeholder='remarks'
+                  onChangeText={(e) => setRemarks(e)}
+                  onFocus={() => handleError(null, 'Remarks')}
+                  label="remarks"
+                  errorMessage={errors.Remarks}
+                />
+                <TouchableOpacity
+                  onPress={showDatepicker}
+                  style={styles.TextInput}
+                >
+                  <View style={styles.inputField}>
+                    <Text>{date === '' ? 'date..' : date.toLocaleDateString()}, {time === '' ? 'time..' : time.toLocaleTimeString()}</Text>
+                    <Icon
+                      name='calendar'
+                      color={'#FF7F00'}
+                      type='entypo'
+                      style={styles.icon}
+                    ></Icon>
+                  </View>
+                </TouchableOpacity>
+
+                {show &&
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    // timeZoneOffsetInMinutes={0}
+                    value={date}
+                    mode={mode}
+                    is24Hour={true}
+                    display="default"
+                    onChange={onChange}
+                  />
+                }
+
+                {/* <Button disabled={butDis} title='Submit' onPress={hndleSubmit}></Button> */}
 
 
 
-              {/* <Button title="Register" onPress={validate} /> */}
-
+                {/* <Button title="Register" onPress={validate} /> */}
             </ScrollView>
 
 
@@ -527,13 +520,14 @@ const AddPatietHomeScreen = () => {
           </View>
           <View style={styles.TextInput}>
             <AppButton
-              disabled={butDis}
               title='Submit'
               onPress={hndleSubmit}
+              disabled={butDis}
             ></AppButton>
           </View>
         </View>
       </ImageBackground>
+
     </SafeAreaView>
   )
 }
@@ -544,12 +538,12 @@ const styles = StyleSheet.create({
   maincontainer: {
     // backgroundColor: '#fefefe',
     flexDirection: 'column',
-    justifyContent: 'center',
-    // flex: 1,
+    // justifyContent: 'center',
+    flex: 1,
   },
   bkgImg: {
     width: Dimensions.get('window').width * 1,
-    height: Dimensions.get('window').height * 1.2,
+    height: Dimensions.get('window').height * 1,
 
     // flex: 1
   },
@@ -557,7 +551,8 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     justifyContent: 'center',
     alignItems: 'center',
-    height: Dimensions.get('window').height * 0.85,
+    // height: Dimensions.get('window').height * 0.7,
+    flex: 1,
     backgroundColor: '#fefefe',
     marginTop: 100,
     paddingTop: 50,
@@ -571,7 +566,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 10,
     fontWeight: 'bold',
-    color: "#205072"
+    color: "#205072",
   },
   TextInput: {
     paddingHorizontal: 10,

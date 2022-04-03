@@ -9,25 +9,25 @@ const windowWidth = Dimensions.get('window').width * 0.65;
 // "Test": "Buddha Airline Basic Health Check-Up (B)",
 // "TestType": "Executive",
 
-const SelectTestCard = ({ data, retData, arrData, index }) => {
+const SelectTestCard = ({ data, retData, arrData }) => {
   const [slected, setSelected] = useState(false);
-  // console.log("arr data",arrData);
-  // console.log("ret data",data);
-  // console.log(index);
-
-  // let keString = `${data.Id}${data.Test}`;
-  // console.log(keString);
-
+  
   useEffect(() => {
-  }, [])
+    if(arrData.includes(data)){
+      setSelected(true);
+    }else{
+      setSelected(false)
+    }
+  }, [retData])
 
   const selectedFun = (e) => {
+
     retData(e)
     // setSelected(!slected)e
   }
 
   return (
-    <TouchableOpacity onPress={() => selectedFun(data)}>
+    <View >
       <View style={styles.container}>
         <View style={styles.card}>
           <View style={styles.left}>
@@ -36,15 +36,17 @@ const SelectTestCard = ({ data, retData, arrData, index }) => {
           </View>
           <View style={styles.right}>
 
-            {/* <CheckBox
+            <CheckBox
             checked={slected}
             checkedColor={'#4688B3'}
             uncheckedColor={'dimgray'}
-          /> */}
+            onPress={() => selectedFun(data)}
+          />
+          {/* <Button onPress={() => selectedFun(data)} title={'add'}></Button> */}
           </View>
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   )
 }
 

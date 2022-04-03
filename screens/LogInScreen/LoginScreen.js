@@ -57,7 +57,7 @@ const LoginScreen = () => {
           source={require('../../assets/images/logo.png')}
         />
         <View style={styles.cDetails}>
-          <Text style={[styles.span, styles.span1]}>Luiva</Text>
+          <Text style={[styles.span, styles.span1]}>Luniva</Text>
           <Text style={[styles.span, styles.span2]}>Care</Text>
         </View>
 

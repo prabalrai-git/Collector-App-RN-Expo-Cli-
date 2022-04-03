@@ -34,8 +34,10 @@ const AddPatientSelectTest = ({ route }) => {
   // console.log(data);
   const renderItem = ({ item }) => (
 
-    <SelectTestCard data={item}
-      retData={retData} arrData={selected}
+    <SelectTestCard
+      data={item}
+      retData={retData}
+      arrData={selected}
     />
   );
 
@@ -45,24 +47,24 @@ const AddPatientSelectTest = ({ route }) => {
 
     if (arr.includes(e)) {
       // for removing speciic data
-      // const index = arr.indexOf(e);
-      // if (index > -1) {
-      //   arr.splice(index, 1); // 2nd parameter means remove one item only
-      //   setTotal(prev => {
-      //     return (prev >= 0 ?
-      //       prev - e.Price : 0)
-      //   })
-      // }
-      Alert.alert(
-        "Alert",
-        "The slecected test is already added",
-        [
-          {
-            text: "OK",
-            // onPress: () => console.log("OK Pressed") 
-          }
-        ]
-      );
+      const index = arr.indexOf(e);
+      if (index > -1) {
+        arr.splice(index, 1); // 2nd parameter means remove one item only
+        setTotal(prev => {
+          return (prev >= 0 ?
+            prev - e.Price : 0)
+        })
+      }
+      // Alert.alert(
+      //   "Alert",
+      //   "The slecected test is already added",
+      //   [
+      //     {
+      //       text: "OK",
+      //       // onPress: () => console.log("OK Pressed") 
+      //     }
+      //   ]
+      // );
     } else {
       arr.push(e);
       setTotal(prev => (
@@ -187,14 +189,14 @@ const AddPatientSelectTest = ({ route }) => {
                             <Text style={{ color: "#FFC285" }}>Rs.{e.Price}</Text>
                           </View>
                           <View>
-                          <CancleBtn title='remove' onPress={() => RemoveItem(e)}></CancleBtn>
+                            <CancleBtn title='remove' onPress={() => RemoveItem(e)}></CancleBtn>
                           </View>
 
                         </View>
                       ))
                     }
                     <View style={styles.moduleTest}>
-                      <Text style={{color: '#fefefe', fontSize: 16}}>Total</Text>
+                      <Text style={{ color: '#fefefe', fontSize: 16 }}>Total</Text>
                       <Text style={styles.tPrice}>{total}</Text>
                     </View>
 
@@ -316,7 +318,7 @@ const styles = StyleSheet.create({
     width: "100%",
     marginBottom: 10,
   },
-  moduleTest:{
+  moduleTest: {
     // borderWidth: 1,
     // borderColor: 'red',
     width: '100%',

@@ -1,5 +1,5 @@
 import { Dimensions, FlatList, ImageBackground, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import PatientCard from '../../components/ui/PatientCard'
 import { useDispatch } from 'react-redux'
 import { GetPatientList } from '../../Services/appServices/AssignPatient'
@@ -38,9 +38,16 @@ const BookTestHomeScreen = () => {
 
   const [refreshing, setRefreshing] = React.useState(false);
 
-  const onRefresh = React.useCallback(() => {
+  const onRefresh = useCallback(() => {
     setRefreshing(true);
-    // wait(2000).then(() => setRefreshing(false));
+    setTimeout((() => {
+      dispatch(GetPatientList((res) => {
+        setPatietList(res.requestorcollectionList);
+        setNewData(res.requestorcollectionList)
+      }))
+      setRefreshing(false)
+    }
+    ), 2000);
   }, []);
 
   return (
@@ -59,8 +66,8 @@ const BookTestHomeScreen = () => {
             data={NewData}
             renderItem={renderItem}
             keyExtractor={item => item.CId}
-            
-            refreshing ={refreshing}
+
+            refreshing={refreshing}
             onRefresh={onRefresh}
           />
         </View>

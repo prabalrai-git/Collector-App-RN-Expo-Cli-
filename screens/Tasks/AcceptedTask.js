@@ -1,3 +1,4 @@
+
 import { Dimensions, FlatList, ImageBackground, ScrollView, StyleSheet, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Text } from 'react-native-elements'
@@ -15,7 +16,7 @@ const renderItem = ({ item }) => (
   <SampleCard item={item}/>
 )
 
-const TaskHomeScreen = () => {
+const AcceptedTask = () => {
   const [PatietList, setPatietList] = useState();
   const [FromDate, setFromDate] = useState(new Date());
   const [ToDate, setToDate] = useState(new Date());
@@ -46,24 +47,24 @@ const TaskHomeScreen = () => {
 
   return (
     <View style={styles.mainContainer}>
-      <ImageBackground
+      {/* <ImageBackground
         source={require('../../assets/images/bkg1.png')}
         resizeMode="cover"
         style={styles.bkgImg}
-      >
-        <HamMenu></HamMenu>
-        <BackBtn></BackBtn>
+      > */}
+        {/* <HamMenu></HamMenu>
+        <BackBtn></BackBtn> */}
         <FlatList
           data={PatietList}
           renderItem={renderItem}
           keyExtractor={item => item.RId}
         />
-      </ImageBackground>
+      {/* </ImageBackground> */}
     </View>
   )
 }
 
-export default TaskHomeScreen
+export default AcceptedTask
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -73,9 +74,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flex: 1
   },
-  bkgImg: {
-    width: Dimensions.get('window').width * 1,
-    flex: 1,
-    paddingTop: 90,
-  },
+  // bkgImg: {
+  //   width: Dimensions.get('window').width * 1,
+  //   flex: 1,
+  //   paddingTop: 90,
+  // },
 })
