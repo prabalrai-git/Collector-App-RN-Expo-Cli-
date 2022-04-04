@@ -7,6 +7,7 @@ import CompletedTask from '../screens/Tasks/CompletedTask';
 import RejectedTask from '../screens/Tasks/RejectedTask';
 import HamMenu from '../components/ui/HamMenu';
 import BackBtn from '../components/ui/BackBtn';
+import Header from '../components/Header';
 
 
 
@@ -19,17 +20,19 @@ const TabNavigator = () => {
     //   resizeMode="cover"
     //   style={styles.bkgImg}
     // >
-    <View style={styles.bkgImg}>
+    <View style={styles.mainContainer}>
 
 
-      <HamMenu></HamMenu>
-      <BackBtn></BackBtn>
+      {/* <HamMenu></HamMenu>
+      <BackBtn></BackBtn> */}
+      <Header title={'Tasks'}></Header>
       <Tab.Navigator
         screenOptions={{
           tabBarLabelStyle: { fontSize: 12 },
           tabBarItemStyle: { width: 100 },
-          tabBarStyle: { backgroundColor: '#b1ddf6' },
-
+          tabBarStyle: { backgroundColor: '#8ED1FC' },
+          tabBarActiveTintColor: '#fefefe',
+          
         }}
       >
         <Tab.Screen name="AssignedTask" component={AssignedTask} options={{ title: 'Asigned Task' }} />
@@ -47,11 +50,11 @@ export default TabNavigator
 
 const styles = StyleSheet.create({
 
-  bkgImg: {
-    width: Dimensions.get('window').width * 1,
+  mainContainer: {
+    width: Dimensions.get('window').width,
     flex: 1,
-    paddingTop: 90,
-    backgroundColor: '#b1ddf6'
+    // paddingTop: 90,
+    backgroundColor: '#8ED1FC'
   },
   
 })

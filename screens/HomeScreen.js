@@ -12,6 +12,7 @@ import { Alert, Platform } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
 import { UpdateCollectorLocation } from '../Services/appServices/Collector';
 import HamMenu from '../components/ui/HamMenu';
+import Header from '../components/Header';
 
 const navData = [
   {
@@ -179,7 +180,10 @@ const HomeScreen = () => {
         resizeMode="cover"
         style={styles.bkgImg}
       >
-        <HamMenu></HamMenu>
+        <View style={styles.hamMenu}>
+          <HamMenu></HamMenu>
+        </View>
+
         <View style={styles.cardContainer}>
           <View style={styles.dis}>
             <Text style={[GlobalStyles.header, { color: '#205072' }]}>Good Moring</Text>
@@ -269,8 +273,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     // backgroundColor: '#F57F20',
-    backgroundColor: '#9DD4E9',
+    backgroundColor: '#8ED1FC',
     borderTopLeftRadius: 18,
     borderTopRightRadius: 18,
+  },
+  hamMenu:{
+    width: windowWidth,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 20,
   }
 })

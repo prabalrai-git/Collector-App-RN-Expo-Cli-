@@ -31,9 +31,9 @@ const BackBtn = () => {
 export default BackBtn
 
 const styles = StyleSheet.create({
-  backBtn: {
-    position: 'absolute',
-    top: 40,
-    left: 10,
-  },
+  // backBtn: {
+  //   position: 'absolute',
+  //   top: 40,
+  //   left: 10,
+  // },
 })

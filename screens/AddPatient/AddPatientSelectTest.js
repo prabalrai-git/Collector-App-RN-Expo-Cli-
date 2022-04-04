@@ -9,6 +9,7 @@ import { GetTestList } from '../../Services/appServices/AssignPatient';
 import HamMenu from '../../components/ui/HamMenu';
 import BackBtn from '../../components/ui/BackBtn';
 import CancleBtn from '../../components/ui/CancleBtn';
+import Header from '../../components/Header';
 
 const windowHeight = Dimensions.get('window').height * 0.95;
 const windowWidth = Dimensions.get('window').width * 0.55;
@@ -134,15 +135,16 @@ const AddPatientSelectTest = ({ route }) => {
 
   return (
     <View style={styles.mainCotnainer}>
-      <ImageBackground
+      {/* <ImageBackground
         source={require('../../assets/images/bkg8.png')}
         resizeMode="cover"
         style={styles.bkgImg}
-      >
-        <HamMenu></HamMenu>
-        <BackBtn></BackBtn>
+      > */}
+        {/* <HamMenu></HamMenu>
+        <BackBtn></BackBtn> */}
+        <Header data={data} returnData={handleChange} selectTestFilter title={'Select Test'}></Header>
         <View style={styles.container}>
-          <Filter data={data} returnData={handleChange} selectTestFilter></Filter>
+          {/* <Filter data={data} returnData={handleChange} selectTestFilter></Filter> */}
           <View style={styles.midContainer}>
             <FlatList
               // style={styles.container}
@@ -216,7 +218,7 @@ const AddPatientSelectTest = ({ route }) => {
             </View>
             : <View></View>
         }
-      </ImageBackground>
+      {/* </ImageBackground> */}
     </View>
   )
 }
@@ -229,13 +231,13 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative'
   },
-  bkgImg: {
-    paddingTop: 40,
-    width: Dimensions.get('window').width * 1,
-    flex: 1,
-  },
+  // bkgImg: {
+  //   paddingTop: 40,
+  //   width: Dimensions.get('window').width * 1,
+  //   flex: 1,
+  // },
   container: {
-    marginTop: 40,
+    // marginTop: 40,
   },
   midContainer: {
     height: windowHeight * 0.9,

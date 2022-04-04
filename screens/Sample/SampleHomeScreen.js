@@ -8,6 +8,8 @@ import AppButton from '../../components/ui/AppButton';
 import SampleCard from './SampleCard';
 import HamMenu from '../../components/ui/HamMenu';
 import BackBtn from '../../components/ui/BackBtn';
+import Filter from '../../components/ui/Filter';
+import Header from '../../components/Header';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -96,15 +98,17 @@ const SampleHomeScreen = () => {
   return (
     <View style={styles.mainContainer}>
 
-      <ImageBackground
+      {/* <ImageBackground
         source={require('../../assets/images/bkg1.png')}
         resizeMode="cover"
         style={styles.bkgImg}
-      >
-        <HamMenu></HamMenu>
-        <BackBtn></BackBtn>
-        <View style={styles.container}>
+      > */}
+      {/* <HamMenu></HamMenu>
+        <BackBtn></BackBtn> */}
 
+      <View style={styles.container}>
+        <View style={styles.top}>
+          <Header title={'Sample collection'}></Header>
           <View style={styles.dateFiltercontainer}>
             <TouchableOpacity
               onPress={showDatepicker}
@@ -114,7 +118,7 @@ const SampleHomeScreen = () => {
                 <Text>{FromDate === '' ? 'FromDate..' : FromDate.toLocaleDateString()}</Text>
                 <Icon
                   name='calendar'
-                  color={'#00e1ff68'}
+                  color={'#8ED1FC'}
                   type='entypo'
                   size={20}
                 ></Icon>
@@ -129,7 +133,7 @@ const SampleHomeScreen = () => {
                 is24Hour={true}
                 display="default"
                 onChange={onChangeFromData}
-
+                minimumDate={new Date()}
               />
             }
 
@@ -141,7 +145,7 @@ const SampleHomeScreen = () => {
                 <Text>{ToDate === '' ? 'ToDate..' : ToDate.toLocaleDateString()}</Text>
                 <Icon
                   name='calendar'
-                  color={'#00e1ff67'}
+                  color={'#8ED1FC'}
                   type='entypo'
                   size={20}
                 ></Icon>
@@ -156,20 +160,23 @@ const SampleHomeScreen = () => {
                 is24Hour={true}
                 display="default"
                 onChange={onChangeToData}
+                minimumDate={new Date()}
               />
             }
             <AppButton title='Search' onPress={() => handleClick()}></AppButton>
           </View>
-
-          <View style={styles.listcontainer}>
-            <FlatList
-              data={RequestList}
-              renderItem={renderItem}
-              keyExtractor={item => item.RId}
-            ></FlatList>
-          </View>
         </View>
-      </ImageBackground>
+
+
+        <View style={styles.listcontainer}>
+          <FlatList
+            data={RequestList}
+            renderItem={renderItem}
+            keyExtractor={item => item.RId}
+          ></FlatList>
+        </View>
+      </View>
+      {/* </ImageBackground> */}
     </View >
   )
 }
@@ -184,24 +191,28 @@ const styles = StyleSheet.create({
     // justifyContent: 'space-between',
     // alignItems: 'center'
     // paddingTop: 40,
-    position: 'relative'
-  },
-  bkgImg: {
-    width: Dimensions.get('window').width * 1,
-    height: Dimensions.get('window').height * 1.2,
+    position: 'relative',
 
-    // flex: 1
   },
-  container: {
-    paddingTop: 40
+  // bkgImg: {
+  //   width: Dimensions.get('window').width * 1,
+  //   height: Dimensions.get('window').height * 1.2,
+
+  //   // flex: 1
+  // },
+  top: {
+    // paddingTop: 40
+    backgroundColor: '#8ED1FC',
+    borderBottomLeftRadius: 18,
+    borderBottomRightRadius: 18,
+    overflow: 'hidden'
   },
   dateFiltercontainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#00e1ff13',
+    backgroundColor: '#8ED1FC',
     paddingHorizontal: 10,
     paddingVertical: 10,
-    marginTop: 40,
   },
   TextInput: {
     width: windowWidth * 0.3,
@@ -223,6 +234,5 @@ const styles = StyleSheet.create({
     width: windowWidth,
     height: windowHeight * 0.86,
     flexDirection: 'row',
-    // alignItems: 'center',
   },
 })

@@ -4,7 +4,6 @@ import { Avatar } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
 const SampleCard = ({ item }) => {
   // console.log(item.RequestStatus === Requested);

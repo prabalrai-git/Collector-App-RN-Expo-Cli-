@@ -8,6 +8,7 @@ import Signature from "react-native-signature-canvas";
 import StatusBadge from '../../components/ui/StatusBadge';
 import HamMenu from '../../components/ui/HamMenu';
 import BackBtn from '../../components/ui/BackBtn';
+import Header from '../../components/Header';
 // "RId": 10,
 // "PatId": 12,
 // "CollectorId": 3,
@@ -125,13 +126,14 @@ const PatietInfoScreen = ({ route }) => {
 
   return (
     <View style={styles.mainContainer}>
-      <ImageBackground
+      {/* <ImageBackground
         source={require('../../assets/images/bkg1.png')}
         resizeMode="cover"
         style={styles.bkgImg}
-      >
-        <HamMenu></HamMenu>
-        <BackBtn></BackBtn>
+      > */}
+        {/* <HamMenu></HamMenu>
+        <BackBtn></BackBtn> */}
+        <Header title={'Patient Info'}></Header>
         <View style={styles.container}>
           <View style={styles.profile}>
             <Image
@@ -251,7 +253,7 @@ const PatietInfoScreen = ({ route }) => {
           </Modal>
          
         </View>
-      </ImageBackground>
+      {/* </ImageBackground> */}
       {
             route.params.data.RequestStatus === 'Requested' ?
               <View style={styles.testList}>
@@ -294,14 +296,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#fefefe',
     position: 'relative'
   },
-  bkgImg: {
-    width: Dimensions.get('window').width * 1,
-    height: Dimensions.get('window').height * 1.2,
+  // bkgImg: {
+  //   width: Dimensions.get('window').width * 1,
+  //   height: Dimensions.get('window').height * 1.2,
 
-    // flex: 1
-  },
+  //   // flex: 1
+  // },
   container: {
-    paddingTop: 90,
+    // paddingTop: 90,
     flex: 1,
   },
 

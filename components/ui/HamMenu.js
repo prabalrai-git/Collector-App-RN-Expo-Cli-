@@ -24,9 +24,9 @@ const HamMenu = () => {
 export default HamMenu
 
 const styles = StyleSheet.create({
-  hamMenuBtn: {
-    position: 'absolute',
-    top: 40,
-    right: 20
-  },
+  // hamMenuBtn: {
+  //   position: 'absolute',
+  //   top: 40,
+  //   right: 20
+  // },
 })

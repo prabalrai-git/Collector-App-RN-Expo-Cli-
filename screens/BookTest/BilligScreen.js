@@ -7,6 +7,7 @@ import { Picker } from '@react-native-picker/picker'
 import { StackActions, useNavigation } from '@react-navigation/native'
 import HamMenu from '../../components/ui/HamMenu'
 import BackBtn from '../../components/ui/BackBtn'
+import Header from '../../components/Header'
 
 // "_HomeRequest": {
 //   "RId": 1, //?? =0
@@ -186,8 +187,9 @@ const BilligScreen = ({ route }) => {
   }
   return (
     <View style={styles.mainContainer}>
-      <HamMenu></HamMenu>
-        <BackBtn></BackBtn>
+      {/* <HamMenu></HamMenu>
+        <BackBtn></BackBtn> */}
+        <Header title={'bill'}></Header>
       <View style={styles.fatlistfContainer}>
         <FlatList
           data={route.params.tests.testList}
@@ -287,8 +289,8 @@ export default BilligScreen
 
 const styles = StyleSheet.create({
   mainContainer: {
-    paddingTop: 40,
-    backgroundColor: '#4688B3',
+    // paddingTop: 40,
+    backgroundColor: '#9DD4E9',
     // justifyContent: 'center',
     // alignItems: 'center',
     flex: 1,
@@ -350,7 +352,7 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.45,
     paddingBottom: 30,
     width: windowWidth,
-    backgroundColor: '#4688B3',
+    backgroundColor: '#9DD4E9',
     paddingVertical: 10,
     justifyContent: 'center',
     alignItems: 'center',

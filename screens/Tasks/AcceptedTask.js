@@ -43,7 +43,7 @@ const AcceptedTask = () => {
     }))
   }
 
-  console.log('patient list', PatietList);
+  // console.log('patient list', PatietList);
 
   return (
     <View style={styles.mainContainer}>

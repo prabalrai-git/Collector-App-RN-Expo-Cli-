@@ -7,6 +7,7 @@ import Filter from '../../components/ui/Filter'
 import { useIsFocused } from '@react-navigation/native'
 import HamMenu from '../../components/ui/HamMenu'
 import BackBtn from '../../components/ui/BackBtn'
+import Header from '../../components/Header'
 
 const BookTestHomeScreen = () => {
   const [PatietList, setPatietList] = useState();
@@ -53,15 +54,16 @@ const BookTestHomeScreen = () => {
   return (
     <View style={styles.mainContainer}>
 
-      <ImageBackground
+      {/* <ImageBackground
         source={require('../../assets/images/bkg8.png')}
         resizeMode="cover"
         style={styles.bkgImg}
-      >
-        <HamMenu></HamMenu>
-        <BackBtn></BackBtn>
+      > */}
+        {/* <HamMenu></HamMenu>
+        <BackBtn></BackBtn> */}
+        <Header data={PatietList} returnData={handleChange} bookTestFilter title={'Patient'}></Header>
         <View style={styles.container}>
-          <Filter data={PatietList} returnData={handleChange} bookTestFilter></Filter>
+          {/* <Filter data={PatietList} returnData={handleChange} bookTestFilter></Filter> */}
           <FlatList
             data={NewData}
             renderItem={renderItem}
@@ -72,7 +74,7 @@ const BookTestHomeScreen = () => {
           />
         </View>
 
-      </ImageBackground>
+      {/* </ImageBackground> */}
     </View>
   )
 }
@@ -90,7 +92,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    marginTop: 40,
+    // marginTop: 40,
     flex: 1
   }
 })

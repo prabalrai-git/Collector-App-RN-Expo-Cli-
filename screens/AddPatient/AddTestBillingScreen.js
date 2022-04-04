@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { GetStatus, InsertUpdateHomeCollection } from '../../Services/appServices/AssignPatient'
 import { Picker } from '@react-native-picker/picker'
 import { StackActions, useNavigation } from '@react-navigation/native'
+import Header from '../../components/Header'
 
 // "_HomeRequest": {
 //   "RId": 1, //?? =0
@@ -191,6 +192,7 @@ const AddTestBillingScreen = ({ route }) => {
   }
   return (
     <View style={styles.mainContainer}>
+      <Header title={'bill'}></Header>
       <View style={styles.fatlistfContainer}>
         <FlatList
           data={route.params.tests.testList}
@@ -294,8 +296,8 @@ export default AddTestBillingScreen
 
 const styles = StyleSheet.create({
   mainContainer: {
-    paddingTop: 40,
-    backgroundColor: '#4688B3',
+    // paddingTop: 40,
+    backgroundColor: '#9DD4E9',
     // justifyContent: 'center',
     // alignItems: 'center',
     flex: 1,
@@ -357,7 +359,7 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.45,
     paddingBottom: 30,
     width: windowWidth,
-    backgroundColor: '#4688B3',
+    backgroundColor: '#9DD4E9',
     paddingVertical: 10,
     justifyContent: 'center',
     alignItems: 'center',
