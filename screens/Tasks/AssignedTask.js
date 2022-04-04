@@ -11,24 +11,24 @@ import { GetSampleRequestListByCollector } from '../../Services/appServices/Assi
 
 const renderItem = ({ item }) => (
   // <TaskCard data={item} />
-  <SampleCard item={item}/>
+  <SampleCard item={item} />
 )
 
 
 
 
 const AssignedTask = () => {
-  const [asignedData, setAsignedData] = useState();
+  const [asignedData, setAsignedData] = useState(dummyData.RequestList);
   const [FromDate, setFromDate] = useState(new Date());
   const [ToDate, setToDate] = useState(new Date());
   const [ReqPatietList, setReqPatietList] = useState();
   const [PatietList, setPatietList] = useState([]);
   const dispatch = useDispatch()
-  
+
   // useEffect(() => {
   //   setAsignedData(dummyData.RequestList)
   //   handleRequestList();
-    
+
   // }, [])
   // useEffect(()=> {
   //   setPatietList[asignedData,ReqPatietList];
@@ -38,6 +38,16 @@ const AssignedTask = () => {
   // console.log("ReqPatietList",ReqPatietList);
   // console.log("PatietList", PatietList);
 
+  useEffect(() => {
+    handleRequestList()
+  }, [])
+
+  useEffect(() => {
+    handleRequestList()
+  }, [])
+
+
+  console.log("PatietList", PatietList);
 
   const handleRequestList = () => {
     const fromDate = `${FromDate.getFullYear() + "-" + (FromDate.getMonth() + 1) + "-" + FromDate.getDate()}`
@@ -47,15 +57,20 @@ const AssignedTask = () => {
       'fromDate': fromDate,
       'toDate': toDate,
       'collectorId': collectorId
-  
+
     }
     dispatch(GetSampleRequestListByCollector(data, (res) => {
-      setReqPatietList(res.RequestList)
+      // setReqPatietList()
+      // if (res.length > 0) {
+      setPatietList([...asignedData, ...res.RequestList])
+      // }
+
     }))
+
   }
 
   const handleAdignedList = () => {
-    
+
   }
 
   return (
