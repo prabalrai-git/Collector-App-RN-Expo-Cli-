@@ -3,19 +3,78 @@ import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import AppButton from './AppButton';
 import CancleBtn from './CancleBtn';
+import { useSelector } from 'react-redux';
 
 const windowWidth = Dimensions.get('window').width
 
+// "SrId": 1,
+//  "RequestId": 2,
+//  "RequestStatusId": 3,
+//  "EntryDate": "2022-03-22T10:57:37.8717928+05:45",
+//  "UserId": 5,
+//  "Remarks": "sample string 6"
+
+
+// "CollectedDate": "2022-04-03T17:15:03",
+// "CollectionCharge": 500,
+// "CollectionReqDate": "2022-04-16T17:13:44",
+// "CollectorId": 3,
+// "DiscountAmount": 100,
+// "GrandTotal": 6215,
+// "IsPaid": true,
+// "PatId": 66,
+// "PatientAge": "26",
+// "PatientFName": "Ram",
+// "PatientGender": "male",
+// "PatientLName": "Yadav",
+// "PatientMName": "",
+// "RId": 44,
+// "Remarks": "Sik free",
+// "RequestStatus": "Requested",
+// "TestTotalAmount": 5815,
+
 
 const TaskCard = ({ data }) => {
-  console.log('data', data);
+  console.log('data', data.RId);
   const [isVisibe, setisVisibe] = useState(false);
   const [isRemarksVisible, setisRemarksVisible] = useState(false);
   const [Remarks, setRemarks] = useState('');
+  const user = useSelector(state => state.storeUserData);
+
 
   const hadleEvent = () => {
     setisVisibe(true)
 
+  }
+
+  const handleAccept = () => {
+    // UpdateStatus
+    let today = new Date();
+    const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.toLocaleTimeString();
+    const rData = {
+      "SrId": 0,
+      "RequestId": data.RId,
+      "RequestStatusId": 3,
+      "EntryDate": newDate,
+      "UserId": user.userData.usrUserId,
+      "Remarks": Remarks !== '' ? Remarks : '',
+    }
+    console.log('accepted data', rData);
+  }
+
+  const handleReject = () => {
+    // UpdateStatus
+    let today = new Date();
+    const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.toLocaleTimeString();
+    const aData = {
+      "SrId": 0,
+      "RequestId": data.RId,
+      "RequestStatusId": 4,
+      "EntryDate": newDate,
+      "UserId": user.userData.usrUserId,
+      "Remarks": Remarks !== '' ? Remarks : '',
+    }
+    console.log('rejected data', aData);
   }
 
   const navigation = useNavigation()
@@ -64,12 +123,9 @@ const TaskCard = ({ data }) => {
                 <CancleBtn title='Reject' color={'#e0c945'} onPress={() => setisRemarksVisible(true)}></CancleBtn>
                 <Text>   </Text>
                 <AppButton title='Accept' onPress={() => {
+                  handleAccept()
                   setisVisibe(false)
-                  navigation.navigate('MapScreen',
-                    {
-                      data: data
-                    }
-                  )
+
                 }}></AppButton>
               </View>
 

@@ -1,9 +1,10 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { dummyData } from '../../dumyData'
-import SampleCard from '../Sample/SampleCard'
+// import SampleCard from '../Sample/SampleCard'
 import { useDispatch } from 'react-redux'
 import { GetSampleRequestListByCollector } from '../../Services/appServices/AssignPatient'
+import TaskCard from '../../components/ui/TaskCard'
 
 // array of asigned status and requested status
 // for same user id
@@ -11,7 +12,7 @@ import { GetSampleRequestListByCollector } from '../../Services/appServices/Assi
 
 const renderItem = ({ item }) => (
   // <TaskCard data={item} />
-  <SampleCard item={item} />
+  <TaskCard data={item} />
 )
 
 
@@ -42,16 +43,12 @@ const AssignedTask = () => {
     handleRequestList()
   }, [])
 
-  useEffect(() => {
-    handleRequestList()
-  }, [])
-
 
   console.log("PatietList", PatietList);
 
   const handleRequestList = () => {
     const fromDate = `${FromDate.getFullYear() + "-" + (FromDate.getMonth() + 1) + "-" + FromDate.getDate()}`
-    const toDate = `${ToDate.getFullYear() + "-" + (ToDate.getMonth() + 1) + "-" + 5}`
+    const toDate = `${ToDate.getFullYear() + "-" + (ToDate.getMonth() + 1) + "-" + 30}`
     const collectorId = 3
     const data = {
       'fromDate': fromDate,
