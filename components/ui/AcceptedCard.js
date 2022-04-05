@@ -1,4 +1,4 @@
-import { Button, Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Pressable, Image, FlatList, Switch } from 'react-native'
+import { Button, Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Pressable, Image, FlatList, Switch, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import AppButton from './AppButton';
@@ -72,53 +72,58 @@ const AcceptedCard = ({ data }) => {
 
   }
 
-  const handleAccept = () => {
+
+  const handleSubmit = () => {
     // UpdateStatus
+    setbtnDis(true)
     let today = new Date();
     const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.toLocaleTimeString();
-    const rData = {
+    const sData = {
       "SrId": 0,
       "RequestId": data.RId,
-      "RequestStatusId": 3,
-      //  "RequestStatusId": 1,
+      "RequestStatusId": 5,
       "EntryDate": newDate,
       "UserId": user.userData.usrUserId,
-      "Remarks": `accepted by user ${user.userData.usrUserId}`,
+      "Remarks": Remarks === '' ? 'Sample Collected' : Remarks,
     }
-    console.log('accepted data', rData);
-    dispatch(UpdateStatus(rData, (res) => {
+
+    console.log('rejected data', sData);
+
+    dispatch(UpdateStatus(sData, (res) => {
       // console.log('response', res);
       if (res?.SuccessMsg === true) {
-        // console.log('potato sucess');
-        setisVisibe(false);
-        navigation.navigate('AcceptedTask');
+        // console.log('potato sucess, rejected ,', res);
 
-      }
-    }))
 
-  }
 
-  const handleReject = () => {
-    // UpdateStatus
-    let today = new Date();
-    const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.toLocaleTimeString();
-    const aData = {
-      "SrId": 0,
-      "RequestId": data.RId,
-      "RequestStatusId": 4,
-      "EntryDate": newDate,
-      "UserId": user.userData.usrUserId,
-      "Remarks": Remarks !== '' ? Remarks : '',
-    }
-    console.log('rejected data', aData);
-    dispatch(UpdateStatus(aData, (res) => {
-      console.log('response', res);
-      if (res?.SuccessMsg === true) {
-        console.log('potato sucess, rejected');
-        setisVisibe(!isVisibe)
-        setisRemarksVisible(false)
         setRemarks('')
+        Alert.alert(
+          'Success !',
+          'Sample has been collected sucessfully',
+          [
+            {
+              text: 'OK', onPress: () => {
+                setisVisibe(!isVisibe)
+                setisRemarksVisible(false)
+              }
+            }
+          ]
+        )
+      } else {
+        Alert.alert(
+          'Failure !',
+          'please enter the detail',
+          [
+            {
+              text: 'OK', onPress: () => {
+                // setisVisibe(!isVisibe)
+                // setisRemarksVisible(false)
+              }
+            }
+          ]
+        )
       }
+      setbtnDis(false)
     }))
 
   }
@@ -284,7 +289,7 @@ const AcceptedCard = ({ data }) => {
                 keyExtractor={item => item.SId}
               />
             </View>
-            
+
 
           </View>
           {
@@ -310,10 +315,15 @@ const AcceptedCard = ({ data }) => {
                     multiline={true}
                   ></TextInput>
                 </View>
-                <AppButton title='proceed' onPress={() => hadleProceed()} disable={btnDis}></AppButton>
+                <AppButton title='Collect Sample' onPress={() => handleSubmit()} disabled={btnDis}></AppButton>
                 {/* <Button disabled></Button> */}
               </View>
-              : null
+              :
+              <View style={styles.testList}>
+                <Text>Sample has been collected</Text>
+                <AppButton title='Drop Sample' onPress={() => handleSubmit()} disabled={btnDis}></AppButton>
+              </View>
+
           }
         </View>
       </Modal>
@@ -382,7 +392,7 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     backgroundColor: '#fefefe'
   },
-  
+
 
   // badges 
   badge: {
@@ -502,5 +512,5 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 10,
   }
-  
+
 })
