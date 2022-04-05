@@ -280,7 +280,7 @@ const PatietInfoScreen = ({ route }) => {
                 <AppButton title='proceed' onPress={() => hadleProceed()} disable={btnDis}></AppButton>
                 {/* <Button disabled></Button> */}
               </View>
-              : <Text></Text>
+              : null
           }
     </View>
   )

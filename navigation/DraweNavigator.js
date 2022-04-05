@@ -5,6 +5,8 @@ import { AddPatietNavigator, BookTestNavigator, CollectSampleNavigator, MainStac
 
 const DraweNavigator = () => {
   const Drawer = createDrawerNavigator()
+  
+  
   return (
     <Drawer.Navigator
 

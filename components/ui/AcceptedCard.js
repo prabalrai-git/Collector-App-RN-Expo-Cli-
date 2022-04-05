@@ -1,4 +1,4 @@
-import { Button, Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Pressable, Image, FlatList } from 'react-native'
+import { Button, Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Pressable, Image, FlatList, Switch } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import AppButton from './AppButton';
@@ -41,7 +41,7 @@ const windowWidth = Dimensions.get('window').width
 // "TestTotalAmount": 5815,
 
 
-const TaskCard = ({ data }) => {
+const AcceptedCard = ({ data }) => {
   // console.log('data', data);
   const [isVisibe, setisVisibe] = useState(false);
   const [isRemarksVisible, setisRemarksVisible] = useState(false);
@@ -52,6 +52,10 @@ const TaskCard = ({ data }) => {
   const text = data.CollectionReqDate;
   const temp = text.split('T');
   const [TestList, setTestList] = useState();
+  const [isPaid, setisPaid] = useState(data.IsPaid);
+
+  const toggleSwitch = () => setisPaid(previousState => !previousState);
+  const [btnDis, setbtnDis] = useState(false);
 
   useEffect(() => {
     dispatch(GetHomeCollectionTestRequestTestList(data.RId, (res) => {
@@ -203,108 +207,113 @@ const TaskCard = ({ data }) => {
               size={20}
             ></Icon>
           </TouchableOpacity>
-          {
-            isRemarksVisible ?
-              <View style={styles.textInput}>
-                <Text style={styles.formLabel}>Please write remarks on why you want to decline</Text>
-                <TextInput
-                  value={Remarks}
-                  placeholder='Remarks'
-                  onChangeText={(e) => setRemarks(e)}
-                  style={styles.inputField}
-                  multiline={true}
-                ></TextInput>
 
-                <AppButton title='Send' onPress={() => handleReject()}></AppButton>
+          <View style={styles.patInfocontainer}>
+            <View style={styles.profile}>
+              <Image
+                source={require('../../assets/images/user.png')}
+                style={styles.profileImg}
+              ></Image>
+              <View style={styles.right}>
+                <Text style={styles.name}>{data.PatientFName} {data.PatientMName} {data.PatientLName}</Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text >Request ID :</Text>
+                  <Text style={{ color: "#FF7F00" }}> {data.RId}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text >Cliet ID : </Text>
+                  <Text style={{ color: "#FF7F00" }}>{data.PatId}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text >Collection Date : </Text>
+                  <Text style={{ color: "#FF7F00" }}>{temp[0]}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text >Collection Time : </Text>
+                  <Text style={{ color: "#FF7F00" }}>{temp[1]}</Text>
+                </View>
               </View>
 
-              :
-              <View style={styles.patInfocontainer}>
-                <View style={styles.profile}>
-                  <Image
-                    source={require('../../assets/images/user.png')}
-                    style={styles.profileImg}
-                  ></Image>
-                  <View style={styles.right}>
-                    <Text style={styles.name}>{data.PatientFName} {data.PatientMName} {data.PatientLName}</Text>
-                    <View style={{ flexDirection: 'row' }}>
-                      <Text >Request ID :</Text>
-                      <Text style={{ color: "#FF7F00" }}> {data.RId}</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row' }}>
-                      <Text >Cliet ID : </Text>
-                      <Text style={{ color: "#FF7F00" }}>{data.PatId}</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row' }}>
-                      <Text >Collection Date : </Text>
-                      <Text style={{ color: "#FF7F00" }}>{temp[0]}</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row' }}>
-                      <Text >Collection Time : </Text>
-                      <Text style={{ color: "#FF7F00" }}>{temp[1]}</Text>
-                    </View>
+            </View>
+
+            <View style={styles.statusCotnainer}>
+              <StatusBadge data={data.RequestStatus}></StatusBadge>
+              <StatusBadge data={'Collected'}></StatusBadge>
+              <StatusBadge data={'Lab Received'}></StatusBadge>
+              <StatusBadge data={'Report Dispatched'}></StatusBadge>
+            </View>
+
+            <View style={styles.mapViewContainer}>
+              <MapView
+                style={styles.map}
+                initialRegion={{
+                  latitude: 27.7172,
+                  longitude: 85.3240,
+                  latitudeDelta: 0.0111922,
+                  longitudeDelta: 0.0111421,
+                }}
+              >
+                <MarkerCostome
+                  coordinate={cMarker.latlng}
+                  title={cMarker.title}
+                  description={cMarker.description}
+                  forClient
+                />
+              </MapView>
+            </View>
+
+            <View style={styles.flatListContainer}>
+              <Text style={styles.title}>Tests</Text>
+              <FlatList
+                data={TestList}
+                renderItem={({ item, index }) =>
+                  <View style={styles.testCard}>
+                    <Text style={{
+                      fontSize: 16,
+                      color: '#fefefe',
+                      width: 25,
+                      height: 25,
+                      textAlign: 'center',
+                      borderRadius: 50,
+                      backgroundColor: '#205072',
+                    }}>{index + 1}</Text>
+                    <Text style={styles.testsText}>{item.TestName}</Text>
+                    <Text style={styles.testsPrice}>Rs.{item.TestPrice}</Text>
                   </View>
+                }
+                keyExtractor={item => item.SId}
+              />
+            </View>
+            
 
-                </View>
-
-                <View style={styles.statusCotnainer}>
-                  <StatusBadge data={data.RequestStatus}></StatusBadge>
-                  <StatusBadge data={'Collected'}></StatusBadge>
-                  <StatusBadge data={'Lab Received'}></StatusBadge>
-                  <StatusBadge data={'Report Dispatched'}></StatusBadge>
-                </View>
-
-                <View style={styles.mapViewContainer}>
-                  <MapView
-                    style={styles.map}
-                    initialRegion={{
-                      latitude: 27.7172,
-                      longitude: 85.3240,
-                      latitudeDelta: 0.0111922,
-                      longitudeDelta: 0.0111421,
-                    }}
-                  >
-                    <MarkerCostome
-                      coordinate={cMarker.latlng}
-                      title={cMarker.title}
-                      description={cMarker.description}
-                      forClient
-                    />
-                  </MapView>
-                </View>
-
-                <View style={styles.flatListContainer}>
-                  <Text style={styles.title}>Tests</Text>
-                  <FlatList
-                    data={TestList}
-                    renderItem={({ item, index }) =>
-                      <View style={styles.testCard}>
-                        <Text style={{
-                          fontSize: 16,
-                          color: '#fefefe',
-                          width: 25,
-                          height: 25,
-                          textAlign: 'center',
-                          borderRadius: 50,
-                          backgroundColor: '#205072',
-                        }}>{index + 1}</Text>
-                        <Text style={styles.testsText}>{item.TestName}</Text>
-                        <Text style={styles.testsPrice}>Rs.{item.TestPrice}</Text>
-                      </View>
-                    }
-                    keyExtractor={item => item.SId}
+          </View>
+          {
+            data.RequestStatus === 'Accepted' ?
+              <View style={styles.testList}>
+                <View style={styles.TextInput}>
+                  <Text style={styles.formLabel}>IsPaid</Text>
+                  <Switch
+                    trackColor={{ false: "#767577", true: "#81b0ff" }}
+                    thumbColor={isPaid ? "#f5dd4b" : "#f4f3f4"}
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={toggleSwitch}
+                    value={isPaid}
+                    disabled={isPaid}
                   />
                 </View>
-
-                <View style={styles.module}>
-
-                  <CancleBtn title='Reject' color={'#e0c945'} onPress={() => setisRemarksVisible(true)}></CancleBtn>
-                  <Text>   </Text>
-                  <AppButton title='Accept' onPress={() => handleAccept()}></AppButton>
+                <View style={styles.TextInput}>
+                  <TextInput
+                    value={Remarks}
+                    placeholder='remarks'
+                    onChangeText={(e) => setRemarks(e)}
+                    style={styles.inputField}
+                    multiline={true}
+                  ></TextInput>
                 </View>
-
+                <AppButton title='proceed' onPress={() => hadleProceed()} disable={btnDis}></AppButton>
+                {/* <Button disabled></Button> */}
               </View>
-
+              : null
           }
         </View>
       </Modal>
@@ -313,7 +322,7 @@ const TaskCard = ({ data }) => {
   )
 }
 
-export default TaskCard
+export default AcceptedCard
 
 const styles = StyleSheet.create({
   cardCotainer: {
@@ -373,30 +382,7 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     backgroundColor: '#fefefe'
   },
-  textInput: {
-    width: "100%",
-    flex: 1,
-    marginLeft: 10,
-    // backgroundColor: 'red',
-    justifyContent: 'center',
-    // alignItems: 'center'
-  },
-  module: {
-    width: '100%',
-    // height: 200,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  inputField: {
-    borderWidth: 1,
-    borderColor: 'red',
-    width: windowWidth - 20,
-    minHeight: 100,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 10,
-    marginVertical: 10,
-  },
+  
 
   // badges 
   badge: {
@@ -445,7 +431,7 @@ const styles = StyleSheet.create({
   },
   mapViewContainer: {
     width: '100%',
-    flex: 0.4,
+    flex: 0.3,
     // backgroundColor: 'red',
     borderRadius: 18,
     marginVertical: 10,
@@ -486,4 +472,35 @@ const styles = StyleSheet.create({
     color: '#FF7F00'
   },
 
+
+  testList: {
+    // backgroundColor: '#fefefe',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#9DD4E9',
+    marginTop: 20,
+    paddingHorizontal: 15,
+    paddingVertical: 20,
+    borderTopLeftRadius: 18,
+    borderTopRightRadius: 18,
+
+  },
+  TextInput: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  inputField: {
+    borderWidth: 1,
+    borderColor: '#fefefe',
+    width: windowWidth * 0.92,
+    minHeight: 100,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 10,
+    marginBottom: 10,
+  }
+  
 })
