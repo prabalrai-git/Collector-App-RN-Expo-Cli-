@@ -30,10 +30,5 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     maxWidth: Dimensions.get('window').width * 0.95
 
-  },
-  txt: {
-    fontSize: 16,
-    color: "#fff",
-    letterSpacing: 1.4,
   }
 })

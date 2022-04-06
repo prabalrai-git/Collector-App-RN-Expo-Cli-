@@ -109,10 +109,29 @@ const AddTestBillingScreen = ({ route }) => {
 
   const renderItem = (({ item }) => (
     <View style={styles.testContainer}>
+
       <Text style={styles.testTitle}>{item.Test}</Text>
       <Text style={styles.testPrice}>Rs.{item.Price}</Text>
+      {/* <Button title='remove' onPress={() => RemoveItem(item)}></Button> */}
     </View>
   ))
+  // console.log('list of test', route.params.tests.testList);
+
+  // const RemoveItem = (e) => {
+  //   let tempArr = route.params.tests.testList;
+  //   if (tempArr.includes(e)) {
+  //     // for removing speciic data
+  //     const index = tempArr.indexOf(e);
+  //     if (index > -1) {
+  //       tempArr.splice(index, 1); // 2nd parameter means remove one item only
+  //       setTotalAmount(prev => {
+  //         return (prev >= 0 ?
+  //           prev - e.Price : 0)
+  //       })
+  //     }
+  //   }
+  //   // setSelected(tempArr);
+  // }
 
   const handleSubmit = () => {
     setBtnDis(true);
@@ -297,7 +316,7 @@ export default AddTestBillingScreen
 const styles = StyleSheet.create({
   mainContainer: {
     // paddingTop: 40,
-    backgroundColor: '#9DD4E9',
+    backgroundColor: '#8ED1FC',
     // justifyContent: 'center',
     // alignItems: 'center',
     flex: 1,
@@ -336,7 +355,7 @@ const styles = StyleSheet.create({
     color: '#fefefe'
   },
   testPrice: {
-    color: '#FFC285',
+    color: '#232324',
     fontSize: 14
   },
   contaienr: {
@@ -348,6 +367,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 15,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   formLabel: {
     color: "#4688B3",
@@ -359,7 +387,7 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.45,
     paddingBottom: 30,
     width: windowWidth,
-    backgroundColor: '#9DD4E9',
+    backgroundColor: '#8ED1FC',
     paddingVertical: 10,
     justifyContent: 'center',
     alignItems: 'center',

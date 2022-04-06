@@ -1,23 +1,13 @@
 
-import { Dimensions, FlatList, ImageBackground, ScrollView, StyleSheet, View } from 'react-native'
+import { FlatList, StyleSheet, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Text } from 'react-native-elements'
-import TaskCard from '../../components/ui/TaskCard'
 import { useDispatch } from 'react-redux'
-import { GetPatientList, GetSampleRequestListByCollector } from '../../Services/appServices/AssignPatient'
-import HamMenu from '../../components/ui/HamMenu'
-import BackBtn from '../../components/ui/BackBtn'
-import SampleCard from '../Sample/SampleCard'
+import { GetSampleRequestListByCollector } from '../../Services/appServices/AssignPatient'
 import { useIsFocused } from '@react-navigation/native'
 import AcceptedCard from '../../components/ui/AcceptedCard'
 
 
 
-const renderItem = ({ item }) => (
-  // <TaskCard data={item} />
-  // <SampleCard item={item} />
-  <AcceptedCard data={item}/>
-)
 
 const AcceptedTask = () => {
   const [PatietList, setPatietList] = useState();
@@ -38,7 +28,16 @@ const AcceptedTask = () => {
     setdisComplete(false)
   }, [disComplete])
 
+const refData =(res) =>{
+  if(res === true){
+    handleClick()
+  }
+}
 
+  const renderItem = ({ item }) => (
+    <AcceptedCard data={item} refData={refData}/>
+  )
+  
 
   const handleClick = () => {
     const fromDate = `${FromDate.getFullYear() + "-" + (FromDate.getMonth() + 1) + "-" + FromDate.getDate()}`
@@ -65,11 +64,8 @@ const AcceptedTask = () => {
 
   const sortData = () => {
     let tempArr = []
-    // console.log("PatietList", PatietList.length);
-    // return
     if (PatietList !== undefined) {
       PatietList.map(e => {
-        // console.log(e.RequestStatus);
         if (e.RequestStatus !== null) {
           e.RequestStatus.includes('Accepted') || e.RequestStatus.includes('Collected') ?
             tempArr.push(e)
@@ -113,10 +109,5 @@ const styles = StyleSheet.create({
     // marginTop: 10,
     flexDirection: 'column',
     flex: 1
-  },
-  // bkgImg: {
-  //   width: Dimensions.get('window').width * 1,
-  //   flex: 1,
-  //   paddingTop: 90,
-  // },
+  }
 })

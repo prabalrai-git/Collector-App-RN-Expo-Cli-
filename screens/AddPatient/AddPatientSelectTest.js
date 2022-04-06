@@ -3,11 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import AppButton from '../../components/ui/AppButton';
 import SelectTestCard from '../../components/ui/SelectTestCard';
-import Filter from '../../components/ui/Filter';
 import { useDispatch } from 'react-redux';
 import { GetTestList } from '../../Services/appServices/AssignPatient';
-import HamMenu from '../../components/ui/HamMenu';
-import BackBtn from '../../components/ui/BackBtn';
 import CancleBtn from '../../components/ui/CancleBtn';
 import Header from '../../components/Header';
 
@@ -24,6 +21,7 @@ const AddPatientSelectTest = ({ route }) => {
   const [newData, setNewData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
+  // const isFocused = useIsFocused();
 
   useEffect(() => {
     dispatch(GetTestList(res => {
@@ -32,7 +30,6 @@ const AddPatientSelectTest = ({ route }) => {
     setNewData(data)
   }, [])
 
-  // console.log(data);
   const renderItem = ({ item }) => (
 
     <SelectTestCard
@@ -56,15 +53,6 @@ const AddPatientSelectTest = ({ route }) => {
             prev - e.Price : 0)
         })
       }
-      // Alert.alert(
-      //   "Alert",
-      //   "The slecected test is already added",
-      //   [
-      //     {
-      //       text: "OK",
-      //       // onPress: () => console.log("OK Pressed") 
-      //     }
-      //   ]
       // );
     } else {
       arr.push(e);
@@ -163,7 +151,7 @@ const AddPatientSelectTest = ({ route }) => {
             <Text style={styles.tPrice}>Rs.{total}</Text>
           </View>
 
-          <AppButton title='cart'
+          <AppButton title='Proceed'
             onPress={() => popBodule()}
 
           ></AppButton>
@@ -209,7 +197,7 @@ const AddPatientSelectTest = ({ route }) => {
                       >
                         <Text style={styles.textStyle}>cancle</Text>
                       </Pressable> */}
-                      <CancleBtn title={'cancle'} onPress={() => setModalVisible(!modalVisible)}></CancleBtn>
+                      <CancleBtn title={'cancel'} onPress={() => setModalVisible(!modalVisible)}></CancleBtn>
                       <AppButton title='proceed' onPress={() => handleProceed()}></AppButton>
                     </View>
                   </View>

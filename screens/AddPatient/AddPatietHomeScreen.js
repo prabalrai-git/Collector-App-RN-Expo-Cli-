@@ -6,12 +6,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { BottomSheet, Button, Icon, Input } from 'react-native-elements';
 import MapView from 'react-native-maps';
-import { CommonActions, useNavigation } from '@react-navigation/native';
-import Filter from '../../components/ui/Filter';
-import TestCard from '../../components/ui/TestCard';
+import { useNavigation } from '@react-navigation/native';
 import AppButton from '../../components/ui/AppButton';
-import HamMenu from '../../components/ui/HamMenu';
-import BackBtn from '../../components/ui/BackBtn';
 import Header from '../../components/Header';
 
 // {
@@ -131,10 +127,10 @@ const AddPatietHomeScreen = () => {
 
 
   const hndleSubmit = () => {
-    // navigation.navigate('AddPatientSelectTest', {
-    //   patinetId: 51
-    // })
-    // return
+    navigation.navigate('AddPatientSelectTest', {
+      patinetId: 51
+    })
+    return
 
     setIsLoading(true);
     setButDis(true);

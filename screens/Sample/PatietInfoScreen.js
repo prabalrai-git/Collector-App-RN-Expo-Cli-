@@ -165,10 +165,7 @@ const PatietInfoScreen = ({ route }) => {
 
           </View>
           <View style={styles.statusCotnainer}>
-            <StatusBadge data={route.params.data.RequestStatus}></StatusBadge>
-            <StatusBadge data={'Collected'}></StatusBadge>
-            <StatusBadge data={'Lab Received'}></StatusBadge>
-            <StatusBadge data={'Report Dispatched'}></StatusBadge>
+            <StatusBadge RequestStatus={route.params.data.RequestStatus}></StatusBadge>
           </View>
           <View style={styles.flatListContainer}>
             <Text style={styles.title}>Tests</Text>

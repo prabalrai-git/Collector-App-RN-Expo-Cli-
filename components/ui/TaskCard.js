@@ -1,4 +1,4 @@
-import { Button, Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Pressable, Image, FlatList } from 'react-native'
+import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Pressable, Image, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import AppButton from './AppButton';
@@ -9,6 +9,7 @@ import StatusBadge from './StatusBadge';
 import MapView from 'react-native-maps';
 import MarkerCostome from './MarkerCostome';
 import { Icon } from 'react-native-elements';
+import BadgeStatus from './BadgeStatus';
 
 
 
@@ -41,7 +42,7 @@ const windowWidth = Dimensions.get('window').width
 // "TestTotalAmount": 5815,
 
 
-const TaskCard = ({ data }) => {
+const TaskCard = ({ data , AsignedTask}) => {
   // console.log('data', data);
   const [isVisibe, setisVisibe] = useState(false);
   const [isRemarksVisible, setisRemarksVisible] = useState(false);
@@ -57,9 +58,6 @@ const TaskCard = ({ data }) => {
     dispatch(GetHomeCollectionTestRequestTestList(data.RId, (res) => {
       setTestList(res?.RequestTestList);
     }))
-    // dispatch(GetStatus((res) => {
-    //   setCollectedStatus(res.sampleStatus[4]);
-    // }))
   }, [])
 
 
@@ -95,7 +93,6 @@ const TaskCard = ({ data }) => {
   }
 
   const handleReject = () => {
-    // UpdateStatus
     let today = new Date();
     const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.toLocaleTimeString();
     const aData = {
@@ -114,6 +111,7 @@ const TaskCard = ({ data }) => {
         setisVisibe(!isVisibe)
         setisRemarksVisible(false)
         setRemarks('')
+        navigation.navigate('RejectedTask')
       }
     }))
 
@@ -131,6 +129,7 @@ const TaskCard = ({ data }) => {
   }
   return (
     <>
+    
       <Pressable onPress={() => hadleEvent()} style={styles.cardCotainer}>
         <View style={styles.cardBody}>
           <View style={styles.card}>
@@ -138,41 +137,12 @@ const TaskCard = ({ data }) => {
             <Text style={styles.remarks}>Request Id: {data.RId}</Text>
             <Text style={styles.cDate}>{data.CollectionReqDate}</Text>
           </View>
-          <View>
-            {
-              (data.RequestStatus === 'Requested' || data.RequestStatus === 'Asigned') ?
-                <Text style={[styles.badge]}>pending</Text> : null
-            }
-            {
-              (data.RequestStatus === 'Collected') ?
-                <Text style={[styles.badge]}>{data.RequestStatus}</Text> : null
-            }
-            {
-              (data.RequestStatus === 'Accepted') ?
-                <View>
-                  <Text style={[styles.badge]}>pending</Text>
-                  <Text style={[styles.badge, { backgroundColor: '#aeee19' }]}>{data.RequestStatus}</Text>
-                </View>
-                : null
-            }
-            {
-              (data.RequestStatus === 'Rejected') ?
-                <Text style={[styles.badge, { backgroundColor: '#e43333' }]}>{data.RequestStatus}</Text> : null
-            }
-            {
-              (data.RequestStatus === 'Lab Received') ?
-                <Text style={[styles.badge, { backgroundColor: '#33e4af' }]}>{data.RequestStatus}</Text> : null
-            }
-            {
-              (data.RequestStatus === 'Report Dispatched') ?
-                <Text style={[styles.badge, { backgroundColor: '#33bbe4' }]}>{data.RequestStatus}</Text> : null
-            }
-
-          </View>
+          <BadgeStatus RequestStatus={data.RequestStatus}></BadgeStatus>
         </View>
       </Pressable>
-
-      <Modal
+      {
+        AsignedTask &&
+        <Modal
         animationType="slide"
         transparent={true}
         visible={isVisibe}
@@ -247,12 +217,8 @@ const TaskCard = ({ data }) => {
 
                 </View>
 
-                <View style={styles.statusCotnainer}>
-                  <StatusBadge data={data.RequestStatus}></StatusBadge>
-                  <StatusBadge data={'Collected'}></StatusBadge>
-                  <StatusBadge data={'Lab Received'}></StatusBadge>
-                  <StatusBadge data={'Report Dispatched'}></StatusBadge>
-                </View>
+                <StatusBadge RequestStatus={data.RequestStatus}></StatusBadge>
+
 
                 <View style={styles.mapViewContainer}>
                   <MapView
@@ -308,6 +274,9 @@ const TaskCard = ({ data }) => {
           }
         </View>
       </Modal>
+      }
+
+      
 
     </>
   )
@@ -367,23 +336,17 @@ const styles = StyleSheet.create({
   },
   centeredView: {
     width: '100%',
-    // height: "100%",
     flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
     backgroundColor: '#fefefe'
   },
   textInput: {
     width: "100%",
     flex: 1,
     marginLeft: 10,
-    // backgroundColor: 'red',
     justifyContent: 'center',
-    // alignItems: 'center'
   },
   module: {
     width: '100%',
-    // height: 200,
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
@@ -398,29 +361,14 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
 
-  // badges 
-  badge: {
-    backgroundColor: '#f3ff49',
-    color: '#fefefe',
-    paddingHorizontal: 6,
-    paddingVertical: 3,
-    borderRadius: 20,
-    fontSize: 10,
-    marginVertical: 2,
-  },
-
-
   patInfocontainer: {
     width: windowWidth - 20,
     flex: 1,
     marginLeft: 10,
-    // backgroundColor: 'red'
   },
 
   profile: {
-    // flex: 1,
     flexDirection: 'row',
-    // padding: 10,
     paddingVertical: 10,
   },
   right: {
@@ -438,10 +386,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 1.3,
     marginBottom: 6
-  },
-  statusCotnainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
   },
   mapViewContainer: {
     width: '100%',

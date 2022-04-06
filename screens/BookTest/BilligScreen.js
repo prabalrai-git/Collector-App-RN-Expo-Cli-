@@ -4,7 +4,7 @@ import AppButton from '../../components/ui/AppButton'
 import { useDispatch } from 'react-redux'
 import { GetStatus, InsertUpdateHomeCollection } from '../../Services/appServices/AssignPatient'
 import { Picker } from '@react-native-picker/picker'
-import { StackActions, useNavigation } from '@react-navigation/native'
+import { StackActions, useIsFocused, useNavigation } from '@react-navigation/native'
 import HamMenu from '../../components/ui/HamMenu'
 import BackBtn from '../../components/ui/BackBtn'
 import Header from '../../components/Header'
@@ -91,6 +91,7 @@ const BilligScreen = ({ route }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [btnDis, setBtnDis] = useState(false);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     dispatch(GetStatus((res) => {
@@ -119,6 +120,7 @@ const BilligScreen = ({ route }) => {
     const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     const newTime = today.toLocaleTimeString();
     const fialEntryDate = newDate + 'T' + newTime;
+    
 
     const _HomeRequest = {
       "RId": 0,
@@ -169,7 +171,13 @@ const BilligScreen = ({ route }) => {
           "Saved!",
           "Test booked Sucessfully",
           [
-            { text: "OK", onPress: () => navigation.navigate('Home') }
+            {
+              text: "OK", onPress: () => {
+                const popAc = StackActions.pop(2);
+                navigation.dispatch(popAc);
+                // navigation.navigate('Home')
+              }
+            }
           ]
         );
       }
@@ -189,7 +197,7 @@ const BilligScreen = ({ route }) => {
     <View style={styles.mainContainer}>
       {/* <HamMenu></HamMenu>
         <BackBtn></BackBtn> */}
-        <Header title={'bill'}></Header>
+      <Header title={'bill'}></Header>
       <View style={styles.fatlistfContainer}>
         <FlatList
           data={route.params.tests.testList}

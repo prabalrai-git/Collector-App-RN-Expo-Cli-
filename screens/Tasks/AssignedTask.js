@@ -1,14 +1,10 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { FlatList, StyleSheet, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { dummyData } from '../../dumyData'
-// import SampleCard from '../Sample/SampleCard'
 import { useDispatch } from 'react-redux'
 import { GetSampleRequestListByCollector } from '../../Services/appServices/AssignPatient'
 import TaskCard from '../../components/ui/TaskCard'
 import { useIsFocused } from '@react-navigation/native'
-
-// array of asigned status and requested status
-// for same user id
 
 
 
@@ -35,24 +31,11 @@ const AssignedTask = () => {
     setdisComplete(false)
   }, [disComplete])
 
-  // to refresh page
-   
-    // useEffect(() => {
-    //   handleRequestList()
-    // }, [isFocused])
-  // end
 
-  
-const renderItem = ({ item }) => (
-  // <TaskCard data={item} />
-  <TaskCard data={item}/>
-)
+  const renderItem = ({ item }) => (
+    <TaskCard data={item} AsignedTask />
+  )
 
-
-
-
-
-  // console.log("PatietList", PatietList);
 
   const handleRequestList = () => {
     const fromDate = `${FromDate.getFullYear() + "-" + (FromDate.getMonth() + 1) + "-" + FromDate.getDate()}`

@@ -1,13 +1,10 @@
 import { Dimensions, FlatList, ImageBackground, StyleSheet, Text, View } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
-import PatientCard from '../../components/ui/PatientCard'
 import { useDispatch } from 'react-redux'
 import { GetPatientList } from '../../Services/appServices/AssignPatient'
-import Filter from '../../components/ui/Filter'
 import { useIsFocused } from '@react-navigation/native'
-import HamMenu from '../../components/ui/HamMenu'
-import BackBtn from '../../components/ui/BackBtn'
 import Header from '../../components/Header'
+import PatientInfoCard from '../../components/ui/PatientInfoCard'
 
 const BookTestHomeScreen = () => {
   const [PatietList, setPatietList] = useState();
@@ -25,7 +22,8 @@ const BookTestHomeScreen = () => {
   }, [isFocused]);
 
   const renderItem = ({ item }) => (
-    <PatientCard data={item} />
+    // <PatientCard data={item} />
+    <PatientInfoCard data={item} AsignedTask></PatientInfoCard>
   )
 
   const handleChange = (val) => {

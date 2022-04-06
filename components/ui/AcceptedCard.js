@@ -9,6 +9,7 @@ import StatusBadge from './StatusBadge';
 import MapView from 'react-native-maps';
 import MarkerCostome from './MarkerCostome';
 import { Icon } from 'react-native-elements';
+import BadgeStatus from './BadgeStatus';
 
 
 
@@ -41,7 +42,7 @@ const windowWidth = Dimensions.get('window').width
 // "TestTotalAmount": 5815,
 
 
-const AcceptedCard = ({ data }) => {
+const AcceptedCard = ({ data, refData }) => {
   // console.log('data', data);
   const [isVisibe, setisVisibe] = useState(false);
   const [isRemarksVisible, setisRemarksVisible] = useState(false);
@@ -73,6 +74,8 @@ const AcceptedCard = ({ data }) => {
   }
 
 
+
+
   const handleSubmit = () => {
     // UpdateStatus
     setbtnDis(true)
@@ -90,12 +93,7 @@ const AcceptedCard = ({ data }) => {
     console.log('rejected data', sData);
 
     dispatch(UpdateStatus(sData, (res) => {
-      // console.log('response', res);
       if (res?.SuccessMsg === true) {
-        // console.log('potato sucess, rejected ,', res);
-
-
-
         setRemarks('')
         Alert.alert(
           'Success !',
@@ -105,6 +103,7 @@ const AcceptedCard = ({ data }) => {
               text: 'OK', onPress: () => {
                 setisVisibe(!isVisibe)
                 setisRemarksVisible(false)
+                refData(true)
               }
             }
           ]
@@ -116,8 +115,6 @@ const AcceptedCard = ({ data }) => {
           [
             {
               text: 'OK', onPress: () => {
-                // setisVisibe(!isVisibe)
-                // setisRemarksVisible(false)
               }
             }
           ]
@@ -125,7 +122,54 @@ const AcceptedCard = ({ data }) => {
       }
       setbtnDis(false)
     }))
+  }
 
+  const handleDrop = () => {
+    // UpdateStatus
+    setbtnDis(true)
+    let today = new Date();
+    const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.toLocaleTimeString();
+    const sData = {
+      "SrId": 0,
+      "RequestId": data.RId,
+      "RequestStatusId": 6,
+      "EntryDate": newDate,
+      "UserId": user.userData.usrUserId,
+      "Remarks": 'Sample Droped in lab',
+    }
+
+    console.log('drop  sample', sData);
+    // return
+    dispatch(UpdateStatus(sData, (res) => {
+      if (res?.SuccessMsg === true) {
+        setRemarks('')
+        Alert.alert(
+          'Success !',
+          'Sample has been collected sucessfully',
+          [
+            {
+              text: 'OK', onPress: () => {
+                setisVisibe(!isVisibe)
+                setisRemarksVisible(false)
+                navigation.navigate('CompletedTask')
+              }
+            }
+          ]
+        )
+      } else {
+        Alert.alert(
+          'Failure !',
+          'please enter the detail',
+          [
+            {
+              text: 'OK', onPress: () => {
+              }
+            }
+          ]
+        )
+      }
+      setbtnDis(false)
+    }))
   }
 
   const cMarker = {
@@ -147,37 +191,7 @@ const AcceptedCard = ({ data }) => {
             <Text style={styles.remarks}>Request Id: {data.RId}</Text>
             <Text style={styles.cDate}>{data.CollectionReqDate}</Text>
           </View>
-          <View>
-            {
-              (data.RequestStatus === 'Requested' || data.RequestStatus === 'Asigned') ?
-                <Text style={[styles.badge]}>pending</Text> : null
-            }
-            {
-              (data.RequestStatus === 'Collected') ?
-                <Text style={[styles.badge]}>{data.RequestStatus}</Text> : null
-            }
-            {
-              (data.RequestStatus === 'Accepted') ?
-                <View>
-                  <Text style={[styles.badge]}>pending</Text>
-                  <Text style={[styles.badge, { backgroundColor: '#aeee19' }]}>{data.RequestStatus}</Text>
-                </View>
-                : null
-            }
-            {
-              (data.RequestStatus === 'Rejected') ?
-                <Text style={[styles.badge, { backgroundColor: '#e43333' }]}>{data.RequestStatus}</Text> : null
-            }
-            {
-              (data.RequestStatus === 'Lab Received') ?
-                <Text style={[styles.badge, { backgroundColor: '#33e4af' }]}>{data.RequestStatus}</Text> : null
-            }
-            {
-              (data.RequestStatus === 'Report Dispatched') ?
-                <Text style={[styles.badge, { backgroundColor: '#33bbe4' }]}>{data.RequestStatus}</Text> : null
-            }
-
-          </View>
+          <BadgeStatus RequestStatus={data.RequestStatus}></BadgeStatus>
         </View>
       </Pressable>
 
@@ -241,12 +255,7 @@ const AcceptedCard = ({ data }) => {
 
             </View>
 
-            <View style={styles.statusCotnainer}>
-              <StatusBadge data={data.RequestStatus}></StatusBadge>
-              <StatusBadge data={'Collected'}></StatusBadge>
-              <StatusBadge data={'Lab Received'}></StatusBadge>
-              <StatusBadge data={'Report Dispatched'}></StatusBadge>
-            </View>
+            <StatusBadge RequestStatus={data.RequestStatus}></StatusBadge>
 
             <View style={styles.mapViewContainer}>
               <MapView
@@ -262,7 +271,7 @@ const AcceptedCard = ({ data }) => {
                   coordinate={cMarker.latlng}
                   title={cMarker.title}
                   description={cMarker.description}
-                  forClient
+                  forCollector
                 />
               </MapView>
             </View>
@@ -321,7 +330,7 @@ const AcceptedCard = ({ data }) => {
               :
               <View style={styles.testList}>
                 <Text>Sample has been collected</Text>
-                <AppButton title='Drop Sample' onPress={() => handleSubmit()} disabled={btnDis}></AppButton>
+                <AppButton title='Drop Sample' onPress={() => handleDrop()} disabled={btnDis}></AppButton>
               </View>
 
           }
@@ -393,19 +402,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fefefe'
   },
 
-
-  // badges 
-  badge: {
-    backgroundColor: '#f3ff49',
-    color: '#fefefe',
-    paddingHorizontal: 6,
-    paddingVertical: 3,
-    borderRadius: 20,
-    fontSize: 10,
-    marginVertical: 2,
-  },
-
-
   patInfocontainer: {
     width: windowWidth - 20,
     flex: 1,
@@ -434,10 +430,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 1.3,
     marginBottom: 6
-  },
-  statusCotnainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
   },
   mapViewContainer: {
     width: '100%',
