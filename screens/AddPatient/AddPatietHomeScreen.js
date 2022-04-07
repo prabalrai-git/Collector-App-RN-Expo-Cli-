@@ -9,6 +9,7 @@ import MapView from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 import AppButton from '../../components/ui/AppButton';
 import Header from '../../components/Header';
+import CancleBtn from '../../components/ui/CancleBtn';
 
 // {
 //   "CId": 1,
@@ -127,10 +128,10 @@ const AddPatietHomeScreen = () => {
 
 
   const hndleSubmit = () => {
-    navigation.navigate('AddPatientSelectTest', {
-      patinetId: 51
-    })
-    return
+    // navigation.navigate('AddPatientSelectTest', {
+    //   patinetId: 51
+    // })
+    // return
 
     setIsLoading(true);
     setButDis(true);
@@ -333,6 +334,7 @@ const AddPatietHomeScreen = () => {
             />
 
             <View style={styles.TextInput}>
+              <Text style={styles.cLabel}>Gender</Text>
               <View style={styles.PickerTextInput}>
                 <Picker
                   selectedValue={PatientGender}
@@ -340,7 +342,7 @@ const AddPatietHomeScreen = () => {
                   onValueChange={(itemValue, itemIndex) => setPatientGender(itemValue)}
                   mode='dropdown'
                 >
-                  <Picker.Item label='select gender' value='select gender' />
+                  {/* <Picker.Item label='select gender' value='select gender' /> */}
                   <Picker.Item label='male' value='male' />
                   <Picker.Item label='female' value='female' />
                 </Picker>
@@ -502,12 +504,14 @@ const AddPatietHomeScreen = () => {
               <View
                 style={styles.bSheet}
               >
-                <Button title='cancle' onPress={() => setIsVisible(false)} color={'#ffc107'} buttonStyle={{ backgroundColor: 'yellow' }} />
-                <View>
+                {/* <Button title='cancle' onPress={() => setIsVisible(false)} color={'#ffc107'} buttonStyle={{ backgroundColor: 'yellow' }} /> */}
+                <CancleBtn title='cancle' onPress={() => setIsVisible(false)}></CancleBtn>
+                {/* <View>
                   <Text>latitude:{JSON.stringify(region.latitude)}</Text>
                   <Text>longitude:{JSON.stringify(region.longitude)}</Text>
-                </View>
-                <Button title='save' onPress={() => handleAddress(region.latitude, region.longitude)} />
+                </View> */}
+                <AppButton title='save' onPress={() => handleAddress(region.latitude, region.longitude)} ></AppButton>
+                {/* <Button title='save' onPress={() => handleAddress(region.latitude, region.longitude)} /> */}
               </View>
 
             </View>
@@ -658,5 +662,10 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     // flexDirection:'row'
     marginLeft: 10,
+  },
+  cLabel:{
+    color: "#86939e",
+    fontSize: 16,
+    fontWeight: 'bold'
   }
 })

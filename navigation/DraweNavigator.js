@@ -75,7 +75,7 @@ const DraweNavigator = () => {
           // tabBarHideOnKeyboard: true,
           
           headerShown: false,
-          title: 'Boook test',
+          title: 'Patient',
           tabBarIcon: ({ size, color }) => (
             <Icon
               name='new-message'

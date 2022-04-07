@@ -2,18 +2,14 @@ import { Dimensions, FlatList, ImageBackground, ScrollView, StyleSheet, View } f
 import React, { useEffect, useState } from 'react'
 import { Text } from 'react-native-elements'
 import TaskCard from '../../components/ui/TaskCard'
-import { useDispatch } from 'react-redux'
-import { GetPatientList, GetSampleRequestListByCollector } from '../../Services/appServices/AssignPatient'
-import HamMenu from '../../components/ui/HamMenu'
-import BackBtn from '../../components/ui/BackBtn'
-import SampleCard from '../Sample/SampleCard'
+import { useDispatch, useSelector } from 'react-redux'
+import { GetCollectorRequestByCollectorWiseForWeek, GetPatientList, GetSampleRequestListByCollector } from '../../Services/appServices/AssignPatient'
 import { useIsFocused } from '@react-navigation/native'
 
 
 
 const renderItem = ({ item }) => (
   <TaskCard data={item} />
-  // <SampleCard item={item} />
 )
 
 const RejectedTask = () => {
@@ -25,6 +21,8 @@ const RejectedTask = () => {
 
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
+  const user = useSelector(state => state.storeUserData);
+
 
   useEffect(() => {
     handleClick()
@@ -39,19 +37,19 @@ const RejectedTask = () => {
 
 
   const handleClick = () => {
-    const fromDate = `${FromDate.getFullYear() + "-" + (FromDate.getMonth() + 1) + "-" + FromDate.getDate()}`
-    const toDate = `${ToDate.getFullYear() + "-" + (ToDate.getMonth() + 1) + "-" + 30}`
-    const collectorId = 3
-    const data = {
-      'fromDate': fromDate,
-      'toDate': toDate,
-      'collectorId': collectorId
+    // const fromDate = `${FromDate.getFullYear() + "-" + (FromDate.getMonth() + 1) + "-" + FromDate.getDate()}`
+    // const toDate = `${ToDate.getFullYear() + "-" + (ToDate.getMonth() + 1) + "-" + 30}`
+    // const collectorId = 3
+    // const data = {
+    //   'fromDate': fromDate,
+    //   'toDate': toDate,
+    //   'collectorId': collectorId
 
-    }
+    // }
     // console.log(data);
-    dispatch(GetSampleRequestListByCollector(data, (res) => {
-      if (res?.RequestList.length > 0) {
-        setPatietList(res.RequestList)
+    dispatch(GetCollectorRequestByCollectorWiseForWeek(user.userData.usrUserId, (res) => {
+      if (res?.WeekWiseSampleDetailsByCollectorId.length > 0) {
+        setPatietList(res.WeekWiseSampleDetailsByCollectorId)
         setdisComplete(true)
       } else {
         console.log('no data found');
@@ -68,8 +66,8 @@ const RejectedTask = () => {
     if (PatietList !== undefined) {
       PatietList.map(e => {
         // console.log(e.RequestStatus);
-        if (e.RequestStatus !== null) {
-          e.RequestStatus.includes('Rejected') ?
+        if (e.SampleStatus !== null) {
+          e.SampleStatus.includes('Rejected') ?
             tempArr.push(e)
             :
             ''
@@ -81,23 +79,14 @@ const RejectedTask = () => {
     }
 
   }
-  // console.log("SortedData", SortedData);
 
   return (
     <View style={styles.mainContainer}>
-      {/* <ImageBackground
-        source={require('../../assets/images/bkg1.png')}
-        resizeMode="cover"
-        style={styles.bkgImg}
-      > */}
-      {/* <HamMenu></HamMenu>
-        <BackBtn></BackBtn> */}
       <FlatList
         data={SortedData}
         renderItem={renderItem}
-        keyExtractor={item => item.RId}
+        keyExtractor={(item, index) => `${index}${item.RId}`}
       />
-      {/* </ImageBackground> */}
     </View>
   )
 }
@@ -108,13 +97,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    // marginTop: 10,
     flexDirection: 'column',
     flex: 1
   },
-  // bkgImg: {
-  //   width: Dimensions.get('window').width * 1,
-  //   flex: 1,
-  //   paddingTop: 90,
-  // },
 })

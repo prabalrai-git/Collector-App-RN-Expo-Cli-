@@ -1,8 +1,8 @@
 
 import { FlatList, StyleSheet, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { GetSampleRequestListByCollector } from '../../Services/appServices/AssignPatient'
+import { useDispatch, useSelector } from 'react-redux'
+import { GetCollectorRequestByCollectorWiseForWeek, GetSampleRequestListByCollector } from '../../Services/appServices/AssignPatient'
 import { useIsFocused } from '@react-navigation/native'
 import AcceptedCard from '../../components/ui/AcceptedCard'
 
@@ -17,6 +17,7 @@ const AcceptedTask = () => {
   const [SortedData, setSortedData] = useState();
   const isFocused = useIsFocused();
   const dispatch = useDispatch()
+  const user = useSelector(state => state.storeUserData);
 
   useEffect(() => {
     handleClick()
@@ -40,19 +41,19 @@ const refData =(res) =>{
   
 
   const handleClick = () => {
-    const fromDate = `${FromDate.getFullYear() + "-" + (FromDate.getMonth() + 1) + "-" + FromDate.getDate()}`
-    const toDate = `${ToDate.getFullYear() + "-" + (ToDate.getMonth() + 1) + "-" + ToDate.getDate()}`
-    const collectorId = 3
-    const data = {
-      'fromDate': fromDate,
-      'toDate': toDate,
-      'collectorId': collectorId
+    // const fromDate = `${FromDate.getFullYear() + "-" + (FromDate.getMonth() + 1) + "-" + FromDate.getDate()}`
+    // const toDate = `${ToDate.getFullYear() + "-" + (ToDate.getMonth() + 1) + "-" + ToDate.getDate()}`
+    // const collectorId = 3
+    // const data = {
+    //   'fromDate': fromDate,
+    //   'toDate': toDate,
+    //   'collectorId': collectorId
 
-    }
+    // }
     // console.log(data);
-    dispatch(GetSampleRequestListByCollector(data, (res) => {
-      if (res?.RequestList.length > 0) {
-        setPatietList(res.RequestList)
+    dispatch(GetCollectorRequestByCollectorWiseForWeek(user.userData.usrUserId, (res) => {
+      if (res?.WeekWiseSampleDetailsByCollectorId.length > 0) {
+        setPatietList(res.WeekWiseSampleDetailsByCollectorId)
         setdisComplete(true)
       } else {
         console.log('no data found');
@@ -66,8 +67,8 @@ const refData =(res) =>{
     let tempArr = []
     if (PatietList !== undefined) {
       PatietList.map(e => {
-        if (e.RequestStatus !== null) {
-          e.RequestStatus.includes('Accepted') || e.RequestStatus.includes('Collected') ?
+        if (e.SampleStatus !== null) {
+          e.SampleStatus.includes('Accepted') || e.SampleStatus.includes('Collected') ?
             tempArr.push(e)
             :
             ''
@@ -83,19 +84,11 @@ const refData =(res) =>{
 
   return (
     <View style={styles.mainContainer}>
-      {/* <ImageBackground
-        source={require('../../assets/images/bkg1.png')}
-        resizeMode="cover"
-        style={styles.bkgImg}
-      > */}
-      {/* <HamMenu></HamMenu>
-        <BackBtn></BackBtn> */}
       <FlatList
         data={SortedData}
         renderItem={renderItem}
-        keyExtractor={item => item.RId}
+        keyExtractor={(item, index) => `${index}${item.RId}`}
       />
-      {/* </ImageBackground> */}
     </View>
   )
 }

@@ -20,6 +20,7 @@ import AddPatientSelectTest from '../screens/AddPatient/AddPatientSelectTest'
 import AddTestBillingScreen from '../screens/AddPatient/AddTestBillingScreen'
 import HomeScreen from '../screens/HomeScreen'
 import TabNavigator from './TabNavigator'
+import PrevioiusRequest from '../screens/BookTest/PrevioiusRequest'
 
 const Stack = createNativeStackNavigator()
 
@@ -175,6 +176,13 @@ const BookTestNavigator = () => {
         <Stack.Screen
           name='SelectTest'
           component={SelectTest}
+          options={{
+            headerShown: false
+          }}
+        />
+        <Stack.Screen
+          name='PrevioiusRequest'
+          component={PrevioiusRequest}
           options={{
             headerShown: false
           }}

@@ -1,10 +1,10 @@
-import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Pressable, Image, FlatList } from 'react-native'
+import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Pressable, Image, FlatList, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import AppButton from './AppButton';
 import CancleBtn from './CancleBtn';
 import { useDispatch, useSelector } from 'react-redux';
-import { GetHomeCollectionTestRequestTestList, UpdateStatus } from '../../Services/appServices/AssignPatient';
+import { GetAddressOfClient, GetHomeCollectionTestRequestTestList, UpdateStatus } from '../../Services/appServices/AssignPatient';
 import StatusBadge from './StatusBadge';
 import MapView from 'react-native-maps';
 import MarkerCostome from './MarkerCostome';
@@ -42,8 +42,8 @@ const windowWidth = Dimensions.get('window').width
 // "TestTotalAmount": 5815,
 
 
-const TaskCard = ({ data , AsignedTask}) => {
-  // console.log('data', data);
+const TaskCard = ({ data, AsignedTask }) => {
+  console.log('data', data);
   const [isVisibe, setisVisibe] = useState(false);
   const [isRemarksVisible, setisRemarksVisible] = useState(false);
   const [Remarks, setRemarks] = useState('');
@@ -53,10 +53,21 @@ const TaskCard = ({ data , AsignedTask}) => {
   const text = data.CollectionReqDate;
   const temp = text.split('T');
   const [TestList, setTestList] = useState();
+  const [Coordinate, setCoordinate] = useState({
+    'latitude': null,
+    'longitude': null
+  });
 
   useEffect(() => {
-    dispatch(GetHomeCollectionTestRequestTestList(data.RId, (res) => {
+    dispatch(GetHomeCollectionTestRequestTestList(data.RequestId, (res) => {
       setTestList(res?.RequestTestList);
+    }))
+    dispatch(GetAddressOfClient(data.CId, (res) => {
+      // setCoordinate(res?.RequestTestList);
+      // console.log("res", res.clientAddress[0].PatientAddress);
+      let temp = JSON.parse(res.clientAddress[0].PatientAddress)
+      console.log('temp', temp);
+      setCoordinate(temp)
     }))
   }, [])
 
@@ -72,7 +83,7 @@ const TaskCard = ({ data , AsignedTask}) => {
     const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.toLocaleTimeString();
     const rData = {
       "SrId": 0,
-      "RequestId": data.RId,
+      "RequestId": data.RequestId,
       "RequestStatusId": 3,
       //  "RequestStatusId": 1,
       "EntryDate": newDate,
@@ -97,186 +108,209 @@ const TaskCard = ({ data , AsignedTask}) => {
     const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.toLocaleTimeString();
     const aData = {
       "SrId": 0,
-      "RequestId": data.RId,
+      "RequestId": data.RequestId,
       "RequestStatusId": 4,
       "EntryDate": newDate,
       "UserId": user.userData.usrUserId,
-      "Remarks": Remarks !== '' ? Remarks : '',
+      "Remarks": Remarks,
     }
-    console.log('rejected data', aData);
-    dispatch(UpdateStatus(aData, (res) => {
-      console.log('response', res);
-      if (res?.SuccessMsg === true) {
-        console.log('potato sucess, rejected');
-        setisVisibe(!isVisibe)
-        setisRemarksVisible(false)
-        setRemarks('')
-        navigation.navigate('RejectedTask')
-      }
-    }))
+    if (Remarks === '' || Remarks === undefined) {
+      Alert.alert(
+        'Failure !',
+        'please enter the remarks',
+        [
+          {
+            text: 'OK', onPress: () => {
+            }
+          }
+        ]
+      )
+    } else {
+      dispatch(UpdateStatus(aData, (res) => {
+        console.log('response', res);
+        if (res?.SuccessMsg === true) {
+          console.log('potato sucess, rejected');
+          setisVisibe(!isVisibe)
+          setisRemarksVisible(false)
+          setRemarks('')
+          Alert.alert(
+            'Reject Sucessfull !',
+            // 'please enter the remarks',
+            [
+              {
+                text: 'OK', onPress: () => {
+                  navigation.navigate('RejectedTask')
+                }
+              }
+            ]
+          )
+        }
+      }))
+    }
+
 
   }
 
   const cMarker = {
     latlng: {
-      // latitude: tempCoordinate.latitude === null ? 27.7172 : tempCoordinate.latitude,
-      // longitude: tempCoordinate.longitude === null ? 85.3240 : tempCoordinate.longitude
-      latitude: 27.7172,
-      longitude: 85.3240,
+      latitude: Coordinate.latitude === null ? 27.7172 : Coordinate.latitude,
+      longitude: Coordinate.longitude === null ? 85.3240 : Coordinate.longitude
+      // latitude: 27.7172,
+      // longitude: 85.3240,
     },
     title: 'title',
     description: 'somethindg'
   }
   return (
     <>
-    
+
       <Pressable onPress={() => hadleEvent()} style={styles.cardCotainer}>
         <View style={styles.cardBody}>
           <View style={styles.card}>
             <Text style={styles.ctitle}>{data.PatientFName} {data.PatientLName}</Text>
-            <Text style={styles.remarks}>Request Id: {data.RId}</Text>
+            <Text style={styles.remarks}>Request Id: {data.RequestId}</Text>
             <Text style={styles.cDate}>{data.CollectionReqDate}</Text>
           </View>
-          <BadgeStatus RequestStatus={data.RequestStatus}></BadgeStatus>
+          <BadgeStatus RequestStatus={data.SampleStatus}></BadgeStatus>
         </View>
       </Pressable>
       {
         AsignedTask &&
         <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isVisibe}
-        onRequestClose={() => {
-          setisVisibe(!isVisibe)
-          setisRemarksVisible(false)
-        }}
-      >
+          animationType="slide"
+          transparent={true}
+          visible={isVisibe}
+          onRequestClose={() => {
+            setisVisibe(!isVisibe)
+            setisRemarksVisible(false)
+          }}
+        >
 
-        <View style={styles.centeredView}>
-          <TouchableOpacity
-            style={{
-              position: 'absolute',
-              top: 10,
-              right: 10,
-              backgroundColor: '#8ED1FC',
-              padding: 10,
-              borderRadius: 50,
-            }}
-            onPress={() => {
-              setisVisibe(false)
-              setisRemarksVisible(false)
-            }}>
-            <Icon
-              name={'close'}
-              color={'#fefefe'}
-              type='antdesign'
-              size={20}
-            ></Icon>
-          </TouchableOpacity>
-          {
-            isRemarksVisible ?
-              <View style={styles.textInput}>
-                <Text style={styles.formLabel}>Please write remarks on why you want to decline</Text>
-                <TextInput
-                  value={Remarks}
-                  placeholder='Remarks'
-                  onChangeText={(e) => setRemarks(e)}
-                  style={styles.inputField}
-                  multiline={true}
-                ></TextInput>
+          <View style={styles.centeredView}>
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                top: 10,
+                right: 10,
+                backgroundColor: '#8ED1FC',
+                padding: 10,
+                borderRadius: 50,
+              }}
+              onPress={() => {
+                setisVisibe(false)
+                setisRemarksVisible(false)
+              }}>
+              <Icon
+                name={'close'}
+                color={'#fefefe'}
+                type='antdesign'
+                size={20}
+              ></Icon>
+            </TouchableOpacity>
+            {
+              isRemarksVisible ?
+                <View style={styles.textInput}>
+                  <Text style={styles.formLabel}>Please write remarks on why you want to decline</Text>
+                  <TextInput
+                    value={Remarks}
+                    placeholder='Remarks'
+                    onChangeText={(e) => setRemarks(e)}
+                    style={styles.inputField}
+                    multiline={true}
+                  ></TextInput>
 
-                <AppButton title='Send' onPress={() => handleReject()}></AppButton>
-              </View>
+                  <AppButton title='Send' onPress={() => handleReject()}></AppButton>
+                </View>
 
-              :
-              <View style={styles.patInfocontainer}>
-                <View style={styles.profile}>
-                  <Image
-                    source={require('../../assets/images/user.png')}
-                    style={styles.profileImg}
-                  ></Image>
-                  <View style={styles.right}>
-                    <Text style={styles.name}>{data.PatientFName} {data.PatientMName} {data.PatientLName}</Text>
-                    <View style={{ flexDirection: 'row' }}>
-                      <Text >Request ID :</Text>
-                      <Text style={{ color: "#FF7F00" }}> {data.RId}</Text>
+                :
+                <View style={styles.patInfocontainer}>
+                  <View style={styles.profile}>
+                    <Image
+                      source={require('../../assets/images/user.png')}
+                      style={styles.profileImg}
+                    ></Image>
+                    <View style={styles.right}>
+                      <Text style={styles.name}>{data.PatientFName} {data.PatientMName} {data.PatientLName}</Text>
+                      <View style={{ flexDirection: 'row' }}>
+                        <Text >Request ID :</Text>
+                        <Text style={{ color: "#FF7F00" }}> {data.RequestId}</Text>
+                      </View>
+                      <View style={{ flexDirection: 'row' }}>
+                        <Text >Cliet ID : </Text>
+                        <Text style={{ color: "#FF7F00" }}>{data.PatId}</Text>
+                      </View>
+                      <View style={{ flexDirection: 'row' }}>
+                        <Text >Collection Date : </Text>
+                        <Text style={{ color: "#FF7F00" }}>{temp[0]}</Text>
+                      </View>
+                      <View style={{ flexDirection: 'row' }}>
+                        <Text >Collection Time : </Text>
+                        <Text style={{ color: "#FF7F00" }}>{temp[1]}</Text>
+                      </View>
                     </View>
-                    <View style={{ flexDirection: 'row' }}>
-                      <Text >Cliet ID : </Text>
-                      <Text style={{ color: "#FF7F00" }}>{data.PatId}</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row' }}>
-                      <Text >Collection Date : </Text>
-                      <Text style={{ color: "#FF7F00" }}>{temp[0]}</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row' }}>
-                      <Text >Collection Time : </Text>
-                      <Text style={{ color: "#FF7F00" }}>{temp[1]}</Text>
-                    </View>
+
+                  </View>
+
+                  <StatusBadge RequestStatus={data.SampleStatus}></StatusBadge>
+
+
+                  <View style={styles.mapViewContainer}>
+                    <MapView
+                      style={styles.map}
+                      initialRegion={{
+                        latitude: Coordinate.latitude === null ? 27.7172 : Coordinate.latitude,
+                        longitude: Coordinate.longitude === null ? 85.3240 : Coordinate.longitude,
+                        latitudeDelta: 0.0111922,
+                        longitudeDelta: 0.0111421,
+                      }}
+                    >
+                      <MarkerCostome
+                        coordinate={cMarker.latlng}
+                        title={cMarker.title}
+                        description={cMarker.description}
+                        forClient
+                      />
+                    </MapView>
+                  </View>
+
+                  <View style={styles.flatListContainer}>
+                    <Text style={styles.title}>Tests</Text>
+                    <FlatList
+                      data={TestList}
+                      renderItem={({ item, index }) =>
+                        <View style={styles.testCard}>
+                          <Text style={{
+                            fontSize: 16,
+                            color: '#fefefe',
+                            width: 25,
+                            height: 25,
+                            textAlign: 'center',
+                            borderRadius: 50,
+                            backgroundColor: '#205072',
+                          }}>{index + 1}</Text>
+                          <Text style={styles.testsText}>{item.TestName}</Text>
+                          <Text style={styles.testsPrice}>Rs.{item.TestPrice}</Text>
+                        </View>
+                      }
+                      keyExtractor={item => item.SId}
+                    />
+                  </View>
+
+                  <View style={styles.module}>
+
+                    <CancleBtn title='Reject' color={'#e0c945'} onPress={() => setisRemarksVisible(true)}></CancleBtn>
+                    <Text>   </Text>
+                    <AppButton title='Accept' onPress={() => handleAccept()}></AppButton>
                   </View>
 
                 </View>
 
-                <StatusBadge RequestStatus={data.RequestStatus}></StatusBadge>
-
-
-                <View style={styles.mapViewContainer}>
-                  <MapView
-                    style={styles.map}
-                    initialRegion={{
-                      latitude: 27.7172,
-                      longitude: 85.3240,
-                      latitudeDelta: 0.0111922,
-                      longitudeDelta: 0.0111421,
-                    }}
-                  >
-                    <MarkerCostome
-                      coordinate={cMarker.latlng}
-                      title={cMarker.title}
-                      description={cMarker.description}
-                      forClient
-                    />
-                  </MapView>
-                </View>
-
-                <View style={styles.flatListContainer}>
-                  <Text style={styles.title}>Tests</Text>
-                  <FlatList
-                    data={TestList}
-                    renderItem={({ item, index }) =>
-                      <View style={styles.testCard}>
-                        <Text style={{
-                          fontSize: 16,
-                          color: '#fefefe',
-                          width: 25,
-                          height: 25,
-                          textAlign: 'center',
-                          borderRadius: 50,
-                          backgroundColor: '#205072',
-                        }}>{index + 1}</Text>
-                        <Text style={styles.testsText}>{item.TestName}</Text>
-                        <Text style={styles.testsPrice}>Rs.{item.TestPrice}</Text>
-                      </View>
-                    }
-                    keyExtractor={item => item.SId}
-                  />
-                </View>
-
-                <View style={styles.module}>
-
-                  <CancleBtn title='Reject' color={'#e0c945'} onPress={() => setisRemarksVisible(true)}></CancleBtn>
-                  <Text>   </Text>
-                  <AppButton title='Accept' onPress={() => handleAccept()}></AppButton>
-                </View>
-
-              </View>
-
-          }
-        </View>
-      </Modal>
+            }
+          </View>
+        </Modal>
       }
 
-      
+
 
     </>
   )

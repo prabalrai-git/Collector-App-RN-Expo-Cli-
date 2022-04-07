@@ -10,6 +10,7 @@ import HamMenu from '../../components/ui/HamMenu';
 import BackBtn from '../../components/ui/BackBtn';
 import Filter from '../../components/ui/Filter';
 import Header from '../../components/Header';
+import AcceptedCard from '../../components/ui/AcceptedCard';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -88,23 +89,22 @@ const SampleHomeScreen = () => {
     }))
   }
 
+  const refData =(res) =>{
+    if(res === true){
+      handleClick()
+    }
+  }
+
 
   const renderItem = ({ item }) => (
-    <SampleCard item={item} />
+    // <SampleCard item={item} />
+    <AcceptedCard data={item} refData={refData}/>
   )
 
 
 
   return (
     <View style={styles.mainContainer}>
-
-      {/* <ImageBackground
-        source={require('../../assets/images/bkg1.png')}
-        resizeMode="cover"
-        style={styles.bkgImg}
-      > */}
-      {/* <HamMenu></HamMenu>
-        <BackBtn></BackBtn> */}
 
       <View style={styles.container}>
         <View style={styles.top}>
@@ -176,7 +176,6 @@ const SampleHomeScreen = () => {
           ></FlatList>
         </View>
       </View>
-      {/* </ImageBackground> */}
     </View >
   )
 }
@@ -188,20 +187,9 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     flexDirection: 'column',
-    // justifyContent: 'space-between',
-    // alignItems: 'center'
-    // paddingTop: 40,
     position: 'relative',
-
   },
-  // bkgImg: {
-  //   width: Dimensions.get('window').width * 1,
-  //   height: Dimensions.get('window').height * 1.2,
-
-  //   // flex: 1
-  // },
   top: {
-    // paddingTop: 40
     backgroundColor: '#8ED1FC',
     borderBottomLeftRadius: 18,
     borderBottomRightRadius: 18,

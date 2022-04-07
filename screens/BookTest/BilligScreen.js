@@ -95,7 +95,8 @@ const BilligScreen = ({ route }) => {
 
   useEffect(() => {
     dispatch(GetStatus((res) => {
-      setStatusList(res?.sampleStatus);
+      // setStatusList(res?.sampleStatus);
+      setStatusList(res?.sampleStatus[0]);
     }))
   }, [])
 
@@ -258,12 +259,15 @@ const BilligScreen = ({ route }) => {
               onValueChange={(itemValue) => setStatus(itemValue)}
               mode='dropdown'
             >
-              <Picker.Item label={'select Status'} value={''} />
-              {
+              {/* {
                 StatusList !== undefined ?
                   StatusList.map((item, index) => (
                     <Picker.Item label={item.SampleStatus} value={item.StId} key={index} />
                   )) : null
+              } */}
+              {
+                StatusList !== undefined ?
+                  <Picker.Item label={StatusList.SampleStatus} value={StatusList.StId} key={StatusList.StId} /> : null
               }
             </Picker>
           </View>

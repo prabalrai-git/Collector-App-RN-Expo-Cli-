@@ -2,15 +2,13 @@
 import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Pressable, Image, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
-import AppButton from './AppButton';
-import CancleBtn from './CancleBtn';
 import { useDispatch, useSelector } from 'react-redux';
 import StatusBadge from './StatusBadge';
 import MapView from 'react-native-maps';
 import MarkerCostome from './MarkerCostome';
 import { Icon } from 'react-native-elements';
-import BadgeStatus from './BadgeStatus';
-import { dummyData } from '../../dumyData';
+import { InfoActionButton } from './HomeActionButton';
+import { GetAddressOfClient } from '../../Services/appServices/AssignPatient';
 
 
 
@@ -43,19 +41,37 @@ const windowWidth = Dimensions.get('window').width
 // "TestTotalAmount": 5815,
 
 
+
 const PatientInfoCard = ({ data, AsignedTask }) => {
-  console.log('data', data);
+  // console.log('data', data);
   const [isVisibe, setisVisibe] = useState(false);
   const user = useSelector(state => state.storeUserData);
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const [TestList, setTestList] = useState();
-  const listData = dummyData.RequestList;
+  const [Coordinate, setCoordinate] = useState({
+    'latitude': null,
+    'longitude': null
+  });
   useEffect(() => {
-    // dispatch(GetHomeCollectionTestRequestTestList(data.RId, (res) => {
-    //   setTestList(res?.RequestTestList);
-    // }))
+    dispatch(GetAddressOfClient(data.CId, (res) => {
+      // setCoordinate(res?.RequestTestList);
+      // console.log("res", res.clientAddress[0].PatientAddress);
+      let temp = JSON.parse(res.clientAddress[0].PatientAddress)
+      // console.log('temp', temp);
+      setCoordinate(temp)
+    }))
   }, [])
+
+  const handleProceed = () => {
+    navigation.navigate('SelectTest', {
+      data: data
+    })
+    setisVisibe(false)
+  }
+  const handleRequest = () => {
+    navigation.navigate('PrevioiusRequest', {data: data})
+    setisVisibe(false)
+  }
 
 
   const hadleEvent = () => {
@@ -64,17 +80,16 @@ const PatientInfoCard = ({ data, AsignedTask }) => {
 
   const cMarker = {
     latlng: {
-      // latitude: tempCoordinate.latitude === null ? 27.7172 : tempCoordinate.latitude,
-      // longitude: tempCoordinate.longitude === null ? 85.3240 : tempCoordinate.longitude
-      latitude: 27.7172,
-      longitude: 85.3240,
+      latitude: Coordinate.latitude === null ? 27.7172 : Coordinate.latitude,
+      longitude: Coordinate.longitude === null ? 85.3240 : Coordinate.longitude
+      // latitude: 27.7172,
+      // longitude: 85.3240,
     },
     title: 'title',
     description: 'somethindg'
   }
   return (
     <>
-
       <Pressable onPress={() => hadleEvent()} style={styles.cardCotainer}>
         <View style={styles.cardBody}>
           <View style={styles.card}>
@@ -82,7 +97,7 @@ const PatientInfoCard = ({ data, AsignedTask }) => {
             <Text style={styles.remarks}>Request Id: {data.RId}</Text>
             <Text style={styles.cDate}>{data.CollectionReqDate}</Text>
           </View>
-          <BadgeStatus RequestStatus={data.RequestStatus}></BadgeStatus>
+          {/* <BadgeStatus RequestStatus={data.RequestStatus}></BadgeStatus> */}
         </View>
       </Pressable>
       {
@@ -128,33 +143,44 @@ const PatientInfoCard = ({ data, AsignedTask }) => {
                 <View style={styles.right}>
                   <Text style={styles.name}>{data.PatientFName} {data.PatientMName} {data.PatientLName}</Text>
                   <View style={{ flexDirection: 'row' }}>
-                    <Text >Age :</Text>
-                    <Text style={{ color: "#FF7F00" }}> {data.PatientAge}</Text>
-                  </View>
-                  <View style={{ flexDirection: 'row' }}>
                     <Text >Cliet ID : </Text>
                     <Text style={{ color: "#FF7F00" }}>{data.CId}</Text>
                   </View>
-                  <View style={{ flexDirection: 'row' }}>
-                    <Text >Gender : </Text>
-                    <Text style={{ color: "#FF7F00" }}>{data.PatientGender}</Text>
-                  </View>
+                </View>
+              </View>
+
+              {/* <StatusBadge RequestStatus={data.RequestStatus}></StatusBadge> */}
+
+              <View style={styles.container}>
+                <View style={styles.patDetail}>
+                  <Text style={styles.title}>Patient Name :</Text>
+                  <Text style={styles.dis}>{data.PatientFName} {data.PatientMName} {data.PatientLName}</Text>
+                </View>
+                <View style={styles.patDetail}>
+                  <Text style={styles.title}>Age :</Text>
+                  <Text style={styles.dis}>{data.PatientAge}</Text>
+                </View>
+                <View style={styles.patDetail}>
+                  <Text style={styles.title}>Gender :</Text>
+                  <Text style={styles.dis}>{data.PatientGender}</Text>
+                </View>
+                <View style={styles.patDetail}>
+                  <Text style={styles.title}>E-mail :</Text>
+                  <Text style={styles.dis}>{data.PatientEmailId}</Text>
                 </View>
 
               </View>
-
-              <StatusBadge RequestStatus={data.RequestStatus}></StatusBadge>
-
-
+              <Text style={styles.title}>Adddress :</Text>
               <View style={styles.mapViewContainer}>
                 <MapView
                   style={styles.map}
                   initialRegion={{
-                    latitude: 27.7172,
-                    longitude: 85.3240,
+                    latitude: Coordinate.latitude === null ? 27.7172 : Coordinate.latitude,
+                    longitude: Coordinate.longitude === null ? 85.3240 : Coordinate.longitude,
                     latitudeDelta: 0.0111922,
                     longitudeDelta: 0.0111421,
                   }}
+
                 >
                   <MarkerCostome
                     coordinate={cMarker.latlng}
@@ -165,29 +191,14 @@ const PatientInfoCard = ({ data, AsignedTask }) => {
                 </MapView>
               </View>
 
-              <View style={styles.flatListContainer}>
-                <Text style={styles.title}>Recent Tests</Text>
-                <FlatList
-                  data={listData}
-                  renderItem={({ item, index }) =>
-                    <View style={styles.testCard}>
-                      <View>
-                        <Text style={styles.testsText}>{item.RId}</Text>
-                        <Text style={styles.testsPrice}>{item.CollectedDate}</Text>
-                      </View>
-                      <BadgeStatus RequestStatus={item.RequestStatus}></BadgeStatus>
-                    </View>
-                  }
-                  keyExtractor={item => item.SId}
-                />
+              <View style={styles.module}>
+                <Pressable onPress={()=> handleRequest()}>
+                  <InfoActionButton icon={'book'} name={'Previous Request'}></InfoActionButton>
+                </Pressable>
+                <Pressable onPress={() => handleProceed()}>
+                  <InfoActionButton icon={'addfile'} name={'Book Test'} ></InfoActionButton>
+                </Pressable>
               </View>
-
-              {/* <View style={styles.module}>
-
-                  <CancleBtn title='Reject' color={'#e0c945'} onPress={() => setisRemarksVisible(true)}></CancleBtn>
-                  <Text>   </Text>
-                  <AppButton title='Accept' onPress={() => handleAccept()}></AppButton>
-                </View> */}
 
             </View>
 
@@ -268,9 +279,10 @@ const styles = StyleSheet.create({
   module: {
     width: '100%',
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    // marginTop: 10,
   },
-
   patInfocontainer: {
     width: windowWidth - 20,
     flex: 1,
@@ -299,12 +311,12 @@ const styles = StyleSheet.create({
   },
   mapViewContainer: {
     width: '100%',
-    flex: 0.3,
+    flex: 0.45,
     // backgroundColor: 'red',
     borderRadius: 18,
     marginVertical: 10,
     overflow: 'hidden',
-    shadowColor: "#67e8ec",
+    shadowColor: "#629fa1cc",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -318,51 +330,27 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
   },
-  flatListContainer: {
-    width: windowWidth - 20,
-    marginRight: 10,
-    // flex: 0.55,
-    height: 200,
-    flexDirection: 'column',
-    // backgroundColor: 'yellow'
-  },
   title: {
-    fontSize: 20,
+    fontSize: 16,
     color: '#205072',
     fontWeight: 'bold',
     letterSpacing: 1.3,
-    marginBottom: 10
+    // marginBottom: 10
   },
-  testCard: {
+  container: {
+    width: windowWidth - 20,
+    // backgroundColor: 'red'
+  },
+  patDetail: {
+    width: windowWidth - 20,
     flexDirection: 'row',
-    marginVertical: 3,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 5,
-    // width: '100%',
     justifyContent: 'space-between',
-    borderRadius: 5,
-    backgroundColor: '#8ED1FC',
-    shadowColor: "#67e8ec",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-
-    elevation: 7,
+    marginVertical: 5,
   },
-  testsText: {
-    color: "#232325",
+  dis: {
+    width: windowWidth * 0.5,
     fontSize: 14,
-    letterSpacing: 1.2,
-    // marginLeft: 20,
-    // width: windowWidth * 0.6
-  },
-  testsPrice: {
-    // width: windowWidth * 0.4,
-    color: '#FF7F00'
-  },
+    letterSpacing: 1,
+  }
 
 })

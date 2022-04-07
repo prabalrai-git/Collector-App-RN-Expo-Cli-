@@ -1,8 +1,7 @@
-import { Button, Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Pressable, Image, FlatList, Switch, Alert } from 'react-native'
+import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Pressable, Image, FlatList, Switch, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import AppButton from './AppButton';
-import CancleBtn from './CancleBtn';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetHomeCollectionTestRequestTestList, UpdateStatus } from '../../Services/appServices/AssignPatient';
 import StatusBadge from './StatusBadge';
@@ -43,7 +42,6 @@ const windowWidth = Dimensions.get('window').width
 
 
 const AcceptedCard = ({ data, refData }) => {
-  // console.log('data', data);
   const [isVisibe, setisVisibe] = useState(false);
   const [isRemarksVisible, setisRemarksVisible] = useState(false);
   const [Remarks, setRemarks] = useState('');
@@ -59,12 +57,9 @@ const AcceptedCard = ({ data, refData }) => {
   const [btnDis, setbtnDis] = useState(false);
 
   useEffect(() => {
-    dispatch(GetHomeCollectionTestRequestTestList(data.RId, (res) => {
+    dispatch(GetHomeCollectionTestRequestTestList(data.RequestId, (res) => {
       setTestList(res?.RequestTestList);
     }))
-    // dispatch(GetStatus((res) => {
-    //   setCollectedStatus(res.sampleStatus[4]);
-    // }))
   }, [])
 
 
@@ -72,10 +67,6 @@ const AcceptedCard = ({ data, refData }) => {
     setisVisibe(true)
 
   }
-
-
-
-
   const handleSubmit = () => {
     // UpdateStatus
     setbtnDis(true)
@@ -83,7 +74,7 @@ const AcceptedCard = ({ data, refData }) => {
     const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.toLocaleTimeString();
     const sData = {
       "SrId": 0,
-      "RequestId": data.RId,
+      "RequestId": data.RequestId,
       "RequestStatusId": 5,
       "EntryDate": newDate,
       "UserId": user.userData.usrUserId,
@@ -131,7 +122,7 @@ const AcceptedCard = ({ data, refData }) => {
     const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.toLocaleTimeString();
     const sData = {
       "SrId": 0,
-      "RequestId": data.RId,
+      "RequestId": data.RequestId,
       "RequestStatusId": 6,
       "EntryDate": newDate,
       "UserId": user.userData.usrUserId,
@@ -188,10 +179,10 @@ const AcceptedCard = ({ data, refData }) => {
         <View style={styles.cardBody}>
           <View style={styles.card}>
             <Text style={styles.ctitle}>{data.PatientFName} {data.PatientLName}</Text>
-            <Text style={styles.remarks}>Request Id: {data.RId}</Text>
+            <Text style={styles.remarks}>Request Id: {data.RequestId}</Text>
             <Text style={styles.cDate}>{data.CollectionReqDate}</Text>
           </View>
-          <BadgeStatus RequestStatus={data.RequestStatus}></BadgeStatus>
+          <BadgeStatus RequestStatus={data.SampleStatus}></BadgeStatus>
         </View>
       </Pressable>
 
@@ -237,7 +228,7 @@ const AcceptedCard = ({ data, refData }) => {
                 <Text style={styles.name}>{data.PatientFName} {data.PatientMName} {data.PatientLName}</Text>
                 <View style={{ flexDirection: 'row' }}>
                   <Text >Request ID :</Text>
-                  <Text style={{ color: "#FF7F00" }}> {data.RId}</Text>
+                  <Text style={{ color: "#FF7F00" }}> {data.RequestId}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                   <Text >Cliet ID : </Text>
@@ -255,7 +246,7 @@ const AcceptedCard = ({ data, refData }) => {
 
             </View>
 
-            <StatusBadge RequestStatus={data.RequestStatus}></StatusBadge>
+            <StatusBadge RequestStatus={data.SampleStatus}></StatusBadge>
 
             <View style={styles.mapViewContainer}>
               <MapView
@@ -301,38 +292,36 @@ const AcceptedCard = ({ data, refData }) => {
 
 
           </View>
-          {
-            data.RequestStatus === 'Accepted' ?
-              <View style={styles.testList}>
-                <View style={styles.TextInput}>
-                  <Text style={styles.formLabel}>IsPaid</Text>
-                  <Switch
-                    trackColor={{ false: "#767577", true: "#81b0ff" }}
-                    thumbColor={isPaid ? "#f5dd4b" : "#f4f3f4"}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={toggleSwitch}
-                    value={isPaid}
-                    disabled={isPaid}
-                  />
-                </View>
-                <View style={styles.TextInput}>
-                  <TextInput
-                    value={Remarks}
-                    placeholder='remarks'
-                    onChangeText={(e) => setRemarks(e)}
-                    style={styles.inputField}
-                    multiline={true}
-                  ></TextInput>
-                </View>
-                <AppButton title='Collect Sample' onPress={() => handleSubmit()} disabled={btnDis}></AppButton>
-                {/* <Button disabled></Button> */}
+          {data.SampleStatus === 'Collected' ?
+            <View style={styles.testList}>
+              <Text>Sample has been collected</Text>
+              <AppButton title='Drop Sample' onPress={() => handleDrop()} disabled={btnDis}></AppButton>
+            </View>
+            :
+            <View style={styles.testList}>
+              <View style={styles.TextInput}>
+                <Text style={styles.formLabel}>IsPaid</Text>
+                <Switch
+                  trackColor={{ false: "#767577", true: "#81b0ff" }}
+                  thumbColor={isPaid ? "#f5dd4b" : "#f4f3f4"}
+                  ios_backgroundColor="#3e3e3e"
+                  onValueChange={toggleSwitch}
+                  value={isPaid}
+                  disabled={isPaid}
+                />
               </View>
-              :
-              <View style={styles.testList}>
-                <Text>Sample has been collected</Text>
-                <AppButton title='Drop Sample' onPress={() => handleDrop()} disabled={btnDis}></AppButton>
+              <View style={styles.TextInput}>
+                <TextInput
+                  value={Remarks}
+                  placeholder='remarks'
+                  onChangeText={(e) => setRemarks(e)}
+                  style={styles.inputField}
+                  multiline={true}
+                ></TextInput>
               </View>
-
+              <AppButton title='Collect Sample' onPress={() => handleSubmit()} disabled={btnDis}></AppButton>
+              {/* <Button disabled></Button> */}
+            </View>
           }
         </View>
       </Modal>

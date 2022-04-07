@@ -1,5 +1,5 @@
 
-import { AssignCollectorForSampleCollection, GetCollectionRequestPatientDetails, GetHomeCollectionTestRequestTestListByRequestId, GetReferredDoctorListForCollector, GetRequestorForCollection, GetSampleRequestListByCollectorIdAndDateRange, GetSampleRequestStatus, GetTestListforHomeCollection, InsertUpdateHomeCollectionRequest, UpdateSampleRequestStatus } from '../constants/url';
+import { AssignCollectorForSampleCollection, GetAddressOfClientByClientId, GetCollectionRequestHistoryByPatientId, GetCollectionRequestPatientDetails, GetCollectorRequestByCollectorWiseForWeekWithStatus, GetHomeCollectionTestRequestTestListByRequestId, GetReferredDoctorListForCollector, GetRequestorForCollection, GetSampleRequestListByCollectorIdAndDateRange, GetSampleRequestStatus, GetTestListforHomeCollection, InsertUpdateHomeCollectionRequest, UpdateSampleRequestStatus } from '../constants/url';
 import { generateUrlEncodedData } from '../utils/generateUrlEncodedData';
 import { store, fetch, storeNested } from '../utils/httpUtil'
 
@@ -168,6 +168,66 @@ export const GetHomeCollectionTestRequestTestList = (data, sucessCallback) => {
         sucessCallback([])
       }
     } catch (error) {
+
+    }
+  }
+}
+
+export const GetAddressOfClient = (data, sucessCallback) => {
+  return async dispatch => {
+    try {
+      const response = await fetch(`${GetAddressOfClientByClientId}?clientId=${data}`);
+      if(response?.status === 200){
+        // console.log('data found', response.data);
+        sucessCallback(response?.data);
+      }
+      else{
+        // console.log('data loss');
+        sucessCallback([])
+      }
+    }
+    catch (error){}
+  }
+} 
+
+export const GetCollectorRequestByCollectorWiseForWeek = (data, sucessCallback) => {
+  return async dispatch => {
+    try{
+      const response = await fetch(`${GetCollectorRequestByCollectorWiseForWeekWithStatus}?collectorId=${data}`)
+      if(response?.status===200)
+      {
+        // console.log('data found', response?.data);
+        sucessCallback(response?.data)
+      }else{
+        // console.log('no data found ss');
+        sucessCallback([])
+      }
+    }
+    catch (error){
+
+    }
+  }
+}
+
+export const GetCollectionRequestHistory = (data, sucessCallback) => {
+  console.log("data", data.patid, data.collectorId);
+  return async dispatch => {
+    try{
+      console.log("data 2", data.patid,  data.collectorId);
+      const response = await fetch(`${GetCollectionRequestHistoryByPatientId}?patid=${data.patid}&collectorId=${data.collectorId}`)
+      // console.log("data 3", data.patid);
+      if(response?.status === 200){
+        // console.log("sucess getting request history");
+        sucessCallback(response?.data)
+      }if(response?.status === 404){
+        console.log('404 not found');
+        sucessCallback([])
+      }
+      else{
+        // console.log('error');
+        sucessCallback([])
+      }
+    }catch (error){
 
     }
   }

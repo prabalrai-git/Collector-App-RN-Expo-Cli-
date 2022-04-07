@@ -1,17 +1,21 @@
-import { FlatList, StyleSheet, View } from 'react-native'
+import { FlatList, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { GetCollectorRequestByCollectorWiseForWeek, GetSampleRequestListByCollector } from '../../Services/appServices/AssignPatient'
+import { GetCollectionRequestHistory} from '../../Services/appServices/AssignPatient'
 import { useIsFocused } from '@react-navigation/native'
 import TaskCard from '../../components/ui/TaskCard'
+import Header from '../../components/Header'
 
 
 
 const renderItem = ({ item }) => (
-  <TaskCard data={item} />
+  <View>
+    <Text>{item.Test}</Text>
+  </View>
 )
 
-const CompletedTask = () => {
+const PrevioiusRequest = ({route}) => {
+  // console.log("route", route.params.data.CId);
   const [PatietList, setPatietList] = useState();
   const [FromDate, setFromDate] = useState(new Date());
   const [ToDate, setToDate] = useState(new Date());
@@ -26,10 +30,10 @@ const CompletedTask = () => {
   }, [isFocused])
 
 
-  useEffect(() => {
-    sortData()
-    setdisComplete(false)
-  }, [disComplete])
+  // useEffect(() => {
+  //   sortData()
+  //   setdisComplete(false)
+  // }, [disComplete])
 
 
 
@@ -43,10 +47,16 @@ const CompletedTask = () => {
     //   'collectorId': collectorId
 
     // }
-    dispatch(GetCollectorRequestByCollectorWiseForWeek(user.userData.usrUserId, (res) => {
-      if (res?.WeekWiseSampleDetailsByCollectorId.length > 0) {
-        setPatietList(res.WeekWiseSampleDetailsByCollectorId)
-        setdisComplete(true)
+    let data = {
+      patid : route.params.data.CId,
+      collectorId: user.userData.usrUserId
+    }
+    // console.log("wtf",data);
+    // return
+    dispatch(GetCollectionRequestHistory(data, (res) => {
+      if (res?.PatientWiseCollectionHistory.length > 0) {
+        setPatietList(res.PatientWiseCollectionHistory)
+        // setdisComplete(true)
       } else {
         console.log('no data found');
       }
@@ -55,29 +65,29 @@ const CompletedTask = () => {
     
   }
 
-  const sortData = () => {
-    let tempArr = []
-    if (PatietList !== undefined) {
-      PatietList.map(e => {
-        if (e.SampleStatus !== null) {
-          e.SampleStatus.includes('Lab Received') ?
-            tempArr.push(e)
-            :
-            ''
-        }
-        setSortedData(tempArr);
-      })
-    } else {
-      console.log('no list data found');
-    }
+  // const sortData = () => {
+  //   let tempArr = []
+  //   if (PatietList !== undefined) {
+  //     PatietList.map(e => {
+  //       if (e.SampleStatus !== null) {
+  //         e.SampleStatus.includes('Lab Received') ?
+  //           tempArr.push(e)
+  //           :
+  //           ''
+  //       }
+  //       setSortedData(tempArr);
+  //     })
+  //   } else {
+  //     console.log('no list data found');
+  //   }
 
-  }
+  // }
 
   return (
     <View style={styles.mainContainer}>
-      
+      <Header></Header>
       <FlatList
-        data={SortedData}
+        data={PatietList}
         renderItem={renderItem}
         keyExtractor={(item,index) => `${index}${item.RId}`}
       />
@@ -85,7 +95,7 @@ const CompletedTask = () => {
   )
 }
 
-export default CompletedTask
+export default PrevioiusRequest
 
 const styles = StyleSheet.create({
   mainContainer: {

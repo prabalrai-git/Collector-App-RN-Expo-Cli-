@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { DrawerActions, useNavigation } from '@react-navigation/native'
 import { Avatar, Icon } from 'react-native-elements';
 import { GlobalStyles } from '../GlobalStyle';
-import HomeActionButton from '../components/ui/HomeActionButton';
+import {HomeActionButton} from '../components/ui/HomeActionButton';
 // import GreetingCard from '../components/ui/GreetingCard'
 // import CardButton from '../components/ui/CardButton'
 import * as Location from "expo-location"
@@ -24,7 +24,7 @@ const navData = [
   },
   {
     id: 2,
-    name: 'Book Test',
+    name: 'Patient',
     pathName: 'BookTest',
     color: '#FF8585',
     icon: 'book'

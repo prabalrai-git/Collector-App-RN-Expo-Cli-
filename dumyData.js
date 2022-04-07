@@ -59,5 +59,43 @@ export const dummyData = {
         },
         
         
+    ],
+    "testList": [
+        {
+            "SId": 130,
+            "PatId": 73,
+            "RequestId": 54,
+            "TestId": 1,
+            "TestName": "EXECUTIVE HEALTH CHECK UP CATEGORY A",
+            "TestPrice": 7000,
+            "ClientId": 1,
+            "IsActive": true,
+            "EntryDate": "2022-04-06T10:58:38",
+            "UserId": 3
+        },
+        {
+            "SId": 131,
+            "PatId": 73,
+            "RequestId": 54,
+            "TestId": 2,
+            "TestName": "EXECUTIVE HEALTH CHECK UP CATEGORY B",
+            "TestPrice": 5500,
+            "ClientId": 1,
+            "IsActive": true,
+            "EntryDate": "2022-04-06T10:58:38",
+            "UserId": 3
+        },
+        {
+            "SId": 132,
+            "PatId": 73,
+            "RequestId": 54,
+            "TestId": 3,
+            "TestName": "COMPREHENSIVE DIABETIC CHECK UP (CDC)",
+            "TestPrice": 4200,
+            "ClientId": 1,
+            "IsActive": true,
+            "EntryDate": "2022-04-06T10:58:38",
+            "UserId": 3
+        }
     ]
 }

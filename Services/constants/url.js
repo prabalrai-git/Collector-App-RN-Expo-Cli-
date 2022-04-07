@@ -163,6 +163,28 @@ export const GetSampleRequestListByCollectorIdAndDateRange = 'GetSampleRequestLi
 
 export const GetHomeCollectionTestRequestTestListByRequestId = 'GetHomeCollectionTestRequestTestListByRequestId'
 /**
- * @desc: get homw collectio test request test list by request ID *
+ * @desc: get home collection test request test list by request ID *
  *  @param: ?requestId={requestId}
+ */
+
+
+export const GetAddressOfClientByClientId=  'GetAddressOfClientByClientId'
+
+/**
+ * @desc: get address of patient by patient ID *
+ *  @param: ?clientId={clientId}
+ */
+
+export const  GetCollectorRequestByCollectorWiseForWeekWithStatus = 'GetCollectorRequestByCollectorWiseForWeekWithStatus'
+
+/**
+ * @desc: get list of request of week by collector id*
+ *  @param: ?collectorId={collectorId}
+ */
+
+
+ export const GetCollectionRequestHistoryByPatientId = 'GetCollectionRequestHistoryByPatientId'
+ /**
+ * @desc: get list of total request of patient by client id and patient id*
+ *  @param: ?patid={patid}&collectorId={collectorId}
  */
