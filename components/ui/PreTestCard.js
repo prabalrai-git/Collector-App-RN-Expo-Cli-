@@ -1,0 +1,264 @@
+import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, Pressable, Image, FlatList } from 'react-native'
+import React, { useState } from 'react'
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import StatusBadge from './StatusBadge';
+import { Icon } from 'react-native-elements';
+import BadgeStatus from './BadgeStatus';
+import DateBadge from './DateBadge';
+
+
+const windowWidth = Dimensions.get('window').width
+
+
+const PreTestCard = ({ data }) => {
+  const [isVisibe, setisVisibe] = useState(false);
+  const tests = data.Test;
+  const TestList = tests.split(",");
+
+
+  const hadleEvent = () => {
+    setisVisibe(true)
+  }
+  return (
+    <>
+
+      <Pressable onPress={() => hadleEvent()} style={styles.cardCotainer}>
+        <View style={styles.cardBody}>
+          <Icon
+            name={'lab-flask'}
+            color={'#FF7F00'}
+            type='entypo'
+            style={styles.icon}
+            size={30}
+          ></Icon>
+          <View style={styles.card}>
+            <Text style={styles.ctitle}>Request Id: {data.RId}</Text>
+            <DateBadge date={data.CollectedDate}></DateBadge>
+          </View>
+          <BadgeStatus RequestStatus={data.SampleStatus}></BadgeStatus>
+        </View>
+      </Pressable>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isVisibe}
+        onRequestClose={() => {
+          setisVisibe(!isVisibe)
+        }}
+      >
+
+        <View style={styles.centeredView}>
+        <TouchableOpacity
+            style={{
+              position: 'absolute',
+              top: 10,
+              right: 10,
+              backgroundColor: '#8ED1FC',
+              padding: 10,
+              borderRadius: 50,
+            }}
+            onPress={() => {
+              setisVisibe(false)
+              setisRemarksVisible(false)
+            }}>
+            <Icon
+              name={'close'}
+              color={'#fefefe'}
+              type='antdesign'
+              size={20}
+            ></Icon>
+          </TouchableOpacity>
+          
+
+
+          <View style={styles.patInfocontainer}>
+            <View style={styles.profile}>
+              <Image
+                source={require('../../assets/images/user.png')}
+                style={styles.profileImg}
+              ></Image>
+              <View style={styles.right}>
+                <Text style={styles.name}>{data.PatientFName} {data.PatientMName} {data.PatientLName}</Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text >Request ID :</Text>
+                  <Text style={{ color: "#FF7F00" }}> {data.RId}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text >Cliet ID : </Text>
+                  <Text style={{ color: "#FF7F00" }}>{data.PatId}</Text>
+                </View>
+              </View>
+
+            </View>
+
+            <StatusBadge RequestStatus={data.SampleStatus}></StatusBadge>
+
+
+            <View style={styles.flatListContainer}>
+              <Text style={styles.title}>Tests</Text>
+              <FlatList
+                data={TestList}
+                renderItem={({ item, index }) =>
+                  <View style={styles.testCard}>
+                    <Text style={{
+                      fontSize: 16,
+                      color: '#fefefe',
+                      width: 25,
+                      height: 25,
+                      textAlign: 'center',
+                      borderRadius: 50,
+                      backgroundColor: '#205072',
+                    }}>{index + 1}</Text>
+                    <Text style={styles.testsText}>{item}</Text>
+                  </View>
+                }
+                keyExtractor={item => item.SId}
+              />
+            </View>
+            <View>
+            <View style={styles.testCard}>
+              <Text style={styles.titleText}>Total</Text>
+              <Text style={styles.finsltestsPrice}>Rs.{data.TestTotalAmount}</Text>
+            </View>
+            <View style={styles.testCard}>
+              <Text style={styles.titleText}>Collection Charge</Text>
+              <Text style={styles.finsltestsPrice}>Rs.{data.CollectionCharge}</Text>
+            </View>
+            <View style={styles.testCard}>
+              <Text style={styles.titleText}>Discount Amout</Text>
+              <Text style={styles.finsltestsPrice}>Rs.{data.DiscountAmount}</Text>
+            </View>
+            <View style={styles.testCard}>
+              <Text style={styles.titleText}>Grand Total</Text>
+              <Text style={styles.finsltestsPrice}>Rs.{data.GrandTotal}</Text>
+            </View>
+            </View>
+
+          </View>
+        </View>
+      </Modal>
+
+
+    </>
+  )
+}
+
+export default PreTestCard
+
+const styles = StyleSheet.create({
+  cardCotainer: {
+    width: windowWidth,
+    paddingHorizontal: 10,
+  },
+  cardBody: {
+    backgroundColor: "#fefefe",
+    marginVertical: 8,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderTopRightRadius: 12,
+    borderBottomRightRadius: 12,
+    borderLeftWidth: 4,
+    borderLeftColor: '#205072',
+    shadowColor: "#101010",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+
+    elevation: 7,
+  },
+  ctitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    letterSpacing: 2,
+    color: "#205072",
+    marginBottom: 5,
+  },
+  remarks: {
+    color: "#253539",
+    fontSize: 14,
+    letterSpacing: 2,
+    marginBottom: 5,
+  },
+  centeredView: {
+    width: '100%',
+    flex: 1,
+    backgroundColor: '#fefefe'
+  },
+
+  patInfocontainer: {
+    width: windowWidth - 20,
+    flex: 1,
+    marginLeft: 10,
+
+  },
+
+  profile: {
+    flexDirection: 'row',
+    paddingVertical: 10,
+  },
+  right: {
+    marginLeft: 10,
+  },
+  profileImg: {
+    width: 120,
+    height: 120,
+    borderRadius: 10,
+  },
+  name: {
+    width: windowWidth * 0.6,
+    color: '#205072',
+    fontSize: 18,
+    fontWeight: 'bold',
+    letterSpacing: 1.3,
+    marginBottom: 6
+  },
+  flatListContainer: {
+    width: windowWidth - 20,
+    marginHorizontal: 10,
+    // flex: 0.55,
+    maxHeight: 200,
+  },
+  title: {
+    fontSize: 20,
+    color: '#205072',
+    fontWeight: 'bold',
+    letterSpacing: 1.3,
+    marginBottom: 10
+  },
+  testCard: {
+    flexDirection: 'row',
+    marginVertical: 3,
+    paddingHorizontal: 5,
+    borderRadius: 5,
+    width: '100%',
+    justifyContent: 'space-between'
+  },
+  testsText: {
+    color: "#232325",
+    fontSize: 14,
+    letterSpacing: 1.2,
+    marginLeft: 20,
+    width: windowWidth * 0.75
+  },
+  testsPrice: {
+    width: windowWidth * 0.4,
+    color: '#FF7F00'
+  },
+  finsltestsPrice: {
+    borderWidth: 1,
+    borderColor: '#efed11',
+    width: 100,
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    borderRadius: 3,
+  },
+
+})

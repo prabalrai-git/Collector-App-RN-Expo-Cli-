@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import StatusBadge from './StatusBadge';
 import MapView from 'react-native-maps';
 import MarkerCostome from './MarkerCostome';
-import { Icon } from 'react-native-elements';
+import { Avatar, Icon } from 'react-native-elements';
 import { InfoActionButton } from './HomeActionButton';
 import { GetAddressOfClient } from '../../Services/appServices/AssignPatient';
 
@@ -54,10 +54,7 @@ const PatientInfoCard = ({ data, AsignedTask }) => {
   });
   useEffect(() => {
     dispatch(GetAddressOfClient(data.CId, (res) => {
-      // setCoordinate(res?.RequestTestList);
-      // console.log("res", res.clientAddress[0].PatientAddress);
       let temp = JSON.parse(res.clientAddress[0].PatientAddress)
-      // console.log('temp', temp);
       setCoordinate(temp)
     }))
   }, [])
@@ -69,7 +66,7 @@ const PatientInfoCard = ({ data, AsignedTask }) => {
     setisVisibe(false)
   }
   const handleRequest = () => {
-    navigation.navigate('PrevioiusRequest', {data: data})
+    navigation.navigate('PrevioiusRequest', { data: data })
     setisVisibe(false)
   }
 
@@ -92,10 +89,16 @@ const PatientInfoCard = ({ data, AsignedTask }) => {
     <>
       <Pressable onPress={() => hadleEvent()} style={styles.cardCotainer}>
         <View style={styles.cardBody}>
+          <View>
+            <Avatar
+              size={64}
+              rounded
+              source={require('../../assets/images/user.png')}
+            />
+          </View>
           <View style={styles.card}>
             <Text style={styles.ctitle}>{data.PatientFName} {data.PatientLName}</Text>
-            <Text style={styles.remarks}>Request Id: {data.RId}</Text>
-            <Text style={styles.cDate}>{data.CollectionReqDate}</Text>
+            <Text style={styles.remarks}>Client Id: {data.CId}</Text>
           </View>
           {/* <BadgeStatus RequestStatus={data.RequestStatus}></BadgeStatus> */}
         </View>
@@ -192,7 +195,7 @@ const PatientInfoCard = ({ data, AsignedTask }) => {
               </View>
 
               <View style={styles.module}>
-                <Pressable onPress={()=> handleRequest()}>
+                <Pressable onPress={() => handleRequest()}>
                   <InfoActionButton icon={'book'} name={'Previous Request'}></InfoActionButton>
                 </Pressable>
                 <Pressable onPress={() => handleProceed()}>
@@ -228,10 +231,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderTopRightRadius: 12,
-    borderBottomRightRadius: 12,
-    borderLeftWidth: 4,
-    borderLeftColor: '#205072',
+    borderRadius: 12,
     shadowColor: "#101010",
     shadowOffset: {
       width: 0,
@@ -242,9 +242,12 @@ const styles = StyleSheet.create({
 
     elevation: 7,
   },
+  card: {
+    width: windowWidth * 0.65,
+  },
   ctitle: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: 'bold',
     letterSpacing: 2,
     color: "#205072",
     marginBottom: 5,
@@ -281,7 +284,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    // marginTop: 10,
   },
   patInfocontainer: {
     width: windowWidth - 20,

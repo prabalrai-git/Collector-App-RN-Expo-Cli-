@@ -161,12 +161,14 @@ const AddPatietHomeScreen = () => {
       "EnterBy": user.userData.usrUserId,
       "CollectionReqDate": `${time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate()}T${time.toLocaleTimeString()}`,
     }
-
+    // console.log("data", data);
+    // return
     // console.log('PatientFName 1', isValid);
     // validate()
     // console.log('PatientFName 3', isValid);
+    
     let isValidated = validate();
-    // return
+    
     if (isValidated) {
       if (
         typeof data.CollectorId !== 'undefined' &&
@@ -257,27 +259,6 @@ const AddPatietHomeScreen = () => {
       handleError('please enter valid  Age', 'PatientAge')
       isOpValid = false
     }
-    // if (PatientNationalId === '' || PatientNationalId === undefined) {
-    //   handleError('please enter valid Middle Name', 'PatientNationalId')
-    //   isOpValid = false
-    // }
-    // if (Remarks === '' || Remarks === undefined) {
-    //   handleError('please enter valid remarks', 'Remarks')
-    //   isOpValid = false
-    // }
-
-    // if (PatientEmailId !== '' || PatientEmailId !== undefined) {
-    //   if (reg.test(PatientEmailId) !== false) {
-    //     isOpValid = true
-    //   }
-    //   else{
-    //     handleError('please enter valid email Address', 'PatientEmailId')
-    //     isOpValid = false
-
-    //   }
-    // }else{
-    //   isOpValid = true
-    // }
 
     if (PatientEmailId === '' || PatientEmailId === undefined) {
       isOpValid = true
@@ -288,6 +269,19 @@ const AddPatietHomeScreen = () => {
       }
     }
 
+    if(PatientGender === '' || PatientGender == undefined){
+      handleError('please slect the gender', 'PatientGender')
+      isOpValid = false
+    }
+    // if(PatientRequestorBy === '' || PatientRequestorBy == undefined){
+    //   handleError('please slect the Requestor', 'PatientRequestorBy')
+    //   isOpValid = false
+    // }
+    // if(PatientReferedBy === '' || PatientReferedBy == undefined){
+    //   handleError('please slect the Referer', 'PatientReferedBy')
+    //   isOpValid = false
+    // }
+    
     return isOpValid;
   }
   const handleError = (error, input) => {
@@ -312,7 +306,6 @@ const AddPatietHomeScreen = () => {
               onFocus={() => handleError(null, 'PatientFName')}
               label="Full Name"
               errorMessage={errors.PatientFName}
-
             />
 
             <Input
@@ -341,12 +334,17 @@ const AddPatietHomeScreen = () => {
                   placeholder='gender'
                   onValueChange={(itemValue, itemIndex) => setPatientGender(itemValue)}
                   mode='dropdown'
+                  onFocus={() => handleError(null, 'PatientGender')}
                 >
-                  {/* <Picker.Item label='select gender' value='select gender' /> */}
+                  <Picker.Item label='' value='select gender' />
                   <Picker.Item label='male' value='male' />
                   <Picker.Item label='female' value='female' />
                 </Picker>
               </View>
+              <Text style={{
+                fontSize: 12,
+                color: 'red'
+              }}>{errors.PatientGender}</Text>
             </View>
 
             <Input
@@ -359,7 +357,8 @@ const AddPatietHomeScreen = () => {
             />
 
             <View style={styles.TextInput}>
-              <TouchableOpacity style={styles.inputField} onPress={() => setIsVisible(true)}>
+            <Text style={styles.cLabel}>Address</Text>
+              <TouchableOpacity style={styles.inputField} onPress={() => setIsVisible(true)} >
                 <View style={{
                   flexDirection: 'row'
                 }}>
@@ -395,6 +394,7 @@ const AddPatietHomeScreen = () => {
 
 
             <View style={styles.TextInput}>
+            <Text style={styles.cLabel}>Select Requestor</Text>
               <View style={styles.PickerTextInput}>
                 <Picker
                   selectedValue={PatientRequestorBy}
@@ -402,7 +402,6 @@ const AddPatietHomeScreen = () => {
                   onValueChange={(itemValue) => setPatientRequestorBy(itemValue)}
                   mode='dropdown'
                 >
-                  <Picker.Item label={'select requestor'} value={''} />
                   {
                     reqestorList !== undefined ?
                       reqestorList.map((item, index) => (
@@ -413,6 +412,7 @@ const AddPatietHomeScreen = () => {
               </View>
             </View>
             <View style={styles.TextInput}>
+            <Text style={styles.cLabel}>Select Referer</Text>
               <View style={styles.PickerTextInput}>
                 <Picker
                   selectedValue={PatientReferedBy}
@@ -420,7 +420,6 @@ const AddPatietHomeScreen = () => {
                   onValueChange={(itemValue) => setPatientReferedBy(itemValue)}
                   mode='dropdown'
                 >
-                  <Picker.Item label={'select referer'} value={''} />
                   {
                     referedList !== undefined ?
                       referedList.map((item, index) => (
@@ -447,6 +446,7 @@ const AddPatietHomeScreen = () => {
               onPress={showDatepicker}
               style={styles.TextInput}
             >
+              <Text style={styles.cLabel}>Date and Time</Text>
               <View style={styles.inputField}>
                 <Text>{date === '' ? 'date..' : date.toLocaleDateString()}, {time === '' ? 'time..' : time.toLocaleTimeString()}</Text>
                 <Icon

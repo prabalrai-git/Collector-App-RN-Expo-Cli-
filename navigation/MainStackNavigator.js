@@ -3,7 +3,6 @@ import React from 'react'
 import DraweNavigator from './DraweNavigator'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import LoginScreen from '../screens/LogInScreen/LoginScreen'
-import AddPatientMap from '../screens/AddPatient/AddPatientMap'
 import TabNavigator from './TabNavigator'
 import { useSelector } from 'react-redux'
 

@@ -43,7 +43,7 @@ const windowWidth = Dimensions.get('window').width
 
 
 const TaskCard = ({ data, AsignedTask }) => {
-  console.log('data', data);
+  // console.log('data', data);
   const [isVisibe, setisVisibe] = useState(false);
   const [isRemarksVisible, setisRemarksVisible] = useState(false);
   const [Remarks, setRemarks] = useState('');
@@ -66,7 +66,7 @@ const TaskCard = ({ data, AsignedTask }) => {
       // setCoordinate(res?.RequestTestList);
       // console.log("res", res.clientAddress[0].PatientAddress);
       let temp = JSON.parse(res.clientAddress[0].PatientAddress)
-      console.log('temp', temp);
+      // console.log('temp', temp);
       setCoordinate(temp)
     }))
   }, [])
@@ -90,7 +90,7 @@ const TaskCard = ({ data, AsignedTask }) => {
       "UserId": user.userData.usrUserId,
       "Remarks": `accepted by user ${user.userData.usrUserId}`,
     }
-    console.log('accepted data', rData);
+    // console.log('accepted data', rData);
     dispatch(UpdateStatus(rData, (res) => {
       // console.log('response', res);
       if (res?.SuccessMsg === true) {
@@ -127,9 +127,9 @@ const TaskCard = ({ data, AsignedTask }) => {
       )
     } else {
       dispatch(UpdateStatus(aData, (res) => {
-        console.log('response', res);
+        // console.log('response', res);
         if (res?.SuccessMsg === true) {
-          console.log('potato sucess, rejected');
+          // console.log('potato sucess, rejected');
           setisVisibe(!isVisibe)
           setisRemarksVisible(false)
           setRemarks('')

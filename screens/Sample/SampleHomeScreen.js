@@ -97,8 +97,8 @@ const SampleHomeScreen = () => {
 
 
   const renderItem = ({ item }) => (
-    // <SampleCard item={item} />
-    <AcceptedCard data={item} refData={refData}/>
+    <SampleCard data={item} refData={refData}/>
+    // <AcceptedCard data={item} refData={refData}/>
   )
 
 

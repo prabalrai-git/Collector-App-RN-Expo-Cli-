@@ -10,12 +10,10 @@ import TaskHomeScreen from '../screens/Tasks/TaskHomeScreen'
 import TaskInfoScreen from '../screens/Tasks/TaskInfoScreen'
 import MapScreen from '../screens/Tasks/MapScreen'
 import AddPatietHomeScreen from '../screens/AddPatient/AddPatietHomeScreen'
-import AddPatientMap from '../screens/AddPatient/AddPatientMap'
 import BookTestHomeScreen from '../screens/BookTest/BookTestHomeScreen'
 import SelectTest from '../screens/BookTest/SelectTest'
 import BilligScreen from '../screens/BookTest/BilligScreen'
 import SampleHomeScreen from '../screens/Sample/SampleHomeScreen'
-import PatietInfoScreen from '../screens/Sample/PatietInfoScreen'
 import AddPatientSelectTest from '../screens/AddPatient/AddPatientSelectTest'
 import AddTestBillingScreen from '../screens/AddPatient/AddTestBillingScreen'
 import HomeScreen from '../screens/HomeScreen'
@@ -140,10 +138,6 @@ const AddPatietNavigator = () => {
           }}
 
         />
-        {/* <Stack.Screen
-          name='AddPatientMap'
-          component={AddPatientMap} AddTestBillingScreen
-        /> */}
         <Stack.Screen
           name='AddPatientSelectTest'
           component={AddPatientSelectTest}
@@ -174,19 +168,20 @@ const BookTestNavigator = () => {
           }}
         />
         <Stack.Screen
-          name='SelectTest'
-          component={SelectTest}
-          options={{
-            headerShown: false
-          }}
-        />
-        <Stack.Screen
           name='PrevioiusRequest'
           component={PrevioiusRequest}
           options={{
             headerShown: false
           }}
         />
+        <Stack.Screen
+          name='SelectTest'
+          component={SelectTest}
+          options={{
+            headerShown: false
+          }}
+        />
+        
         <Stack.Screen
           name='BilligScreen'
           component={BilligScreen}
@@ -210,13 +205,13 @@ const SampleCollectionNavigator = () => {
             headerShown: false,
           }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name='PatietInfoScreen'
           component={PatietInfoScreen}
           options={{
             headerShown: false,
           }}
-        />
+        /> */}
       </Stack.Group>
     </Stack.Navigator>
   )

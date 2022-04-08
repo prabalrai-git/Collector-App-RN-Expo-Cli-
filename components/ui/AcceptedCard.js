@@ -53,6 +53,7 @@ const AcceptedCard = ({ data, refData }) => {
   const [TestList, setTestList] = useState();
   const [isPaid, setisPaid] = useState(data.IsPaid);
 
+
   const toggleSwitch = () => setisPaid(previousState => !previousState);
   const [btnDis, setbtnDis] = useState(false);
 
@@ -81,7 +82,7 @@ const AcceptedCard = ({ data, refData }) => {
       "Remarks": Remarks === '' ? 'Sample Collected' : Remarks,
     }
 
-    console.log('rejected data', sData);
+    // console.log('rejected data', sData);
 
     dispatch(UpdateStatus(sData, (res) => {
       if (res?.SuccessMsg === true) {
@@ -129,7 +130,7 @@ const AcceptedCard = ({ data, refData }) => {
       "Remarks": 'Sample Droped in lab',
     }
 
-    console.log('drop  sample', sData);
+    // console.log('drop  sample', sData);
     // return
     dispatch(UpdateStatus(sData, (res) => {
       if (res?.SuccessMsg === true) {
@@ -173,6 +174,7 @@ const AcceptedCard = ({ data, refData }) => {
     title: 'title',
     description: 'somethindg'
   }
+  // console.log('data', data);
   return (
     <>
       <Pressable onPress={() => hadleEvent()} style={styles.cardCotainer}>

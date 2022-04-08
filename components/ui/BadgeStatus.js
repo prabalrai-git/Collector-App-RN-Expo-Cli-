@@ -10,13 +10,16 @@ const BadgeStatus = ({RequestStatus}) => {
       }
       {
         (RequestStatus === 'Collected') ?
-          <Text style={[styles.badge]}>{RequestStatus}</Text> : null
+          <View>
+            <Text style={[styles.badge]}>Not Dropped</Text>
+          <Text style={[styles.badge, { backgroundColor: '#19e0ee' }] }>{RequestStatus}</Text>
+          </View> : null
       }
       {
         (RequestStatus === 'Accepted') ?
           <View>
             <Text style={[styles.badge]}>pending</Text>
-            <Text style={[styles.badge, { backgroundColor: '#aeee19' }]}>{RequestStatus}</Text>
+            <Text style={[styles.badge, { backgroundColor: '#a3ee19' }]}>{RequestStatus}</Text>
           </View>
           : null
       }
@@ -26,11 +29,11 @@ const BadgeStatus = ({RequestStatus}) => {
       }
       {
         (RequestStatus === 'Lab Received') ?
-          <Text style={[styles.badge, { backgroundColor: '#33e4af' }]}>{RequestStatus}</Text> : null
+          <Text style={[styles.badge, { backgroundColor: '#33cfe4' }]}>{RequestStatus}</Text> : null
       }
       {
         (RequestStatus === 'Report Dispatched') ?
-          <Text style={[styles.badge, { backgroundColor: '#33bbe4' }]}>{RequestStatus}</Text> : null
+          <Text style={[styles.badge, { backgroundColor: '#1db0dd' }]}>{RequestStatus}</Text> : null
       }
 
     </View>
@@ -41,7 +44,7 @@ export default BadgeStatus
 
 const styles = StyleSheet.create({
   badge: {
-    backgroundColor: '#f3ff49',
+    backgroundColor: '#faf06a',
     color: '#fefefe',
     paddingHorizontal: 6,
     paddingVertical: 3,
