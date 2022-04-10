@@ -1,7 +1,7 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { GetCollectionRequestHistory} from '../../Services/appServices/AssignPatient'
+import { GetCollectionRequestHistory } from '../../Services/appServices/AssignPatient'
 import { useIsFocused } from '@react-navigation/native'
 import TaskCard from '../../components/ui/TaskCard'
 import Header from '../../components/Header'
@@ -9,11 +9,9 @@ import PreTestCard from '../../components/ui/PreTestCard'
 
 
 
-const renderItem = ({ item }) => (
-  <PreTestCard  data={item}/>
-)
 
-const PrevioiusRequest = ({route}) => {
+
+const PrevioiusRequest = ({ route }) => {
   // console.log("route", route.params.data);
   const [PatietList, setPatietList] = useState();
   const [FromDate, setFromDate] = useState(new Date());
@@ -23,14 +21,24 @@ const PrevioiusRequest = ({route}) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch()
   const user = useSelector(state => state.storeUserData);
-
+  const [disable, setdisable] = useState(false)
+  
   useEffect(() => {
     handleClick()
   }, [isFocused])
 
+  const renderItem = ({ item }) => (
+    <PreTestCard data={item} disable={disable} retDis={handleDisable}/>
+  )
+
+  const handleDisable = (e) => {
+    // console.log('disable', e)
+    setdisable(e)
+  }
+
   const handleClick = () => {
     let data = {
-      patid : route.params.data.CId,
+      patid: route.params.data.CId,
       collectorId: user.userData.usrUserId
     }
     dispatch(GetCollectionRequestHistory(data, (res) => {
@@ -41,9 +49,9 @@ const PrevioiusRequest = ({route}) => {
       }
     }))
 
-    
+
   }
-  console.log("[0a", PatietList);
+  // console.log("[0a", PatietList);
 
   return (
     <View style={styles.mainContainer}>
@@ -51,7 +59,7 @@ const PrevioiusRequest = ({route}) => {
       <FlatList
         data={PatietList}
         renderItem={renderItem}
-        keyExtractor={(item,index) => `${index}${item.RId}`}
+        keyExtractor={(item, index) => `${index}${item.RId}`}
       />
     </View>
   )

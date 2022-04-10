@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import AppButton from './AppButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { GetHomeCollectionTestRequestTestList, UpdateStatus } from '../../Services/appServices/AssignPatient';
+import { GetHomeCollectionTestRequestTestList, UpdatePaidStatus, UpdateStatus } from '../../Services/appServices/AssignPatient';
 import StatusBadge from './StatusBadge';
 import MapView from 'react-native-maps';
 import MarkerCostome from './MarkerCostome';
@@ -41,7 +41,7 @@ const windowWidth = Dimensions.get('window').width
 // "TestTotalAmount": 5815,
 
 
-const AcceptedCard = ({ data, refData }) => {
+const AcceptedCard = ({ data, refData, disable, retDis }) => {
   const [isVisibe, setisVisibe] = useState(false);
   const [isRemarksVisible, setisRemarksVisible] = useState(false);
   const [Remarks, setRemarks] = useState('');
@@ -51,7 +51,11 @@ const AcceptedCard = ({ data, refData }) => {
   const text = data.CollectionReqDate;
   const temp = text.split('T');
   const [TestList, setTestList] = useState();
-  const [isPaid, setisPaid] = useState(data.IsPaid);
+  const [isPaid, setisPaid] = useState(false);
+
+  useEffect(() => {
+    setisPaid(data.IsPaid);
+  }, [isVisibe])
 
 
   const toggleSwitch = () => setisPaid(previousState => !previousState);
@@ -66,6 +70,7 @@ const AcceptedCard = ({ data, refData }) => {
 
   const hadleEvent = () => {
     setisVisibe(true)
+    retDis(true)
 
   }
   const handleSubmit = () => {
@@ -81,39 +86,57 @@ const AcceptedCard = ({ data, refData }) => {
       "UserId": user.userData.usrUserId,
       "Remarks": Remarks === '' ? 'Sample Collected' : Remarks,
     }
+    const pData = {
+      "userId": user.userData.usrUserId,
+      "requestId": data.RequestId,
+      "ispaid": isPaid,
+      "remarks": Remarks === '' ? 'Bill paid' : Remarks
+    }
 
     // console.log('rejected data', sData);
 
-    dispatch(UpdateStatus(sData, (res) => {
-      if (res?.SuccessMsg === true) {
-        setRemarks('')
-        Alert.alert(
-          'Success !',
-          'Sample has been collected sucessfully',
-          [
-            {
-              text: 'OK', onPress: () => {
-                setisVisibe(!isVisibe)
-                setisRemarksVisible(false)
-                refData(true)
-              }
+    if (isPaid) {
+      dispatch(UpdateStatus(sData, (res) => {
+        if (res?.SuccessMsg === true) {
+          dispatch(UpdatePaidStatus(pData, (res) => {
+            console.log("response sucess", res);
+            if (res === true) {
+              setRemarks('')
+              Alert.alert(
+                'Success !',
+                'Sample has been collected sucessfully',
+                [
+                  {
+                    text: 'OK', onPress: () => {
+                      setisVisibe(!isVisibe)
+                      // setisRemarksVisible(false)
+                      refData(true)
+                    }
+                  }
+                ]
+              )
             }
-          ]
-        )
-      } else {
-        Alert.alert(
-          'Failure !',
-          'please enter the detail',
-          [
-            {
-              text: 'OK', onPress: () => {
+          }))
+        } else {
+          Alert.alert(
+            'Failure !',
+            'please enter the detail',
+            [
+              {
+                text: 'OK', onPress: () => {
+                }
               }
-            }
-          ]
-        )
-      }
+            ]
+          )
+        }
+
+        setbtnDis(false)
+      }))
+    } else {
+      console.log('error');
       setbtnDis(false)
-    }))
+    }
+    retDis(false)
   }
 
   const handleDrop = () => {
@@ -142,7 +165,7 @@ const AcceptedCard = ({ data, refData }) => {
             {
               text: 'OK', onPress: () => {
                 setisVisibe(!isVisibe)
-                setisRemarksVisible(false)
+                // setisRemarksVisible(false)
                 navigation.navigate('CompletedTask')
               }
             }
@@ -162,7 +185,10 @@ const AcceptedCard = ({ data, refData }) => {
       }
       setbtnDis(false)
     }))
+    retDis(false)
   }
+
+  // console.log('isVisibe',);
 
   const cMarker = {
     latlng: {
@@ -177,7 +203,7 @@ const AcceptedCard = ({ data, refData }) => {
   // console.log('data', data);
   return (
     <>
-      <Pressable onPress={() => hadleEvent()} style={styles.cardCotainer}>
+      <Pressable disabled={disable} onPress={() => hadleEvent()} style={styles.cardCotainer}>
         <View style={styles.cardBody}>
           <View style={styles.card}>
             <Text style={styles.ctitle}>{data.PatientFName} {data.PatientLName}</Text>
@@ -194,7 +220,8 @@ const AcceptedCard = ({ data, refData }) => {
         visible={isVisibe}
         onRequestClose={() => {
           setisVisibe(!isVisibe)
-          setisRemarksVisible(false)
+          // setisRemarksVisible(false)
+          retDis(false)
         }}
       >
 
@@ -210,7 +237,8 @@ const AcceptedCard = ({ data, refData }) => {
             }}
             onPress={() => {
               setisVisibe(false)
-              setisRemarksVisible(false)
+              // setisRemarksVisible(false)
+              retDis(false)
             }}>
             <Icon
               name={'close'}
@@ -312,7 +340,7 @@ const AcceptedCard = ({ data, refData }) => {
                   disabled={isPaid}
                 />
               </View>
-              <View style={styles.TextInput}>
+              {/* <View style={styles.TextInput}>
                 <TextInput
                   value={Remarks}
                   placeholder='remarks'
@@ -320,7 +348,7 @@ const AcceptedCard = ({ data, refData }) => {
                   style={styles.inputField}
                   multiline={true}
                 ></TextInput>
-              </View>
+              </View> */}
               <AppButton title='Collect Sample' onPress={() => handleSubmit()} disabled={btnDis}></AppButton>
               {/* <Button disabled></Button> */}
             </View>

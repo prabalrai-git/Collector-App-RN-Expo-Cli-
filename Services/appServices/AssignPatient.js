@@ -1,5 +1,5 @@
 
-import { AssignCollectorForSampleCollection, GetAddressOfClientByClientId, GetCollectionRequestHistoryByPatientId, GetCollectionRequestPatientDetails, GetCollectorRequestByCollectorWiseForWeekWithStatus, GetHomeCollectionTestRequestTestListByRequestId, GetReferredDoctorListForCollector, GetRequestorForCollection, GetSampleRequestListByCollectorIdAndDateRange, GetSampleRequestStatus, GetTestListforHomeCollection, InsertUpdateHomeCollectionRequest, UpdateSampleRequestStatus } from '../constants/url';
+import { AssignCollectorForSampleCollection, GetAddressOfClientByClientId, GetCollectionRequestHistoryByPatientId, GetCollectionRequestPatientDetails, GetCollectorRequestByCollectorWiseForWeekWithStatus, GetHomeCollectionTestRequestTestListByRequestId, GetReferredDoctorListForCollector, GetRequestorForCollection, GetSampleRequestListByCollectorIdAndDateRange, GetSampleRequestStatus, GetTestListforHomeCollection, InsertUpdateHomeCollectionRequest, UpdateIsPaidStatusByCollector, UpdateSampleRequestStatus } from '../constants/url';
 import { generateUrlEncodedData } from '../utils/generateUrlEncodedData';
 import { store, fetch, storeNested } from '../utils/httpUtil'
 
@@ -210,10 +210,10 @@ export const GetCollectorRequestByCollectorWiseForWeek = (data, sucessCallback) 
 }
 
 export const GetCollectionRequestHistory = (data, sucessCallback) => {
-  console.log("data", data.patid, data.collectorId);
+  // console.log("data", data.patid, data.collectorId);
   return async dispatch => {
     try{
-      console.log("data 2", data.patid,  data.collectorId);
+      // console.log("data 2", data.patid,  data.collectorId);
       const response = await fetch(`${GetCollectionRequestHistoryByPatientId}?patid=${data.patid}&collectorId=${data.collectorId}`)
       // console.log("data 3", data.patid);
       if(response?.status === 200){
@@ -228,6 +228,25 @@ export const GetCollectionRequestHistory = (data, sucessCallback) => {
         sucessCallback([])
       }
     }catch (error){
+
+    }
+  }
+}
+
+export const UpdatePaidStatus = (data, sucessCallback) => {
+  return async dispatch => {
+    try{
+      const response = await store(`${UpdateIsPaidStatusByCollector}?userId=${data.userId}&requestId=${data.requestId}&ispaid=${data.ispaid}&remarks=${data.remarks}`);
+
+      if(response?.status === 200){
+        // console.log("sucess", response?.data);
+        sucessCallback(response?.data)
+      }else{
+        // console.log('error')
+        sucessCallback([])
+      }
+    }
+    catch (error){
 
     }
   }

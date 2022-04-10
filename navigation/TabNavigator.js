@@ -72,6 +72,7 @@ const TabNavigator = () => {
           tabBarActiveTintColor: '#fefefe',
         }}
         initialRouteName='AssignedTask'
+        // keyboardDismissMode='none'
       >
         <Tab.Screen
           name="AssignedTask"

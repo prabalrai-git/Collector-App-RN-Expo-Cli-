@@ -9,7 +9,7 @@ import { useIsFocused } from '@react-navigation/native'
 
 
 const renderItem = ({ item }) => (
-  <TaskCard data={item} />
+  <TaskCard data={item} disable={true}/>
 )
 
 const RejectedTask = () => {

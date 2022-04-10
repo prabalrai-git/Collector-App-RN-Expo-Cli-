@@ -188,3 +188,9 @@ export const  GetCollectorRequestByCollectorWiseForWeekWithStatus = 'GetCollecto
  * @desc: get list of total request of patient by client id and patient id*
  *  @param: ?patid={patid}&collectorId={collectorId}
  */
+
+ export const UpdateIsPaidStatusByCollector = 'UpdateIsPaidStatusByCollector'
+/**
+ * @desc: update is paid status
+ *  @param: ?userId={userId}&requestId={requestId}&ispaid={ispaid}&remarks={remarks}
+ */

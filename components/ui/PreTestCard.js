@@ -11,19 +11,25 @@ import DateBadge from './DateBadge';
 const windowWidth = Dimensions.get('window').width
 
 
-const PreTestCard = ({ data }) => {
+const PreTestCard = ({ data, disable, retDis }) => {
   const [isVisibe, setisVisibe] = useState(false);
   const tests = data.Test;
   const TestList = tests.split(",");
+  const [active, setActive] = useState(false);
 
+useEffect(() => {
+  
+}, [])
 
   const hadleEvent = () => {
-    setisVisibe(true)
+    setisVisibe(true);
+    retDis(true);
   }
+
+
   return (
     <>
-
-      <Pressable onPress={() => hadleEvent()} style={styles.cardCotainer}>
+      <Pressable disabled={disable} onPress={() => hadleEvent()} style={styles.cardCotainer}>
         <View style={styles.cardBody}>
           <Icon
             name={'lab-flask'}
@@ -46,11 +52,14 @@ const PreTestCard = ({ data }) => {
         visible={isVisibe}
         onRequestClose={() => {
           setisVisibe(!isVisibe)
+          retDis(false);
+          // setActive(true);
         }}
+
       >
 
         <View style={styles.centeredView}>
-        <TouchableOpacity
+          <TouchableOpacity
             style={{
               position: 'absolute',
               top: 10,
@@ -61,7 +70,9 @@ const PreTestCard = ({ data }) => {
             }}
             onPress={() => {
               setisVisibe(false)
-              setisRemarksVisible(false)
+              // setisRemarksVisible(false)
+              retDis(false);
+              // setActive(true);
             }}>
             <Icon
               name={'close'}
@@ -70,7 +81,7 @@ const PreTestCard = ({ data }) => {
               size={20}
             ></Icon>
           </TouchableOpacity>
-          
+
 
 
           <View style={styles.patInfocontainer}>
@@ -114,26 +125,26 @@ const PreTestCard = ({ data }) => {
                     <Text style={styles.testsText}>{item}</Text>
                   </View>
                 }
-                keyExtractor={item => item.SId}
+                keyExtractor={(item, index) => `${item.SId}${index}`}
               />
             </View>
             <View>
-            <View style={styles.testCard}>
-              <Text style={styles.titleText}>Total</Text>
-              <Text style={styles.finsltestsPrice}>Rs.{data.TestTotalAmount}</Text>
-            </View>
-            <View style={styles.testCard}>
-              <Text style={styles.titleText}>Collection Charge</Text>
-              <Text style={styles.finsltestsPrice}>Rs.{data.CollectionCharge}</Text>
-            </View>
-            <View style={styles.testCard}>
-              <Text style={styles.titleText}>Discount Amout</Text>
-              <Text style={styles.finsltestsPrice}>Rs.{data.DiscountAmount}</Text>
-            </View>
-            <View style={styles.testCard}>
-              <Text style={styles.titleText}>Grand Total</Text>
-              <Text style={styles.finsltestsPrice}>Rs.{data.GrandTotal}</Text>
-            </View>
+              <View style={styles.testCard}>
+                <Text style={styles.titleText}>Total</Text>
+                <Text style={styles.finsltestsPrice}>Rs.{data.TestTotalAmount}</Text>
+              </View>
+              <View style={styles.testCard}>
+                <Text style={styles.titleText}>Collection Charge</Text>
+                <Text style={styles.finsltestsPrice}>Rs.{data.CollectionCharge}</Text>
+              </View>
+              <View style={styles.testCard}>
+                <Text style={styles.titleText}>Discount Amout</Text>
+                <Text style={styles.finsltestsPrice}>Rs.{data.DiscountAmount}</Text>
+              </View>
+              <View style={styles.testCard}>
+                <Text style={styles.titleText}>Grand Total</Text>
+                <Text style={styles.finsltestsPrice}>Rs.{data.GrandTotal}</Text>
+              </View>
             </View>
 
           </View>

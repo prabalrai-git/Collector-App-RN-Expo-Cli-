@@ -42,7 +42,7 @@ const windowWidth = Dimensions.get('window').width
 // "TestTotalAmount": 5815,
 
 
-const TaskCard = ({ data, AsignedTask }) => {
+const TaskCard = ({ data, AsignedTask,disable, retDis }) => {
   // console.log('data', data);
   const [isVisibe, setisVisibe] = useState(false);
   const [isRemarksVisible, setisRemarksVisible] = useState(false);
@@ -74,7 +74,7 @@ const TaskCard = ({ data, AsignedTask }) => {
 
   const hadleEvent = () => {
     setisVisibe(true)
-
+    retDis(true);
   }
 
   const handleAccept = () => {
@@ -100,7 +100,7 @@ const TaskCard = ({ data, AsignedTask }) => {
 
       }
     }))
-
+    retDis(false);
   }
 
   const handleReject = () => {
@@ -148,7 +148,7 @@ const TaskCard = ({ data, AsignedTask }) => {
       }))
     }
 
-
+    retDis(false);
   }
 
   const cMarker = {
@@ -164,7 +164,7 @@ const TaskCard = ({ data, AsignedTask }) => {
   return (
     <>
 
-      <Pressable onPress={() => hadleEvent()} style={styles.cardCotainer}>
+      <Pressable disabled={disable} onPress={() => hadleEvent()} style={styles.cardCotainer}>
         <View style={styles.cardBody}>
           <View style={styles.card}>
             <Text style={styles.ctitle}>{data.PatientFName} {data.PatientLName}</Text>
@@ -183,6 +183,7 @@ const TaskCard = ({ data, AsignedTask }) => {
           onRequestClose={() => {
             setisVisibe(!isVisibe)
             setisRemarksVisible(false)
+            retDis(false);
           }}
         >
 
@@ -199,6 +200,7 @@ const TaskCard = ({ data, AsignedTask }) => {
               onPress={() => {
                 setisVisibe(false)
                 setisRemarksVisible(false)
+                retDis(false);
               }}>
               <Icon
                 name={'close'}

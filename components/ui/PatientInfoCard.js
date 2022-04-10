@@ -42,7 +42,7 @@ const windowWidth = Dimensions.get('window').width
 
 
 
-const PatientInfoCard = ({ data, AsignedTask }) => {
+const PatientInfoCard = ({ data, AsignedTask, disable, retDis }) => {
   // console.log('data', data);
   const [isVisibe, setisVisibe] = useState(false);
   const user = useSelector(state => state.storeUserData);
@@ -73,12 +73,13 @@ const PatientInfoCard = ({ data, AsignedTask }) => {
 
   const hadleEvent = () => {
     setisVisibe(true)
+    retDis(true);
   }
 
   const cMarker = {
     latlng: {
-      latitude: Coordinate.latitude === null ? 27.7172 : Coordinate.latitude,
-      longitude: Coordinate.longitude === null ? 85.3240 : Coordinate.longitude
+      latitude: Coordinate.latitude === null || Coordinate.latitude === undefined ? 27.7172 : Coordinate.latitude,
+      longitude: Coordinate.longitude === null || Coordinate.longitude === undefined  ? 85.3240 : Coordinate.longitude
       // latitude: 27.7172,
       // longitude: 85.3240,
     },
@@ -87,7 +88,7 @@ const PatientInfoCard = ({ data, AsignedTask }) => {
   }
   return (
     <>
-      <Pressable onPress={() => hadleEvent()} style={styles.cardCotainer}>
+      <Pressable disabled={disable} onPress={() => hadleEvent()} style={styles.cardCotainer}>
         <View style={styles.cardBody}>
           <View>
             <Avatar
@@ -112,6 +113,7 @@ const PatientInfoCard = ({ data, AsignedTask }) => {
           onRequestClose={() => {
             setisVisibe(!isVisibe)
             // setisRemarksVisible(false)
+            retDis(false);
           }}
         >
 
@@ -128,6 +130,7 @@ const PatientInfoCard = ({ data, AsignedTask }) => {
               onPress={() => {
                 setisVisibe(false)
                 // setisRemarksVisible(false)
+                retDis(false);
               }}>
               <Icon
                 name={'close'}
@@ -178,8 +181,8 @@ const PatientInfoCard = ({ data, AsignedTask }) => {
                 <MapView
                   style={styles.map}
                   initialRegion={{
-                    latitude: Coordinate.latitude === null ? 27.7172 : Coordinate.latitude,
-                    longitude: Coordinate.longitude === null ? 85.3240 : Coordinate.longitude,
+                    latitude: Coordinate.latitude === null || Coordinate.latitude === undefined ? 27.7172 : Coordinate.latitude,
+                    longitude: Coordinate.longitude === null || Coordinate.longitude === undefined ? 85.3240 : Coordinate.longitude,
                     latitudeDelta: 0.0111922,
                     longitudeDelta: 0.0111421,
                   }}

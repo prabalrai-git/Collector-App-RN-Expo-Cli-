@@ -7,9 +7,7 @@ import TaskCard from '../../components/ui/TaskCard'
 
 
 
-const renderItem = ({ item }) => (
-  <TaskCard data={item} />
-)
+
 
 const CompletedTask = () => {
   const [PatietList, setPatietList] = useState();
@@ -25,6 +23,9 @@ const CompletedTask = () => {
     handleClick()
   }, [isFocused])
 
+  const renderItem = ({ item }) => (
+    <TaskCard data={item} disable={true} />
+  )
 
   useEffect(() => {
     sortData()

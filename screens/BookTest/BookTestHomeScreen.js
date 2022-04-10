@@ -11,6 +11,7 @@ const BookTestHomeScreen = () => {
   const [NewData, setNewData] = useState([])
   const isFocused = useIsFocused();
   const dispatch = useDispatch()
+  const [disable, setdisable] = useState(false)
 
   useEffect(() => {
     if (isFocused) {
@@ -19,12 +20,17 @@ const BookTestHomeScreen = () => {
         setNewData(res.requestorcollectionList)
       }))
     }
+    setdisable(false)
   }, [isFocused]);
 
   const renderItem = ({ item }) => (
     // <PatientCard data={item} />
-    <PatientInfoCard data={item} AsignedTask></PatientInfoCard>
+    <PatientInfoCard data={item} AsignedTask disable={disable} retDis={handleDisable}></PatientInfoCard>
   )
+  const handleDisable = (e) => {
+    // console.log('disable', e)
+    setdisable(e)
+  }
 
   const handleChange = (val) => {
     if (val === undefined || val === '') {

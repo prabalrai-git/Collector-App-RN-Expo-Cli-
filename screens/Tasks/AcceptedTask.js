@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { GetCollectorRequestByCollectorWiseForWeek, GetSampleRequestListByCollector } from '../../Services/appServices/AssignPatient'
 import { useIsFocused } from '@react-navigation/native'
 import AcceptedCard from '../../components/ui/AcceptedCard'
+import SampleCard from '../Sample/SampleCard'
 
 
 
@@ -18,9 +19,11 @@ const AcceptedTask = () => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch()
   const user = useSelector(state => state.storeUserData);
+  const [disable, setdisable] = useState(false)
 
   useEffect(() => {
     handleClick()
+    setdisable(false)
   }, [isFocused])
 
 
@@ -36,8 +39,13 @@ const refData =(res) =>{
 }
 
   const renderItem = ({ item }) => (
-    <AcceptedCard data={item} refData={refData}/>
+    <AcceptedCard data={item} refData={refData} disable={disable} retDis={handleDisable}/>
+    // <SampleCard data={item} refData={refData} disable={disable} retDis={handleDisable}/>
   )
+  const handleDisable = (e) => {
+    // console.log('disable', e)
+    setdisable(e)
+  }
   
 
   const handleClick = () => {
@@ -62,6 +70,7 @@ const refData =(res) =>{
 
     
   }
+  // console.log("collection request",PatietList);
 
   const sortData = () => {
     let tempArr = []

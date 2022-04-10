@@ -128,84 +128,84 @@ const AddPatientSelectTest = ({ route }) => {
         resizeMode="cover"
         style={styles.bkgImg}
       > */}
-        {/* <HamMenu></HamMenu>
+      {/* <HamMenu></HamMenu>
         <BackBtn></BackBtn> */}
-        <Header data={data} returnData={handleChange} selectTestFilter title={'Select Test'}></Header>
-        <View style={styles.container}>
-          {/* <Filter data={data} returnData={handleChange} selectTestFilter></Filter> */}
-          <View style={styles.midContainer}>
-            <FlatList
-              // style={styles.container}
-              data={newData}
-              keyExtractor={(item, index) => index}
-              renderItem={renderItem}
-            />
-          </View>
+      <Header data={data} returnData={handleChange} selectTestFilter title={'Select Test'}></Header>
+      <View style={styles.container}>
+        {/* <Filter data={data} returnData={handleChange} selectTestFilter></Filter> */}
+        <View style={styles.midContainer}>
+          <FlatList
+            // style={styles.container}
+            data={newData}
+            keyExtractor={(item, index) => index}
+            renderItem={renderItem}
+          />
         </View>
-        <View style={styles.btnContainer}>
-          <View style={{
-            flexDirection: 'row',
-            alignItems: 'center'
-          }}>
-            <Text style={styles.tSum}>Total: </Text>
-            <Text style={styles.tPrice}>Rs.{total}</Text>
-          </View>
-
-          <AppButton title='Proceed'
-            onPress={() => popBodule()}
-
-          ></AppButton>
+      </View>
+      <View style={styles.btnContainer}>
+        <View style={{
+          flexDirection: 'row',
+          alignItems: 'center'
+        }}>
+          <Text style={styles.tSum}>Total: </Text>
+          <Text style={styles.tPrice}>Rs.{total}</Text>
         </View>
-        {
-          modalVisible === true ?
 
-            <View style={styles.modalBkg}>
-              <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                  setModalVisible(!modalVisible);
-                }}
-              >
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    {/* <Text>Test list</Text> */}
-                    {
-                      selected.map((e, index) => (
-                        <View key={index} style={styles.moduleList}>
-                          <View>
-                            <Text style={{ width: windowWidth, fontSize: 12 }}>{e.Test}</Text>
-                            <Text style={{ color: "#FFC285" }}>Rs.{e.Price}</Text>
-                          </View>
-                          <View>
-                            <CancleBtn title='remove' onPress={() => RemoveItem(e)}></CancleBtn>
-                          </View>
+        <AppButton title='Proceed'
+          onPress={() => popBodule()}
 
+        ></AppButton>
+      </View>
+      {
+        modalVisible === true ?
+
+          <View style={styles.modalBkg}>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  {/* <Text>Test list</Text> */}
+                  {
+                    selected.map((e, index) => (
+                      <View key={index} style={styles.moduleList}>
+                        <View>
+                          <Text style={{ width: windowWidth, fontSize: 12 }}>{e.Test}</Text>
+                          <Text style={{ color: "#FFC285" }}>Rs.{e.Price}</Text>
                         </View>
-                      ))
-                    }
-                    <View style={styles.moduleTest}>
-                      <Text style={{ color: '#fefefe', fontSize: 16 }}>Total</Text>
-                      <Text style={styles.tPrice}>{total}</Text>
-                    </View>
+                        <View>
+                          <CancleBtn title='remove' onPress={() => RemoveItem(e)}></CancleBtn>
+                        </View>
 
-                    <View style={styles.moduleList}>
-                      {/* <Pressable
+                      </View>
+                    ))
+                  }
+                  <View style={styles.moduleTest}>
+                    <Text style={{ color: '#fefefe', fontSize: 16 }}>Total</Text>
+                    <Text style={styles.tPrice}>{total}</Text>
+                  </View>
+
+                  <View style={styles.moduleList}>
+                    {/* <Pressable
                         style={[styles.button, styles.buttonClose]}
                         onPress={() => setModalVisible(!modalVisible)}
                       >
                         <Text style={styles.textStyle}>cancle</Text>
                       </Pressable> */}
-                      <CancleBtn title={'cancel'} onPress={() => setModalVisible(!modalVisible)}></CancleBtn>
-                      <AppButton title='proceed' onPress={() => handleProceed()}></AppButton>
-                    </View>
+                    <CancleBtn title={'cancel'} onPress={() => setModalVisible(!modalVisible)}></CancleBtn>
+                    <AppButton title='proceed' onPress={() => handleProceed()}></AppButton>
                   </View>
                 </View>
-              </Modal>
-            </View>
-            : <View></View>
-        }
+              </View>
+            </Modal>
+          </View>
+          : <View></View>
+      }
       {/* </ImageBackground> */}
     </View>
   )
@@ -271,10 +271,12 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   modalView: {
-    margin: 20,
+    marginTop: 40,
+    marginHorizontal: 10,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
+    paddingVertical: 25,
+    paddingHorizontal: 10,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {

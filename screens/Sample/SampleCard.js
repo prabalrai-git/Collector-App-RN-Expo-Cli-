@@ -1,9 +1,9 @@
 import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Pressable, Image, FlatList, Switch, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import AppButton from '../../components/ui/AppButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { GetAddressOfClient, GetHomeCollectionTestRequestTestList, UpdateStatus } from '../../Services/appServices/AssignPatient';
+import { GetAddressOfClient, GetHomeCollectionTestRequestTestList, UpdatePaidStatus, UpdateStatus } from '../../Services/appServices/AssignPatient';
 import StatusBadge from '../../components/ui/StatusBadge';
 import MapView from 'react-native-maps';
 import MarkerCostome from '../../components/ui/MarkerCostome';
@@ -41,7 +41,7 @@ const windowWidth = Dimensions.get('window').width
 // "TestTotalAmount": 5815,
 
 
-const SampleCard = ({ data, refData }) => {
+const SampleCard = ({ data, refData, disable, retDis }) => {
   // console.log('data', data)
   const [isVisibe, setisVisibe] = useState(false);
   // const [isRemarksVisible, setisRemarksVisible] = useState(false);
@@ -52,13 +52,16 @@ const SampleCard = ({ data, refData }) => {
   const text = data.CollectionReqDate;
   const temp = text.split('T');
   const [TestList, setTestList] = useState();
-  const [isPaid, setisPaid] = useState(data.IsPaid);
+  const [isPaid, setisPaid] = useState(false);
   const [modalActive, setmodalActive] = useState('close');
   const [Coordinate, setCoordinate] = useState({
     'latitude': null,
     'longitude': null
   });
-
+  useEffect(() => {
+    setisPaid(data.IsPaid);
+  }, [isVisibe])
+  // console.log(user.userData.usrUserId);
 
   const toggleSwitch = () => setisPaid(previousState => !previousState);
   const [btnDis, setbtnDis] = useState(false);
@@ -75,14 +78,8 @@ const SampleCard = ({ data, refData }) => {
 
 
   const hadleEvent = () => {
-    // if(isVisibe === true){
-    //   console.log("vissible");
-    // if(modalActive === 'close'){
     setisVisibe(true)
-    //   setmodalActive('active')
-    // }else{
-    //   setmodalActive('close')
-    // }
+    retDis(true);
   }
   const handleSubmit = () => {
     // UpdateStatus
@@ -97,37 +94,54 @@ const SampleCard = ({ data, refData }) => {
       "UserId": user.userData.usrUserId,
       "Remarks": Remarks === '' ? 'Sample Collected' : Remarks,
     }
+    const pData = {
+      "userId": user.userData.usrUserId,
+      "requestId": data.RId,
+      "ispaid": isPaid,
+      "remarks": Remarks === '' ? 'Bill paid' : Remarks
+    }
+    if (isPaid) {
+      dispatch(UpdateStatus(sData, (res) => {
+        if (res?.SuccessMsg === true) {
+          dispatch(UpdatePaidStatus(pData, (res) => {
+            console.log("response sucess", res);
+            if (res === true) {
+              setRemarks('')
+              Alert.alert(
+                'Success !',
+                'Sample has been collected sucessfully',
+                [
+                  {
+                    text: 'OK', onPress: () => {
+                      setisVisibe(!isVisibe)
+                      // setisRemarksVisible(false)
+                      refData(true)
+                    }
+                  }
+                ]
+              )
+            }
+          }))
+        } else {
+          Alert.alert(
+            'Failure !',
+            'please enter the detail',
+            [
+              {
+                text: 'OK', onPress: () => {
+                }
+              }
+            ]
+          )
+        }
 
-    dispatch(UpdateStatus(sData, (res) => {
-      if (res?.SuccessMsg === true) {
-        setRemarks('')
-        Alert.alert(
-          'Success !',
-          'Sample has been collected sucessfully',
-          [
-            {
-              text: 'OK', onPress: () => {
-                setisVisibe(!isVisibe)
-                // setisRemarksVisible(false)
-                refData(true)
-              }
-            }
-          ]
-        )
-      } else {
-        Alert.alert(
-          'Failure !',
-          'please enter the detail',
-          [
-            {
-              text: 'OK', onPress: () => {
-              }
-            }
-          ]
-        )
-      }
+        setbtnDis(false)
+      }))
+    } else {
+      console.log('error');
       setbtnDis(false)
-    }))
+    }
+    retDis(false)
   }
 
   const handleDrop = () => {
@@ -151,7 +165,7 @@ const SampleCard = ({ data, refData }) => {
         setRemarks('')
         Alert.alert(
           'Success !',
-          'Sample has been collected sucessfully',
+          'Sample has been collected sucessfully and paid',
           [
             {
               text: 'OK', onPress: () => {
@@ -165,7 +179,7 @@ const SampleCard = ({ data, refData }) => {
       } else {
         Alert.alert(
           'Failure !',
-          'please enter the detail',
+          'sample collection failed, please enter the details',
           [
             {
               text: 'OK', onPress: () => {
@@ -191,14 +205,14 @@ const SampleCard = ({ data, refData }) => {
   // console.log('data', data.RequestStatus);
   return (
     <>
-      <Pressable onPress={() => hadleEvent()} style={styles.cardCotainer}>
+      <Pressable disabled={disable} onPress={() => hadleEvent()} style={styles.cardCotainer}>
         <View style={styles.cardBody}>
           <View style={styles.card}>
             <Text style={styles.ctitle}>{data.PatientFName} {data.PatientLName}</Text>
             <Text style={styles.remarks}>Request Id: {data.RId}</Text>
             <Text style={styles.cDate}>{data.CollectionReqDate}</Text>
           </View>
-          <BadgeStatus RequestStatus={data.RequestStatus}></BadgeStatus>
+          <BadgeStatus RequestStatus={data.RequestStatus} IsPaid={data.IsPaid}></BadgeStatus>
         </View>
       </Pressable>
 
@@ -209,6 +223,7 @@ const SampleCard = ({ data, refData }) => {
         onRequestClose={() => {
           setisVisibe(!isVisibe)
           // setisRemarksVisible(false)
+          retDis(false);
         }}
       >
 
@@ -225,6 +240,7 @@ const SampleCard = ({ data, refData }) => {
             onPress={() => {
               setisVisibe(false)
               // setisRemarksVisible(false)
+              retDis(false);
             }}>
             <Icon
               name={'close'}

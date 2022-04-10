@@ -1,9 +1,17 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const BadgeStatus = ({RequestStatus}) => {
+const BadgeStatus = ({RequestStatus, IsPaid}) => {
   return (
     <View>
+      {
+      IsPaid ?  
+        IsPaid === true  ?
+        <Text style={[styles.badge, { backgroundColor: '#a3ee19' }]}>paid</Text> : 
+        <Text style={[styles.badge,{ backgroundColor: '#e43333' } ]}>not paid</Text> 
+        : null
+      }
+      
       {
         (RequestStatus === 'Requested' || RequestStatus === 'Asigned') ?
           <Text style={[styles.badge]}>pending</Text> : null

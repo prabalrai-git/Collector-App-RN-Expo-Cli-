@@ -39,10 +39,12 @@ const AssignedTask = () => {
   const [disComplete, setdisComplete] = useState(false);
   const isFocused = useIsFocused();
   const user = useSelector(state => state.storeUserData);
+  const [disable, setdisable] = useState(false)
 
 // console.log("user ", user.userData.usrUserId);
   useEffect(() => {
     handleRequestList()
+    setdisable(false)
   }, [isFocused])
 
   useEffect(() => {
@@ -52,8 +54,12 @@ const AssignedTask = () => {
 
 
   const renderItem = ({ item }) => (
-    <TaskCard data={item} AsignedTask />
+    <TaskCard data={item} AsignedTask disable={disable} retDis={handleDisable}/>
   )
+  const handleDisable = (e) => {
+    // console.log('disable', e)
+    setdisable(e)
+  }
 
 
   const handleRequestList = () => {

@@ -43,6 +43,7 @@ const SampleHomeScreen = () => {
   const [toshow, setToShow] = useState(false);
   const [FromDate, setFromDate] = useState(new Date());
   const [ToDate, setToDate] = useState(new Date());
+  const [disable, setdisable] = useState(false)
 
   const onChangeFromData = (event, selectedValue) => {
     setShow(Platform.OS === 'ios');
@@ -88,7 +89,7 @@ const SampleHomeScreen = () => {
       setRequestList(res.RequestList)
     }))
   }
-
+// console.log('res', RequestList);
   const refData =(res) =>{
     if(res === true){
       handleClick()
@@ -97,9 +98,13 @@ const SampleHomeScreen = () => {
 
 
   const renderItem = ({ item }) => (
-    <SampleCard data={item} refData={refData}/>
+    <SampleCard data={item} refData={refData} disable={disable} retDis={handleDisable}/>
     // <AcceptedCard data={item} refData={refData}/>
   )
+  const handleDisable = (e) => {
+    // console.log('disable', e)
+    setdisable(e)
+  }
 
 
 
