@@ -112,26 +112,9 @@ const AddTestBillingScreen = ({ route }) => {
 
       <Text style={styles.testTitle}>{item.Test}</Text>
       <Text style={styles.testPrice}>Rs.{item.Price}</Text>
-      {/* <Button title='remove' onPress={() => RemoveItem(item)}></Button> */}
     </View>
   ))
-  // console.log('list of test', route.params.tests.testList);
 
-  // const RemoveItem = (e) => {
-  //   let tempArr = route.params.tests.testList;
-  //   if (tempArr.includes(e)) {
-  //     // for removing speciic data
-  //     const index = tempArr.indexOf(e);
-  //     if (index > -1) {
-  //       tempArr.splice(index, 1); // 2nd parameter means remove one item only
-  //       setTotalAmount(prev => {
-  //         return (prev >= 0 ?
-  //           prev - e.Price : 0)
-  //       })
-  //     }
-  //   }
-  //   // setSelected(tempArr);
-  // }
 
   const handleSubmit = () => {
     setBtnDis(true);
@@ -180,7 +163,19 @@ const AddTestBillingScreen = ({ route }) => {
       _HomeCollectionTestList
     }
 
-
+    // Alert.alert(
+    //   "Patient Added Sucessfull",
+    //   "Patient Added Sucessfull",
+    //   [
+    //     {
+    //       text: "ok", onPress: () => {
+    //         const popAc = StackActions.pop(2);
+    //         navigation.dispatch(popAc);
+    //         navigation.navigate('Home');
+    //       }
+    //     }
+    //   ]
+    // );
 
     dispatch(InsertUpdateHomeCollection(finalData, (res) => {
       if (res?.SuccessMsg === true) {
@@ -192,6 +187,7 @@ const AddTestBillingScreen = ({ route }) => {
               text: "OK", onPress: () => {
                 const popAc = StackActions.pop(2);
                 navigation.dispatch(popAc);
+                navigation.navigate('Home');
               }
             }
           ]
@@ -301,8 +297,22 @@ const AddTestBillingScreen = ({ route }) => {
         <AppButton title='handleSubmit' onPress={() => handleSubmit()} disabled={btnDis}></AppButton>
         {/* <Button title='kill it' onPress={() => {
 
-          const popAc = StackActions.pop(2);
-          navigation.dispatch(popAc);
+          // const popAc = StackActions.pop(2);
+          // navigation.dispatch(popAc);
+          // navigation.navigate('Home');
+          Alert.alert(
+            "Patient Added Sucessfull",
+            "Patient Added Sucessfull",
+            [
+              {
+                text: "ok", onPress: () => {
+                  const popAc = StackActions.pop(2);
+                  navigation.dispatch(popAc);
+                  navigation.navigate('Home');
+                }
+              }
+            ]
+          );
         }}></Button> */}
       </View>
 

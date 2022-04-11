@@ -19,6 +19,8 @@ import AddTestBillingScreen from '../screens/AddPatient/AddTestBillingScreen'
 import HomeScreen from '../screens/HomeScreen'
 import TabNavigator from './TabNavigator'
 import PrevioiusRequest from '../screens/BookTest/PrevioiusRequest'
+import AddPatientDetals from '../screens/AddPatient/AddPatientDetals'
+import AddRefReq from '../screens/AddPatient/AddRefReq'
 
 const Stack = createNativeStackNavigator()
 
@@ -136,7 +138,20 @@ const AddPatietNavigator = () => {
           options={{
             headerShown: false
           }}
-
+        />
+        <Stack.Screen
+          name='AddPatientDetals'
+          component={AddPatientDetals}
+          options={{
+            headerShown: false
+          }}
+        />
+        <Stack.Screen
+          name='AddRefReq'
+          component={AddRefReq}
+          options={{
+            headerShown: false
+          }}
         />
         <Stack.Screen
           name='AddPatientSelectTest'

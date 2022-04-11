@@ -109,7 +109,6 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
                   {
                     text: 'OK', onPress: () => {
                       setisVisibe(!isVisibe)
-                      // setisRemarksVisible(false)
                       refData(true)
                     }
                   }

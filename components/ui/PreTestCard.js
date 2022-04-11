@@ -17,10 +17,6 @@ const PreTestCard = ({ data, disable, retDis }) => {
   const TestList = tests.split(",");
   const [active, setActive] = useState(false);
 
-useEffect(() => {
-  
-}, [])
-
   const hadleEvent = () => {
     setisVisibe(true);
     retDis(true);

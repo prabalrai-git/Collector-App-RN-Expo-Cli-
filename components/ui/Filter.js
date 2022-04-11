@@ -2,19 +2,20 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SearchBar } from 'react-native-elements'
 
-const Filter = ({data, returnData, bookTestFilter, selectTestFilter}) => {
+const Filter = ({ data, returnData, bookTestFilter, selectTestFilter }) => {
   // console.log(data);
   // console.log("data" ,data.Test);
   const [search, setSearch] = useState("");
 
   const handlSearch = (val) => {
     const pushArr = [];
-    {selectTestFilter &&
+    {
+      selectTestFilter &&
       data.map(e => {
         (
           e.Test.toLowerCase().includes(val.toLowerCase())
-          ?
-          pushArr.push(e) : ''
+            ?
+            pushArr.push(e) : ''
           // console.log('e', e.Test)
         )
       })
@@ -35,42 +36,48 @@ const Filter = ({data, returnData, bookTestFilter, selectTestFilter}) => {
     // "PatientReferedBy": 10,
     // "PatientRequestorBy": 11,
     // "Remarks": "sample string 13",
-    
-    {bookTestFilter &&
+
+    {
+      bookTestFilter &&
       data !== undefined &&
       data.map(e => {
         (
           e.PatientFName.toLowerCase().includes(val.toLowerCase()) ||
-          e.PatientLName.toLowerCase().includes(val.toLowerCase()) 
-          ?
-          pushArr.push(e) : ''
+            e.PatientLName.toLowerCase().includes(val.toLowerCase())
+            ?
+            pushArr.push(e) : ''
           // console.log('e', e.Test)
         )
       })
-      
+
     }
     // console.log("pushed arrr",pushArr);
+
+    // {
+    //   forRequestor &&
+    // }
+
     returnData(pushArr)
   };
 
   useEffect(() => {
     handlSearch(search)
   }, [search])
-  
-  
+
+
   return (
     <View>
       <SearchBar
         placeholder="Type Here..."
         onChangeText={e => setSearch(e)}
         value={search}
-        platform= 'ios'
-        containerStyle={{backgroundColor: '#8ED1FC'}}
-        inputContainerStyle={{backgroundColor: '#fefefe'}}
+        platform='ios'
+        containerStyle={{ backgroundColor: '#8ED1FC' }}
+        inputContainerStyle={{ backgroundColor: '#fefefe' }}
         cancelButtonProps={{
           color: '#fefefe'
         }}
-        // showLoading = {true}
+      // showLoading = {true}
       ></SearchBar>
     </View>
   )

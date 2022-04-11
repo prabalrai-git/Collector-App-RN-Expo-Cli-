@@ -9,7 +9,7 @@ import { useIsFocused } from '@react-navigation/native'
 
 
 const renderItem = ({ item }) => (
-  <TaskCard data={item} disable={true}/>
+  <TaskCard data={item} disable={true} rejected/>
 )
 
 const RejectedTask = () => {
@@ -37,16 +37,6 @@ const RejectedTask = () => {
 
 
   const handleClick = () => {
-    // const fromDate = `${FromDate.getFullYear() + "-" + (FromDate.getMonth() + 1) + "-" + FromDate.getDate()}`
-    // const toDate = `${ToDate.getFullYear() + "-" + (ToDate.getMonth() + 1) + "-" + 30}`
-    // const collectorId = 3
-    // const data = {
-    //   'fromDate': fromDate,
-    //   'toDate': toDate,
-    //   'collectorId': collectorId
-
-    // }
-    // console.log(data);
     dispatch(GetCollectorRequestByCollectorWiseForWeek(user.userData.usrUserId, (res) => {
       if (res?.WeekWiseSampleDetailsByCollectorId.length > 0) {
         setPatietList(res.WeekWiseSampleDetailsByCollectorId)
@@ -79,6 +69,7 @@ const RejectedTask = () => {
     }
 
   }
+  
 
   return (
     <View style={styles.mainContainer}>

@@ -130,7 +130,7 @@ export const UpdateStatus = (data, sucessCallback) => {
       const response = await store(UpdateSampleRequestStatus, formData);
       if (response?.status === 200) {
         sucessCallback(response?.data)
-        console.log('sucess');
+        // console.log('sucess');
       } else {
         sucessCallback([])
       }

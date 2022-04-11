@@ -3,7 +3,7 @@ import React from 'react'
 
 const DateBadge = ({ date }) => {
   const text = date;
-  const temp = text.split('T');
+  let temp = text.split('T');
   return (
     <View style={styles.cDate}>
       <Text style={{

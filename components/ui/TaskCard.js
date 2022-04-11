@@ -10,6 +10,7 @@ import MapView from 'react-native-maps';
 import MarkerCostome from './MarkerCostome';
 import { Icon } from 'react-native-elements';
 import BadgeStatus from './BadgeStatus';
+import DateBadge from './DateBadge';
 
 
 
@@ -42,8 +43,8 @@ const windowWidth = Dimensions.get('window').width
 // "TestTotalAmount": 5815,
 
 
-const TaskCard = ({ data, AsignedTask,disable, retDis }) => {
-  // console.log('data', data);
+const TaskCard = ({ data, AsignedTask, disable, retDis, rejected }) => {
+  console.log('data', data);
   const [isVisibe, setisVisibe] = useState(false);
   const [isRemarksVisible, setisRemarksVisible] = useState(false);
   const [Remarks, setRemarks] = useState('');
@@ -127,23 +128,25 @@ const TaskCard = ({ data, AsignedTask,disable, retDis }) => {
       )
     } else {
       dispatch(UpdateStatus(aData, (res) => {
-        // console.log('response', res);
+        console.log('response', res);
         if (res?.SuccessMsg === true) {
-          // console.log('potato sucess, rejected');
-          setisVisibe(!isVisibe)
-          setisRemarksVisible(false)
-          setRemarks('')
+          console.log('potato sucess, rejected');
+
           Alert.alert(
-            'Reject Sucessfull !',
-            // 'please enter the remarks',
+            'Sucessfull !',
+            'sucessfully rejected',
             [
               {
                 text: 'OK', onPress: () => {
                   navigation.navigate('RejectedTask')
+                  setisVisibe(!isVisibe)
+                  setisRemarksVisible(false)
+                  setRemarks('')
                 }
               }
             ]
           )
+
         }
       }))
     }
@@ -161,18 +164,32 @@ const TaskCard = ({ data, AsignedTask,disable, retDis }) => {
     title: 'title',
     description: 'somethindg'
   }
+  // console.log('resons', data.remarks);
   return (
     <>
 
       <Pressable disabled={disable} onPress={() => hadleEvent()} style={styles.cardCotainer}>
         <View style={styles.cardBody}>
           <View style={styles.card}>
-            <Text style={styles.ctitle}>{data.PatientFName} {data.PatientLName}</Text>
-            <Text style={styles.remarks}>Request Id: {data.RequestId}</Text>
-            <Text style={styles.cDate}>{data.CollectionReqDate}</Text>
+            <View style={styles.cDetail}>
+              <Text style={styles.ctitle}>{data.PatientFName} {data.PatientLName}</Text>
+              <Text style={styles.subheading}>Request Id: {data.RequestId}</Text>
+              <DateBadge date={data.CollectionReqDate}></DateBadge>
+            </View>
+            <BadgeStatus RequestStatus={data.SampleStatus}></BadgeStatus>
           </View>
-          <BadgeStatus RequestStatus={data.SampleStatus}></BadgeStatus>
+          {
+            rejected &&
+            <View style={styles.remarks}>
+              <Text style={styles.remarksDis}>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. In deserunt a velit magnam veritatis delectus necessitatibus 
+              </Text>
+            </View>
+
+          }
+
         </View>
+
       </Pressable>
       {
         AsignedTask &&
@@ -325,14 +342,13 @@ const styles = StyleSheet.create({
     width: windowWidth,
     paddingHorizontal: 10,
   },
+
   cardBody: {
     backgroundColor: "#fefefe",
     marginVertical: 8,
     paddingHorizontal: 15,
     paddingVertical: 10,
-    flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
     borderTopRightRadius: 12,
     borderBottomRightRadius: 12,
     borderLeftWidth: 4,
@@ -347,6 +363,11 @@ const styles = StyleSheet.create({
 
     elevation: 7,
   },
+  card: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
   ctitle: {
     fontSize: 18,
     fontWeight: "600",
@@ -354,7 +375,7 @@ const styles = StyleSheet.create({
     color: "#205072",
     marginBottom: 5,
   },
-  remarks: {
+  subheading: {
     color: "#253539",
     fontSize: 14,
     letterSpacing: 2,
@@ -464,6 +485,20 @@ const styles = StyleSheet.create({
   testsPrice: {
     width: windowWidth * 0.4,
     color: '#FF7F00'
+  },
+  remarks: {
+    borderWidth: 1,
+    borderColor: '#76968a',
+    borderRadius: 5,
+    marginTop: 6,
+    paddingHorizontal: 6,
+    paddingVertical: 10,
+  },
+  remarksDis: {
+    fontSize: 12,
+    color: "#205072",
+    letterSpacing: 1,
+    textAlign: 'justify'
   },
 
 })
