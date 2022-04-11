@@ -1,4 +1,4 @@
-import { Button, Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Button, Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View, FlatList, Pressable } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Header from '../../components/Header';
 import { Icon, Input } from 'react-native-elements';
@@ -6,14 +6,19 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { GetReferred, GetRequestor } from '../../Services/appServices/AssignPatient';
 import { useDispatch } from 'react-redux';
 import Filter from '../../components/ui/Filter';
+import { log } from 'react-native-reanimated';
 
 const AddRefReq = ({ route }) => {
   // console.log("route", route.params.data);
   const [Remarks, setRemarks] = useState('')
-  const [PatientReferedBy, setPatientReferedBy] = useState('1');
-  const [PatientRequestorBy, setPatientRequestorBy] = useState('1');
+  const [PatientReferedBy, setPatientReferedBy] = useState('');
+  const [PatientReferedByName, setPatientReferedByName] = useState('');
+  const [PatientRequestorBy, setPatientRequestorBy] = useState('');
+  const [PatientRequestorByName, setPatientRequestorByName] = useState('');
   const [reqestorList, setRequestorlist] = useState();
+  const [reqestorListNew, setRequestorlistNew] = useState();
   const [referedList, setReferedList] = useState();
+  const [referedListNew, setReferedListNew] = useState();
   const dispatch = useDispatch();
 
   const [date, setDate] = useState(new Date());
@@ -21,7 +26,8 @@ const AddRefReq = ({ route }) => {
   const [show, setShow] = useState(false);
   const [time, setTime] = useState(new Date());
 
-  const [isVisibe, setisVisibe] = useState(false);
+  const [isVisibeReq, setisVisibeReq] = useState(false);
+  const [isVisibeRef, setisVisibeRef] = useState(false);
 
   const showMode = (currentMode) => {
     setShow(true);
@@ -55,14 +61,43 @@ const AddRefReq = ({ route }) => {
     dispatch(GetRequestor((res) => {
       // console.log(res);
       setRequestorlist(res?.requestorList)
+      setRequestorlistNew(res?.requestorList)
     }))
     dispatch(GetReferred((res) => {
       // console.log(res);
       setReferedList(res?.ReferredDoctorList)
+      setReferedListNew(res?.ReferredDoctorList)
 
     }))
-    //  let temp = {reqestorList, referedList}
+
   }, [])
+
+  const handleChangeReq = (e) => {
+    // console.log('e', e);
+    // setRequestorlist(e)
+    if (e === undefined || e === '') {
+      setRequestorlistNew(reqestorList)
+    } else {
+      setRequestorlistNew(e)
+    }
+  }
+
+  const handleChangeRef = (e) => {
+    if (e === undefined || e === '') {
+      setReferedListNew(referedList)
+    } else {
+      setReferedListNew(e)
+    }
+  }
+
+  // "Id": 4,
+  // "Requestor": "Nidison Medical Hall",
+
+  console.log("reqestorList", referedList);
+
+  // const renderItem = ({ item }) => (
+
+  // )
 
   return (
     <View style={styles.maincontainer}>
@@ -107,16 +142,14 @@ const AddRefReq = ({ route }) => {
         />
         {/* butron sheet or some thing for selector */}
 
-        <Button title="press me ref" onPress={() =>setisVisibe(!isVisibe)}></Button>
-        {/* <Button title="press me req" onPress={() =>setisVisibe(!isVisibe)}></Button> */}
+        <Text>{PatientRequestorByName}</Text>
+        <Button title="press me req" onPress={() => setisVisibeReq(!isVisibeReq)}></Button>
         <Modal
           animationType="slide"
           transparent={true}
-          visible={isVisibe}
+          visible={isVisibeReq}
           onRequestClose={() => {
-            setisVisibe(!isVisibe)
-            // setisRemarksVisible(false)
-            // retDis(false);
+            setisVisibeReq(!isVisibeReq)
           }}
         >
 
@@ -131,7 +164,7 @@ const AddRefReq = ({ route }) => {
                 borderRadius: 50,
               }}
               onPress={() => {
-                setisVisibe(false)
+                setisVisibeReq(false)
                 // setisRemarksVisible(false)
                 // retDis(false);
               }}>
@@ -142,9 +175,81 @@ const AddRefReq = ({ route }) => {
                 size={20}
               ></Icon>
             </TouchableOpacity>
-              <View>
-                <Filter data={reqestorList} returnData={handleChange} forRequestor></Filter>
-              </View>
+            <View>
+              <Filter data={reqestorList} returnData={handleChangeReq} forReq></Filter>
+              <FlatList
+                data={reqestorListNew}
+                keyExtractor={(item, index) => `${item.Id}${index}`}
+                renderItem={({ item }) => (
+                  <Pressable
+                    onPress={() => {
+                      setPatientRequestorBy(item.Id)
+                      setPatientRequestorByName(item.Requestor)
+                      setisVisibeReq(false)
+                    }}
+                    style={styles.cardBtn}
+                  >
+                    <Text>{item.Requestor}</Text>
+                  </Pressable>
+                )}
+              ></FlatList>
+            </View>
+          </View>
+        </Modal>
+
+
+        <Text>{referedListNew}</Text>
+        <Button title="press me req" onPress={() => setisVisibeRef(!isVisibeRef)}></Button>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={isVisibeRef}
+          onRequestClose={() => {
+            setisVisibeRef(!isVisibeRef)
+          }}
+        >
+
+          <View style={styles.centeredView}>
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                top: 10,
+                right: 10,
+                backgroundColor: '#8ED1FC',
+                padding: 10,
+                borderRadius: 50,
+              }}
+              onPress={() => {
+                setisVisibeRef(false)
+                // setisRemarksVisible(false)
+                // retDis(false);
+              }}>
+              <Icon
+                name={'close'}
+                color={'#fefefe'}
+                type='antdesign'
+                size={20}
+              ></Icon>
+            </TouchableOpacity>
+            <View>
+              <Filter data={referedList} returnData={handleChangeReq} forReq></Filter>
+              {/* <FlatList
+                data={referedList}
+                keyExtractor={(item, index) => `${item.Id}${index}`}
+                renderItem={({ item }) => ( */}
+              {
+                referedListNew !== undefined ?
+                  referedListNew.map(e => (
+                    <Text>
+                      {e.Id}
+                    </Text>
+
+                  )) : null
+              }
+
+              {/* )} */}
+              {/* ></FlatList> */}
+            </View>
           </View>
         </Modal>
 
@@ -200,4 +305,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fefefe'
   },
+  cardBtn: {
+    backgroundColor: 'green',
+    marginVertical: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 20,
+    borderRadius: 10,
+  }
 })

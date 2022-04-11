@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SearchBar } from 'react-native-elements'
 
-const Filter = ({ data, returnData, bookTestFilter, selectTestFilter }) => {
+const Filter = ({ data, returnData, bookTestFilter, selectTestFilter, forReq, forRef }) => {
   // console.log(data);
   // console.log("data" ,data.Test);
   const [search, setSearch] = useState("");
@@ -11,14 +11,14 @@ const Filter = ({ data, returnData, bookTestFilter, selectTestFilter }) => {
     const pushArr = [];
     {
       selectTestFilter &&
-      data.map(e => {
-        (
-          e.Test.toLowerCase().includes(val.toLowerCase())
-            ?
-            pushArr.push(e) : ''
-          // console.log('e', e.Test)
-        )
-      })
+        data.map(e => {
+          (
+            e.Test.toLowerCase().includes(val.toLowerCase())
+              ?
+              pushArr.push(e) : ''
+            // console.log('e', e.Test)
+          )
+        })
     }
     // "CId": 18,
     // "CollectionReqDate": "2022-03-20T13:07:21.643",
@@ -39,22 +39,43 @@ const Filter = ({ data, returnData, bookTestFilter, selectTestFilter }) => {
 
     {
       bookTestFilter &&
-      data !== undefined &&
-      data.map(e => {
-        (
-          e.PatientFName.toLowerCase().includes(val.toLowerCase()) ||
-            e.PatientLName.toLowerCase().includes(val.toLowerCase())
-            ?
-            pushArr.push(e) : ''
-          // console.log('e', e.Test)
-        )
-      })
+        data !== undefined &&
+        data.map(e => {
+          (
+            e.PatientFName.toLowerCase().includes(val.toLowerCase()) ||
+              e.PatientLName.toLowerCase().includes(val.toLowerCase())
+              ?
+              pushArr.push(e) : ''
+            // console.log('e', e.Test)
+          )
+        })
 
     }
     // console.log("pushed arrr",pushArr);
 
+    {
+      forReq &&
+        data !== undefined &&
+        data.map(e => {
+          (
+            e.Requestor.toLowerCase().includes(val.toLowerCase())
+              ?
+              pushArr.push(e) : ''
+            // console.log('e', e.Test)
+          )
+        })
+    }
     // {
-    //   forRequestor &&
+    //   forRef &&
+    //     data !== undefined &&
+    //     data.map(e => {
+    //       (
+    //         e.Name.toLowerCase().includes(val.toLowerCase())
+    //           ?
+    //           pushArr.push(e) : ''
+    //         // console.log('e', e.Test)
+    //       )
+    //     })
     // }
 
     returnData(pushArr)

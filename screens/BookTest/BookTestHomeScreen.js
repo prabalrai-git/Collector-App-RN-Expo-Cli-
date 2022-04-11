@@ -63,20 +63,20 @@ const BookTestHomeScreen = () => {
         resizeMode="cover"
         style={styles.bkgImg}
       > */}
-        {/* <HamMenu></HamMenu>
+      {/* <HamMenu></HamMenu>
         <BackBtn></BackBtn> */}
-        <Header data={PatietList} returnData={handleChange} bookTestFilter title={'Patient'}></Header>
-        <View style={styles.container}>
-          {/* <Filter data={PatietList} returnData={handleChange} bookTestFilter></Filter> */}
-          <FlatList
-            data={NewData}
-            renderItem={renderItem}
-            keyExtractor={item => item.CId}
+      <Header data={PatietList} returnData={handleChange} bookTestFilter title={'Patient'}></Header>
+      <View style={styles.container}>
+        {/* <Filter data={PatietList} returnData={handleChange} bookTestFilter></Filter> */}
+        <FlatList
+          data={NewData}
+          renderItem={renderItem}
+          keyExtractor={item => item.CId}
 
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-          />
-        </View>
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      </View>
 
       {/* </ImageBackground> */}
     </View>

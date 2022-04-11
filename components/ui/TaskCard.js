@@ -182,7 +182,7 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected }) => {
             rejected &&
             <View style={styles.remarks}>
               <Text style={styles.remarksDis}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. In deserunt a velit magnam veritatis delectus necessitatibus 
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. In deserunt a velit magnam veritatis delectus necessitatibus
               </Text>
             </View>
 
