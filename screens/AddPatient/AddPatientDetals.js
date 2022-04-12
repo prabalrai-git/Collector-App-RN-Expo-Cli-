@@ -1,4 +1,4 @@
-import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import Header from '../../components/Header';
 import { BottomSheet, Icon, Input } from 'react-native-elements';
@@ -93,23 +93,31 @@ const AddPatientDetals = ({ route }) => {
       "PatientAddress": JSON.stringify(PatientAddress),
     }
 
-    // if (isValidated === true) {
+    if (isValidated === true) {
       // console.log("data", data , isValidated);
       navigation.navigate('AddRefReq', {
-        data: {
-          "PatientAddress": "{\"latitude\":27.7172,\"longitude\":85.324}",
-          "PatientAge": "88",
-          "PatientEmailId": "",
-          "PatientFName": "Suman",
-          "PatientGender": "male",
-          "PatientLName": "sunuwar",
-          "PatientMName": "",
-        }
-        // data
+        data: data
+        // {
+        //   "PatientAddress": "{\"latitude\":27.7172,\"longitude\":85.324}",
+        // "\"{\\\"latitude\\\":27.690878787779162,\\\"longitude\\\":85.32818583771586}\"",
+        //   "PatientAge": "88",
+        //   "PatientEmailId": "",
+        //   "PatientFName": "Suman",
+        //   "PatientGender": "male",
+        //   "PatientLName": "sunuwar",
+        //   "PatientMName": "",
+        // }
+        
       })
-    // } else {
-    //   console.log('error');
-    // }
+    } else {
+      Alert.alert(
+        "Failure",
+        "Please fill up the data.",
+        [
+          { text: "OK" }
+        ]
+      );
+    }
   }
 
   return (

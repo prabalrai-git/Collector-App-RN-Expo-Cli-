@@ -141,7 +141,7 @@ const AddPatietHomeScreen = () => {
     const newTime = today.toLocaleTimeString();
     const fialEntryDate = newDate + 'T' + newTime;
 
-
+ 
 
     let data = {
       "CId": 0,

@@ -34,6 +34,7 @@ const AddPatietHomeScreen = () => {
           navigation.navigate('AddPatientDetals', 
             {gender: 'female'}
           )}>
+            {/* AddRefReq ,AddPatientDetals */}
             <Icon
               name={'female'}
               color={'#fefefe'}
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
   },
   male: {
     backgroundColor: '#49A3D8',
-    shadowColor: "#49A3D8",
+    shadowColor: "#284f66",
     shadowOffset: {
       width: 0,
       height: 3,
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
   },
   female: {
     backgroundColor: '#E866A9',
-    shadowColor: "#E866A9",
+    shadowColor: "#491d34",
     shadowOffset: {
       width: 0,
       height: 3,

@@ -9,6 +9,7 @@ import MapView from 'react-native-maps';
 import MarkerCostome from './MarkerCostome';
 import { Icon } from 'react-native-elements';
 import BadgeStatus from './BadgeStatus';
+import DateBadge from './DateBadge';
 
 
 
@@ -42,6 +43,7 @@ const windowWidth = Dimensions.get('window').width
 
 
 const AcceptedCard = ({ data, refData, disable, retDis }) => {
+  // console.log("asigned data", data)
   const [isVisibe, setisVisibe] = useState(false);
   const [isRemarksVisible, setisRemarksVisible] = useState(false);
   const [Remarks, setRemarks] = useState('');
@@ -52,6 +54,7 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
   const temp = text.split('T');
   const [TestList, setTestList] = useState();
   const [isPaid, setisPaid] = useState(false);
+  const [Coordinate, setCoordinate] = useState(JSON.parse(data.PatientAddress));
 
   useEffect(() => {
     setisPaid(data.IsPaid);
@@ -99,7 +102,7 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
       dispatch(UpdateStatus(sData, (res) => {
         if (res?.SuccessMsg === true) {
           dispatch(UpdatePaidStatus(pData, (res) => {
-            console.log("response sucess", res);
+            // console.log("response sucess", res);
             if (res === true) {
               setRemarks('')
               Alert.alert(
@@ -159,7 +162,7 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
         setRemarks('')
         Alert.alert(
           'Success !',
-          'Sample has been collected sucessfully',
+          'Sample has been droped sucessfully',
           [
             {
               text: 'OK', onPress: () => {
@@ -173,7 +176,7 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
       } else {
         Alert.alert(
           'Failure !',
-          'please enter the detail',
+          'server error, please try again later',
           [
             {
               text: 'OK', onPress: () => {
@@ -191,10 +194,10 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
 
   const cMarker = {
     latlng: {
-      // latitude: tempCoordinate.latitude === null ? 27.7172 : tempCoordinate.latitude,
-      // longitude: tempCoordinate.longitude === null ? 85.3240 : tempCoordinate.longitude
-      latitude: 27.7172,
-      longitude: 85.3240,
+      latitude: Coordinate.latitude === null || Coordinate.latitude === undefined ? 27.7172 : Coordinate.latitude,
+      longitude: Coordinate.longitude === null || Coordinate.longitude === undefined ? 85.3240 : Coordinate.longitude,
+      // latitude: 27.7172,
+      // longitude: 85.3240,
     },
     title: 'title',
     description: 'somethindg'
@@ -207,9 +210,10 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
           <View style={styles.card}>
             <Text style={styles.ctitle}>{data.PatientFName} {data.PatientLName}</Text>
             <Text style={styles.remarks}>Request Id: {data.RequestId}</Text>
-            <Text style={styles.cDate}>{data.CollectionReqDate}</Text>
+            {/* <Text style={styles.cDate}>{data.CollectionReqDate}</Text> */}
+            <DateBadge date={data.CollectionReqDate}></DateBadge>
           </View>
-          <BadgeStatus RequestStatus={data.SampleStatus}></BadgeStatus>
+          <BadgeStatus RequestStatus={data.SampleStatus} IsPaid={data.IsPaid}></BadgeStatus>
         </View>
       </Pressable>
 
@@ -281,8 +285,8 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
               <MapView
                 style={styles.map}
                 initialRegion={{
-                  latitude: 27.7172,
-                  longitude: 85.3240,
+                  latitude: Coordinate.latitude === null || Coordinate.latitude === undefined ? 27.7172 : Coordinate.latitude,
+                  longitude: Coordinate.longitude === null || Coordinate.longitude === undefined ? 85.3240 : Coordinate.longitude,
                   latitudeDelta: 0.0111922,
                   longitudeDelta: 0.0111421,
                 }}
@@ -339,7 +343,7 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
                   disabled={isPaid}
                 />
               </View>
-              {/* <View style={styles.TextInput}>
+              <View style={styles.TextInput}>
                 <TextInput
                   value={Remarks}
                   placeholder='remarks'
@@ -347,7 +351,7 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
                   style={styles.inputField}
                   multiline={true}
                 ></TextInput>
-              </View> */}
+              </View>
               <AppButton title='Collect Sample' onPress={() => handleSubmit()} disabled={btnDis}></AppButton>
               {/* <Button disabled></Button> */}
             </View>

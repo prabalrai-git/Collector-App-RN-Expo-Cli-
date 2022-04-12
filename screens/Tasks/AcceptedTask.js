@@ -1,5 +1,5 @@
 
-import { FlatList, StyleSheet, View } from 'react-native'
+import { Dimensions, FlatList, StyleSheet, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { GetCollectorRequestByCollectorWiseForWeek, GetSampleRequestListByCollector } from '../../Services/appServices/AssignPatient'
@@ -98,6 +98,7 @@ const refData =(res) =>{
         renderItem={renderItem}
         keyExtractor={(item, index) => `${index}${item.RId}`}
       />
+      
     </View>
   )
 }
@@ -110,6 +111,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // marginTop: 10,
     flexDirection: 'column',
-    flex: 1
+    height:  Dimensions.get('window').height - 110,
   }
 })

@@ -65,18 +65,18 @@ const Filter = ({ data, returnData, bookTestFilter, selectTestFilter, forReq, fo
           )
         })
     }
-    // {
-    //   forRef &&
-    //     data !== undefined &&
-    //     data.map(e => {
-    //       (
-    //         e.Name.toLowerCase().includes(val.toLowerCase())
-    //           ?
-    //           pushArr.push(e) : ''
-    //         // console.log('e', e.Test)
-    //       )
-    //     })
-    // }
+    {
+      forRef &&
+        data !== undefined &&
+        data.map(e => {
+          (
+            e.Name.toLowerCase().includes(val.toLowerCase())
+              ?
+              pushArr.push(e) : ''
+            // console.log('e', e.Test)
+          )
+        })
+    }
 
     returnData(pushArr)
   };

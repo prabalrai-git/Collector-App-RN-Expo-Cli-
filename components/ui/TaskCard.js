@@ -115,22 +115,14 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected }) => {
       "UserId": user.userData.usrUserId,
       "Remarks": Remarks,
     }
-    if (Remarks === '' || Remarks === undefined) {
-      Alert.alert(
-        'Failure !',
-        'please enter the remarks',
-        [
-          {
-            text: 'OK', onPress: () => {
-            }
-          }
-        ]
-      )
-    } else {
+    // console.log(aData);
+    // return
+    if (Remarks !== '' || Remarks !== undefined) {
+
       dispatch(UpdateStatus(aData, (res) => {
-        console.log('response', res);
+        // console.log('response', res);
         if (res?.SuccessMsg === true) {
-          console.log('potato sucess, rejected');
+          // console.log('potato sucess, rejected');
 
           Alert.alert(
             'Sucessfull !',
@@ -149,6 +141,17 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected }) => {
 
         }
       }))
+    } else {
+      Alert.alert(
+        'Failure !',
+        'please enter the remarks',
+        [
+          {
+            text: 'OK', onPress: () => {
+            }
+          }
+        ]
+      )
     }
 
     retDis(false);
@@ -156,8 +159,8 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected }) => {
 
   const cMarker = {
     latlng: {
-      latitude: Coordinate.latitude === null ? 27.7172 : Coordinate.latitude,
-      longitude: Coordinate.longitude === null ? 85.3240 : Coordinate.longitude
+      latitude: Coordinate.latitude === null || Coordinate.latitude === undefined ? 27.7172 : Coordinate.latitude,
+      longitude: Coordinate.longitude === null || Coordinate.longitude === undefined ? 85.3240 : Coordinate.longitude
       // latitude: 27.7172,
       // longitude: 85.3240,
     },
@@ -176,13 +179,14 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected }) => {
               <Text style={styles.subheading}>Request Id: {data.RequestId}</Text>
               <DateBadge date={data.CollectionReqDate}></DateBadge>
             </View>
-            <BadgeStatus RequestStatus={data.SampleStatus}></BadgeStatus>
+            
+            <BadgeStatus RequestStatus={data.SampleStatus} IsPaid={data.IsPaid}></BadgeStatus>
           </View>
           {
             rejected &&
             <View style={styles.remarks}>
               <Text style={styles.remarksDis}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. In deserunt a velit magnam veritatis delectus necessitatibus
+                {data.Remarks}
               </Text>
             </View>
 
@@ -277,8 +281,8 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected }) => {
                     <MapView
                       style={styles.map}
                       initialRegion={{
-                        latitude: Coordinate.latitude === null ? 27.7172 : Coordinate.latitude,
-                        longitude: Coordinate.longitude === null ? 85.3240 : Coordinate.longitude,
+                        latitude: Coordinate.latitude === null || Coordinate.latitude === undefined ? 27.7172 : Coordinate.latitude,
+                        longitude: Coordinate.longitude === null || Coordinate.longitude === undefined ? 85.3240 : Coordinate.longitude,
                         latitudeDelta: 0.0111922,
                         longitudeDelta: 0.0111421,
                       }}

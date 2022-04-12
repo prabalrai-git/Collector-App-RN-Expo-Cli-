@@ -1,15 +1,18 @@
-import { Button, Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View, FlatList, Pressable } from 'react-native'
+import { Button, Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View, FlatList, Pressable, ActivityIndicator, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Header from '../../components/Header';
 import { Icon, Input } from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { GetReferred, GetRequestor } from '../../Services/appServices/AssignPatient';
-import { useDispatch } from 'react-redux';
+import { AssignPatient, GetReferred, GetRequestor } from '../../Services/appServices/AssignPatient';
+import { useDispatch, useSelector } from 'react-redux';
 import Filter from '../../components/ui/Filter';
 import { log } from 'react-native-reanimated';
+import AppButton from '../../components/ui/AppButton';
+import { StackActions, useNavigation } from '@react-navigation/native';
 
 const AddRefReq = ({ route }) => {
   // console.log("route", route.params.data);
+  const navigation = useNavigation()
   const [Remarks, setRemarks] = useState('')
   const [PatientReferedBy, setPatientReferedBy] = useState('');
   const [PatientReferedByName, setPatientReferedByName] = useState('');
@@ -20,6 +23,9 @@ const AddRefReq = ({ route }) => {
   const [referedList, setReferedList] = useState();
   const [referedListNew, setReferedListNew] = useState();
   const dispatch = useDispatch();
+  const user = useSelector(state => state.storeUserData);
+  const [isLoading, setIsLoading] = useState(false);
+  const [appBtnSis, setappBtnSis] = useState(false);
 
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
@@ -28,6 +34,10 @@ const AddRefReq = ({ route }) => {
 
   const [isVisibeReq, setisVisibeReq] = useState(false);
   const [isVisibeRef, setisVisibeRef] = useState(false);
+
+  const [errors, setErrors] = useState({});
+
+  const [btnDis, setbtnDis] = useState(false);
 
   const showMode = (currentMode) => {
     setShow(true);
@@ -59,22 +69,18 @@ const AddRefReq = ({ route }) => {
 
   useEffect(() => {
     dispatch(GetRequestor((res) => {
-      // console.log(res);
       setRequestorlist(res?.requestorList)
       setRequestorlistNew(res?.requestorList)
     }))
     dispatch(GetReferred((res) => {
-      // console.log(res);
       setReferedList(res?.ReferredDoctorList)
       setReferedListNew(res?.ReferredDoctorList)
-
     }))
 
   }, [])
+  console.log('red', referedList)
 
   const handleChangeReq = (e) => {
-    // console.log('e', e);
-    // setRequestorlist(e)
     if (e === undefined || e === '') {
       setRequestorlistNew(reqestorList)
     } else {
@@ -90,14 +96,120 @@ const AddRefReq = ({ route }) => {
     }
   }
 
-  // "Id": 4,
-  // "Requestor": "Nidison Medical Hall",
+  const handleSubmit = () => {
+    // console.log("route data", route.params.data)
+    // console.log("date", `${time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate()}T${time.toLocaleTimeString()}`)
+    // console.log('req, ref', PatientReferedBy, PatientRequestorBy)
+    // console.log('remarks', Remarks)
+    setIsLoading(true)
+    setappBtnSis(true)
 
-  console.log("reqestorList", referedList);
+    let today = new Date();
+    const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    const newTime = today.toLocaleTimeString();
+    const fialEntryDate = newDate + 'T' + newTime;
 
-  // const renderItem = ({ item }) => (
+    let data = {
+      "CId": 0,
+      "CollectorId": user.userData.usrUserId,
+      "PatientFName": route.params.data.PatientFName,
+      "PatientMName": route.params.data.PatientMName !== '' ? route.params.data.PatientMName : '',
+      "PatientLName": route.params.data.PatientLName,
+      "PatientAge": route.params.data.PatientAge,
+      "PatientGender": route.params.data.PatientGender,
+      "PatientEmailId": route.params.data.PatientEmailId !== '' ? route.params.data.PatientEmailId : '',
+      "PatientAddress": route.params.data.PatientAddress,
+      "PatientReferedBy": PatientReferedBy,
+      "PatientRequestorBy": PatientRequestorBy,
+      "PatientNationalId": 0,
+      "Remarks": Remarks !== '' ? Remarks : '',
+      "EntryDate": fialEntryDate,
+      "EnterBy": user.userData.usrUserId,
+      "CollectionReqDate": `${time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate()}T${time.toLocaleTimeString()}`,
+    }
+    console.log('data', data)
+    let isValid = validate();
 
-  // )
+    // return
+    if (isValid) {
+      dispatch(AssignPatient(data, (res) => {
+        if (res?.CreatedId > 0 && res?.SuccessMsg === true) {
+
+          setPatientReferedBy('');
+          setPatientRequestorBy('');
+          setPatientReferedByName('')
+          setPatientRequestorByName('');
+          setRemarks('');
+
+          setIsLoading(false);
+          Alert.alert(
+            "Patient Added Sucessfull",
+            "Do you want to add test ?",
+            [
+              { text: "no", onPress: () => {
+                navigation.navigate('Home')
+                const popAc = StackActions.pop(2);
+                navigation.dispatch(popAc);
+              } },
+              {
+                text: "yes", onPress: () => navigation.navigate('AddPatientSelectTest', {
+                  patinetId: res.CreatedId
+                })
+              }
+            ]
+          );
+
+        } else {
+          setIsLoading(false);
+          Alert.alert(
+            "Failure",
+            "There might be some issue. Please Try again later.",
+            [
+              { text: "OK" }
+            ]
+          );
+        }
+        setappBtnSis(false);
+      }))
+    }
+    else {
+      setappBtnSis(false);
+      setIsLoading(false);
+      Alert.alert(
+        "Failure",
+        "please fill up the details",
+        [
+          {
+            text: "OK", onPress: () => {
+
+            }
+          }
+        ]
+      );
+    }
+
+  }
+
+  const handleError = (error, input) => {
+    setErrors(prevState =>
+      ({ ...prevState, [input]: error }));
+  };
+
+  const validate = () => {
+    // Keyboard.dismiss();
+    let isOpValid = true
+    if (PatientReferedBy === '' || PatientReferedBy === undefined) {
+      handleError('please enter First Name', 'Referer')
+      isOpValid = false
+    }
+    if (PatientRequestorBy === '' || PatientRequestorBy === undefined) {
+      handleError('please enter Last Name', 'Requestor')
+      isOpValid = false
+    }
+    return isOpValid;
+  }
+
+
 
   return (
     <View style={styles.maincontainer}>
@@ -136,45 +248,40 @@ const AddRefReq = ({ route }) => {
           value={Remarks}
           placeholder='remarks'
           onChangeText={(e) => setRemarks(e)}
-          // onFocus={() => handleError(null, 'Remarks')}
           label="remarks"
-        // errorMessage={errors.Remarks}
         />
-        {/* butron sheet or some thing for selector */}
 
-        <Text>{PatientRequestorByName}</Text>
-        <Button title="press me req" onPress={() => setisVisibeReq(!isVisibeReq)}></Button>
+        <TouchableOpacity
+          onPress={() => {
+            handleError(null, 'Requestor')
+            setisVisibeReq(!isVisibeReq)
+            setbtnDis(true)
+          }}
+          style={styles.TextInput}
+          disabled={btnDis}
+        // onFocus={() =>}
+        >
+          <Text style={styles.cLabel}>Requestor</Text>
+          <View style={styles.inputField}>
+            <Text>{PatientRequestorByName !== '' || PatientRequestorByName !== undefined ? PatientRequestorByName : ''}</Text>
+          </View>
+          <Text style={{
+            fontSize: 12,
+            color: 'red'
+          }}>{errors.Requestor}</Text>
+        </TouchableOpacity>
+
         <Modal
           animationType="slide"
           transparent={true}
           visible={isVisibeReq}
           onRequestClose={() => {
             setisVisibeReq(!isVisibeReq)
+            setbtnDis(false)
           }}
         >
 
           <View style={styles.centeredView}>
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                top: 10,
-                right: 10,
-                backgroundColor: '#8ED1FC',
-                padding: 10,
-                borderRadius: 50,
-              }}
-              onPress={() => {
-                setisVisibeReq(false)
-                // setisRemarksVisible(false)
-                // retDis(false);
-              }}>
-              <Icon
-                name={'close'}
-                color={'#fefefe'}
-                type='antdesign'
-                size={20}
-              ></Icon>
-            </TouchableOpacity>
             <View>
               <Filter data={reqestorList} returnData={handleChangeReq} forReq></Filter>
               <FlatList
@@ -186,10 +293,11 @@ const AddRefReq = ({ route }) => {
                       setPatientRequestorBy(item.Id)
                       setPatientRequestorByName(item.Requestor)
                       setisVisibeReq(false)
+                      setbtnDis(false)
                     }}
                     style={styles.cardBtn}
                   >
-                    <Text>{item.Requestor}</Text>
+                    <Text style={styles.cardBtnTxt}>{item.Requestor}</Text>
                   </Pressable>
                 )}
               ></FlatList>
@@ -197,63 +305,83 @@ const AddRefReq = ({ route }) => {
           </View>
         </Modal>
 
-
-        <Text>{referedListNew}</Text>
-        <Button title="press me req" onPress={() => setisVisibeRef(!isVisibeRef)}></Button>
+        <TouchableOpacity
+          onPress={() => {
+            handleError(null, 'Referer')
+            setisVisibeRef(!isVisibeRef)
+            setbtnDis(true)
+          }}
+          style={styles.TextInput}
+          disabled={btnDis}
+        // onFocus={() => }
+        >
+          <Text style={styles.cLabel}>Referer</Text>
+          <View style={styles.inputField}>
+            <Text>{PatientReferedByName !== '' || PatientReferedByName !== undefined ? PatientReferedByName : ''}</Text>
+          </View>
+          <Text style={{
+            fontSize: 12,
+            color: 'red'
+          }}>{errors.Referer}</Text>
+        </TouchableOpacity>
         <Modal
           animationType="slide"
           transparent={true}
           visible={isVisibeRef}
           onRequestClose={() => {
             setisVisibeRef(!isVisibeRef)
+            setbtnDis(false)
           }}
         >
-
           <View style={styles.centeredView}>
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                top: 10,
-                right: 10,
-                backgroundColor: '#8ED1FC',
-                padding: 10,
-                borderRadius: 50,
-              }}
-              onPress={() => {
-                setisVisibeRef(false)
-                // setisRemarksVisible(false)
-                // retDis(false);
-              }}>
-              <Icon
-                name={'close'}
-                color={'#fefefe'}
-                type='antdesign'
-                size={20}
-              ></Icon>
-            </TouchableOpacity>
             <View>
-              <Filter data={referedList} returnData={handleChangeReq} forReq></Filter>
-              {/* <FlatList
-                data={referedList}
+              <Filter data={referedList} returnData={handleChangeRef} forRef></Filter>
+              <FlatList
+                data={referedListNew}
                 keyExtractor={(item, index) => `${item.Id}${index}`}
-                renderItem={({ item }) => ( */}
-              {
-                referedListNew !== undefined ?
-                  referedListNew.map(e => (
-                    <Text>
-                      {e.Id}
-                    </Text>
-
-                  )) : null
-              }
-
-              {/* )} */}
-              {/* ></FlatList> */}
+                renderItem={({ item }) => (
+                  <Pressable
+                    onPress={() => {
+                      setPatientReferedBy(item.Id)
+                      setPatientReferedByName(item.Name)
+                      setisVisibeRef(false)
+                      setbtnDis(false)
+                    }}
+                    style={styles.cardBtn}
+                  >
+                    <Text style={styles.cardBtnTxt}>{item.Name}</Text>
+                  </Pressable>
+                )}
+              ></FlatList>
             </View>
           </View>
         </Modal>
 
+        <AppButton
+          title='submit'
+          onPress={handleSubmit}
+          disabled={appBtnSis}
+        >
+        </AppButton>
 
+        {
+          isLoading &&
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={isLoading}
+            style={styles.centeredView}>
+            <View style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#fefefea0'
+            }}>
+
+              <ActivityIndicator size="large" color={'red'} />
+            </View>
+          </Modal>
+        }
       </View>
     </View>
   )
@@ -306,10 +434,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#fefefe'
   },
   cardBtn: {
-    backgroundColor: 'green',
+    backgroundColor: '#7fd3c5',
     marginVertical: 4,
     paddingHorizontal: 10,
     paddingVertical: 20,
     borderRadius: 10,
+    width: Dimensions.get('window').width - 20,
+    marginLeft: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+  },
+  cardBtnTxt: {
+    color: '#fefefe',
+    letterSpacing: 1,
+    fontSize: 14,
   }
 })

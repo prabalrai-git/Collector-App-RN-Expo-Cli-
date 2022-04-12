@@ -77,6 +77,7 @@ const SampleCard = ({ data, refData, disable, retDis }) => {
   }, [])
 
 
+
   const hadleEvent = () => {
     setisVisibe(true)
     retDis(true);
@@ -194,8 +195,8 @@ const SampleCard = ({ data, refData, disable, retDis }) => {
 
   const cMarker = {
     latlng: {
-      latitude: Coordinate.latitude === null ? 27.7172 : Coordinate.latitude,
-      longitude: Coordinate.longitude === null ? 85.3240 : Coordinate.longitude,
+      latitude: Coordinate.latitude === null || Coordinate.latitude === undefined ? 27.7172 : Coordinate.latitude,
+      longitude: Coordinate.longitude === null || Coordinate.longitude === undefined ? 85.3240 : Coordinate.longitude,
       // latitude: 27.7172,
       // longitude: 85.3240,
     },
@@ -284,8 +285,8 @@ const SampleCard = ({ data, refData, disable, retDis }) => {
               <MapView
                 style={styles.map}
                 initialRegion={{
-                  latitude: Coordinate.latitude === null ? 27.7172 : Coordinate.latitude,
-                  longitude: Coordinate.longitude === null ? 85.3240 : Coordinate.longitude,
+                  latitude: Coordinate.latitude === null || Coordinate.latitude === undefined ? 27.7172 : Coordinate.latitude,
+                  longitude: Coordinate.longitude === null || Coordinate.longitude === undefined ? 85.3240 : Coordinate.longitude,
                   latitudeDelta: 0.0111922,
                   longitudeDelta: 0.0111421,
                 }}
@@ -345,37 +346,46 @@ const SampleCard = ({ data, refData, disable, retDis }) => {
 
             null :
             <View>
-              {data.RequestStatus === "Collected" ?
+              {
+                data.RequestStatus === "Rejected" ?
+                  null :
+                  <View>
+                    {data.RequestStatus === "Collected" ?
 
-                <View style={styles.testList}>
-                  <Text>Sample has been collected</Text>
-                  <AppButton title='Drop Sample' onPress={() => handleDrop()} disabled={btnDis}></AppButton>
-                </View>
-                :
-                <View style={styles.testList}>
-                  <View style={styles.TextInput}>
-                    <Text style={styles.formLabel}>IsPaid</Text>
-                    <Switch
-                      trackColor={{ false: "#767577", true: "#81b0ff" }}
-                      thumbColor={isPaid ? "#f5dd4b" : "#f4f3f4"}
-                      ios_backgroundColor="#3e3e3e"
-                      onValueChange={toggleSwitch}
-                      value={isPaid}
-                      disabled={isPaid}
-                    />
+                      <View style={styles.testList}>
+                        <Text>Sample has been collected</Text>
+                        <AppButton title='Drop Sample' onPress={() => handleDrop()} disabled={btnDis}></AppButton>
+                      </View>
+                      :
+                      <View style={styles.testList}>
+                        <View style={styles.TextInput}>
+                          <Text style={styles.formLabel}>IsPaid</Text>
+                          <Switch
+                            trackColor={{ false: "#767577", true: "#81b0ff" }}
+                            thumbColor={isPaid ? "#f5dd4b" : "#f4f3f4"}
+                            ios_backgroundColor="#3e3e3e"
+                            onValueChange={toggleSwitch}
+                            value={isPaid}
+                            disabled={isPaid}
+                          />
+                        </View>
+                        <View style={styles.TextInput}>
+                          <TextInput
+                            value={Remarks}
+                            placeholder='remarks'
+                            onChangeText={(e) => setRemarks(e)}
+                            style={styles.inputField}
+                            multiline={true}
+                          ></TextInput>
+                        </View>
+                        <AppButton title='Collect Sample' onPress={() => handleSubmit()} disabled={btnDis}></AppButton>
+                      </View>
+                    }
                   </View>
-                  <View style={styles.TextInput}>
-                    <TextInput
-                      value={Remarks}
-                      placeholder='remarks'
-                      onChangeText={(e) => setRemarks(e)}
-                      style={styles.inputField}
-                      multiline={true}
-                    ></TextInput>
-                  </View>
-                  <AppButton title='Collect Sample' onPress={() => handleSubmit()} disabled={btnDis}></AppButton>
-                </View>
-              }</View>
+              }
+
+
+            </View>
           }
         </View>
       </Modal>

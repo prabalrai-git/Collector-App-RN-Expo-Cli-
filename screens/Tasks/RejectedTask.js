@@ -8,9 +8,6 @@ import { useIsFocused } from '@react-navigation/native'
 
 
 
-const renderItem = ({ item }) => (
-  <TaskCard data={item} disable={true} rejected/>
-)
 
 const RejectedTask = () => {
   const [PatietList, setPatietList] = useState();
@@ -45,9 +42,11 @@ const RejectedTask = () => {
         console.log('no data found');
       }
     }))
-
-    
   }
+  const renderItem = ({ item }) => (
+    <TaskCard data={item} disable={true} rejected/>
+  )
+  
 
   const sortData = () => {
     let tempArr = []

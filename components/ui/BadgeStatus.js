@@ -5,11 +5,11 @@ const BadgeStatus = ({RequestStatus, IsPaid}) => {
   return (
     <View>
       {
-      IsPaid ?  
+      // IsPaid ?  
         IsPaid === true  ?
         <Text style={[styles.badge, { backgroundColor: '#a3ee19' }]}>paid</Text> : 
         <Text style={[styles.badge,{ backgroundColor: '#e43333' } ]}>not paid</Text> 
-        : null
+        // : null
       }
       
       {

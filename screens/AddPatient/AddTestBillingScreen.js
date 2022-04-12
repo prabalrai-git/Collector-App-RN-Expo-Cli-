@@ -185,7 +185,7 @@ const AddTestBillingScreen = ({ route }) => {
           [
             {
               text: "OK", onPress: () => {
-                const popAc = StackActions.pop(2);
+                const popAc = StackActions.pop(4);
                 navigation.dispatch(popAc);
                 navigation.navigate('Home');
               }
