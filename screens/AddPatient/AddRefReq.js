@@ -249,6 +249,12 @@ const AddRefReq = ({ route }) => {
           placeholder='remarks'
           onChangeText={(e) => setRemarks(e)}
           label="remarks"
+          inputContainerStyle={{
+            borderWidth: 1,
+            borderColor: '#f1f1df',
+            paddingHorizontal: 3,
+            borderRadius: 5,
+          }}
         />
 
         <TouchableOpacity
@@ -413,15 +419,16 @@ const styles = StyleSheet.create({
   },
   inputField: {
     width: Dimensions.get('window').width - 20,
-    // borderRadius: 4,
-    borderWidth: 1,
+    borderRadius: 5,
     borderColor: '#fefefe',
-    borderBottomColor: '#95957abd',
     // paddingHorizontal: 10,
     paddingVertical: 12,
+    paddingHorizontal: 3,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#f1f1df',
   },
   cLabel: {
     color: "#86939e",

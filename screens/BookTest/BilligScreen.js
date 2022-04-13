@@ -1,4 +1,4 @@
-import { Alert, Button, Dimensions, FlatList, StyleSheet, Switch, Text, TextInput, View } from 'react-native'
+import { Alert, Button, Dimensions, FlatList, Image, Modal, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AppButton from '../../components/ui/AppButton'
 import { useDispatch } from 'react-redux'
@@ -84,7 +84,7 @@ const BilligScreen = ({ route }) => {
   const [discount, setDiscount] = useState(0);
   const [TotalAmount, setTotalAmount] = useState(route.params.tests.total);
   const [Remarks, setRemarks] = useState('');
-  const [isPaid, SetisPaid] = useState(false);
+  const [isPaid, SetisPaid] = useState(true);
   const toggleSwitch = () => SetisPaid(previousState => !previousState);
   const [Status, setStatus] = useState();
   const [StatusList, setStatusList] = useState()
@@ -92,6 +92,10 @@ const BilligScreen = ({ route }) => {
   const navigation = useNavigation();
   const [btnDis, setBtnDis] = useState(false);
   const isFocused = useIsFocused();
+
+  const [paidStatus, setpaidStatus] = useState(1);
+  const [ModalVisible, setModalVisible] = useState(false);
+  const [PaymentCode, setPaymentCode] = useState()
 
   useEffect(() => {
     dispatch(GetStatus((res) => {
@@ -121,7 +125,7 @@ const BilligScreen = ({ route }) => {
     const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     const newTime = today.toLocaleTimeString();
     const fialEntryDate = newDate + 'T' + newTime;
-    
+
 
     const _HomeRequest = {
       "RId": 0,
@@ -136,6 +140,7 @@ const BilligScreen = ({ route }) => {
       "CollectorId": route.params.userData.CollectorId,
       "CollectedDate": fialEntryDate,
       "IsPaid": isPaid,
+      // "IsPaid": true,
       "RequestStatus": Status
     };
     // array of testdata
@@ -273,6 +278,54 @@ const BilligScreen = ({ route }) => {
           </View>
         </View>
 
+        <View style={styles.TextInput}>
+          <Text style={styles.formLabel}>Payment mode</Text>
+          <View style={styles.inputField}>
+
+            <Picker
+              selectedValue={paidStatus}
+              // style={styles.TextInput}
+              onValueChange={(itemValue) => setpaidStatus(itemValue)}
+              mode='dropdown'
+            >
+              <Picker.Item label='cash' value={1} key={1} />
+              <Picker.Item label='card' value={2} key={2} />
+              <Picker.Item label='fone pay' value={3} key={3} />
+              <Picker.Item label='Due' value={4} key={4} />
+              <Picker.Item label='credit' value={5} key={5} />
+            </Picker>
+          </View>
+        </View>
+        {
+          paidStatus === 3 ?
+            <TouchableOpacity onPress={() => setModalVisible(true)} style={{
+              // width: windowWidth - 20,
+              borderWidth: 1,
+              borderColor: '#f1f1df',
+              // justifyContent:'center',
+              alignItems: 'center',
+              padding: 10,
+            }}>
+              <Image
+                source={require('../../assets/images/qr.png')}
+                style={styles.qrSmall}
+              ></Image>
+            </TouchableOpacity> : null
+        }
+        {
+          paidStatus === 2 ?
+            <View style={styles.TextInput}>
+              <Text style={styles.formLabel}>Payment Code</Text>
+              <TextInput
+                value={PaymentCode}
+                placeholder='PaymentCode'
+                onChangeText={(e) => setPaymentCode(e)}
+                style={styles.inputField}
+              // keyboardType='numeric'
+              ></TextInput>
+            </View>
+            : null
+        }
 
         <View style={styles.TextInput}>
           <Text style={styles.formLabel}>IsPaid</Text>
@@ -291,6 +344,34 @@ const BilligScreen = ({ route }) => {
           navigation.dispatch(popAc);
         }}></Button> */}
       </View>
+
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={ModalVisible}
+        onRequestClose={() => {
+          setModalVisible(!ModalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <Image
+            source={require('../../assets/images/qr.png')}
+            style={styles.qrBig}
+          ></Image>
+          <View style={styles.componyInfo}>
+            <Image
+              source={require('../../assets/images/logo.png')}
+            />
+            <View style={styles.cDetails}>
+              <Text style={[styles.span, styles.span1]}>Luniva</Text>
+              <Text style={[styles.span, styles.span2]}>Care</Text>
+            </View>
+            <AppButton title='close' onPress={() => setModalVisible(false)}></AppButton>
+          </View>
+
+        </View>
+      </Modal>
 
 
     </View>
@@ -368,5 +449,49 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
+  centeredView: {
+    flex: 1,
+    backgroundColor: '#fefefe',
+    // opacity: 0.8,
+    alignItems: 'center',
+    justifyContent: 'space-evenly'
+  },
+  qrSmall: {
+    width: 40,
+    height: 40,
+  },
+  qrBig: {
+    width: 200,
+    height: 200,
+    resizeMode: 'contain',
+  },
+  componyInfo: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 50,
+    borderWidth: 1,
+    borderColor: '#f1f1df',
+    width: windowWidth - 20,
+    // marginLeft: 10,
+    borderRadius: 18,
+    paddingVertical: 20,
+  },
+  cDetails: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    padding: 10,
+  },
+  span: {
+    color: "#FF7F00",
+    fontSize: 36,
+    letterSpacing: 3,
+  },
+  span1: {
+    fontWeight: 'normal',
+  },
+  span2: {
+    fontWeight: 'bold',
+  },
 })

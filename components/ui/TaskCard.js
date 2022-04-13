@@ -44,7 +44,7 @@ const windowWidth = Dimensions.get('window').width
 
 
 const TaskCard = ({ data, AsignedTask, disable, retDis, rejected }) => {
-  console.log('data', data);
+  // console.log('data', data);
   const [isVisibe, setisVisibe] = useState(false);
   const [isRemarksVisible, setisRemarksVisible] = useState(false);
   const [Remarks, setRemarks] = useState('');
@@ -115,8 +115,8 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected }) => {
       "UserId": user.userData.usrUserId,
       "Remarks": Remarks,
     }
-    // console.log(aData);
-    // return
+    console.log(aData);
+    return
     if (Remarks !== '' || Remarks !== undefined) {
 
       dispatch(UpdateStatus(aData, (res) => {

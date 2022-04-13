@@ -54,10 +54,11 @@ const styles = StyleSheet.create({
   badge: {
     backgroundColor: '#faf06a',
     color: '#fefefe',
-    paddingHorizontal: 6,
+    paddingHorizontal: 10,
     paddingVertical: 3,
     borderRadius: 20,
     fontSize: 10,
     marginVertical: 2,
+    textAlign: 'center'
   },
 })

@@ -107,7 +107,7 @@ const AddPatientDetals = ({ route }) => {
         //   "PatientLName": "sunuwar",
         //   "PatientMName": "",
         // }
-        
+
       })
     } else {
       Alert.alert(
@@ -132,6 +132,12 @@ const AddPatientDetals = ({ route }) => {
           onFocus={() => handleError(null, 'PatientFName')}
           label="First Name"
           errorMessage={errors.PatientFName}
+          inputContainerStyle={{
+            borderWidth: 1,
+            borderColor: '#f1f1df',
+            paddingHorizontal: 3,
+            borderRadius: 5,
+          }}
         />
 
         <Input
@@ -141,6 +147,12 @@ const AddPatientDetals = ({ route }) => {
           onFocus={() => handleError(null, 'PatientMName')}
           label="Middle Name"
           errorMessage={errors.PatientMName}
+          inputContainerStyle={{
+            borderWidth: 1,
+            borderColor: '#f1f1df',
+            paddingHorizontal: 3,
+            borderRadius: 5,
+          }}
         />
 
         <Input
@@ -150,6 +162,12 @@ const AddPatientDetals = ({ route }) => {
           onFocus={() => handleError(null, 'PatientLName')}
           label="Last Name"
           errorMessage={errors.PatientLName}
+          inputContainerStyle={{
+            borderWidth: 1,
+            borderColor: '#f1f1df',
+            paddingHorizontal: 3,
+            borderRadius: 5,
+          }}
         />
 
 
@@ -161,6 +179,12 @@ const AddPatientDetals = ({ route }) => {
           onFocus={() => handleError(null, 'PatientAge')}
           label="Age"
           errorMessage={errors.PatientAge}
+          inputContainerStyle={{
+            borderWidth: 1,
+            borderColor: '#f1f1df',
+            paddingHorizontal: 3,
+            borderRadius: 5,
+          }}
         />
 
         <Input
@@ -170,6 +194,12 @@ const AddPatientDetals = ({ route }) => {
           onFocus={() => handleError(null, 'PatientEmailId')}
           label="email"
           errorMessage={errors.PatientEmailId}
+          inputContainerStyle={{
+            borderWidth: 1,
+            borderColor: '#f1f1df',
+            paddingHorizontal: 3,
+            borderRadius: 5,
+          }}
         />
         <View style={styles.TextInput}>
           <Text style={styles.cLabel}>Address</Text>
@@ -216,7 +246,6 @@ const AddPatientDetals = ({ route }) => {
             <View
               style={styles.bSheet}
             >
-              {/* <Button title='cancle' onPress={() => setIsVisible(false)} color={'#ffc107'} buttonStyle={{ backgroundColor: 'yellow' }} /> */}
               <CancleBtn title='cancle' onPress={() => setIsVisible(false)}></CancleBtn>
               {/* <View>
                   <Text>latitude:{JSON.stringify(region.latitude)}</Text>
@@ -267,17 +296,22 @@ const styles = StyleSheet.create({
   },
   inputField: {
     width: Dimensions.get('window').width - 20,
-    // borderRadius: 4,
-    borderWidth: 1,
+    borderRadius: 5,
     borderColor: '#fefefe',
-    borderBottomColor: '#95957abd',
     // paddingHorizontal: 10,
     paddingVertical: 12,
+    paddingHorizontal: 3,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#f1f1df',
   },
-
+  cLabel: {
+    color: "#86939e",
+    fontSize: 16,
+    fontWeight: 'bold'
+  },
   map: {
     flex: 1,
     width: Dimensions.get('window').width,
@@ -318,4 +352,5 @@ const styles = StyleSheet.create({
     width: 20,
     resizeMode: 'contain',
   },
+  
 })
