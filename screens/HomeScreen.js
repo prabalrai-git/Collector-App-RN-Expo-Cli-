@@ -1,4 +1,4 @@
-import { Dimensions, FlatList, ImageBackground, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, FlatList, ImageBackground, Linking, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { DrawerActions, useNavigation } from '@react-navigation/native'
 import { Avatar, Icon } from 'react-native-elements';
@@ -38,7 +38,7 @@ const navData = [
   },
   {
     id: 4,
-    name: 'Asigned Task',
+    name: 'Task',
     pathName: 'task',
     color: '#4688B3',
     icon: 'select1'

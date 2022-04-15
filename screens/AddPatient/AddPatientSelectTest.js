@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import AppButton from '../../components/ui/AppButton';
 import SelectTestCard from '../../components/ui/SelectTestCard';
 import { useDispatch } from 'react-redux';
-import { GetTestList } from '../../Services/appServices/AssignPatient';
+import { GetTestList, MostPopularTestList } from '../../Services/appServices/AssignPatient';
 import CancleBtn from '../../components/ui/CancleBtn';
 import Header from '../../components/Header';
 
@@ -21,13 +21,18 @@ const AddPatientSelectTest = ({ route }) => {
   const [newData, setNewData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
+  const [popularData, setpopularData] = useState();
   // const isFocused = useIsFocused();
 
   useEffect(() => {
     dispatch(GetTestList(res => {
       setData(res.testList);
     }))
-    setNewData(data)
+    // setNewData(data)
+    dispatch(MostPopularTestList(res => {
+      setpopularData(res.popularTestList);
+      setNewData(res.popularTestList)
+    }))
   }, [])
 
   const renderItem = ({ item }) => (
@@ -83,11 +88,10 @@ const AddPatientSelectTest = ({ route }) => {
 
   const handleChange = (val) => {
     if (val === undefined || val === '') {
-      setNewData([])
+      setNewData(popularData)
     } else {
       setNewData(val)
     }
-    // console.log("redyrned", newData);
   }
 
   const popBodule = () => {

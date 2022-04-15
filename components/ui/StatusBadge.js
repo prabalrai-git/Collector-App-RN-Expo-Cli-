@@ -1,10 +1,15 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 
-const StatusBadge = ({ RequestStatus }) => {
+const StatusBadge = ({ RequestStatus, IsPaid }) => {
 
   return (
-    <>
+    <View style={styles.badgeContainer}>
+      {
+        IsPaid === true ?
+          <Text style={[styles.badge, { backgroundColor: '#a3ee19' }]}>paid</Text> :
+          <Text style={[styles.badge, { backgroundColor: '#e43333' }]}>not paid</Text>
+      }
       {
         (RequestStatus === 'Requested' || RequestStatus === 'Asigned') ?
           <View style={styles.badgeContainer}>
@@ -15,7 +20,7 @@ const StatusBadge = ({ RequestStatus }) => {
         (RequestStatus === 'Collected') ?
           <View style={styles.badgeContainer}>
             <Text style={[styles.badge]}>pending</Text>
-            <Text style={[styles.badge]}>{RequestStatus}</Text>
+            <Text style={[styles.badge, {backgroundColor: '#19e0ee'}]}>{RequestStatus}</Text>
           </View>
           : null
       }
@@ -23,7 +28,7 @@ const StatusBadge = ({ RequestStatus }) => {
         (RequestStatus === 'Accepted') ?
           <View style={styles.badgeContainer}>
             <Text style={[styles.badge]}>pending</Text>
-            <Text style={[styles.badge, { backgroundColor: '#aeee19' }]}>{RequestStatus}</Text>
+            <Text style={[styles.badge, { backgroundColor: '#a3ee19' }]}>{RequestStatus}</Text>
           </View>
           : null
       }
@@ -37,22 +42,22 @@ const StatusBadge = ({ RequestStatus }) => {
         (RequestStatus === 'Lab Received') ?
           <View style={styles.badgeContainer}>
             <Text style={[styles.badge]}>pending</Text>
-            <Text style={[styles.badge, { backgroundColor: '#aeee19' }]}>Collected</Text>
-            <Text style={[styles.badge, { backgroundColor: '#33e4af' }]}>{RequestStatus}</Text>
+            <Text style={[styles.badge, { backgroundColor: '#19e0ee' }]}>Collected</Text>
+            <Text style={[styles.badge, { backgroundColor: '#33cfe4' }]}>{RequestStatus}</Text>
           </View>
           : null
       }
       {
         (RequestStatus === 'Report Dispatched') ?
           <View style={styles.badgeContainer}>
-            <Text style={[styles.badge]}>pending</Text>
-            <Text style={[styles.badge, { backgroundColor: '#aeee19' }]}>Collected</Text>
-            <Text style={[styles.badge, { backgroundColor: '#33e4af' }]}>{RequestStatus}</Text>
-            <Text style={[styles.badge, { backgroundColor: '#33bbe4' }]}>{RequestStatus}</Text>
+            {/* <Text style={[styles.badge]}>pending</Text> */}
+            {/* <Text style={[styles.badge, { backgroundColor: '#19e0ee' }]}>Collected</Text>
+            <Text style={[styles.badge, { backgroundColor: '#33e4af' }]}>{RequestStatus}</Text> */}
+            <Text style={[styles.badge, { backgroundColor: '#1db0dd' }]}>{RequestStatus}</Text>
           </View>
           : null
       }
-    </>
+    </View>
   )
 }
 

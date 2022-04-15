@@ -10,6 +10,7 @@ const windowWidth = Dimensions.get('window').width * 0.65;
 // "TestType": "Executive",
 
 const SelectTestCard = ({ data, retData, arrData }) => {
+  // console.log("stt",data);
   const [slected, setSelected] = useState(false);
   
   useEffect(() => {

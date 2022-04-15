@@ -63,28 +63,6 @@ const AssignedTask = () => {
 
 
   const handleRequestList = () => {
-    // const fromDate = `${FromDate.getFullYear() + "-" + (FromDate.getMonth() + 1) + "-" + FromDate.getDate()}`
-    // const toDate = `${ToDate.getFullYear() + "-" + (ToDate.getMonth() + 1) + "-" + ToDate.getDate()}`
-    // const collectorId = 3
-    // const data = {
-    //   'fromDate': fromDate,
-    //   'toDate': toDate,
-    //   'collectorId': collectorId
-
-    // }
-    // dispatch(GetSampleRequestListByCollector(data, (res) => {
-    //   // console.log(res?.RequestList.length);
-    //   if (res?.RequestList.length > 0) {
-    //     // console.log("in");
-    //     // let arr = asignedData;
-    //     // arr.push(...);
-    //     setPatietList(res.RequestList)
-    //     setdisComplete(true)
-    //   } else {
-    //     console.log('no data found');
-    //   }
-
-    // }))
     dispatch(GetCollectorRequestByCollectorWiseForWeek(user.userData.usrUserId, (res) => {
       if (res?.WeekWiseSampleDetailsByCollectorId.length > 0) {
         setPatietList(res.WeekWiseSampleDetailsByCollectorId)

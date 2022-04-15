@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Pressable, Image, FlatList, Switch, Alert } from 'react-native'
+import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Pressable, Image, FlatList, Switch, Alert, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import AppButton from '../../components/ui/AppButton';
@@ -9,6 +9,7 @@ import MapView from 'react-native-maps';
 import MarkerCostome from '../../components/ui/MarkerCostome';
 import { Icon } from 'react-native-elements';
 import BadgeStatus from '../../components/ui/BadgeStatus';
+import { GlobalStyles } from '../../GlobalStyle';
 
 
 
@@ -229,164 +230,194 @@ const SampleCard = ({ data, refData, disable, retDis }) => {
       >
 
         <View style={styles.centeredView}>
-          <TouchableOpacity
-            style={{
-              position: 'absolute',
-              top: 10,
-              right: 10,
-              backgroundColor: '#8ED1FC',
-              padding: 10,
-              borderRadius: 50,
-            }}
-            onPress={() => {
-              setisVisibe(false)
-              // setisRemarksVisible(false)
-              retDis(false);
-            }}>
-            <Icon
-              name={'close'}
-              color={'#fefefe'}
-              type='antdesign'
-              size={20}
-            ></Icon>
-          </TouchableOpacity>
+          <ScrollView>
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                top: 10,
+                right: 10,
+                backgroundColor: '#8ED1FC',
+                padding: 10,
+                borderRadius: 50,
+              }}
+              onPress={() => {
+                setisVisibe(false)
+                // setisRemarksVisible(false)
+                retDis(false);
+              }}>
+              <Icon
+                name={'close'}
+                color={'#fefefe'}
+                type='antdesign'
+                size={20}
+              ></Icon>
+            </TouchableOpacity>
 
-          <View style={styles.patInfocontainer}>
-            <View style={styles.profile}>
-              <Image
-                source={require('../../assets/images/user.png')}
-                style={styles.profileImg}
-              ></Image>
-              <View style={styles.right}>
-                <Text style={styles.name}>{data.PatientFName} {data.PatientMName} {data.PatientLName}</Text>
-                <View style={{ flexDirection: 'row' }}>
-                  <Text >Request ID :</Text>
-                  <Text style={{ color: "#FF7F00" }}> {data.RId}</Text>
+            <View style={styles.patInfocontainer}>
+              <View style={styles.profile}>
+                <Image
+                  source={require('../../assets/images/user.png')}
+                  style={styles.profileImg}
+                ></Image>
+                <View style={styles.right}>
+                  <Text style={styles.name}>{data.PatientFName} {data.PatientMName} {data.PatientLName}</Text>
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text >Request ID :</Text>
+                    <Text style={{ color: "#FF7F00" }}> {data.RId}</Text>
+                  </View>
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text >Cliet ID : </Text>
+                    <Text style={{ color: "#FF7F00" }}>{data.PatId}</Text>
+                  </View>
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text >Collection Date : </Text>
+                    <Text style={{ color: "#FF7F00" }}>{temp[0]}</Text>
+                  </View>
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text >Collection Time : </Text>
+                    <Text style={{ color: "#FF7F00" }}>{temp[1]}</Text>
+                  </View>
                 </View>
-                <View style={{ flexDirection: 'row' }}>
-                  <Text >Cliet ID : </Text>
-                  <Text style={{ color: "#FF7F00" }}>{data.PatId}</Text>
-                </View>
-                <View style={{ flexDirection: 'row' }}>
-                  <Text >Collection Date : </Text>
-                  <Text style={{ color: "#FF7F00" }}>{temp[0]}</Text>
-                </View>
-                <View style={{ flexDirection: 'row' }}>
-                  <Text >Collection Time : </Text>
-                  <Text style={{ color: "#FF7F00" }}>{temp[1]}</Text>
-                </View>
+
               </View>
 
-            </View>
+              <StatusBadge RequestStatus={data.RequestStatus} IsPaid={data.IsPaid}></StatusBadge>
 
-            <StatusBadge RequestStatus={data.RequestStatus}></StatusBadge>
+              <View style={[styles.mapViewContainer, GlobalStyles.boxShadow]}>
+                <MapView
+                  style={styles.map}
+                  initialRegion={{
+                    latitude: Coordinate.latitude === null || Coordinate.latitude === undefined ? 27.7172 : Coordinate.latitude,
+                    longitude: Coordinate.longitude === null || Coordinate.longitude === undefined ? 85.3240 : Coordinate.longitude,
+                    latitudeDelta: 0.0111922,
+                    longitudeDelta: 0.0111421,
+                  }}
+                >
+                  <MarkerCostome
+                    coordinate={cMarker.latlng}
+                    title={cMarker.title}
+                    description={cMarker.description}
+                    forCollector
+                  />
+                </MapView>
+              </View>
 
-            <View style={styles.mapViewContainer}>
-              <MapView
-                style={styles.map}
-                initialRegion={{
-                  latitude: Coordinate.latitude === null || Coordinate.latitude === undefined ? 27.7172 : Coordinate.latitude,
-                  longitude: Coordinate.longitude === null || Coordinate.longitude === undefined ? 85.3240 : Coordinate.longitude,
-                  latitudeDelta: 0.0111922,
-                  longitudeDelta: 0.0111421,
-                }}
-              >
-                <MarkerCostome
-                  coordinate={cMarker.latlng}
-                  title={cMarker.title}
-                  description={cMarker.description}
-                  forCollector
-                />
-              </MapView>
-            </View>
 
-            <View style={styles.flatListContainer}>
-              {/* <Text style={styles.title}>Tests</Text> */}
-              <FlatList
-                data={TestList}
-                renderItem={({ item, index }) =>
+              <View style={[styles.cardContainer, GlobalStyles.boxShadow]}>
+                <View style={styles.flatListContainer}>
+                  <Text style={styles.title}>Tests</Text>
+
+                  {
+                    TestList !== undefined ?
+                      TestList.map((e) => (
+                        <View style={styles.testCard} key={e.TestName}>
+                          <Text style={styles.testsText}>{e.TestName}</Text>
+                          <Text style={styles.testsPrice}>Rs.{e.TestPrice}</Text>
+                        </View>
+                      )) : null
+                  }
+                </View>
+                <View>
+                  <Text style={styles.title}>Payment Details</Text>
                   <View style={styles.testCard}>
-                    <Text style={{
-                      fontSize: 16,
-                      color: '#fefefe',
-                      width: 25,
-                      height: 25,
-                      textAlign: 'center',
-                      borderRadius: 50,
-                      backgroundColor: '#205072',
-                    }}>{index + 1}</Text>
-                    <Text style={styles.testsText}>{item.TestName}</Text>
-                    <Text style={styles.testsPrice}>Rs.{item.TestPrice}</Text>
+                    <Text style={styles.titleText}>Total</Text>
+                    <Text style={styles.finsltestsPrice}>Rs.{data.TestTotalAmount}</Text>
                   </View>
+                  <View style={styles.testCard}>
+                    <Text style={styles.titleText}>Collection Charge</Text>
+                    <Text style={styles.finsltestsPrice}>Rs.{data.CollectionCharge}</Text>
+                  </View>
+                  <View style={styles.testCard}>
+                    <Text style={styles.titleText}>Discount Amout</Text>
+                    <Text style={styles.finsltestsPrice}>Rs.{data.DiscountAmount}</Text>
+                  </View>
+                  <View style={styles.testCard}>
+                    <Text style={styles.titleText}>Grand Total</Text>
+                    <Text style={styles.finsltestsPrice}>Rs.{data.GrandTotal}</Text>
+                  </View>
+                </View>
+              </View>
+
+
+
+            </View>
+            {data.RequestStatus === "Lab Received" || data.RequestStatus === "Report Dispatched" ?
+
+              null :
+              <View>
+                {
+                  data.RequestStatus === "Rejected" ?
+                    <View style={[styles.testList, { backgroundColor: '#eb5b48' }]}>
+                      <Text style={{
+                        color: '#fefefe',
+                        fontSize: 18,
+                        marginBottom: 10,
+                        fontWeight: 'bold',
+                        letterSpacing: 1,
+                      }}>Sample Rejcted</Text>
+                      <Text style={{
+                        color: '#fefefe',
+                        fontSize: 16,
+                        marginBottom: 10,
+                        letterSpacing: 1,
+                      }}>Due to perticular reason, the sample has been rejected.</Text>
+                    </View>
+                    :
+                    <View>
+                      {data.RequestStatus === "Collected" ?
+
+                        <View style={[styles.testList, GlobalStyles.boxShadow]}>
+                          <Text style={{
+                            color: '#fefefe',
+                            fontSize: 18,
+                            marginBottom: 10,
+                            fontWeight: 'bold',
+                            letterSpacing: 1,
+                          }}>Sample collected</Text>
+                          <Text style={{
+                            color: '#fefefe',
+                            fontSize: 16,
+                            marginBottom: 10,
+                            letterSpacing: 1,
+                          }}>Do you want to drop sample in lab ?</Text>
+                          <AppButton title='Drop Sample' onPress={() => handleDrop()} disabled={btnDis}></AppButton>
+                        </View>
+                        :
+                        <View style={[styles.testList, GlobalStyles.boxShadow]}>
+                          {
+                            isPaid !== true ?
+                              <View style={styles.TextInput}>
+                                <Text style={styles.formLabel}>IsPaid</Text>
+                                <Switch
+                                  trackColor={{ false: "#767577", true: "#81b0ff" }}
+                                  thumbColor={isPaid ? "#f5dd4b" : "#f4f3f4"}
+                                  ios_backgroundColor="#3e3e3e"
+                                  onValueChange={toggleSwitch}
+                                  value={isPaid}
+                                  disabled={isPaid}
+                                />
+                              </View> : null
+                          }
+
+                          <View style={styles.TextInput}>
+                            <TextInput
+                              value={Remarks}
+                              placeholder='remarks'
+                              onChangeText={(e) => setRemarks(e)}
+                              style={styles.inputField}
+                              multiline={true}
+                            ></TextInput>
+                          </View>
+                          <AppButton title='Collect Sample' onPress={() => handleSubmit()} disabled={btnDis}></AppButton>
+                        </View>
+                      }
+                    </View>
                 }
-                keyExtractor={item => item.SId}
-              />
-            </View>
 
-            <View>
-              <View style={styles.testCard}>
-                <Text style={styles.titleText}>Total</Text>
-                <Text style={styles.finsltestsPrice}>Rs.{data.TestTotalAmount}</Text>
+
               </View>
-              <View style={styles.testCard}>
-                <Text style={styles.titleText}>Collection Charge</Text>
-                <Text style={styles.finsltestsPrice}>Rs.{data.CollectionCharge}</Text>
-              </View>
-              <View style={styles.testCard}>
-                <Text style={styles.titleText}>Discount Amout</Text>
-                <Text style={styles.finsltestsPrice}>Rs.{data.DiscountAmount}</Text>
-              </View>
-              <View style={styles.testCard}>
-                <Text style={styles.titleText}>Grand Total</Text>
-                <Text style={styles.finsltestsPrice}>Rs.{data.GrandTotal}</Text>
-              </View>
-            </View>
-          </View>
-          {data.RequestStatus === "Lab Received" || data.RequestStatus === "Report Dispatched" ?
-
-            null :
-            <View>
-              {
-                data.RequestStatus === "Rejected" ?
-                  null :
-                  <View>
-                    {data.RequestStatus === "Collected" ?
-
-                      <View style={styles.testList}>
-                        <Text>Sample has been collected</Text>
-                        <AppButton title='Drop Sample' onPress={() => handleDrop()} disabled={btnDis}></AppButton>
-                      </View>
-                      :
-                      <View style={styles.testList}>
-                        <View style={styles.TextInput}>
-                          <Text style={styles.formLabel}>IsPaid</Text>
-                          <Switch
-                            trackColor={{ false: "#767577", true: "#81b0ff" }}
-                            thumbColor={isPaid ? "#f5dd4b" : "#f4f3f4"}
-                            ios_backgroundColor="#3e3e3e"
-                            onValueChange={toggleSwitch}
-                            value={isPaid}
-                            disabled={isPaid}
-                          />
-                        </View>
-                        <View style={styles.TextInput}>
-                          <TextInput
-                            value={Remarks}
-                            placeholder='remarks'
-                            onChangeText={(e) => setRemarks(e)}
-                            style={styles.inputField}
-                            multiline={true}
-                          ></TextInput>
-                        </View>
-                        <AppButton title='Collect Sample' onPress={() => handleSubmit()} disabled={btnDis}></AppButton>
-                      </View>
-                    }
-                  </View>
-              }
-
-
-            </View>
-          }
+            }
+          </ScrollView>
         </View>
       </Modal>
 
@@ -449,7 +480,7 @@ const styles = StyleSheet.create({
   centeredView: {
     width: '100%',
     flex: 1,
-    backgroundColor: '#fefefe'
+    backgroundColor: '#F9F9F9',
   },
 
   patInfocontainer: {
@@ -483,7 +514,8 @@ const styles = StyleSheet.create({
   },
   mapViewContainer: {
     width: '100%',
-    flex: 0.3,
+    // flex: 1,
+    height: 200,
     // backgroundColor: 'red',
     borderRadius: 18,
     marginVertical: 10,
@@ -495,59 +527,47 @@ const styles = StyleSheet.create({
   },
   flatListContainer: {
     width: windowWidth - 20,
-    marginHorizontal: 10,
-    height: 150,
+    // maxHeight: 100,
   },
   title: {
     fontSize: 20,
     color: '#205072',
     fontWeight: 'bold',
     letterSpacing: 1.3,
-    marginBottom: 10
+    marginBottom: 5,
+    marginTop: 10,
   },
   testCard: {
     flexDirection: 'row',
-    marginVertical: 3,
-    paddingHorizontal: 5,
-    borderRadius: 5,
+    marginVertical: 1,
     width: '100%',
     justifyContent: 'space-between',
-    // borderColor: 'red', 
-    // borderWidth: 1,
   },
   testsText: {
     color: "#232325",
     fontSize: 14,
     letterSpacing: 1.2,
-    marginLeft: 20,
-    width: windowWidth * 0.6
+    // marginLeft: 10,
+    width: windowWidth * 0.65
   },
   testsPrice: {
     width: windowWidth * 0.4,
     color: '#FF7F00'
   },
   finsltestsPrice: {
-    borderWidth: 1,
-    borderColor: '#efed11',
     width: 100,
-    paddingHorizontal: 10,
-    paddingVertical: 3,
     borderRadius: 3,
+    color: '#FF7F00'
   },
 
-
   testList: {
-    // backgroundColor: '#fefefe',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
     backgroundColor: '#9DD4E9',
-    marginTop: 20,
+    marginLeft: 10,
+    marginVertical: 10,
     paddingHorizontal: 15,
     paddingVertical: 20,
-    borderTopLeftRadius: 18,
-    borderTopRightRadius: 18,
+    borderRadius: 18,
+    width: windowWidth - 20,
 
   },
   TextInput: {
@@ -558,12 +578,19 @@ const styles = StyleSheet.create({
   inputField: {
     borderWidth: 1,
     borderColor: '#fefefe',
-    width: windowWidth * 0.92,
+    width: windowWidth - 50,
     minHeight: 100,
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 10,
     marginBottom: 10,
-  }
+  },
 
+  cardContainer: {
+    // borderWidth: 1,
+    borderRadius: 18,
+    backgroundColor: '#fefefe',
+    paddingVertical: 16,
+    paddingHorizontal: 10,
+  }
 })

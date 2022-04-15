@@ -11,6 +11,7 @@ import MarkerCostome from './MarkerCostome';
 import { Icon } from 'react-native-elements';
 import BadgeStatus from './BadgeStatus';
 import DateBadge from './DateBadge';
+import { GlobalStyles } from '../../GlobalStyle';
 
 
 
@@ -115,8 +116,8 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected }) => {
       "UserId": user.userData.usrUserId,
       "Remarks": Remarks,
     }
-    console.log(aData);
-    return
+    // console.log(aData);
+    // return
     if (Remarks !== '' || Remarks !== undefined) {
 
       dispatch(UpdateStatus(aData, (res) => {
@@ -179,7 +180,7 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected }) => {
               <Text style={styles.subheading}>Request Id: {data.RequestId}</Text>
               <DateBadge date={data.CollectionReqDate}></DateBadge>
             </View>
-            
+
             <BadgeStatus RequestStatus={data.SampleStatus} IsPaid={data.IsPaid}></BadgeStatus>
           </View>
           {
@@ -274,10 +275,10 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected }) => {
 
                   </View>
 
-                  <StatusBadge RequestStatus={data.SampleStatus}></StatusBadge>
+                  <StatusBadge RequestStatus={data.SampleStatus} IsPaid={data.IsPaid}></StatusBadge>
 
 
-                  <View style={styles.mapViewContainer}>
+                  <View style={[styles.mapViewContainer, GlobalStyles.boxShadow]}>
                     <MapView
                       style={styles.map}
                       initialRegion={{
@@ -296,7 +297,7 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected }) => {
                     </MapView>
                   </View>
 
-                  <View style={styles.flatListContainer}>
+                  <View style={[styles.cardContainer, GlobalStyles.boxShadow]}>
                     <Text style={styles.title}>Tests</Text>
                     <FlatList
                       data={TestList}
@@ -319,11 +320,23 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected }) => {
                     />
                   </View>
 
-                  <View style={styles.module}>
+                  <View style={[styles.module, GlobalStyles.boxShadow]}>
+                    <Text style={{
+                      color: '#fefefe',
+                      fontSize: 16,
+                      marginBottom: 10,
+                      fontWeight: 'bold',
+                      letterSpacing: 1,
+                    }}>Do you want to Accept or rect the task ?</Text>
+                    <View style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between'
+                    }}>
+                      <CancleBtn title='Reject' color={'#e0c945'} onPress={() => setisRemarksVisible(true)}></CancleBtn>
+                      <Text>   </Text>
+                      <AppButton title='Accept' onPress={() => handleAccept()}></AppButton>
+                    </View>
 
-                    <CancleBtn title='Reject' color={'#e0c945'} onPress={() => setisRemarksVisible(true)}></CancleBtn>
-                    <Text>   </Text>
-                    <AppButton title='Accept' onPress={() => handleAccept()}></AppButton>
                   </View>
 
                 </View>
@@ -398,7 +411,7 @@ const styles = StyleSheet.create({
   centeredView: {
     width: '100%',
     flex: 1,
-    backgroundColor: '#fefefe'
+    backgroundColor: '#f9f9f9'
   },
   textInput: {
     width: "100%",
@@ -408,8 +421,13 @@ const styles = StyleSheet.create({
   },
   module: {
     width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
+    // flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#9DD4E9',
+    paddingHorizontal: 10,
+    paddingVertical: 20,
+    marginVertical: 10,
+    borderRadius: 18,
   },
   inputField: {
     borderWidth: 1,
@@ -450,7 +468,7 @@ const styles = StyleSheet.create({
   },
   mapViewContainer: {
     width: '100%',
-    flex: 0.4,
+    height: 230,
     // backgroundColor: 'red',
     borderRadius: 18,
     marginVertical: 10,
@@ -460,11 +478,11 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
   },
-  flatListContainer: {
-    width: windowWidth - 20,
-    marginHorizontal: 10,
-    flex: 0.55,
-  },
+  // flatListContainer: {
+  //   width: windowWidth - 20,
+  //   marginHorizontal: 10,
+  //   flex: 0.55,
+  // },
   title: {
     fontSize: 20,
     color: '#205072',
@@ -504,5 +522,12 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     textAlign: 'justify'
   },
+  cardContainer: {
+    // borderWidth: 1,
+    borderRadius: 18,
+    backgroundColor: '#fefefe',
+    paddingVertical: 16,
+    paddingHorizontal: 10,
+  }
 
 })

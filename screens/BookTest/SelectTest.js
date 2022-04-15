@@ -1,11 +1,11 @@
-import { Alert, Dimensions, FlatList, Modal, Pressable, StyleSheet, Text, View, Button, ImageBackground } from 'react-native'
+import { Alert, Dimensions, FlatList, Modal, Pressable, StyleSheet, Text, View, Button, ImageBackground, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import AppButton from '../../components/ui/AppButton';
 import SelectTestCard from '../../components/ui/SelectTestCard';
 import Filter from '../../components/ui/Filter';
 import { useDispatch } from 'react-redux';
-import { GetTestList } from '../../Services/appServices/AssignPatient';
+import { GetTestList, MostPopularTestList } from '../../Services/appServices/AssignPatient';
 import HamMenu from '../../components/ui/HamMenu';
 import BackBtn from '../../components/ui/BackBtn';
 import CancleBtn from '../../components/ui/CancleBtn';
@@ -16,12 +16,13 @@ const windowWidth = Dimensions.get('window').width * 0.55;
 
 
 const SelectTest = ({ route }) => {
-  console.log("params data", route.params.data);
+  // console.log("params data", route.params.data);
   const [data, setData] = useState([])
   const [selected, setSelected] = useState([]);
   const [total, setTotal] = useState(0);
   const navigation = useNavigation();
   const [newData, setNewData] = useState([]);
+  const [popularData, setpopularData] = useState();
 
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
@@ -32,6 +33,11 @@ const SelectTest = ({ route }) => {
       setData(res.testList);
     }))
     // setNewData(data)
+    dispatch(MostPopularTestList(res => {
+      setpopularData(res.popularTestList);
+      setNewData(res.popularTestList)
+    }))
+    // setNewData(popularData)/
   }, [])
 
   const renderItem = ({ item }) => (
@@ -41,6 +47,7 @@ const SelectTest = ({ route }) => {
       arrData={selected}
     />
   );
+
 
 
   const retData = (e) => {
@@ -56,16 +63,6 @@ const SelectTest = ({ route }) => {
             prev - e.Price : 0)
         })
       }
-      // Alert.alert(
-      //   "Alert",
-      //   "removed test",
-      //   [
-      //     {
-      //       text: "OK",
-      //       // onPress: () => console.log("OK Pressed") 
-      //     }
-      //   ]
-      // );
     } else {
       arr.push(e);
       setTotal(prev => (
@@ -95,7 +92,7 @@ const SelectTest = ({ route }) => {
 
   const handleChange = (val) => {
     if (val === undefined || val === '') {
-      setNewData([])
+      setNewData(popularData)
     } else {
       setNewData(val)
     }
@@ -137,86 +134,88 @@ const SelectTest = ({ route }) => {
         resizeMode="cover"
         style={styles.bkgImg}
       > */}
-        {/* <HamMenu></HamMenu>
+      {/* <HamMenu></HamMenu>
         <BackBtn></BackBtn> */}
-        <Header data={data} returnData={handleChange} selectTestFilter title={'Select Test'}></Header>
-        <View style={styles.container}>
-          {/* <Filter data={data} returnData={handleChange} selectTestFilter></Filter> */}
-          <View style={styles.midContainer}>
-            <FlatList
-              // style={styles.container}
-              data={newData}
-              keyExtractor={(item) => `${item.Id}${item.Test}`}
-              renderItem={renderItem}
-            />
-          </View>
+      <Header data={data} returnData={handleChange} selectTestFilter title={'Select Test'}></Header>
+      <View style={styles.container}>
+        {/* <Filter data={data} returnData={handleChange} selectTestFilter></Filter> */}
+        <View style={styles.midContainer}>
 
-        </View>
-        <View style={styles.btnContainer}>
-          <View style={{
-            flexDirection: 'row',
-            alignItems: 'center'
-          }}>
-            <Text style={styles.tSum}>Total: </Text>
-            <Text style={styles.tPrice}>Rs.{total}</Text>
-          </View>
-
-          <AppButton title='Cart'
-            onPress={() => popBodule()}
-
-          ></AppButton>
+          <FlatList
+            // style={styles.container}
+            data={newData}
+            keyExtractor={(item,index) => `${item.Id}${item.Test}${index}`}
+            renderItem={renderItem}
+          />
+          
         </View>
 
-        {
-          modalVisible === true ?
+      </View>
+      <View style={styles.btnContainer}>
+        <View style={{
+          flexDirection: 'row',
+          alignItems: 'center'
+        }}>
+          <Text style={styles.tSum}>Total: </Text>
+          <Text style={styles.tPrice}>Rs.{total}</Text>
+        </View>
 
-            <View style={styles.modalBkg}>
-              <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                  setModalVisible(!modalVisible);
-                }}
-              >
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    {/* <Text>Test list</Text> */}
-                    {
-                      selected.map((e, index) => (
-                        <View key={index} style={styles.moduleList}>
-                          <View>
-                            <Text style={{ width: windowWidth, fontSize: 12 }}>{e.Test}</Text>
-                            <Text style={{ color: "#FFC285" }}>Rs.{e.Price}</Text>
-                          </View>
-                          <View>
-                            <CancleBtn title='remove' onPress={() => RemoveItem(e)}></CancleBtn>
-                          </View>
+        <AppButton title='Cart'
+          onPress={() => popBodule()}
 
+        ></AppButton>
+      </View>
+
+      {
+        modalVisible === true ?
+
+          <View style={styles.modalBkg}>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  {/* <Text>Test list</Text> */}
+                  {
+                    selected.map((e, index) => (
+                      <View key={index} style={styles.moduleList}>
+                        <View>
+                          <Text style={{ width: windowWidth, fontSize: 12 }}>{e.Test}</Text>
+                          <Text style={{ color: "#FFC285" }}>Rs.{e.Price}</Text>
                         </View>
-                      ))
-                    }
-                    <View style={styles.moduleTest}>
-                      <Text style={{color: '#fefefe', fontSize: 16}}>Total</Text>
-                      <Text style={styles.tPrice}>{total}</Text>
-                    </View>
+                        <View>
+                          <CancleBtn title='remove' onPress={() => RemoveItem(e)}></CancleBtn>
+                        </View>
 
-                    <View style={styles.moduleList}>
-                      {/* <Pressable
+                      </View>
+                    ))
+                  }
+                  <View style={styles.moduleTest}>
+                    <Text style={{ color: '#fefefe', fontSize: 16 }}>Total</Text>
+                    <Text style={styles.tPrice}>{total}</Text>
+                  </View>
+
+                  <View style={styles.moduleList}>
+                    {/* <Pressable
                         style={[styles.button, styles.buttonClose]}
                         onPress={() => setModalVisible(!modalVisible)}
                       >
                         <Text style={styles.textStyle}>cancle</Text>
                       </Pressable> */}
-                      <CancleBtn title={'cancle'} onPress={() => setModalVisible(!modalVisible)}></CancleBtn>
-                      <AppButton title='Proceed' onPress={() => handleProceed()}></AppButton>
-                    </View>
+                    <CancleBtn title={'cancle'} onPress={() => setModalVisible(!modalVisible)}></CancleBtn>
+                    <AppButton title='Proceed' onPress={() => handleProceed()}></AppButton>
                   </View>
                 </View>
-              </Modal>
-            </View>
-            : <View></View>
-        }
+              </View>
+            </Modal>
+          </View>
+          : <View></View>
+      }
       {/* </ImageBackground> */}
     </View>
   )
@@ -321,7 +320,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
 
   },
-  moduleTest:{
+  moduleTest: {
     // borderWidth: 1,
     // borderColor: 'red',
     width: '100%',

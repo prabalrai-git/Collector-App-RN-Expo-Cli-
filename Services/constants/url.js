@@ -194,3 +194,9 @@ export const  GetCollectorRequestByCollectorWiseForWeekWithStatus = 'GetCollecto
  * @desc: update is paid status
  *  @param: ?userId={userId}&requestId={requestId}&ispaid={ispaid}&remarks={remarks}
  */
+
+export const GetMostPopularTestList = 'GetMostPopularTestList'
+/**
+ * @desc: to get most populer tests
+ *  @param: 
+ */

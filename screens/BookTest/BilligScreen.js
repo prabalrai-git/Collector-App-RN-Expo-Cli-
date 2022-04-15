@@ -383,7 +383,7 @@ export default BilligScreen
 const styles = StyleSheet.create({
   mainContainer: {
     // paddingTop: 40,
-    backgroundColor: '#9DD4E9',
+    backgroundColor: '#8ED1FC',
     // justifyContent: 'center',
     // alignItems: 'center',
     flex: 1,
@@ -422,7 +422,7 @@ const styles = StyleSheet.create({
     color: '#fefefe'
   },
   testPrice: {
-    color: '#FFC285',
+    color: '#302b27',
     fontSize: 14
   },
   contaienr: {
@@ -445,7 +445,7 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.45,
     paddingBottom: 30,
     width: windowWidth,
-    backgroundColor: '#9DD4E9',
+    backgroundColor: '#8ED1FC',
     paddingVertical: 10,
     justifyContent: 'center',
     alignItems: 'center',

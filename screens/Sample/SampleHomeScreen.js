@@ -193,6 +193,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     position: 'relative',
+    backgroundColor: '#F9F9F9',
   },
   top: {
     backgroundColor: '#8ED1FC',

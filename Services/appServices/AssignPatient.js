@@ -1,5 +1,5 @@
 
-import { AssignCollectorForSampleCollection, GetAddressOfClientByClientId, GetCollectionRequestHistoryByPatientId, GetCollectionRequestPatientDetails, GetCollectorRequestByCollectorWiseForWeekWithStatus, GetHomeCollectionTestRequestTestListByRequestId, GetReferredDoctorListForCollector, GetRequestorForCollection, GetSampleRequestListByCollectorIdAndDateRange, GetSampleRequestStatus, GetTestListforHomeCollection, InsertUpdateHomeCollectionRequest, UpdateIsPaidStatusByCollector, UpdateSampleRequestStatus } from '../constants/url';
+import { AssignCollectorForSampleCollection, GetAddressOfClientByClientId, GetCollectionRequestHistoryByPatientId, GetCollectionRequestPatientDetails, GetCollectorRequestByCollectorWiseForWeekWithStatus, GetHomeCollectionTestRequestTestListByRequestId, GetMostPopularTestList, GetReferredDoctorListForCollector, GetRequestorForCollection, GetSampleRequestListByCollectorIdAndDateRange, GetSampleRequestStatus, GetTestListforHomeCollection, InsertUpdateHomeCollectionRequest, UpdateIsPaidStatusByCollector, UpdateSampleRequestStatus } from '../constants/url';
 import { generateUrlEncodedData } from '../utils/generateUrlEncodedData';
 import { store, fetch, storeNested } from '../utils/httpUtil'
 
@@ -243,6 +243,24 @@ export const UpdatePaidStatus = (data, sucessCallback) => {
         sucessCallback(response?.data)
       }else{
         // console.log('error')
+        sucessCallback([])
+      }
+    }
+    catch (error){
+
+    }
+  }
+}
+
+export const MostPopularTestList = (sucessCallback) => {
+  return async dispatch => {
+    try{
+      const response = await fetch(`${GetMostPopularTestList}`)
+
+      if(response?.status === 200){
+        sucessCallback(response?.data)
+        // console.log('op op');
+      }else{
         sucessCallback([])
       }
     }

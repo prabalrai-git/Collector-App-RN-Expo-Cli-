@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Pressable, Image, FlatList, Switch, Alert } from 'react-native'
+import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Pressable, Image, FlatList, Switch, Alert, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import AppButton from './AppButton';
@@ -10,6 +10,7 @@ import MarkerCostome from './MarkerCostome';
 import { Icon } from 'react-native-elements';
 import BadgeStatus from './BadgeStatus';
 import DateBadge from './DateBadge';
+import { GlobalStyles } from '../../GlobalStyle';
 
 
 
@@ -229,6 +230,7 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
       >
 
         <View style={styles.centeredView}>
+          <ScrollView>
           <TouchableOpacity
             style={{
               position: 'absolute',
@@ -279,9 +281,9 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
 
             </View>
 
-            <StatusBadge RequestStatus={data.SampleStatus}></StatusBadge>
+            <StatusBadge RequestStatus={data.SampleStatus} IsPaid={data.IsPaid}></StatusBadge>
 
-            <View style={styles.mapViewContainer}>
+            <View style={[styles.mapViewContainer, GlobalStyles.boxShadow]}>
               <MapView
                 style={styles.map}
                 initialRegion={{
@@ -300,9 +302,9 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
               </MapView>
             </View>
 
-            <View style={styles.flatListContainer}>
+            <View style={[styles.cardContainer, GlobalStyles.boxShadow]}>
               <Text style={styles.title}>Tests</Text>
-              <FlatList
+              {/* <FlatList
                 data={TestList}
                 renderItem={({ item, index }) =>
                   <View style={styles.testCard}>
@@ -320,18 +322,41 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
                   </View>
                 }
                 keyExtractor={item => item.SId}
-              />
+              /> */}
+              {
+                TestList !== undefined ?
+                  TestList.map((e) => (
+                    <View style={styles.testCard} key={e.TestName}>
+                      <Text style={styles.testsText}>{e.TestName}</Text>
+                      <Text style={styles.testsPrice}>Rs.{e.TestPrice}</Text>
+                    </View>
+                  )) : null
+              }
             </View>
+
+
 
 
           </View>
           {data.SampleStatus === 'Collected' ?
-            <View style={styles.testList}>
-              <Text>Sample has been collected</Text>
-              <AppButton title='Drop Sample' onPress={() => handleDrop()} disabled={btnDis}></AppButton>
-            </View>
+            <View style={[styles.testList, GlobalStyles.boxShadow]}>
+            <Text style={{
+              color: '#fefefe',
+              fontSize: 18,
+              marginBottom: 10,
+              fontWeight: 'bold',
+              letterSpacing: 1,
+            }}>Sample collected</Text>
+            <Text style={{
+              color: '#fefefe',
+              fontSize: 16,
+              marginBottom: 10,
+              letterSpacing: 1,
+            }}>Do you want to drop sample in lab ?</Text>
+            <AppButton title='Drop Sample' onPress={() => handleDrop()} disabled={btnDis}></AppButton>
+          </View>
             :
-            <View style={styles.testList}>
+            <View style={[styles.testList, GlobalStyles.boxShadow]}>
               <View style={styles.TextInput}>
                 <Text style={styles.formLabel}>IsPaid</Text>
                 <Switch
@@ -356,6 +381,7 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
               {/* <Button disabled></Button> */}
             </View>
           }
+          </ScrollView>
         </View>
       </Modal>
 
@@ -421,7 +447,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // justifyContent: 'center',
     // alignItems: 'center',
-    backgroundColor: '#fefefe'
+    backgroundColor: '#f9f9f9'
   },
 
   patInfocontainer: {
@@ -455,7 +481,7 @@ const styles = StyleSheet.create({
   },
   mapViewContainer: {
     width: '100%',
-    flex: 0.3,
+    height: 200,
     // backgroundColor: 'red',
     borderRadius: 18,
     marginVertical: 10,
@@ -488,7 +514,7 @@ const styles = StyleSheet.create({
     color: "#232325",
     fontSize: 14,
     letterSpacing: 1.2,
-    marginLeft: 20,
+    // marginLeft: 20,
     width: windowWidth * 0.6
   },
   testsPrice: {
@@ -499,16 +525,18 @@ const styles = StyleSheet.create({
 
   testList: {
     // backgroundColor: '#fefefe',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
+    // position: 'absolute',
+    // bottom: 0,
+    // left: 10,
+    // right: 0,
     backgroundColor: '#9DD4E9',
-    marginTop: 20,
+    marginVertical: 10,
     paddingHorizontal: 15,
     paddingVertical: 20,
-    borderTopLeftRadius: 18,
-    borderTopRightRadius: 18,
+    borderRadius: 18,
+    // borderTopRightRadius: 18,
+    width: windowWidth - 20,
+    marginLeft: 10,
 
   },
   TextInput: {
@@ -519,12 +547,19 @@ const styles = StyleSheet.create({
   inputField: {
     borderWidth: 1,
     borderColor: '#fefefe',
-    width: windowWidth * 0.92,
+    width: windowWidth - 50,
     minHeight: 100,
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 10,
     marginBottom: 10,
+  },
+  cardContainer: {
+    // borderWidth: 1,
+    borderRadius: 18,
+    backgroundColor: '#fefefe',
+    paddingVertical: 16,
+    paddingHorizontal: 10,
+    // maxHeight: 200,
   }
-
 })
