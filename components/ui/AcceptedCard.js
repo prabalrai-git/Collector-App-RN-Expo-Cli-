@@ -231,80 +231,80 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
 
         <View style={styles.centeredView}>
           <ScrollView>
-          <TouchableOpacity
-            style={{
-              position: 'absolute',
-              top: 10,
-              right: 10,
-              backgroundColor: '#8ED1FC',
-              padding: 10,
-              borderRadius: 50,
-            }}
-            onPress={() => {
-              setisVisibe(false)
-              // setisRemarksVisible(false)
-              retDis(false)
-            }}>
-            <Icon
-              name={'close'}
-              color={'#fefefe'}
-              type='antdesign'
-              size={20}
-            ></Icon>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                top: 10,
+                right: 10,
+                backgroundColor: '#8ED1FC',
+                padding: 10,
+                borderRadius: 50,
+              }}
+              onPress={() => {
+                setisVisibe(false)
+                // setisRemarksVisible(false)
+                retDis(false)
+              }}>
+              <Icon
+                name={'close'}
+                color={'#fefefe'}
+                type='antdesign'
+                size={20}
+              ></Icon>
+            </TouchableOpacity>
 
-          <View style={styles.patInfocontainer}>
-            <View style={styles.profile}>
-              <Image
-                source={require('../../assets/images/user.png')}
-                style={styles.profileImg}
-              ></Image>
-              <View style={styles.right}>
-                <Text style={styles.name}>{data.PatientFName} {data.PatientMName} {data.PatientLName}</Text>
-                <View style={{ flexDirection: 'row' }}>
-                  <Text >Request ID :</Text>
-                  <Text style={{ color: "#FF7F00" }}> {data.RequestId}</Text>
+            <View style={styles.patInfocontainer}>
+              <View style={styles.profile}>
+                <Image
+                  source={require('../../assets/images/user.png')}
+                  style={styles.profileImg}
+                ></Image>
+                <View style={styles.right}>
+                  <Text style={styles.name}>{data.PatientFName} {data.PatientMName} {data.PatientLName}</Text>
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text >Request ID :</Text>
+                    <Text style={{ color: "#FF7F00" }}> {data.RequestId}</Text>
+                  </View>
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text >Cliet ID : </Text>
+                    <Text style={{ color: "#FF7F00" }}>{data.PatId}</Text>
+                  </View>
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text >Collection Date : </Text>
+                    <Text style={{ color: "#FF7F00" }}>{temp[0]}</Text>
+                  </View>
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text >Collection Time : </Text>
+                    <Text style={{ color: "#FF7F00" }}>{temp[1]}</Text>
+                  </View>
                 </View>
-                <View style={{ flexDirection: 'row' }}>
-                  <Text >Cliet ID : </Text>
-                  <Text style={{ color: "#FF7F00" }}>{data.PatId}</Text>
-                </View>
-                <View style={{ flexDirection: 'row' }}>
-                  <Text >Collection Date : </Text>
-                  <Text style={{ color: "#FF7F00" }}>{temp[0]}</Text>
-                </View>
-                <View style={{ flexDirection: 'row' }}>
-                  <Text >Collection Time : </Text>
-                  <Text style={{ color: "#FF7F00" }}>{temp[1]}</Text>
-                </View>
+
               </View>
 
-            </View>
+              <StatusBadge RequestStatus={data.SampleStatus} IsPaid={data.IsPaid}></StatusBadge>
 
-            <StatusBadge RequestStatus={data.SampleStatus} IsPaid={data.IsPaid}></StatusBadge>
+              <View style={[styles.mapViewContainer, GlobalStyles.boxShadow]}>
+                <MapView
+                  style={styles.map}
+                  initialRegion={{
+                    latitude: Coordinate.latitude === null || Coordinate.latitude === undefined ? 27.7172 : Coordinate.latitude,
+                    longitude: Coordinate.longitude === null || Coordinate.longitude === undefined ? 85.3240 : Coordinate.longitude,
+                    latitudeDelta: 0.0111922,
+                    longitudeDelta: 0.0111421,
+                  }}
+                >
+                  <MarkerCostome
+                    coordinate={cMarker.latlng}
+                    title={cMarker.title}
+                    description={cMarker.description}
+                    forCollector
+                  />
+                </MapView>
+              </View>
 
-            <View style={[styles.mapViewContainer, GlobalStyles.boxShadow]}>
-              <MapView
-                style={styles.map}
-                initialRegion={{
-                  latitude: Coordinate.latitude === null || Coordinate.latitude === undefined ? 27.7172 : Coordinate.latitude,
-                  longitude: Coordinate.longitude === null || Coordinate.longitude === undefined ? 85.3240 : Coordinate.longitude,
-                  latitudeDelta: 0.0111922,
-                  longitudeDelta: 0.0111421,
-                }}
-              >
-                <MarkerCostome
-                  coordinate={cMarker.latlng}
-                  title={cMarker.title}
-                  description={cMarker.description}
-                  forCollector
-                />
-              </MapView>
-            </View>
-
-            <View style={[styles.cardContainer, GlobalStyles.boxShadow]}>
-              <Text style={styles.title}>Tests</Text>
-              {/* <FlatList
+              <View style={[styles.cardContainer, GlobalStyles.boxShadow]}>
+                <Text style={styles.title}>Tests</Text>
+                {/* <FlatList
                 data={TestList}
                 renderItem={({ item, index }) =>
                   <View style={styles.testCard}>
@@ -323,64 +323,69 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
                 }
                 keyExtractor={item => item.SId}
               /> */}
-              {
-                TestList !== undefined ?
-                  TestList.map((e) => (
-                    <View style={styles.testCard} key={e.TestName}>
-                      <Text style={styles.testsText}>{e.TestName}</Text>
-                      <Text style={styles.testsPrice}>Rs.{e.TestPrice}</Text>
-                    </View>
-                  )) : null
-              }
-            </View>
-
-
-
-
-          </View>
-          {data.SampleStatus === 'Collected' ?
-            <View style={[styles.testList, GlobalStyles.boxShadow]}>
-            <Text style={{
-              color: '#fefefe',
-              fontSize: 18,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              letterSpacing: 1,
-            }}>Sample collected</Text>
-            <Text style={{
-              color: '#fefefe',
-              fontSize: 16,
-              marginBottom: 10,
-              letterSpacing: 1,
-            }}>Do you want to drop sample in lab ?</Text>
-            <AppButton title='Drop Sample' onPress={() => handleDrop()} disabled={btnDis}></AppButton>
-          </View>
-            :
-            <View style={[styles.testList, GlobalStyles.boxShadow]}>
-              <View style={styles.TextInput}>
-                <Text style={styles.formLabel}>IsPaid</Text>
-                <Switch
-                  trackColor={{ false: "#767577", true: "#81b0ff" }}
-                  thumbColor={isPaid ? "#f5dd4b" : "#f4f3f4"}
-                  ios_backgroundColor="#3e3e3e"
-                  onValueChange={toggleSwitch}
-                  value={isPaid}
-                  disabled={isPaid}
-                />
+                {
+                  TestList !== undefined ?
+                    TestList.map((e) => (
+                      <View style={styles.testCard} key={e.TestName}>
+                        <Text style={styles.testsText}>{e.TestName}</Text>
+                        <Text style={styles.testsPrice}>Rs.{e.TestPrice}</Text>
+                      </View>
+                    )) : null
+                }
               </View>
-              <View style={styles.TextInput}>
-                <TextInput
-                  value={Remarks}
-                  placeholder='remarks'
-                  onChangeText={(e) => setRemarks(e)}
-                  style={styles.inputField}
-                  multiline={true}
-                ></TextInput>
-              </View>
-              <AppButton title='Collect Sample' onPress={() => handleSubmit()} disabled={btnDis}></AppButton>
-              {/* <Button disabled></Button> */}
+
+
+
+
             </View>
-          }
+            {data.SampleStatus === 'Collected' ?
+              <View style={[styles.testList, GlobalStyles.boxShadow]}>
+                <Text style={{
+                  color: '#fefefe',
+                  fontSize: 18,
+                  marginBottom: 10,
+                  fontWeight: 'bold',
+                  letterSpacing: 1,
+                }}>Sample collected</Text>
+                <Text style={{
+                  color: '#fefefe',
+                  fontSize: 16,
+                  marginBottom: 10,
+                  letterSpacing: 1,
+                }}>Do you want to drop sample in lab ?</Text>
+                <AppButton title='Drop Sample' onPress={() => handleDrop()} disabled={btnDis}></AppButton>
+              </View>
+              :
+              <View style={[styles.testList, GlobalStyles.boxShadow]}>
+                {
+                  isPaid !== true ?
+                    <View style={styles.TextInput}>
+                      <Text style={styles.formLabel}>IsPaid</Text>
+                      <Switch
+                        trackColor={{ false: "#767577", true: "#81b0ff" }}
+                        thumbColor={isPaid ? "#f5dd4b" : "#f4f3f4"}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={toggleSwitch}
+                        value={isPaid}
+                        disabled={isPaid}
+                      />
+                    </View> : null
+
+                }
+
+                <View style={styles.TextInput}>
+                  <TextInput
+                    value={Remarks}
+                    placeholder='remarks'
+                    onChangeText={(e) => setRemarks(e)}
+                    style={styles.inputField}
+                    multiline={true}
+                  ></TextInput>
+                </View>
+                <AppButton title='Collect Sample' onPress={() => handleSubmit()} disabled={btnDis}></AppButton>
+                {/* <Button disabled></Button> */}
+              </View>
+            }
           </ScrollView>
         </View>
       </Modal>
