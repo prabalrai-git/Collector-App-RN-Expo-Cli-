@@ -38,7 +38,7 @@ const TaskHomeScreen = () => {
     // console.log(data);
     dispatch(GetSampleRequestListByCollector(data, (res) => {
       setPatietList(res.RequestList)
-      // console.log('res',res);
+      // console.log('res',res); 
     }))
   }
 

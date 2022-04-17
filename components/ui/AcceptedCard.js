@@ -44,7 +44,7 @@ const windowWidth = Dimensions.get('window').width
 
 
 const AcceptedCard = ({ data, refData, disable, retDis }) => {
-  // console.log("asigned data", data)
+  // console.log("accepted data", data)
   const [isVisibe, setisVisibe] = useState(false);
   const [isRemarksVisible, setisRemarksVisible] = useState(false);
   const [Remarks, setRemarks] = useState('');
@@ -99,6 +99,8 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
 
     // console.log('rejected data', sData);
 
+    // console.log("data", sData, "pdata",pData);
+    // return
     if (isPaid) {
       dispatch(UpdateStatus(sData, (res) => {
         if (res?.SuccessMsg === true) {
@@ -347,6 +349,12 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
                   fontWeight: 'bold',
                   letterSpacing: 1,
                 }}>Sample collected</Text>
+                <Text style={{
+                  color: '#fefefe',
+                  fontSize: 16,
+                  marginBottom: 10,
+                  letterSpacing: 1,
+                }}>"{data.Remarks}"</Text>
                 <Text style={{
                   color: '#fefefe',
                   fontSize: 16,

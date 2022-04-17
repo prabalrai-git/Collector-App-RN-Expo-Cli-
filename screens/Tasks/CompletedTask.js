@@ -18,14 +18,20 @@ const CompletedTask = () => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch()
   const user = useSelector(state => state.storeUserData);
+  const [disable, setdisable] = useState(false)
 
   useEffect(() => {
     handleClick()
   }, [isFocused])
 
   const renderItem = ({ item }) => (
-    <TaskCard data={item} disable={true} />
+    <TaskCard data={item}completed disable={disable} retDis={handleDisable}/>
   )
+
+  const handleDisable = (e) => {
+    // console.log('disable', e)
+    setdisable(e)
+  }
 
   useEffect(() => {
     sortData()

@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Pressable, Image, FlatList, Alert } from 'react-native'
+import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Pressable, Image, FlatList, Alert, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import AppButton from './AppButton';
@@ -44,8 +44,8 @@ const windowWidth = Dimensions.get('window').width
 // "TestTotalAmount": 5815,
 
 
-const TaskCard = ({ data, AsignedTask, disable, retDis, rejected }) => {
-  // console.log('data', data);
+const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed }) => {
+  console.log('data', data);
   const [isVisibe, setisVisibe] = useState(false);
   const [isRemarksVisible, setisRemarksVisible] = useState(false);
   const [Remarks, setRemarks] = useState('');
@@ -186,6 +186,7 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected }) => {
           {
             rejected &&
             <View style={styles.remarks}>
+              <Text style={styles.ctitle}>Remarks</Text>
               <Text style={styles.remarksDis}>
                 {data.Remarks}
               </Text>
@@ -344,6 +345,160 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected }) => {
             }
           </View>
         </Modal>
+      }
+
+      {
+        rejected || completed ?
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={isVisibe}
+            onRequestClose={() => {
+              setisVisibe(!isVisibe)
+              // setisRemarksVisible(false)
+              retDis(false);
+            }}
+          >
+
+            <View style={styles.centeredView}>
+              <ScrollView>
+                <TouchableOpacity
+                  style={{
+                    position: 'absolute',
+                    top: 10,
+                    right: 10,
+                    backgroundColor: '#8ED1FC',
+                    padding: 10,
+                    borderRadius: 50,
+                  }}
+                  onPress={() => {
+                    setisVisibe(false)
+                    // setisRemarksVisible(false)
+                    retDis(false);
+                  }}>
+                  <Icon
+                    name={'close'}
+                    color={'#fefefe'}
+                    type='antdesign'
+                    size={20}
+                  ></Icon>
+                </TouchableOpacity>
+
+                <View style={styles.patInfocontainer}>
+                  <View style={styles.profile}>
+                    <Image
+                      source={require('../../assets/images/user.png')}
+                      style={styles.profileImg}
+                    ></Image>
+                    <View style={styles.right}>
+                      <Text style={styles.name}>{data.PatientFName} {data.PatientMName} {data.PatientLName}</Text>
+                      <View style={{ flexDirection: 'row' }}>
+                        <Text >Request ID :</Text>
+                        <Text style={{ color: "#FF7F00" }}> {data.RId}</Text>
+                      </View>
+                      <View style={{ flexDirection: 'row' }}>
+                        <Text >Cliet ID : </Text>
+                        <Text style={{ color: "#FF7F00" }}>{data.PatId}</Text>
+                      </View>
+                      <View style={{ flexDirection: 'row' }}>
+                        <Text >Collection Date : </Text>
+                        <Text style={{ color: "#FF7F00" }}>{temp[0]}</Text>
+                      </View>
+                      <View style={{ flexDirection: 'row' }}>
+                        <Text >Collection Time : </Text>
+                        <Text style={{ color: "#FF7F00" }}>{temp[1]}</Text>
+                      </View>
+                    </View>
+
+                  </View>
+
+                  <StatusBadge RequestStatus={data.RequestStatus} IsPaid={data.IsPaid}></StatusBadge>
+
+                  <View style={[styles.mapViewContainer, GlobalStyles.boxShadow]}>
+                    <MapView
+                      style={styles.map}
+                      initialRegion={{
+                        latitude: Coordinate.latitude === null || Coordinate.latitude === undefined ? 27.7172 : Coordinate.latitude,
+                        longitude: Coordinate.longitude === null || Coordinate.longitude === undefined ? 85.3240 : Coordinate.longitude,
+                        latitudeDelta: 0.0111922,
+                        longitudeDelta: 0.0111421,
+                      }}
+                    >
+                      <MarkerCostome
+                        coordinate={cMarker.latlng}
+                        title={cMarker.title}
+                        description={cMarker.description}
+                        forCollector
+                      />
+                    </MapView>
+                  </View>
+
+
+                  <View style={[styles.cardContainer, GlobalStyles.boxShadow]}>
+                    <View style={styles.flatListContainer}>
+                      <Text style={styles.title}>Tests</Text>
+
+                      {
+                        TestList !== undefined ?
+                          TestList.map((e) => (
+                            <View style={styles.testCard} key={e.TestName}>
+                              <Text style={styles.testsText}>{e.TestName}</Text>
+                              <Text style={styles.testsPrice}>Rs.{e.TestPrice}</Text>
+                            </View>
+                          )) : null
+                      }
+                    </View>
+
+                  </View>
+
+
+
+                </View>
+
+                <View>
+                  {
+                    rejected &&
+                    <View style={[styles.testList, { backgroundColor: '#eb5b48' }]}>
+                      <Text style={{
+                        color: '#fefefe',
+                        fontSize: 18,
+                        marginBottom: 10,
+                        fontWeight: 'bold',
+                        letterSpacing: 1,
+                      }}>Sample Rejcted</Text>
+                      <Text style={{
+                        color: '#fefefe',
+                        fontSize: 16,
+                        marginBottom: 10,
+                        letterSpacing: 1,
+                      }}>{data.Remarks}</Text>
+                    </View>
+                  }
+                  {
+                  completed &&
+
+                    <View style={[styles.testList, GlobalStyles.boxShadow]}>
+                      <Text style={{
+                        color: '#fefefe',
+                        fontSize: 18,
+                        marginBottom: 10,
+                        fontWeight: 'bold',
+                        letterSpacing: 1,
+                      }}>Sample collected</Text>
+                      <Text style={{
+                        color: '#fefefe',
+                        fontSize: 16,
+                        marginBottom: 10,
+                        letterSpacing: 1,
+                      }}>{data.Remarks}</Text>
+                    
+                    </View>
+                  }
+                </View>
+                
+          </ScrollView>
+        </View>
+      </Modal > : null
       }
 
 
@@ -509,9 +664,9 @@ const styles = StyleSheet.create({
     color: '#FF7F00'
   },
   remarks: {
-    borderWidth: 1,
-    borderColor: '#76968a',
-    borderRadius: 5,
+    // borderWidth: 1,
+    // borderColor: '#76968a',
+    // borderRadius: 5,
     marginTop: 6,
     paddingHorizontal: 6,
     paddingVertical: 10,
@@ -528,6 +683,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#fefefe',
     paddingVertical: 16,
     paddingHorizontal: 10,
-  }
-
+  },
+  testList: {
+    backgroundColor: '#9DD4E9',
+    marginLeft: 10,
+    marginVertical: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 20,
+    borderRadius: 18,
+    width: windowWidth - 20,
+  },
 })

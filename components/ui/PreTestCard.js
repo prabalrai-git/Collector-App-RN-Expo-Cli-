@@ -6,16 +6,18 @@ import StatusBadge from './StatusBadge';
 import { Icon } from 'react-native-elements';
 import BadgeStatus from './BadgeStatus';
 import DateBadge from './DateBadge';
+import { GlobalStyles } from '../../GlobalStyle';
 
 
 const windowWidth = Dimensions.get('window').width
 
 
 const PreTestCard = ({ data, disable, retDis }) => {
+  // console.log('data', data.SampleStatus);
   const [isVisibe, setisVisibe] = useState(false);
   const tests = data.Test;
   const TestList = tests.split(",");
-  const [active, setActive] = useState(false);
+  // const [active, setActive] = useState(false);
 
   const hadleEvent = () => {
     setisVisibe(true);
@@ -103,7 +105,7 @@ const PreTestCard = ({ data, disable, retDis }) => {
             <StatusBadge RequestStatus={data.SampleStatus}></StatusBadge>
 
 
-            <View style={styles.flatListContainer}>
+            {/* <View style={styles.flatListContainer}>
               <Text style={styles.title}>Tests</Text>
               <FlatList
                 data={TestList}
@@ -141,7 +143,118 @@ const PreTestCard = ({ data, disable, retDis }) => {
                 <Text style={styles.titleText}>Grand Total</Text>
                 <Text style={styles.finsltestsPrice}>Rs.{data.GrandTotal}</Text>
               </View>
+            </View> */}
+
+            <View style={[styles.cardContainer, GlobalStyles.boxShadow]}>
+              <View style={styles.flatListContainer}>
+                <Text style={styles.title}>Tests</Text>
+
+                {
+                  TestList !== undefined ?
+                    TestList.map((e) => (
+                      <View style={styles.testCard} key={e.TestName}>
+                        <Text style={styles.testsText}>{e}</Text>
+                        {/* <Text style={styles.testsPrice}>Rs.{e.TestPrice}</Text> */}
+                      </View>
+                    )) : null
+                }
+              </View>
+              <View>
+                <Text style={styles.title}>Payment Details</Text>
+                <View style={styles.testCard}>
+                  <Text style={styles.titleText}>Total</Text>
+                  <Text style={styles.finsltestsPrice}>Rs.{data.TestTotalAmount}</Text>
+                </View>
+                <View style={styles.testCard}>
+                  <Text style={styles.titleText}>Collection Charge</Text>
+                  <Text style={styles.finsltestsPrice}>Rs.{data.CollectionCharge}</Text>
+                </View>
+                <View style={styles.testCard}>
+                  <Text style={styles.titleText}>Discount Amout</Text>
+                  <Text style={styles.finsltestsPrice}>Rs.{data.DiscountAmount}</Text>
+                </View>
+                <View style={styles.testCard}>
+                  <Text style={styles.titleText}>Grand Total</Text>
+                  <Text style={styles.finsltestsPrice}>Rs.{data.GrandTotal}</Text>
+                </View>
+              </View>
             </View>
+
+            {
+              data.SampleStatus === "Rejected" &&
+              <View style={[styles.testList, { backgroundColor: '#f36f5e' }]}>
+                <Text style={{
+                  color: '#fefefe',
+                  fontSize: 18,
+                  marginBottom: 10,
+                  fontWeight: 'bold',
+                  letterSpacing: 1,
+                }}>Sample Rejcted</Text>
+                <Text style={{
+                  color: '#fefefe',
+                  fontSize: 16,
+                  marginBottom: 10,
+                  letterSpacing: 1,
+                }}>Due to perticular reason, the sample has been rejected.</Text>
+              </View>
+            }
+
+            {
+              data.SampleStatus === "Collected" &&
+              <View style={[styles.testList, { backgroundColor: '#f36f5e' }]}>
+                <Text style={{
+                  color: '#fefefe',
+                  fontSize: 18,
+                  marginBottom: 10,
+                  fontWeight: 'bold',
+                  letterSpacing: 1,
+                }}>Sample Collected</Text>
+                <Text style={{
+                  color: '#fefefe',
+                  fontSize: 16,
+                  marginBottom: 10,
+                  letterSpacing: 1,
+                }}>Sample has been collected, by user ID</Text>
+              </View>
+            }
+
+            {
+              data.SampleStatus === "Lab Received" &&
+              <View style={[styles.testList, { backgroundColor: '#5ebcf3' }]}>
+                <Text style={{
+                  color: '#fefefe',
+                  fontSize: 18,
+                  marginBottom: 10,
+                  fontWeight: 'bold',
+                  letterSpacing: 1,
+                }}>Sample Lab Collected</Text>
+                <Text style={{
+                  color: '#fefefe',
+                  fontSize: 16,
+                  marginBottom: 10,
+                  letterSpacing: 1,
+                }}>Sample has been received By lab</Text>
+              </View>
+            }
+
+            {
+              data.SampleStatus === "Report Dispatched" &&
+              <View style={[styles.testList, { backgroundColor: '#5ebcf3' }]}>
+                <Text style={{
+                  color: '#fefefe',
+                  fontSize: 18,
+                  marginBottom: 10,
+                  fontWeight: 'bold',
+                  letterSpacing: 1,
+                }}>Report Dispatched</Text>
+                <Text style={{
+                  color: '#fefefe',
+                  fontSize: 16,
+                  marginBottom: 10,
+                  letterSpacing: 1,
+                }}>The Report is submited</Text>
+              </View>
+            }
 
           </View>
         </View>
@@ -197,7 +310,7 @@ const styles = StyleSheet.create({
   centeredView: {
     width: '100%',
     flex: 1,
-    backgroundColor: '#fefefe'
+    backgroundColor: '#F9F9F9'
   },
 
   patInfocontainer: {
@@ -243,7 +356,7 @@ const styles = StyleSheet.create({
   testCard: {
     flexDirection: 'row',
     marginVertical: 3,
-    paddingHorizontal: 5,
+    // paddingHorizontal: 5,
     borderRadius: 5,
     width: '100%',
     justifyContent: 'space-between'
@@ -252,7 +365,7 @@ const styles = StyleSheet.create({
     color: "#232325",
     fontSize: 14,
     letterSpacing: 1.2,
-    marginLeft: 20,
+    // marginLeft: 20,
     width: windowWidth * 0.75
   },
   testsPrice: {
@@ -266,6 +379,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 3,
     borderRadius: 3,
+  },
+  cardContainer: {
+    // borderWidth: 1,
+    borderRadius: 18,
+    backgroundColor: '#fefefe',
+    paddingVertical: 16,
+    paddingHorizontal: 10,
+  },
+  testList: {
+    backgroundColor: '#9DD4E9',
+    // marginLeft: 10,
+    marginVertical: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 20,
+    borderRadius: 18,
+    width: windowWidth - 20,
+
   },
 
 })

@@ -95,7 +95,7 @@ const BilligScreen = ({ route }) => {
 
   const [paidStatus, setpaidStatus] = useState(1);
   const [ModalVisible, setModalVisible] = useState(false);
-  const [PaymentCode, setPaymentCode] = useState()
+  const [PaymentCode, setPaymentCode] = useState('')
 
   useEffect(() => {
     dispatch(GetStatus((res) => {
@@ -141,7 +141,8 @@ const BilligScreen = ({ route }) => {
       "CollectedDate": fialEntryDate,
       "IsPaid": isPaid,
       // "IsPaid": true,
-      "RequestStatus": Status
+      "RequestStatus": Status,
+      "PaymentType": `${paidStatus} - ${PaymentCode}`
     };
     // array of testdata
     const _HomeCollectionTestList = []
@@ -170,7 +171,8 @@ const BilligScreen = ({ route }) => {
     }
 
 
-
+// console.log('final data', finalData);
+// return
     dispatch(InsertUpdateHomeCollection(finalData, (res) => {
       if (res?.SuccessMsg === true) {
         Alert.alert(
@@ -208,7 +210,7 @@ const BilligScreen = ({ route }) => {
         <FlatList
           data={route.params.tests.testList}
           renderItem={renderItem}
-          keyExtractor={item => item.Id}
+          keyExtractor={item => `${item.Id}${item.Test}`}
         ></FlatList>
       </View>
 
@@ -288,16 +290,16 @@ const BilligScreen = ({ route }) => {
               onValueChange={(itemValue) => setpaidStatus(itemValue)}
               mode='dropdown'
             >
-              <Picker.Item label='cash' value={1} key={1} />
-              <Picker.Item label='card' value={2} key={2} />
-              <Picker.Item label='fone pay' value={3} key={3} />
-              <Picker.Item label='Due' value={4} key={4} />
-              <Picker.Item label='credit' value={5} key={5} />
+              <Picker.Item label='cash' value={'cash'} key={1} />
+              <Picker.Item label='card' value={'card'} key={2} />
+              <Picker.Item label='fone pay' value={'fone Pay'} key={3} />
+              {/* <Picker.Item label='Due' value={'due'} key={4} />
+              <Picker.Item label='credit' value={'credit'} key={5} /> */}
             </Picker>
           </View>
         </View>
         {
-          paidStatus === 3 ?
+          paidStatus === 'fone Pay' ?
             <TouchableOpacity onPress={() => setModalVisible(true)} style={{
               // width: windowWidth - 20,
               borderWidth: 1,
@@ -313,7 +315,7 @@ const BilligScreen = ({ route }) => {
             </TouchableOpacity> : null
         }
         {
-          paidStatus === 2 ?
+          paidStatus === 'card' ?
             <View style={styles.TextInput}>
               <Text style={styles.formLabel}>Payment Code</Text>
               <TextInput
@@ -494,4 +496,4 @@ const styles = StyleSheet.create({
   span2: {
     fontWeight: 'bold',
   },
-})
+}) 

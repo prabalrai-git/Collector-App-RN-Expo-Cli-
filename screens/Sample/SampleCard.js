@@ -106,7 +106,7 @@ const SampleCard = ({ data, refData, disable, retDis }) => {
       dispatch(UpdateStatus(sData, (res) => {
         if (res?.SuccessMsg === true) {
           dispatch(UpdatePaidStatus(pData, (res) => {
-            console.log("response sucess", res);
+            // console.log("response sucess", res);
             if (res === true) {
               setRemarks('')
               Alert.alert(
@@ -347,7 +347,7 @@ const SampleCard = ({ data, refData, disable, retDis }) => {
               <View>
                 {
                   data.RequestStatus === "Rejected" ?
-                    <View style={[styles.testList, { backgroundColor: '#eb5b48' }]}>
+                    <View style={[styles.testList, { backgroundColor: '#f36f5e' }]}>
                       <Text style={{
                         color: '#fefefe',
                         fontSize: 18,

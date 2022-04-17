@@ -19,6 +19,7 @@ const RejectedTask = () => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const user = useSelector(state => state.storeUserData);
+  const [disable, setdisable] = useState(false)
 
 
   useEffect(() => {
@@ -44,8 +45,14 @@ const RejectedTask = () => {
     }))
   }
   const renderItem = ({ item }) => (
-    <TaskCard data={item} disable={true} rejected/>
+    <TaskCard data={item} rejected disable={disable} retDis={handleDisable}/>
   )
+
+  const handleDisable = (e) => {
+    // console.log('disable', e)
+    setdisable(e)
+  }
+
   
 
   const sortData = () => {

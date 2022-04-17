@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "collector-app-v1",
-    "slug": "collector-app-v1",
+    "name": "luniva 360 collector",
+    "slug": "luniva-360-collector",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

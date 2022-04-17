@@ -1,4 +1,4 @@
-import { ActivityIndicator, Alert, Button, Dimensions, Image, Modal, StatusBar, StyleSheet, TextInput, View } from 'react-native'
+import { ActivityIndicator, Alert, Dimensions, Image, Modal, StatusBar, StyleSheet, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch } from 'react-redux'
@@ -11,8 +11,8 @@ const windowWidth = Dimensions.get('window').width * 0.9;
 
 const LoginScreen = () => {
   const navigation = useNavigation()
-  const [username, setUserName] = useState('pacific');
-  const [password, setPassword] = useState('pacific123');
+  const [username, setUserName] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [btnDis, setBtDis] = useState(false)
   const dispatch = useDispatch()
@@ -54,12 +54,16 @@ const LoginScreen = () => {
     <View style={styles.container}>
       <View style={styles.componyInfo}>
         <Image
-          source={require('../../assets/images/logo.png')}
+          source={require('../../assets/icon.png')}
+          style={{
+            width: 200,
+            height: 200
+          }}
         />
-        <View style={styles.cDetails}>
+        {/* <View style={styles.cDetails}>
           <Text style={[styles.span, styles.span1]}>Luniva</Text>
-          <Text style={[styles.span, styles.span2]}>Care</Text>
-        </View>
+          <Text style={[styles.span, styles.span2]}> 360</Text>
+        </View> */}
 
       </View>
 
@@ -148,7 +152,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderWidth: 2,
     borderColor: '#FF7F00',
-    borderRadius: 10,
+    borderRadius: 7,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -162,12 +166,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 50,
+    // marginBottom: 20,
   },
   cDetails: {
     flexDirection: 'row',
     justifyContent: 'center',
-    padding: 10,
+    // padding: 10,
   },
   span: {
     color: "#FF7F00",
