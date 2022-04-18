@@ -97,5 +97,18 @@ export const dummyData = {
             "EntryDate": "2022-04-06T10:58:38",
             "UserId": 3
         }
+    ],
+    'users': [
+        {
+            'userId': 'admin',
+            'token': '',
+            'role': ''
+        },
+        {
+            'userId': 'user',
+            'token': '',
+            'role': ''
+        }
     ]
 }
+
