@@ -12,6 +12,7 @@ import { Icon } from 'react-native-elements';
 import BadgeStatus from './BadgeStatus';
 import DateBadge from './DateBadge';
 import { GlobalStyles } from '../../GlobalStyle';
+import { PushNotification } from '../PushNotification';
 
 
 
@@ -45,7 +46,7 @@ const windowWidth = Dimensions.get('window').width
 
 
 const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed }) => {
-  console.log('data', data);
+  // console.log('data', data);
   const [isVisibe, setisVisibe] = useState(false);
   const [isRemarksVisible, setisRemarksVisible] = useState(false);
   const [Remarks, setRemarks] = useState('');
@@ -119,6 +120,8 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed }) =
     // console.log(aData);
     // return
     if (Remarks !== '' || Remarks !== undefined) {
+      // PushNotification('RejectedTask', user.userData.usrusername, 'admin', Remarks)
+      // return
 
       dispatch(UpdateStatus(aData, (res) => {
         // console.log('response', res);
@@ -131,6 +134,7 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed }) =
             [
               {
                 text: 'OK', onPress: () => {
+                  PushNotification('RejectedTask', user.userData.usrusername, 'admin', Remarks)
                   navigation.navigate('RejectedTask')
                   setisVisibe(!isVisibe)
                   setisRemarksVisible(false)

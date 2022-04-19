@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux'
 const MainStackNavigator = () => {
   const Stack = createNativeStackNavigator();
   const user = useSelector(state => state.storeUserData);
-  console.log(user.userData);
+  // console.log(user.userData);
   return (
     <Stack.Navigator>
       {

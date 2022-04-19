@@ -512,8 +512,8 @@ const AddPatietHomeScreen = () => {
               <View
                 style={styles.bSheet}
               >
-                {/* <Button title='cancle' onPress={() => setIsVisible(false)} color={'#ffc107'} buttonStyle={{ backgroundColor: 'yellow' }} /> */}
-                <CancleBtn title='cancle' onPress={() => setIsVisible(false)}></CancleBtn>
+                {/* <Button title='cancel' onPress={() => setIsVisible(false)} color={'#ffc107'} buttonStyle={{ backgroundColor: 'yellow' }} /> */}
+                <CancleBtn title='cancel' onPress={() => setIsVisible(false)}></CancleBtn>
                 {/* <View>
                   <Text>latitude:{JSON.stringify(region.latitude)}</Text>
                   <Text>longitude:{JSON.stringify(region.longitude)}</Text>

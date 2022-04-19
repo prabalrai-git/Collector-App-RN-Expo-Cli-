@@ -246,7 +246,7 @@ const AddPatientDetals = ({ route }) => {
             <View
               style={styles.bSheet}
             >
-              <CancleBtn title='cancle' onPress={() => setIsVisible(false)}></CancleBtn>
+              <CancleBtn title='cancel' onPress={() => setIsVisible(false)}></CancleBtn>
               {/* <View>
                   <Text>latitude:{JSON.stringify(region.latitude)}</Text>
                   <Text>longitude:{JSON.stringify(region.longitude)}</Text>

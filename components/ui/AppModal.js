@@ -35,7 +35,7 @@ const AppModal = ({ data, tSum}) => {
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}
             >
-              <Text style={styles.textStyle}>cancle</Text>
+              <Text style={styles.textStyle}>cancel</Text>
             </Pressable>
             <AppButton title='Save' onPress={() => setModalVisible(!modalVisible)}></AppButton>
           </View>

@@ -2,14 +2,16 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { AddPatietNavigator, BookTestNavigator, CollectSampleNavigator, MainStackNavigator, SampleCollectionNavigator, TaskNavigator } from './StackNavigator'
+import { useSelector } from 'react-redux'
 
 const DraweNavigator = () => {
   const Drawer = createDrawerNavigator()
-  
-  
+  const user = useSelector(state => state.storeUserData);
+  console.log("user role", user.userData.usrrole);
+
+
   return (
     <Drawer.Navigator
-
       drawerPosition="right"
       screenOptions={{
         tabBarActiveTintColor: '#FF7F00',
@@ -73,7 +75,7 @@ const DraweNavigator = () => {
         component={BookTestNavigator}
         options={{
           // tabBarHideOnKeyboard: true,
-          
+
           headerShown: false,
           title: 'Patient',
           tabBarIcon: ({ size, color }) => (
@@ -104,23 +106,26 @@ const DraweNavigator = () => {
           )
         }}
       />
-      <Drawer.Screen
-        name='task'
-        component={TaskNavigator}
-        options={{
-          headerShown: false,
-          title: 'Task',
-          tabBarIcon: ({ size, color }) => (
-            <Icon
-              name='list'
-              color={'#FF7F00'}
-              type='entypo'
-              style={styles.icon}
-            ></Icon>
-          )
-        }}
-      />
-      
+      {/* {
+        user.userData.usrrole !== 3 && */}
+        <Drawer.Screen
+          name='task'
+          component={TaskNavigator}
+          options={{
+            headerShown: false,
+            title: 'Task',
+            tabBarIcon: ({ size, color }) => (
+              <Icon
+                name='list'
+                color={'#FF7F00'}
+                type='entypo'
+                style={styles.icon}
+              ></Icon>
+            )
+          }}
+        />
+      {/* } */}
+
     </Drawer.Navigator>
   )
 }

@@ -207,7 +207,7 @@ const SelectTest = ({ route }) => {
                       >
                         <Text style={styles.textStyle}>cancle</Text>
                       </Pressable> */}
-                    <CancleBtn title={'cancle'} onPress={() => setModalVisible(!modalVisible)}></CancleBtn>
+                    <CancleBtn title={'cancel'} onPress={() => setModalVisible(!modalVisible)}></CancleBtn>
                     <AppButton title='Proceed' onPress={() => handleProceed()}></AppButton>
                   </View>
                 </View>

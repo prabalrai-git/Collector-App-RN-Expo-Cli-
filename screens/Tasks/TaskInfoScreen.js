@@ -103,7 +103,7 @@ const TaskInfoScreen = ({ route }) => {
           keyExtractor={item => item.id}
         />
         <View style={styles.container}>
-          <Button title='Cancle' color={'#e0c945'}></Button>
+          <Button title='Cancel' color={'#e0c945'}></Button>
           <AppButton title='Accept' onPress={() => navigation.navigate('MapScreen',
             {
               data: route.params.data

@@ -9,7 +9,7 @@ const GreetingCard = () => {
   return (
     <View style={styles.cardContainer}>
       <View style={styles.dis}>
-        <Text style={[GlobalStyles.header, {color: '#fefefe'}]}>Good Moring</Text>
+        <Text style={[GlobalStyles.header, {color: '#fefefe'}]}>Welcome Back !</Text>
         <Text style={[GlobalStyles.body, {color: '#205072'}]}>Your target for today is to keep positive mindset and smile to everyone you meet.</Text>
       </View>
       <Avatar
