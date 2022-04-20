@@ -16,6 +16,7 @@ import Header from '../components/Header';
 
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
+import NotificationBtn from '../components/ui/NotificationBtn';
 
 
 
@@ -63,7 +64,7 @@ const HomeScreen = () => {
   const notificationListener = useRef();
   const responseListener = useRef();
 
-  console.log("user role", user.userData.usrusername);
+  // console.log("user role", user.userData.usrusername);
 
 
   const [geolocation, setGeolocation] = useState({
@@ -219,20 +220,21 @@ const HomeScreen = () => {
         style={styles.bkgImg}
       >
         <View style={styles.hamMenu}>
-          <HamMenu></HamMenu>
+          {/* <HamMenu></HamMenu> */}
+          <NotificationBtn></NotificationBtn>
         </View>
 
         <View style={styles.cardContainer}>
           <View style={styles.dis}>
-            <Text style={[GlobalStyles.body, { color: '#3d4e58' }]}>Welcome Back !</Text>
+            <Text style={[GlobalStyles.body, { color: '#3d4e58' }]}>Hi!</Text>
             <Text style={[GlobalStyles.header, { color: '#205072' }]}>{user.userData.usrusername}</Text>
-            {/* <Text style={[GlobalStyles.body, { color: '#3d4e58' }]}>Your target for today is to keep positive mindset and smile to everyone you meet.</Text> */}
+            <Text style={[GlobalStyles.body, { color: '#3d4e58' }]}>Your target for today is to keep positive mindset and smile to everyone you meet.</Text>
           </View>
-          <Avatar
+          {/* <Avatar
             size={64}
             rounded
             source={require('../assets/images/user.png')}
-          />
+          /> */}
         </View>
         <FlatList
           data={navData}
@@ -316,7 +318,7 @@ const styles = StyleSheet.create({
   },
   bkgImg: {
     flex: 1,
-    paddingTop: 40,
+    paddingTop: 50,
   },
   cardContainer: {
     flexDirection: 'row',
@@ -327,7 +329,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 30,
     marginHorizontal: 20,
-    marginTop: 60,
+    marginTop: 40,
     shadowColor: "#86a3a3",
     shadowOffset: {
       width: 0,
@@ -339,7 +341,7 @@ const styles = StyleSheet.create({
     elevation: 15,
   },
   dis: {
-    width: windowWidth * 0.65,
+    // width: windowWidth * 0.65,
   },
   flatContainer: {
     width: windowWidth - 20,

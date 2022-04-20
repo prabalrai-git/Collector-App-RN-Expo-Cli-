@@ -11,14 +11,57 @@ export const PushNotification = async (task, fromSend, ToSend, Remarks) => {
   // to client get notification on sample collected, cample dropped in lab and report dispatched 
   // 
   console.log('asdfas', task, fromSend, ToSend, Remarks);
+  // let toSendToken = ToSend
+  let toSendToken = 'ExponentPushToken[ET7-LfDUYXePmkyQy8VyIl]';
+  let message = {};
 
-  const message = {
-    to: 'ExponentPushToken[ET7-LfDUYXePmkyQy8VyIl]',
-    sound: 'default',
-    title: `Sample rejected by ${fromSend}`,
-    body: Remarks,
-    data: { someData: 'goes here' },
-  };
+  if (task === 'rejected task') {
+    message = {
+      to: toSendToken,
+      sound: 'default',
+      title: `Sample rejected by ${fromSend}`,
+      body: Remarks,
+      data: { someData: 'goes here' },
+    };
+  }
+  if (task === 'asigned task') {
+    message = {
+      to: toSendToken,
+      sound: 'default',
+      title: `Sample Asigned by ${fromSend}`,
+      body: Remarks,
+      data: { someData: 'goes here' },
+    };
+  }
+  if (task === 'collected task') {
+    message = {
+      to: toSendToken,
+      sound: 'default',
+      title: `Sample Collected by ${fromSend}`,
+      body: Remarks,
+      data: { someData: 'goes here' },
+    };
+  }
+  if (task === 'Lab Dispatched task') {
+    message = {
+      to: toSendToken,
+      sound: 'default',
+      title: `Sample Dropped in lab by ${fromSend}`,
+      body: Remarks,
+      data: { someData: 'goes here' },
+    };
+  }
+  if (task === 'Report Dispatched task') {
+    message = {
+      to: toSendToken,
+      sound: 'default',
+      title: `Report Done`,
+      body: Remarks,
+      data: { someData: 'goes here' },
+    };
+  }
+
+
 
   await fetch('https://exp.host/--/api/v2/push/send', {
     method: 'POST',
