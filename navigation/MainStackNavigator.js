@@ -15,13 +15,13 @@ const MainStackNavigator = () => {
   const dispatch = useDispatch()
   const user = useSelector(state => state.storeUserData);
   // console.log(user.userData);
-  const [IsSignedIn, setIsSignedIn] = useState(false);
+  // const [IsSignedIn, setIsSignedIn] = useState(false);
 
   useEffect(() => {
     getData()
   }, [])
 
-  // console.log('asc storeage', UserStore);
+  console.log('asc storeage', UserStore);
   if (UserStore !== null) {
     dispatch(storeUserData(UserStore))
   }
@@ -31,7 +31,7 @@ const MainStackNavigator = () => {
       const jsonValue = await AsyncStorage.getItem('@userData')
       if (jsonValue != null) {
         setUserStore(JSON.parse(jsonValue))
-        setIsSignedIn(true)
+        // setIsSignedIn(true)
       }
       else {
         null
@@ -43,14 +43,14 @@ const MainStackNavigator = () => {
   }
   return (
     <Stack.Navigator>
-      {
-        user.userData == undefined ?
+      {/* {
+        user.userData !== undefined ?
           <Stack.Screen
             name='LoginScreen'
             component={LoginScreen}
             options={{
               headerShown: false,
-              animationTypeForReplace: IsSignedIn ? 'pop' : 'push'
+              // animationTypeForReplace: IsSignedIn ? 'pop' : 'push'
             }}
           /> :
           <Stack.Screen
@@ -61,10 +61,10 @@ const MainStackNavigator = () => {
             }}
           />
 
-      }
-      {/* {
-        1 !==1
-          ?
+      } */}
+      {
+        UserStore !== undefined ?
+
           <Stack.Screen
             name='DraweNavigator'
             component={DraweNavigator}
@@ -79,7 +79,7 @@ const MainStackNavigator = () => {
               headerShown: false,
             }}
           />
-      } */}
+      }
 
     </Stack.Navigator>
   )

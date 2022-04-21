@@ -8,28 +8,26 @@ import LocationTrackingHomeScreen from '../screens/LocationTracking/LocationTrac
 
 const DraweNavigator = () => {
   const Drawer = createDrawerNavigator()
-  const user = useSelector(state => state.storeUserData);
+  const user = useSelector(state => state);
   // console.log("user role", user.userData.usrUserId);
-  console.log('user', user);
+  console.log('user', user.userData);
   let data = user.userData
-
-  
 
 
   return (
-  
+
     <Drawer.Navigator
       drawerPosition="right"
       // screenOptions={{
       //   tabBarActiveTintColor: '#FF7F00',
       // }}
       // initialRouteName='Home'
-      drawerContent={(props) => 
+      drawerContent={(props) =>
       (
-      <CostomeDrawerContent {...props} data={data}/>
+        <CostomeDrawerContent {...props} data={data} />
       )}
     >
-      
+
       <Drawer.Screen
         name='Home'
         component={MainStackNavigator}

@@ -8,6 +8,7 @@ import { UpdateCollectorLocation } from '../../Services/appServices/Collector'
 import { JumpingTransition } from 'react-native-reanimated'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native'
+import { logout, storeUserData } from '../../Services/store/slices/profileSlice'
 
 const CostomeDrawerContent = (props) => {
   // console.log("props",props.data.usrUserId);
@@ -128,12 +129,13 @@ const CostomeDrawerContent = (props) => {
     hasGeolocationPermission()
   }, [])
 
-  const handleLogOut = async () => {
-    await AsyncStorage.removeItem('@userData', null)
-    navigation.navigate('LoginScreen')
+  const handleLogOut = () => {
+    // await AsyncStorage.removeItem('@userData')
+    dispatch(logout(null))
+    // navigation.navigate('LoginScreen')
   }
 
-  
+
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView

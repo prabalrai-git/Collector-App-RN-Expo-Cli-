@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
-import profileSlice, { logout, storeAuthToken, storeUserData } from './slices/profileSlice';
+import profileSlice from './slices/profileSlice';
 
 const rootReducer = combineReducers({
-  storeUserData: profileSlice,
+  profileSlice,
   // storeAuthToken: storeAuthToken,
   // logout: logout,
+  // storeUserData,
+  // logout
 })
 
 export default rootReducer

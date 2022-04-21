@@ -5,8 +5,9 @@ import { useDispatch } from 'react-redux'
 import { getLoginApi } from '../../Services/appServices/loginService'
 import { Icon, Text } from 'react-native-elements'
 import AppButton from '../../components/ui/AppButton'
-import { storeUserData } from '../../Services/store/slices/profileSlice'
+// import { storeUserData } from '../../Services/store/slices/profileSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { storeUserData } from '../../Services/store/slices/profileSlice'
 
 
 const windowWidth = Dimensions.get('window').width * 0.9;
@@ -30,9 +31,9 @@ const LoginScreen = () => {
       if (val.length !== 0) {
         let andd = val?.validuserDetails;
         if (andd[0]?.usrUserId > 0) {
-         
-          // dispatch(storeUserData(andd[0]))
-          storeData(andd[0])
+
+          dispatch(storeUserData(andd[0]))
+          // storeData(andd[0])
           navigation.navigate('DraweNavigator')
           setIsLoading(false);
 
@@ -110,7 +111,7 @@ const LoginScreen = () => {
           textContentType='password'
         ></TextInput>
       </View>
-      <AppButton title='login' onPress={handleLogin} disabled={btnDis}/>
+      <AppButton title='login' onPress={handleLogin} disabled={btnDis} />
 
       {
         isLoading &&
@@ -120,8 +121,8 @@ const LoginScreen = () => {
           visible={isLoading}
           style={styles.centeredView}>
           <View style={styles.centeredView}>
-        
-          <ActivityIndicator size="large" color={global.secondary} />
+
+            <ActivityIndicator size="large" color={global.secondary} />
           </View>
         </Modal>
       }
