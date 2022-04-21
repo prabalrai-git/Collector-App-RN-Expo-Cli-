@@ -10,12 +10,19 @@ const HamMenu = () => {
     navigation.dispatch(DrawerActions.openDrawer())
   }
   return (
-    <TouchableOpacity onPress={() => handleButton()} style={styles.hamMenuBtn}>
+    <TouchableOpacity onPress={() => handleButton()}>
       <Icon
         name='menu-unfold'
-        color={'#ffffff'}
+        color={'#9DD4E9'}
         type='antdesign'
-        size={30}
+        size={20}
+          backgroundColor={'#ffffff'}
+          style={
+            {
+              borderRadius: 10,
+              padding: 10
+            }
+          }
       ></Icon>
     </TouchableOpacity>
   )

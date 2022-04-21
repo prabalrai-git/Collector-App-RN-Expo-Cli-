@@ -6,6 +6,8 @@ import { getLoginApi } from '../../Services/appServices/loginService'
 import { Icon, Text } from 'react-native-elements'
 import AppButton from '../../components/ui/AppButton'
 import { storeUserData } from '../../Services/store/slices/profileSlice'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const windowWidth = Dimensions.get('window').width * 0.9;
 
@@ -28,9 +30,11 @@ const LoginScreen = () => {
       if (val.length !== 0) {
         let andd = val?.validuserDetails;
         if (andd[0]?.usrUserId > 0) {
-          setIsLoading(false);
-          dispatch(storeUserData(andd[0]))
+         
+          // dispatch(storeUserData(andd[0]))
+          storeData(andd[0])
           navigation.navigate('DraweNavigator')
+          setIsLoading(false);
 
         } else {
           setIsLoading(false);
@@ -49,6 +53,15 @@ const LoginScreen = () => {
         setBtDis(false)
       }
     }))
+  }
+
+  const storeData = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value)
+      await AsyncStorage.setItem('@userData', jsonValue)
+    } catch (e) {
+      // saving error
+    }
   }
   return (
     <View style={styles.container}>

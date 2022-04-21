@@ -3,20 +3,33 @@ import React from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { AddPatietNavigator, BookTestNavigator, CollectSampleNavigator, MainStackNavigator, SampleCollectionNavigator, TaskNavigator } from './StackNavigator'
 import { useSelector } from 'react-redux'
+import CostomeDrawerContent from '../components/ui/CostomeDrawerContent'
+import LocationTrackingHomeScreen from '../screens/LocationTracking/LocationTrackingHomeScreen'
 
 const DraweNavigator = () => {
   const Drawer = createDrawerNavigator()
   const user = useSelector(state => state.storeUserData);
-  console.log("user role", user.userData.usrrole);
+  // console.log("user role", user.userData.usrUserId);
+  console.log('user', user);
+  let data = user.userData
+
+  
 
 
   return (
+  
     <Drawer.Navigator
       drawerPosition="right"
-      screenOptions={{
-        tabBarActiveTintColor: '#FF7F00',
-      }}
+      // screenOptions={{
+      //   tabBarActiveTintColor: '#FF7F00',
+      // }}
+      // initialRouteName='Home'
+      drawerContent={(props) => 
+      (
+      <CostomeDrawerContent {...props} data={data}/>
+      )}
     >
+      
       <Drawer.Screen
         name='Home'
         component={MainStackNavigator}
@@ -33,7 +46,6 @@ const DraweNavigator = () => {
             ></Icon>
           )
         }}
-
       />
       {/* <Drawer.Screen
         name='CollectSample'
@@ -108,23 +120,39 @@ const DraweNavigator = () => {
       />
       {/* {
         user.userData.usrrole !== 3 && */}
-        <Drawer.Screen
-          name='task'
-          component={TaskNavigator}
-          options={{
-            headerShown: false,
-            title: 'Task',
-            tabBarIcon: ({ size, color }) => (
-              <Icon
-                name='list'
-                color={'#FF7F00'}
-                type='entypo'
-                style={styles.icon}
-              ></Icon>
-            )
-          }}
-        />
+      <Drawer.Screen
+        name='task'
+        component={TaskNavigator}
+        options={{
+          headerShown: false,
+          title: 'Task',
+          tabBarIcon: ({ size, color }) => (
+            <Icon
+              name='list'
+              color={'#FF7F00'}
+              type='entypo'
+              style={styles.icon}
+            ></Icon>
+          )
+        }}
+      />
       {/* } */}
+      <Drawer.Screen
+        name='locationTracking'
+        component={LocationTrackingHomeScreen}
+        options={{
+          headerShown: false,
+          title: 'Location Tracking',
+          tabBarIcon: ({ size, color }) => (
+            <Icon
+              name='list'
+              color={'#FF7F00'}
+              type='entypo'
+              style={styles.icon}
+            ></Icon>
+          )
+        }}
+      />
 
     </Drawer.Navigator>
   )

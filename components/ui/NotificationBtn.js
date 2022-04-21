@@ -1,6 +1,8 @@
 import { Dimensions, FlatList, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { Avatar, Icon } from 'react-native-elements'
+import DateBadge from './DateBadge';
+import HamMenu from './HamMenu';
 
 
 const newData = [
@@ -9,20 +11,21 @@ const newData = [
     'title': 'Notification 1',
     'dis': 'something something something something something something',
     'from': 'user name',
-
+    'date': '2022-5-6T6:50'
   },
   {
     'Id': 2,
     'title': 'Notification 3',
     'dis': 'something something something something something something',
-    'from': 'user name'
+    'from': 'user name',
+    'date': '2022-5-6T6:50'
   },
 ]
 
 
 const windowWidth = Dimensions.get('window').width;
 const NotificationBtn = () => {
-  const [modalVisible, setModalVisible] = useState()
+  const [modalVisible, setModalVisible] = useState(false)
 
 
   const renderItem = ({ item }) => (
@@ -43,6 +46,7 @@ const NotificationBtn = () => {
       <View style={styles.cardDetail}>
         <Text style={styles.cardTitle}>{item.title}</Text>
         <Text style={styles.cardDis}>{item.dis}</Text>
+        <DateBadge date={item.date}></DateBadge>
       </View>
 
     </View>
@@ -60,20 +64,21 @@ const NotificationBtn = () => {
           backgroundColor={'#ffffff'}
           style={
             {
-              borderRadius: 12,
+              borderRadius: 10,
               padding: 10
             }
           }
         ></Icon>
       </TouchableOpacity>
-      <Image
+      {/* <Image
         source={require('../../assets/images/user.png')}
         style={{
           borderRadius: 10,
           width: 40,
           height: 40,
         }}
-      />
+      /> */}
+      <HamMenu></HamMenu>
 
       <Modal
         animationType="slide"
@@ -151,13 +156,14 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#aae5f7ac",
     paddingVertical: 15,
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     // alignItems: "center",
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginBottom: 1,
   },
   cardDetail: {
-    width: windowWidth * 0.8,
+    width: windowWidth * 0.75,
   },
   cardTitle: {
     color: '#fefefe',
@@ -169,6 +175,8 @@ const styles = StyleSheet.create({
   cardDis: {
     color: '#205072',
     letterSpacing: 1,
-    fontSize: 14
+    fontSize: 14,
+    marginBottom: 4,
+    textAlign: 'justify'
   }
 })

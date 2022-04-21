@@ -67,119 +67,119 @@ const HomeScreen = () => {
   // console.log("user role", user.userData.usrusername);
 
 
-  const [geolocation, setGeolocation] = useState({
-    'latitude': null,
-    'longitude': null
-  });
-  const [gLocationStatus, setgLocationStatus] = useState(false);
-  const toggleSwitch = () => {
-    if (gLocationStatus !== false) {
-      setIsActive(previousState => !previousState)
+  // const [geolocation, setGeolocation] = useState({
+  //   'latitude': null,
+  //   'longitude': null
+  // });
+  // const [gLocationStatus, setgLocationStatus] = useState(false);
+  // const toggleSwitch = () => {
+  //   if (gLocationStatus !== false) {
+  //     setIsActive(previousState => !previousState)
 
-    } else {
-      Alert.alert(
-        'Location !',
-        'Please allow location to, to find.',
-        [
-          { text: 'Cancel' },
-          // we can automatically open our app in their settings
-          // so there's less friction in turning geolocation on
-          { text: 'Enable Geolocation', onPress: () => Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings() }
-        ]
-      )
-    }
-  };
+  //   } else {
+  //     Alert.alert(
+  //       'Location !',
+  //       'Please allow location to, to find.',
+  //       [
+  //         { text: 'Cancel' },
+  //         // we can automatically open our app in their settings
+  //         // so there's less friction in turning geolocation on
+  //         { text: 'Enable Geolocation', onPress: () => Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings() }
+  //       ]
+  //     )
+  //   }
+  // };
 
 
-  const hasGeolocationPermission = async () => {
-    try {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      let finalStatus = status
-      if (finalStatus === 'granted') {
-        // console.log('permission grated')
-        const userLocation = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest, maximumAge: 10000 })
-        // console.log("location 1st", userLocation);
-        temp(userLocation);
-        setgLocationStatus(true);
-      }
-      // if (finalStatus !== 'granted') {
-      //   Alert.alert(
-      //     'Warning',
-      //     'You will not search if you do not enable geolocation in this app. If you would like to search, please enable geolocation for Fin in your settings.',
-      //     [
-      //       { text: 'Cancel' },
-      //       // we can automatically open our app in their settings
-      //       // so there's less friction in turning geolocation on
-      //       { text: 'Enable Geolocation', onPress: () => Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings() }
-      //     ]
-      //   )
-      //   return false;
-      // }
-    } catch (error) {
-      // Alert.alert(
-      //   'Error',
-      //   'Something went wrong while check your geolocation permissions, please try again later.',
-      //  [ { text: 'Enable Geolocation', onPress: () => Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings() }]
-      // );
-      // return false;
-    }
-  }
+  // const hasGeolocationPermission = async () => {
+  //   try {
+  //     const { status } = await Location.requestForegroundPermissionsAsync();
+  //     let finalStatus = status
+  //     if (finalStatus === 'granted') {
+  //       // console.log('permission grated')
+  //       const userLocation = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest, maximumAge: 10000 })
+  //       // console.log("location 1st", userLocation);
+  //       temp(userLocation);
+  //       setgLocationStatus(true);
+  //     }
+  //     // if (finalStatus !== 'granted') {
+  //     //   Alert.alert(
+  //     //     'Warning',
+  //     //     'You will not search if you do not enable geolocation in this app. If you would like to search, please enable geolocation for Fin in your settings.',
+  //     //     [
+  //     //       { text: 'Cancel' },
+  //     //       // we can automatically open our app in their settings
+  //     //       // so there's less friction in turning geolocation on
+  //     //       { text: 'Enable Geolocation', onPress: () => Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings() }
+  //     //     ]
+  //     //   )
+  //     //   return false;
+  //     // }
+  //   } catch (error) {
+  //     // Alert.alert(
+  //     //   'Error',
+  //     //   'Something went wrong while check your geolocation permissions, please try again later.',
+  //     //  [ { text: 'Enable Geolocation', onPress: () => Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings() }]
+  //     // );
+  //     // return false;
+  //   }
+  // }
 
-  function temp(e) {
-    setGeolocation({
-      'latitude': e.coords.latitude,
-      'longitude': e.coords.longitude,
-    })
-  }
+  // function temp(e) {
+  //   setGeolocation({
+  //     'latitude': e.coords.latitude,
+  //     'longitude': e.coords.longitude,
+  //   })
+  // }
 
-  const setCollectorData = () => {
-    hasGeolocationPermission()
-    let today = new Date();
-    const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.toLocaleTimeString();
+  // const setCollectorData = () => {
+  //   hasGeolocationPermission()
+  //   let today = new Date();
+  //   const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.toLocaleTimeString();
 
-    const data = {
-      "LId": 0,
-      "UserId": user.userData.usrUserId,
-      "Latitude": geolocation.latitude,
-      "Longitude": geolocation.longitude,
-      "EntryDate": newDate,
-      "ClientId": 0
-    }
-    if (isActive === true) {
-      dispatch(UpdateCollectorLocation(data, (res) => {
-        if (res?.CreatedId > 0 && res?.SuccessMsg === true) {
-          console.log(res)
-        } else {
-          console.log('some error occured while dispatch user location');
-        }
-      }))
-    } else {
-    }
+  //   const data = {
+  //     "LId": 0,
+  //     "UserId": user.userData.usrUserId,
+  //     "Latitude": geolocation.latitude,
+  //     "Longitude": geolocation.longitude,
+  //     "EntryDate": newDate,
+  //     "ClientId": 0
+  //   }
+  //   if (isActive === true) {
+  //     dispatch(UpdateCollectorLocation(data, (res) => {
+  //       if (res?.CreatedId > 0 && res?.SuccessMsg === true) {
+  //         console.log(res)
+  //       } else {
+  //         console.log('some error occured while dispatch user location');
+  //       }
+  //     }))
+  //   } else {
+  //   }
 
-  }
+  // }
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCollectorData()
-    }, 20000);
-    return () => clearInterval(interval)
-  }, [geolocation])
-  useEffect(() => {
-    // if (gLocationStatus === false) {
-    //   console.log('big potato');
-    //   Alert.alert(
-    //     'Location !',
-    //     'Please allow location to, to find.',
-    //     [
-    //       { text: 'Cancel' },
-    //       // we can automatically open our app in their settings
-    //       // so there's less friction in turning geolocation on
-    //       { text: 'Enable Geolocation', onPress: () => Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings() }
-    //     ]
-    //   )
-    // }
-    hasGeolocationPermission()
-  }, [])
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setCollectorData()
+  //   }, 20000);
+  //   return () => clearInterval(interval)
+  // }, [geolocation])
+  // useEffect(() => {
+  //   // if (gLocationStatus === false) {
+  //   //   console.log('big potato');
+  //   //   Alert.alert(
+  //   //     'Location !',
+  //   //     'Please allow location to, to find.',
+  //   //     [
+  //   //       { text: 'Cancel' },
+  //   //       // we can automatically open our app in their settings
+  //   //       // so there's less friction in turning geolocation on
+  //   //       { text: 'Enable Geolocation', onPress: () => Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings() }
+  //   //     ]
+  //   //   )
+  //   // }
+  //   hasGeolocationPermission()
+  // }, [])
 
 
 
@@ -227,7 +227,7 @@ const HomeScreen = () => {
         <View style={styles.cardContainer}>
           <View style={styles.dis}>
             <Text style={[GlobalStyles.body, { color: '#3d4e58' }]}>Hi!</Text>
-            <Text style={[GlobalStyles.header, { color: '#205072' }]}>{user.userData.usrusername}</Text>
+            <Text style={[GlobalStyles.header, { color: '#205072' }]}>Admin</Text>
             <Text style={[GlobalStyles.body, { color: '#3d4e58' }]}>Your target for today is to keep positive mindset and smile to everyone you meet.</Text>
           </View>
           {/* <Avatar
@@ -243,7 +243,7 @@ const HomeScreen = () => {
           numColumns={2}
           style={styles.flatContainer}
         />
-        <View style={styles.geoLocationContainer}>
+        {/* <View style={styles.geoLocationContainer}>
           {
             isActive ?
               <Text style={{ color: '#fefefe', fontSize: 18, fontWeight: 'bold', letterSpacing: 1.2 }}>
@@ -260,7 +260,7 @@ const HomeScreen = () => {
             onValueChange={toggleSwitch}
             value={isActive}
           />
-        </View>
+        </View> */}
 
 
         {/* for expo push notification */}
@@ -347,20 +347,6 @@ const styles = StyleSheet.create({
     width: windowWidth - 20,
     marginHorizontal: 10,
     paddingVertical: 15,
-  },
-  geoLocationContainer: {
-    position: 'absolute',
-    bottom: 0,
-    paddingHorizontal: 13,
-    paddingVertical: 10,
-    width: windowWidth,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    // backgroundColor: '#F57F20',
-    backgroundColor: '#8ED1FC',
-    borderTopLeftRadius: 18,
-    borderTopRightRadius: 18,
   },
   hamMenu: {
     width: windowWidth,

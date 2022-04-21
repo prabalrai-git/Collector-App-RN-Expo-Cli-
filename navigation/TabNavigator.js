@@ -17,52 +17,9 @@ import { GetSampleRequestListByCollector } from '../Services/appServices/AssignP
 
 const TabNavigator = () => {
   const Tab = createMaterialTopTabNavigator();
-  // const [asignedData, setAsignedData] = useState(dummyData.RequestList);
-  // // const [asignedData, setAsignedData] = useState();
-  // const [FromDate, setFromDate] = useState(new Date());
-  // const [ToDate, setToDate] = useState(new Date());
-  // const [ReqPatietList, setReqPatietList] = useState();
-  // const [PatietList, setPatietList] = useState([]);
-  // const dispatch = useDispatch()
-
-
-  // useEffect(() => {
-  //   handleRequestList()
-  // }, [])
-
-
-  // console.log("PatietList", PatietList.length);
-
-  // const handleRequestList = () => {
-  //   const fromDate = `${FromDate.getFullYear() + "-" + (FromDate.getMonth() + 1) + "-" + FromDate.getDate()}`
-  //   const toDate = `${ToDate.getFullYear() + "-" + (ToDate.getMonth() + 1) + "-" + 30}`
-  //   const collectorId = 3
-  //   const data = {
-  //     'fromDate': fromDate,
-  //     'toDate': toDate,
-  //     'collectorId': collectorId
-
-  //   }
-  //   dispatch(GetSampleRequestListByCollector(data, (res) => {
-  //     if (res?.RequestList.length > 0) {
-  //       setPatietList(res.RequestList)
-  //       // setdisComplete(true)
-  //     } else {
-  //       console.log('no data found, tab');
-  //     }
-  //   }))
-  // }
   return (
-    // <ImageBackground
-    //   source={require('../assets/images/bkg1.png')}
-    //   resizeMode="cover"
-    //   style={styles.bkgImg}
-    // >
+    
     <View style={styles.mainContainer}>
-
-
-      {/* <HamMenu></HamMenu>
-      <BackBtn></BackBtn> */}
       <Header title={'Tasks'}></Header>
       <Tab.Navigator
         screenOptions={{
@@ -99,7 +56,6 @@ const TabNavigator = () => {
         />
       </Tab.Navigator>
     </View>
-    // </ImageBackground>
 
   )
 }
