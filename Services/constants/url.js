@@ -200,3 +200,17 @@ export const GetMostPopularTestList = 'GetMostPopularTestList'
  * @desc: to get most populer tests
  *  @param: 
  */
+
+export const InsertUpdateCollectorToken = 'InsertUpdateCollectorToken'
+
+/**
+ * @desc: to insert user token
+ *  @param: 
+ */
+
+export const GetUserTokenByUserId = 'GetUserTokenByUserId'
+
+/**
+ * @desc: to get user token data
+ *  @param: ?uId={uId}
+ */

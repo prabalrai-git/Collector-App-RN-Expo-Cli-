@@ -1,17 +1,50 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { AddPatietNavigator, BookTestNavigator, CollectSampleNavigator, MainStackNavigator, SampleCollectionNavigator, TaskNavigator } from './StackNavigator'
 import { useSelector } from 'react-redux'
 import CostomeDrawerContent from '../components/ui/CostomeDrawerContent'
 import LocationTrackingHomeScreen from '../screens/LocationTracking/LocationTrackingHomeScreen'
+import { useNavigation } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DraweNavigator = () => {
   const Drawer = createDrawerNavigator()
-  const user = useSelector(state => state);
+  const user = useSelector(state => state.storeUserData);
   // console.log("user role", user.userData.usrUserId);
-  console.log('user', user.userData);
+  // console.log('user', user.userData);
   let data = user.userData
+  const navigation = useNavigation()
+
+
+  // user.userData === undefined ?
+  //   navigation.navigate('LoginScreen')
+  // : ''
+
+  // useEffect(() => {
+  //   getData()
+  // }, [])
+
+  // // console.log('asc storeage', UserStore);
+  // // if (UserStore !== null) {
+  // //   // dispatch(storeUserData(UserStore))
+  // //   // setUserStore(UserStore)
+  // // }
+
+  // const getData = async () => {
+  //   try {
+  //     const jsonValue = await AsyncStorage.getItem('@userData')
+  //     if (jsonValue == null) {
+  //       navigation.navigate('LoginScreen')
+  //       // setIsSignedIn(true)
+  //     }
+  //     else {
+       
+  //     }
+  //   } catch (e) {
+  //   }
+
+  // }
 
 
   return (

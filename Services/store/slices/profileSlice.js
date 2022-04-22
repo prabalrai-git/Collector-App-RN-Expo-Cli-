@@ -14,13 +14,15 @@ const profile = createSlice({
       // console.log('reducer', action.payload)
       state.userData = action.payload
       storeData(action.payload)
+      // console.log();
     },
     storeAuthToken: (state, action) => {
 
     },
-    logout: async (state, action) => {
+    logout: (state, action) => {
       state.userData = undefined
-      await AsyncStorage.removeItem('@userData')
+      AsyncStorage.removeItem('@userData')
+      // console.log('json val logout');
     }
   }
 })
@@ -28,6 +30,7 @@ const profile = createSlice({
 const storeData = async (value) => {
   try {
     const jsonValue = JSON.stringify(value)
+    // console.log('json val', jsonValue);
     await AsyncStorage.setItem('@userData', jsonValue)
   } catch (e) {
     // saving error

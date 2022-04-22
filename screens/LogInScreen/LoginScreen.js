@@ -1,13 +1,16 @@
 import { ActivityIndicator, Alert, Dimensions, Image, Modal, StatusBar, StyleSheet, TextInput, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { useDispatch } from 'react-redux'
-import { getLoginApi } from '../../Services/appServices/loginService'
+import { useDispatch, useSelector } from 'react-redux'
+import { getLoginApi, GetTokenByUserId, InsertUpdateToken } from '../../Services/appServices/loginService'
 import { Icon, Text } from 'react-native-elements'
 import AppButton from '../../components/ui/AppButton'
-// import { storeUserData } from '../../Services/store/slices/profileSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { storeUserData } from '../../Services/store/slices/profileSlice'
+
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+// import NotificationBtn from '../components/ui/NotificationBtn';
 
 
 const windowWidth = Dimensions.get('window').width * 0.9;
@@ -17,8 +20,24 @@ const LoginScreen = () => {
   const [username, setUserName] = useState('pacific');
   const [password, setPassword] = useState('pacific123');
   const [isLoading, setIsLoading] = useState(false);
-  const [btnDis, setBtDis] = useState(false)
+  const [btnDis, setBtDis] = useState(true)
   const dispatch = useDispatch()
+  const [Token, setToken] = useState('')
+
+
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+  // console.log('toet token', Token);
+
+  // useEffect(() => {
+  //   if (Token !== '') {
+  //     setBtDis(true)
+  //   } else {
+  //     setBtDis(false)
+  //   }
+  // }, [Token])
 
   const handleLogin = () => {
     setBtDis(true)
@@ -27,15 +46,53 @@ const LoginScreen = () => {
       user: username,
       pass: password
     }
+
     dispatch(getLoginApi(data, (val) => {
       if (val.length !== 0) {
         let andd = val?.validuserDetails;
         if (andd[0]?.usrUserId > 0) {
 
-          dispatch(storeUserData(andd[0]))
-          // storeData(andd[0])
-          navigation.navigate('DraweNavigator')
-          setIsLoading(false);
+          console.log('add 0', andd[0]);
+
+          dispatch(GetTokenByUserId(andd[0].usrUserId, (res) => {
+
+            console.log('toet token', res.userToken[0]);
+            
+            if (res?.userToken[0]) {
+              let updateTokenData = {
+                "CId": res.userToken[0].CId,
+                "UserId": andd[0].usrUserId,
+                "UserName": andd[0].usrusername,
+                "UserRole": andd[0].usrrole,
+                "UserToken": Token
+              }
+              if (res.userToken[0].UserToken === '') {
+                // inset if user token is empty
+                dispatch(InsertUpdateToken(updateTokenData, (res) => {
+
+                }))
+              }
+            }else{
+              let insertTokenData = {
+                "CId": 0,
+                "UserId": andd[0].usrUserId,
+                "UserName": andd[0].usrusername,
+                "UserRole": andd[0].usrrole,
+                "UserToken": Token
+              }
+              dispatch(InsertUpdateToken(insertTokenData, (res) => {
+
+              }))
+            }
+
+            // console.log("res" , res.userToken[0].UserToken);
+
+
+            dispatch(storeUserData(andd[0]))
+            setIsLoading(false);
+          }))
+
+
 
         } else {
           setIsLoading(false);
@@ -56,14 +113,73 @@ const LoginScreen = () => {
     }))
   }
 
-  const storeData = async (value) => {
-    try {
-      const jsonValue = JSON.stringify(value)
-      await AsyncStorage.setItem('@userData', jsonValue)
-    } catch (e) {
-      // saving error
+  {/* for expo push notification */ }
+  useEffect(() => {
+
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+    // This listener is fired whenever a notification is received while the app is foregrounded
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log("token in login screen", response);
+      // navigation.navigate('BookTest')
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+
+
+  }, []);
+
+
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }),
+  });
+
+  async function registerForPushNotificationsAsync() {
+    let token;
+    if (Device.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log("login token", token);
+      setToken(token)
+      setBtDis(false)
+    } else {
+      alert('Must use physical device for Push Notifications');
     }
+
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+
+    return token;
   }
+  {/* for expo push notification */ }
+
   return (
     <View style={styles.container}>
       <View style={styles.componyInfo}>
@@ -131,6 +247,8 @@ const LoginScreen = () => {
 }
 
 export default LoginScreen
+
+
 
 const styles = StyleSheet.create({
   container: {

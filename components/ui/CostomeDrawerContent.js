@@ -2,7 +2,7 @@ import { Alert, Image, ImageBackground, StyleSheet, Switch, Text, View, Linking,
 import React, { useEffect, useState } from 'react'
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer'
 import { Avatar } from 'react-native-elements'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import * as Location from "expo-location"
 import { UpdateCollectorLocation } from '../../Services/appServices/Collector'
 import { JumpingTransition } from 'react-native-reanimated'
@@ -12,6 +12,7 @@ import { logout, storeUserData } from '../../Services/store/slices/profileSlice'
 
 const CostomeDrawerContent = (props) => {
   // console.log("props",props.data.usrUserId);
+
   const navigation = useNavigation()
   const [isActive, setIsActive] = useState(false);
   const dispatch = useDispatch();
@@ -96,7 +97,7 @@ const CostomeDrawerContent = (props) => {
     if (isActive === true) {
       dispatch(UpdateCollectorLocation(data, (res) => {
         if (res?.CreatedId > 0 && res?.SuccessMsg === true) {
-          console.log(res)
+          // console.log(res)
         } else {
           console.log('some error occured while dispatch user location');
         }
@@ -129,8 +130,25 @@ const CostomeDrawerContent = (props) => {
     hasGeolocationPermission()
   }, [])
 
-  const handleLogOut = () => {
+  const handleLogOut = async () => {
     // await AsyncStorage.removeItem('@userData')
+    dispatch(GetTokenByUserId(props.data.usrUserId, (res) => {
+      if (res?.userToken[0]) {
+        let updateTokenData = {
+          "CId": res.userToken[0].CId,
+          "UserId": andd[0].usrUserId,
+          "UserName": andd[0].usrusername,
+          "UserRole": andd[0].usrrole,
+          "UserToken": Token
+        }
+        if (res.userToken[0].UserToken === '') {
+          // inset if user token is empty
+          dispatch(InsertUpdateToken(updateTokenData, (res) => {
+
+          }))
+        }
+      }
+    }))
     dispatch(logout(null))
     // navigation.navigate('LoginScreen')
   }

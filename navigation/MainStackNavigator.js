@@ -11,31 +11,33 @@ import { storeUserData } from '../Services/store/slices/profileSlice'
 const MainStackNavigator = () => {
   const Stack = createNativeStackNavigator();
 
-  const [UserStore, setUserStore] = useState(null);
+  // const [UserStore, setUserStore] = useState(null);
   const dispatch = useDispatch()
   const user = useSelector(state => state.storeUserData);
-  // console.log(user.userData);
-  // const [IsSignedIn, setIsSignedIn] = useState(false);
+  // console.log(user);
+  const [IsSignedIn, setIsSignedIn] = useState(false);
 
   useEffect(() => {
     getData()
   }, [])
 
-  console.log('asc storeage', UserStore);
-  if (UserStore !== null) {
-    dispatch(storeUserData(UserStore))
-  }
+  // console.log('asc storeage', UserStore);
+  // if (UserStore !== null) {
+  //   // dispatch(storeUserData(UserStore))
+  //   // setUserStore(UserStore)
+  // }
 
   const getData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('@userData')
+      // console.log('json val 1st', jsonValue);
       if (jsonValue != null) {
-        setUserStore(JSON.parse(jsonValue))
+        dispatch(storeUserData(JSON.parse(jsonValue)))
         // setIsSignedIn(true)
       }
       else {
-        null
-        setIsSignedIn(false)
+        // null
+        // setIsSignedIn(false)
       }
     } catch (e) {
     }
@@ -43,8 +45,9 @@ const MainStackNavigator = () => {
   }
   return (
     <Stack.Navigator>
-      {/* {
-        user.userData !== undefined ?
+
+      {
+        user.userData === undefined ?
           <Stack.Screen
             name='LoginScreen'
             component={LoginScreen}
@@ -52,7 +55,8 @@ const MainStackNavigator = () => {
               headerShown: false,
               // animationTypeForReplace: IsSignedIn ? 'pop' : 'push'
             }}
-          /> :
+          />
+          :
           <Stack.Screen
             name='DraweNavigator'
             component={DraweNavigator}
@@ -61,8 +65,8 @@ const MainStackNavigator = () => {
             }}
           />
 
-      } */}
-      {
+      }
+      {/* {
         UserStore !== undefined ?
 
           <Stack.Screen
@@ -79,7 +83,7 @@ const MainStackNavigator = () => {
               headerShown: false,
             }}
           />
-      }
+      } */}
 
     </Stack.Navigator>
   )
