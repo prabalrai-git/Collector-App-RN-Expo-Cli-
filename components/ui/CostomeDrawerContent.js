@@ -96,10 +96,13 @@ const CostomeDrawerContent = (props) => {
     }
     if (isActive === true) {
       dispatch(UpdateCollectorLocation(data, (res) => {
+        // console.log('res', res);
+        // return
         if (res?.CreatedId > 0 && res?.SuccessMsg === true) {
           // console.log(res)
+          // console.log("res", res);
         } else {
-          console.log('some error occured while dispatch user location');
+          console.log('some error occured while dispatch user location, api error map is still updated');
         }
       }))
     } else {
@@ -132,23 +135,23 @@ const CostomeDrawerContent = (props) => {
 
   const handleLogOut = async () => {
     // await AsyncStorage.removeItem('@userData')
-    dispatch(GetTokenByUserId(props.data.usrUserId, (res) => {
-      if (res?.userToken[0]) {
-        let updateTokenData = {
-          "CId": res.userToken[0].CId,
-          "UserId": andd[0].usrUserId,
-          "UserName": andd[0].usrusername,
-          "UserRole": andd[0].usrrole,
-          "UserToken": Token
-        }
-        if (res.userToken[0].UserToken === '') {
-          // inset if user token is empty
-          dispatch(InsertUpdateToken(updateTokenData, (res) => {
+    // dispatch(GetTokenByUserId(props.data.usrUserId, (res) => {
+    //   if (res?.userToken[0]) {
+    //     let updateTokenData = {
+    //       "CId": res.userToken[0].CId,
+    //       "UserId": andd[0].usrUserId,
+    //       "UserName": andd[0].usrusername,
+    //       "UserRole": andd[0].usrrole,
+    //       "UserToken": Token
+    //     }
+    //     if (res.userToken[0].UserToken === '') {
+    //       // inset if user token is empty
+    //       dispatch(InsertUpdateToken(updateTokenData, (res) => {
 
-          }))
-        }
-      }
-    }))
+    //       }))
+    //     }
+    //   }
+    // }))
     dispatch(logout(null))
     // navigation.navigate('LoginScreen')
   }

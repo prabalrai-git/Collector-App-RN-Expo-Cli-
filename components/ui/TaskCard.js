@@ -479,7 +479,7 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed }) =
                     </View>
                   }
                   {
-                  completed &&
+                    completed &&
 
                     <View style={[styles.testList, GlobalStyles.boxShadow]}>
                       <Text style={{
@@ -495,14 +495,14 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed }) =
                         marginBottom: 10,
                         letterSpacing: 1,
                       }}>{data.Remarks}</Text>
-                    
+
                     </View>
                   }
                 </View>
-                
-          </ScrollView>
-        </View>
-      </Modal > : null
+
+              </ScrollView>
+            </View>
+          </Modal > : null
       }
 
 

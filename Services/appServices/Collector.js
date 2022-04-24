@@ -1,6 +1,6 @@
-import { InsertupdateCollectorLocationDetails } from "../constants/url";
+import { GetlocationofCollectorByDate, InsertupdateCollectorLocationDetails } from "../constants/url";
 import { generateUrlEncodedData } from "../utils/generateUrlEncodedData";
-import { store } from "../utils/httpUtil";
+import { fetch, store } from "../utils/httpUtil";
 
 //"LId": 1,
 //"UserId": 2,
@@ -14,7 +14,7 @@ export const UpdateCollectorLocation = (data, sucessCallback) => {
     try {
       // console.log('dispatch data', data)
       let formData = generateUrlEncodedData(data)
-      console.log("form data",formData);
+      // console.log("form data",formData);
       const response = await store(InsertupdateCollectorLocationDetails, formData);
       console.log("response", response)
       if (response?.status === 200) {
@@ -24,6 +24,22 @@ export const UpdateCollectorLocation = (data, sucessCallback) => {
         sucessCallback([])
       }
 
+    } catch (error) {
+
+    }
+  }
+}
+
+export const GetlocationofCollectorByDateAndUserId = (data, sucessCallback) => {
+  return async dispatch => {
+    try {
+      const response = await fetch(`${GetlocationofCollectorByDate}?entrydate=${data.entrydate}&userId=${data.userId}`);
+      if (response?.status === 200) {
+        sucessCallback(response?.data)
+        console.log('sucess full map data')
+      } else {
+        sucessCallback([])
+      }
     } catch (error) {
 
     }

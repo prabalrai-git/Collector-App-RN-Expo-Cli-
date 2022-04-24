@@ -21,6 +21,8 @@ import TabNavigator from './TabNavigator'
 import PrevioiusRequest from '../screens/BookTest/PrevioiusRequest'
 import AddPatientDetals from '../screens/AddPatient/AddPatientDetals'
 import AddRefReq from '../screens/AddPatient/AddRefReq'
+import LocationTrackingHomeScreen from '../screens/LocationTracking/LocationTrackingHomeScreen'
+import CollectorMapScreen from '../screens/LocationTracking/CollectorMapScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -232,11 +234,35 @@ const SampleCollectionNavigator = () => {
   )
 }
 
+const CollectorLocation = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Group>
+        <Stack.Screen
+          name='CollectorLocationHomeScreen'
+          component={LocationTrackingHomeScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name='CollectorMapScreen'
+          component={CollectorMapScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Stack.Group>
+    </Stack.Navigator>
+  )
+}
 
 
 
 
 
-export { MainStackNavigator, CollectSampleNavigator, TaskNavigator, AddPatietNavigator, BookTestNavigator, SampleCollectionNavigator }
+
+
+export { MainStackNavigator, CollectSampleNavigator, TaskNavigator, AddPatietNavigator, BookTestNavigator, SampleCollectionNavigator, CollectorLocation }
 
 const styles = StyleSheet.create({})

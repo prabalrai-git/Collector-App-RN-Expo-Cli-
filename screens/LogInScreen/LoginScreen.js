@@ -52,11 +52,11 @@ const LoginScreen = () => {
         let andd = val?.validuserDetails;
         if (andd[0]?.usrUserId > 0) {
 
-          console.log('add 0', andd[0]);
+          // console.log('add 0', andd[0]);
 
           dispatch(GetTokenByUserId(andd[0].usrUserId, (res) => {
 
-            console.log('toet token', res.userToken[0]);
+            // console.log('toet token', res.userToken[0]);
             
             if (res?.userToken[0]) {
               let updateTokenData = {

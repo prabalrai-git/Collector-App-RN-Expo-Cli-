@@ -4,6 +4,7 @@ import { Marker } from 'react-native-maps'
 import collector from '../../assets/images/collector.png'
 
 const MarkerCostome = (props) => {
+  console.log(props.coordinate);
   return (
     <>
       {props.forCollector &&

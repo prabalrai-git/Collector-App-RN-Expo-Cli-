@@ -26,14 +26,14 @@ const navData = [
     name: 'Add Patient',
     pathName: 'AddPatient',
     color: '#9985FF',
-    icon: 'addfile'
+    icon: 'addusergroup'
   },
   {
     id: 2,
     name: 'Patient',
     pathName: 'BookTest',
     color: '#FF8585',
-    icon: 'book'
+    icon: 'team'
   },
   {
     id: 3,
@@ -48,6 +48,13 @@ const navData = [
     pathName: 'task',
     color: '#4688B3',
     icon: 'select1'
+  },
+  {
+    id: 4,
+    name: 'Collector Tracking',
+    pathName: 'CollectorLocation',
+    color: '#4688B3',
+    icon: 'enviromento'
   },
 ]
 

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
-import { AddPatietNavigator, BookTestNavigator, CollectSampleNavigator, MainStackNavigator, SampleCollectionNavigator, TaskNavigator } from './StackNavigator'
+import { AddPatietNavigator, BookTestNavigator, CollectorLocation, CollectSampleNavigator, MainStackNavigator, SampleCollectionNavigator, TaskNavigator } from './StackNavigator'
 import { useSelector } from 'react-redux'
 import CostomeDrawerContent from '../components/ui/CostomeDrawerContent'
 import LocationTrackingHomeScreen from '../screens/LocationTracking/LocationTrackingHomeScreen'
@@ -169,8 +169,8 @@ const DraweNavigator = () => {
       />
       {/* } */}
       <Drawer.Screen
-        name='locationTracking'
-        component={LocationTrackingHomeScreen}
+        name='CollectorLocation'
+        component={CollectorLocation}
         options={{
           headerShown: false,
           title: 'Location Tracking',
