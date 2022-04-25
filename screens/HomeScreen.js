@@ -1,4 +1,4 @@
-import { Dimensions, FlatList, ImageBackground, Linking, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, FlatList, Image, ImageBackground, Linking, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { DrawerActions, useNavigation } from '@react-navigation/native'
 import { Avatar, Icon } from 'react-native-elements';
@@ -26,35 +26,40 @@ const navData = [
     name: 'Add Patient',
     pathName: 'AddPatient',
     color: '#9985FF',
-    icon: 'addusergroup'
+    icon: 'addusergroup',
+    type: 'antdesign'
   },
   {
     id: 2,
     name: 'Patient',
     pathName: 'BookTest',
     color: '#FF8585',
-    icon: 'team'
+    icon: 'user',
+    type: 'antdesign'
   },
   {
     id: 3,
     name: 'Sample',
     pathName: 'SampleHome',
     color: '#FFC285',
-    icon: 'switcher'
+    icon: 'test-tube',
+    type: 'MaterialCommunityIcons'
   },
   {
     id: 4,
     name: 'Task',
     pathName: 'task',
     color: '#4688B3',
-    icon: 'select1'
+    icon: 'select1',
+    type: 'antdesign'
   },
   {
     id: 4,
     name: 'Collector Tracking',
     pathName: 'CollectorLocation',
     color: '#4688B3',
-    icon: 'enviromento'
+    icon: 'enviromento',
+    type: 'antdesign'
   },
 ]
 
@@ -65,129 +70,6 @@ const HomeScreen = () => {
   const user = useSelector(state => state.storeUserData);
   const [isActive, setIsActive] = useState(false);
   const dispatch = useDispatch();
-
-  const [expoPushToken, setExpoPushToken] = useState('');
-  const [notification, setNotification] = useState(false);
-  const notificationListener = useRef();
-  const responseListener = useRef();
-
-  // console.log("user role", user.userData.usrusername);
-
-
-  // const [geolocation, setGeolocation] = useState({
-  //   'latitude': null,
-  //   'longitude': null
-  // });
-  // const [gLocationStatus, setgLocationStatus] = useState(false);
-  // const toggleSwitch = () => {
-  //   if (gLocationStatus !== false) {
-  //     setIsActive(previousState => !previousState)
-
-  //   } else {
-  //     Alert.alert(
-  //       'Location !',
-  //       'Please allow location to, to find.',
-  //       [
-  //         { text: 'Cancel' },
-  //         // we can automatically open our app in their settings
-  //         // so there's less friction in turning geolocation on
-  //         { text: 'Enable Geolocation', onPress: () => Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings() }
-  //       ]
-  //     )
-  //   }
-  // };
-
-
-  // const hasGeolocationPermission = async () => {
-  //   try {
-  //     const { status } = await Location.requestForegroundPermissionsAsync();
-  //     let finalStatus = status
-  //     if (finalStatus === 'granted') {
-  //       // console.log('permission grated')
-  //       const userLocation = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest, maximumAge: 10000 })
-  //       // console.log("location 1st", userLocation);
-  //       temp(userLocation);
-  //       setgLocationStatus(true);
-  //     }
-  //     // if (finalStatus !== 'granted') {
-  //     //   Alert.alert(
-  //     //     'Warning',
-  //     //     'You will not search if you do not enable geolocation in this app. If you would like to search, please enable geolocation for Fin in your settings.',
-  //     //     [
-  //     //       { text: 'Cancel' },
-  //     //       // we can automatically open our app in their settings
-  //     //       // so there's less friction in turning geolocation on
-  //     //       { text: 'Enable Geolocation', onPress: () => Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings() }
-  //     //     ]
-  //     //   )
-  //     //   return false;
-  //     // }
-  //   } catch (error) {
-  //     // Alert.alert(
-  //     //   'Error',
-  //     //   'Something went wrong while check your geolocation permissions, please try again later.',
-  //     //  [ { text: 'Enable Geolocation', onPress: () => Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings() }]
-  //     // );
-  //     // return false;
-  //   }
-  // }
-
-  // function temp(e) {
-  //   setGeolocation({
-  //     'latitude': e.coords.latitude,
-  //     'longitude': e.coords.longitude,
-  //   })
-  // }
-
-  // const setCollectorData = () => {
-  //   hasGeolocationPermission()
-  //   let today = new Date();
-  //   const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.toLocaleTimeString();
-
-  //   const data = {
-  //     "LId": 0,
-  //     "UserId": user.userData.usrUserId,
-  //     "Latitude": geolocation.latitude,
-  //     "Longitude": geolocation.longitude,
-  //     "EntryDate": newDate,
-  //     "ClientId": 0
-  //   }
-  //   if (isActive === true) {
-  //     dispatch(UpdateCollectorLocation(data, (res) => {
-  //       if (res?.CreatedId > 0 && res?.SuccessMsg === true) {
-  //         console.log(res)
-  //       } else {
-  //         console.log('some error occured while dispatch user location');
-  //       }
-  //     }))
-  //   } else {
-  //   }
-
-  // }
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setCollectorData()
-  //   }, 20000);
-  //   return () => clearInterval(interval)
-  // }, [geolocation])
-  // useEffect(() => {
-  //   // if (gLocationStatus === false) {
-  //   //   console.log('big potato');
-  //   //   Alert.alert(
-  //   //     'Location !',
-  //   //     'Please allow location to, to find.',
-  //   //     [
-  //   //       { text: 'Cancel' },
-  //   //       // we can automatically open our app in their settings
-  //   //       // so there's less friction in turning geolocation on
-  //   //       { text: 'Enable Geolocation', onPress: () => Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings() }
-  //   //     ]
-  //   //   )
-  //   // }
-  //   hasGeolocationPermission()
-  // }, [])
-
 
 
   const renderItem = ({ item }) => (
@@ -220,6 +102,7 @@ const HomeScreen = () => {
             source={require('../assets/images/user.png')}
           /> */}
         </View>
+        
         <FlatList
           data={navData}
           renderItem={renderItem}
@@ -227,29 +110,6 @@ const HomeScreen = () => {
           numColumns={2}
           style={styles.flatContainer}
         />
-        {/* <View style={styles.geoLocationContainer}>
-          {
-            isActive ?
-              <Text style={{ color: '#fefefe', fontSize: 18, fontWeight: 'bold', letterSpacing: 1.2 }}>
-                Location activated
-              </Text> :
-              <Text style={{ color: '#fefefe', fontSize: 18, fontWeight: 'bold', letterSpacing: 1.2 }}>
-                Activate location
-              </Text>
-          }
-          <Switch
-            trackColor={{ false: "#767577", true: "#81b0ff" }}
-            thumbColor={isActive ? "#f5dd4b" : "#f4f3f4"}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch}
-            value={isActive}
-          />
-        </View> */}
-
-
-        {/* for expo push notification */}
-
-        {/* for expo push notification */}
       </ImageBackground>
     </View>
   )

@@ -5,8 +5,10 @@ import { useNavigation } from '@react-navigation/native';
 
 const windowWidth = Dimensions.get('window').width;
 
+
 export const HomeActionButton = ({ data }) => {
   const navigation = useNavigation();
+
   return (
     <TouchableOpacity
       style={styles.btnContainer}
@@ -35,7 +37,7 @@ export const InfoActionButton = (props) => {
       <Icon
         name={props.icon}
         color={'#FF7F00'}
-        type='antdesign'
+        type={props.type}
         style={styles.icon}
         size={30}
       ></Icon>

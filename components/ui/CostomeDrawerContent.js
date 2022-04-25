@@ -113,7 +113,7 @@ const CostomeDrawerContent = (props) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCollectorData()
-    }, 20000);
+    }, 7000);
     return () => clearInterval(interval)
   }, [geolocation])
   useEffect(() => {

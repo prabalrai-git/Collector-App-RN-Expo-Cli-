@@ -196,6 +196,19 @@ const LoginScreen = () => {
         </View> */}
 
       </View>
+      <View style={styles.TextInputcontainer}>
+        <Icon
+          name='shop'
+          color={global.secondary}
+          type='entypo'
+          style={styles.icon}
+        ></Icon>
+        <TextInput
+          style={styles.TextInput}
+          placeholder='clinet id..'
+          onChangeText={(name) => setUserName(name)}
+        ></TextInput>
+      </View>
 
       <View style={styles.TextInputcontainer}>
         <Icon

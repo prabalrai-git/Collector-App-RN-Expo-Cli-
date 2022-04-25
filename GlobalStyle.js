@@ -63,5 +63,12 @@ export const GlobalStyles = StyleSheet.create({
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
     elevation: 4,
+  },
+
+  // for loading
+  loadingcontainer: {
+    flex: 1,
+    backgroundColor: '#fefefe58',
+    justifyContent: 'center',
   }
 })

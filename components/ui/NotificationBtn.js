@@ -109,7 +109,6 @@ const NotificationBtn = () => {
                   }
                 ></Icon>
               </TouchableOpacity>
-
             </View>
 
             <FlatList

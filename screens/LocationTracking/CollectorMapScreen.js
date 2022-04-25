@@ -1,25 +1,33 @@
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { ActivityIndicator, Dimensions, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
 import { Avatar, Icon } from 'react-native-elements'
-import MapView from 'react-native-maps'
+import MapView, { Marker, AnimatedRegion } from 'react-native-maps'
 import { GetlocationofCollectorByDateAndUserId } from '../../Services/appServices/Collector'
 import { useDispatch } from 'react-redux'
 import MarkerCostome from '../../components/ui/MarkerCostome'
 import { useNavigation } from '@react-navigation/native'
 import Header from '../../components/Header'
+import { GlobalStyles } from '../../GlobalStyle'
 
-const windowWidth = Dimensions.width;
+
+const screen = Dimensions.get('window');
+const ASPECT_RATIO = screen.width / screen.height;
+const LATITUDE_DELTA = 0.04;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const CollectorMapScreen = ({ route }) => {
 
-  // console.log('route', route.params.data);
   const navigation = useNavigation()
-  const [Coordinate, setCoordinate] = useState({
-    'latitude': null,
-    'longitude': null
-  });
-  const [Newdate, setNewdate] = useState('');
   const dispatch = useDispatch()
+  const [coordinate, setcoordinate] = useState({
+    latitude: 27.7172,
+    longitude: 85.3240,
+    latitudeDelta: LATITUDE_DELTA,
+    longitudeDelta: LONGITUDE_DELTA
+
+  })
+
+  const [isLoading, setisLoading] = useState(true);
 
   let today = new Date();
   const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -32,53 +40,58 @@ const CollectorMapScreen = ({ route }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch(GetlocationofCollectorByDateAndUserId(cData, (res) => {
-        // console.log(res?.collectorLocation);
         if (res?.collectorLocation.length > 0) {
-          // console.log(res?.collectorLocation[res?.collectorLocation.length - 1]);
-          setCoordinate({
-            'latitude': res?.collectorLocation[res?.collectorLocation.length - 1].Latitude,
-            'longitude': res?.collectorLocation[res?.collectorLocation.length - 1].Longitude
+          let lat = Number(res?.collectorLocation[res?.collectorLocation.length - 1].Latitude);
+          let long = Number(res?.collectorLocation[res?.collectorLocation.length - 1].Longitude);
+          // console.log(lat, long);
+          setcoordinate({
+            latitude: lat,
+            longitude: long,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA
           })
+          setisLoading(false)
+
         }
       }))
-    }, 10000);
+    }, 1000);
     return () => clearInterval(interval)
 
-  }, [Coordinate])
+  }, [])
 
-  console.log(Coordinate);
-  
-  let cMarker = {
-    latlng: {
-      latitude: Coordinate.latitude === null ? 27.7172 : Number(Coordinate.latitude),
-      longitude: Coordinate.longitude === null ? 85.3240 : Number(Coordinate.longitude)
-      // latitude: 27.7172,
-      // longitude: 85.3240,
-    },
-    title: route.params.data.UserName,
-    description: `user Id:${route.params.data.UserId}`
-  }
-  // console.log(cMarker);
   return (
     <View style={styles.mainContainer}>
       <Header title={`${route.params.data.UserName} Location`}></Header>
+
+
       <View style={styles.mapViewContainer}>
-        <MapView 
-          style={styles.map}
-          initialRegion={{
-            latitude: Coordinate.latitude === null || Coordinate.latitude === undefined ? 27.7172 : Number(Coordinate.latitude),
-            longitude: Coordinate.longitude === null || Coordinate.longitude === undefined ? 85.3240 : Number(Coordinate.longitude),
-            latitudeDelta: 0.0111922,
-            longitudeDelta: 0.0111421,
-          }}
-        >
-          <MarkerCostome
-            coordinate={cMarker.latlng}
-            title={cMarker.title}
-            description={cMarker.description}
-            forCollector
-          />
-        </MapView>
+        {
+          isLoading ?
+            <View style={GlobalStyles.loadingcontainer}>
+              <ActivityIndicator size="large" color={global.secondary} />
+            </View>
+
+            :
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: coordinate.latitude,
+                longitude: coordinate.longitude,
+                latitudeDelta: LATITUDE_DELTA,
+                longitudeDelta: LONGITUDE_DELTA
+              }}
+            >
+              <MarkerCostome
+                coordinate={coordinate}
+                title={route.params.data.UserName}
+                description={`user Id:${route.params.data.UserId}`}
+                forCollector
+              />
+            </MapView>
+        }
+
+
+
         <View style={styles.bSheet}>
           <Avatar
             size={64}
