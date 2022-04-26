@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { Avatar, Icon } from 'react-native-elements'
 import DateBadge from './DateBadge';
 import HamMenu from './HamMenu';
+import { useDispatch } from 'react-redux';
 
 
 const newData = [
@@ -26,6 +27,10 @@ const newData = [
 const windowWidth = Dimensions.get('window').width;
 const NotificationBtn = () => {
   const [modalVisible, setModalVisible] = useState(false)
+  // GetNotificationByUserId
+
+  const dispatch = useDispatch();
+  const [Notification, setNotification] = useState();
 
 
   const renderItem = ({ item }) => (
@@ -120,6 +125,7 @@ const NotificationBtn = () => {
           </View>
         </View>
       </Modal>
+      
     </View>
   )
 }
@@ -131,7 +137,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: windowWidth - 40,
+    width: windowWidth - 20,
     alignItems: 'center'
   },
   centeredView: {

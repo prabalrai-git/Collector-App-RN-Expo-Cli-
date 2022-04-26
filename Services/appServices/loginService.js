@@ -1,4 +1,5 @@
 import { GetUserTokenByUserId, GetValidCollectorLoginForApp, InsertUpdateCollectorToken } from "../constants/url";
+import { generateUrlEncodedData } from "../utils/generateUrlEncodedData";
 import { fetch, store } from "../utils/httpUtil"
 
 export const getLoginApi = (data, sucessCallback) => {
@@ -22,6 +23,7 @@ export const getLoginApi = (data, sucessCallback) => {
 export const InsertUpdateToken = (data, sucessCallback) => {
   return async dispatch => {
     let formData = generateUrlEncodedData(data)
+    // console.log('data', formData);
     try {
       const response = await store(InsertUpdateCollectorToken, formData);
       if (response?.status === 200) {
@@ -39,8 +41,10 @@ export const InsertUpdateToken = (data, sucessCallback) => {
 
 export const GetTokenByUserId = (data, sucessCallback) => {
   return async dispatch => {
+    
     try {
       const response = await fetch(`${GetUserTokenByUserId}?uId=${data}`);
+      // console.log('data', data);
       if (response?.status === 200) {
         // console.log('get toeken sucess');
         sucessCallback(response?.data)

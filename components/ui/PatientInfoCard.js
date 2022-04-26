@@ -79,7 +79,7 @@ const PatientInfoCard = ({ data, AsignedTask, disable, retDis }) => {
   const cMarker = {
     latlng: {
       latitude: Coordinate.latitude === null || Coordinate.latitude === undefined ? 27.7172 : Coordinate.latitude,
-      longitude: Coordinate.longitude === null || Coordinate.longitude === undefined  ? 85.3240 : Coordinate.longitude
+      longitude: Coordinate.longitude === null || Coordinate.longitude === undefined ? 85.3240 : Coordinate.longitude
       // latitude: 27.7172,
       // longitude: 85.3240,
     },
@@ -148,34 +148,27 @@ const PatientInfoCard = ({ data, AsignedTask, disable, retDis }) => {
                 ></Image>
                 <View style={styles.right}>
                   <Text style={styles.name}>{data.PatientFName} {data.PatientMName} {data.PatientLName}</Text>
-                  <View style={{ flexDirection: 'row' }}>
+                  <View style={styles.detail}>
                     <Text >Cliet ID : </Text>
                     <Text style={{ color: "#FF7F00" }}>{data.CId}</Text>
+                  </View>
+                  <View style={styles.detail}>
+                    <Text >gender: </Text>
+                    <Text style={{ color: "#FF7F00" }}>{data.PatientGender}</Text>
+                  </View>
+                  <View style={styles.detail}>
+                    <Text >age: </Text>
+                    <Text style={{ color: "#FF7F00" }}>{data.PatientAge}</Text>
+                  </View>
+                  <View style={styles.detail}>
+                    <Text >email: </Text>
+                    <Text style={{ color: "#FF7F00" }}>{data.PatientEmailId}</Text>
                   </View>
                 </View>
               </View>
 
               {/* <StatusBadge RequestStatus={data.RequestStatus}></StatusBadge> */}
 
-              <View style={styles.container}>
-                <View style={styles.patDetail}>
-                  <Text style={styles.title}>Patient Name :</Text>
-                  <Text style={styles.dis}>{data.PatientFName} {data.PatientMName} {data.PatientLName}</Text>
-                </View>
-                <View style={styles.patDetail}>
-                  <Text style={styles.title}>Age :</Text>
-                  <Text style={styles.dis}>{data.PatientAge}</Text>
-                </View>
-                <View style={styles.patDetail}>
-                  <Text style={styles.title}>Gender :</Text>
-                  <Text style={styles.dis}>{data.PatientGender}</Text>
-                </View>
-                <View style={styles.patDetail}>
-                  <Text style={styles.title}>E-mail :</Text>
-                  <Text style={styles.dis}>{data.PatientEmailId}</Text>
-                </View>
-
-              </View>
               <Text style={styles.title}>Adddress :</Text>
               <View style={styles.mapViewContainer}>
                 <MapView
@@ -199,10 +192,10 @@ const PatientInfoCard = ({ data, AsignedTask, disable, retDis }) => {
 
               <View style={styles.module}>
                 <Pressable onPress={() => handleRequest()}>
-                  <InfoActionButton icon={'book'} name={'Previous Request'}></InfoActionButton>
+                  <InfoActionButton icon={'book'} name={'Previous Request'} type={'antdesign'}></InfoActionButton>
                 </Pressable>
                 <Pressable onPress={() => handleProceed()}>
-                  <InfoActionButton icon={'addfile'} name={'Book Test'} ></InfoActionButton>
+                  <InfoActionButton icon={'addfile'} name={'Book Test'} type={'antdesign'}></InfoActionButton>
                 </Pressable>
               </View>
 
@@ -235,7 +228,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderRadius: 12,
-    shadowColor: "#101010",
+    shadowColor: "#81e0f1d3",
     shadowOffset: {
       width: 0,
       height: 3,
@@ -274,7 +267,7 @@ const styles = StyleSheet.create({
   centeredView: {
     width: '100%',
     flex: 1,
-    backgroundColor: '#fefefe'
+    backgroundColor: '#f9f9f9'
   },
   textInput: {
     width: "100%",
@@ -287,6 +280,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginTop: 10,
   },
   patInfocontainer: {
     width: windowWidth - 20,
@@ -342,20 +336,8 @@ const styles = StyleSheet.create({
     letterSpacing: 1.3,
     // marginBottom: 10
   },
-  container: {
-    width: windowWidth - 20,
-    // backgroundColor: 'red'
-  },
-  patDetail: {
-    width: windowWidth - 20,
+  detail: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginVertical: 5,
-  },
-  dis: {
-    width: windowWidth * 0.5,
-    fontSize: 14,
-    letterSpacing: 1,
+    paddingBottom: 3,
   }
-
 })

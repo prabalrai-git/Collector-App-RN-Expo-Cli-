@@ -548,10 +548,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     letterSpacing: 1.2,
     // marginLeft: 10,
-    width: windowWidth * 0.65
+    width: windowWidth * 0.7
   },
   testsPrice: {
-    width: windowWidth * 0.4,
+    width: windowWidth * 0.3,
     color: '#FF7F00'
   },
   finsltestsPrice: {

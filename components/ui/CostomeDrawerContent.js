@@ -1,7 +1,7 @@
 import { Alert, Image, ImageBackground, StyleSheet, Switch, Text, View, Linking, Pressable, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer'
-import { Avatar } from 'react-native-elements'
+import { Avatar, Icon } from 'react-native-elements'
 import { useDispatch, useSelector } from 'react-redux'
 import * as Location from "expo-location"
 import { UpdateCollectorLocation } from '../../Services/appServices/Collector'
@@ -9,13 +9,17 @@ import { JumpingTransition } from 'react-native-reanimated'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native'
 import { logout, storeUserData } from '../../Services/store/slices/profileSlice'
+import { InsertUpdateToken } from '../../Services/appServices/loginService'
+
 
 const CostomeDrawerContent = (props) => {
-  // console.log("props",props.data.usrUserId);
+  // console.log("props", props.data);
 
   const navigation = useNavigation()
   const [isActive, setIsActive] = useState(false);
   const dispatch = useDispatch();
+  const user = useSelector(state => state.storeUserData)
+  // console.log(user);
 
   const [geolocation, setGeolocation] = useState({
     'latitude': null,
@@ -132,28 +136,30 @@ const CostomeDrawerContent = (props) => {
     // }
     hasGeolocationPermission()
   }, [])
+  // console.log("log out user 1",user.userData);
+  
+  // "CId": 2,
+  // "UserId": 1,
+  // "UserName": "admin",
+  // "UserRole": 2,
+  // "UserToken": "ExponentPushToken[ET7-LfDUYXePmkyQy8VyIl]",
 
   const handleLogOut = async () => {
-    // await AsyncStorage.removeItem('@userData')
-    // dispatch(GetTokenByUserId(props.data.usrUserId, (res) => {
-    //   if (res?.userToken[0]) {
-    //     let updateTokenData = {
-    //       "CId": res.userToken[0].CId,
-    //       "UserId": andd[0].usrUserId,
-    //       "UserName": andd[0].usrusername,
-    //       "UserRole": andd[0].usrrole,
-    //       "UserToken": Token
-    //     }
-    //     if (res.userToken[0].UserToken === '') {
-    //       // inset if user token is empty
-    //       dispatch(InsertUpdateToken(updateTokenData, (res) => {
-
-    //       }))
-    //     }
-    //   }
-    // }))
-    dispatch(logout(null))
-    // navigation.navigate('LoginScreen')
+    let logOutData = {
+      "CId": user.userData.CId,
+      "UserId": user.userData.UserId,
+      "UserName": user.userData.UserName,
+      "UserRole": user.userData.UserRole,
+      "UserToken": "-"
+    }
+    dispatch(InsertUpdateToken(logOutData, (res) => {
+      if (res?.SuccessMsg === true) {
+        console.log('logOut sucessfyll');
+        dispatch(logout(null))
+      } else {
+        console.log(' logout error');
+      }
+    }))
   }
 
 
@@ -169,37 +175,59 @@ const CostomeDrawerContent = (props) => {
             source={require('../../assets/images/user.png')}
           ></Image>
           <View style={styles.detail}>
-            <Text style={styles.title}>User Name</Text>
-            <Text style={styles.subTitle}>collector</Text>
+            <Text style={styles.title}>{props.data.UserName}</Text>
+            <Text style={styles.subTitle}>
+              {
+                props.data.UserRole === 2 ? 'admin' : 'collector'
+              }
+            </Text>
           </View>
         </View>
         <DrawerItemList {...props}></DrawerItemList>
+        {
+          props.data.usrrole === 3 &&
+            <View style={styles.geoLocationContainer}>
+              <Icon
+                name='location-pin'
+                color={'#FF7F00'}
+                type='entropy'
+                // style={styles.icon}
+                style={{
+                  marginRight: 10
+                }}
+              ></Icon>
+              {
+                isActive ?
+                  <Text style={{ color: '#767577', fontSize: 14, letterSpacing: 1 }}>
+                    Location activated
+                  </Text> :
+                  <Text style={{ color: '#767577', fontSize: 14, letterSpacing: 1 }}>
+                    Activate location
+                  </Text>
+              }
+              <Switch
+                trackColor={{ false: "#767577", true: "#81b0ff" }}
+                thumbColor={isActive ? "#f5dd4b" : "#f4f3f4"}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={toggleSwitch}
+                value={isActive}
+              />
+            </View>
+        }
 
-        <View style={styles.geoLocationContainer}>
-          {
-            isActive ?
-              <Text style={{ color: '#767577', fontSize: 14, letterSpacing: 1 }}>
-                Location activated
-              </Text> :
-              <Text style={{ color: '#767577', fontSize: 14, letterSpacing: 1 }}>
-                Activate location
-              </Text>
-          }
-          <Switch
-            trackColor={{ false: "#767577", true: "#81b0ff" }}
-            thumbColor={isActive ? "#f5dd4b" : "#f4f3f4"}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch}
-            value={isActive}
-          />
-        </View>
-        <View style={styles.logout}>
-          <TouchableOpacity onPress={() => handleLogOut()}>
-            <Text style={{
-              color: '#767577'
-            }}>Log out</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={() => handleLogOut()} style={styles.logout}>
+          <Icon
+            name='logout'
+            color={'#FF7F00'}
+            type='entropy'
+            style={{
+              marginRight: 30
+            }}
+          ></Icon>
+          <Text style={{
+            color: '#767577'
+          }}>Log out</Text>
+        </TouchableOpacity>
       </DrawerContentScrollView>
     </View>
   )
@@ -243,5 +271,6 @@ const styles = StyleSheet.create({
   logout: {
     marginTop: 15,
     paddingHorizontal: 20,
+    flexDirection: 'row'
   }
 })

@@ -20,56 +20,69 @@ import NotificationBtn from '../components/ui/NotificationBtn';
 
 
 
-const navData = [
-  {
-    id: 1,
-    name: 'Add Patient',
-    pathName: 'AddPatient',
-    color: '#9985FF',
-    icon: 'addusergroup',
-    type: 'antdesign'
-  },
-  {
-    id: 2,
-    name: 'Patient',
-    pathName: 'BookTest',
-    color: '#FF8585',
-    icon: 'user',
-    type: 'antdesign'
-  },
-  {
-    id: 3,
-    name: 'Sample',
-    pathName: 'SampleHome',
-    color: '#FFC285',
-    icon: 'test-tube',
-    type: 'MaterialCommunityIcons'
-  },
-  {
-    id: 4,
-    name: 'Task',
-    pathName: 'task',
-    color: '#4688B3',
-    icon: 'select1',
-    type: 'antdesign'
-  },
-  {
-    id: 4,
-    name: 'Collector Tracking',
-    pathName: 'CollectorLocation',
-    color: '#4688B3',
-    icon: 'enviromento',
-    type: 'antdesign'
-  },
-]
+
 
 
 const windowWidth = Dimensions.get('window').width;
 const HomeScreen = () => {
   const navigation = useNavigation();
   const user = useSelector(state => state.storeUserData);
-  const [isActive, setIsActive] = useState(false);
+  // console.log(user.userData.usrrole);
   const dispatch = useDispatch();
+
+  
+  const navData = [
+    {
+      id: 1,
+      name: 'Add Patient',
+      pathName: 'AddPatient',
+      color: '#9985FF',
+      icon: 'addusergroup',
+      type: 'antdesign',
+      isAdmin: true,
+      isCollecor: true,
+    },
+    {
+      id: 2,
+      name: 'Patient',
+      pathName: 'BookTest',
+      color: '#FF8585',
+      icon: 'user',
+      type: 'antdesign',
+      isAdmin: true,
+      isCollecor: true,
+    },
+    {
+      id: 3,
+      name: 'Sample',
+      pathName: 'SampleHome',
+      color: '#FFC285',
+      icon: 'test-tube-alt',
+      type: 'fontisto',
+      isAdmin: true,
+      isCollecor: true,
+    },
+    {
+      id: 4,
+      name: 'Task',
+      pathName: 'task',
+      color: '#4688B3',
+      icon: 'notification',
+      type: 'entypo',
+      isAdmin: false,
+      isCollecor: true,
+    },
+    {
+      id: 4,
+      name: 'Collector Tracking',
+      pathName: 'CollectorLocation',
+      color: '#4688B3',
+      icon: 'find',
+      type: 'antdesign',
+      isAdmin: true,
+      isCollecor: false,
+    },
+  ]
 
 
   const renderItem = ({ item }) => (
@@ -122,20 +135,21 @@ export default HomeScreen
 const styles = StyleSheet.create({
   maincontainer: {
     flex: 1,
+    // backgroundColor: '#f9f9f9'
   },
   bkgImg: {
     flex: 1,
-    paddingTop: 50,
+    paddingTop: 40,
   },
   cardContainer: {
     flexDirection: 'row',
-    width: windowWidth - 40,
+    width: windowWidth - 20,
     justifyContent: 'space-between',
     backgroundColor: global.primaryBkg,
     borderRadius: 18,
     paddingHorizontal: 20,
     paddingVertical: 30,
-    marginHorizontal: 20,
+    marginHorizontal: 10,
     marginTop: 40,
     shadowColor: "#86a3a3",
     shadowOffset: {
@@ -151,8 +165,8 @@ const styles = StyleSheet.create({
     // width: windowWidth * 0.65,
   },
   flatContainer: {
-    width: windowWidth - 20,
-    marginHorizontal: 10,
+    // width: windowWidth - 20,
+    // marginHorizontal: 10,
     paddingVertical: 15,
   },
   hamMenu: {
@@ -160,5 +174,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     paddingHorizontal: 20,
+    marginHorizontal: 10
   }
 })

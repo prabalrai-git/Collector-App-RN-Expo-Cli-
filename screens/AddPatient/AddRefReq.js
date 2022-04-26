@@ -146,11 +146,13 @@ const AddRefReq = ({ route }) => {
             "Patient Added Sucessfull",
             "Do you want to add test ?",
             [
-              { text: "no", onPress: () => {
-                navigation.navigate('Home')
-                const popAc = StackActions.pop(2);
-                navigation.dispatch(popAc);
-              } },
+              {
+                text: "no", onPress: () => {
+                  navigation.navigate('Home')
+                  const popAc = StackActions.pop(2);
+                  navigation.dispatch(popAc);
+                }
+              },
               {
                 text: "yes", onPress: () => navigation.navigate('AddPatientSelectTest', {
                   patinetId: res.CreatedId
@@ -294,7 +296,7 @@ const AddRefReq = ({ route }) => {
                 data={reqestorListNew}
                 keyExtractor={(item, index) => `${item.Id}${index}`}
                 renderItem={({ item }) => (
-                  <Pressable
+                  <TouchableOpacity
                     onPress={() => {
                       setPatientRequestorBy(item.Id)
                       setPatientRequestorByName(item.Requestor)
@@ -304,7 +306,7 @@ const AddRefReq = ({ route }) => {
                     style={styles.cardBtn}
                   >
                     <Text style={styles.cardBtnTxt}>{item.Requestor}</Text>
-                  </Pressable>
+                  </TouchableOpacity>
                 )}
               ></FlatList>
             </View>
@@ -346,7 +348,7 @@ const AddRefReq = ({ route }) => {
                 data={referedListNew}
                 keyExtractor={(item, index) => `${item.Id}${index}`}
                 renderItem={({ item }) => (
-                  <Pressable
+                  <TouchableOpacity
                     onPress={() => {
                       setPatientReferedBy(item.Id)
                       setPatientReferedByName(item.Name)
@@ -356,7 +358,7 @@ const AddRefReq = ({ route }) => {
                     style={styles.cardBtn}
                   >
                     <Text style={styles.cardBtnTxt}>{item.Name}</Text>
-                  </Pressable>
+                  </TouchableOpacity>
                 )}
               ></FlatList>
             </View>
@@ -397,7 +399,7 @@ export default AddRefReq
 
 const styles = StyleSheet.create({
   maincontainer: {
-    backgroundColor: '#fefefe',
+    backgroundColor: '#f9f9f9',
     flexDirection: 'column',
   },
   container: {
@@ -438,10 +440,10 @@ const styles = StyleSheet.create({
   centeredView: {
     width: '100%',
     flex: 1,
-    backgroundColor: '#fefefe'
+    backgroundColor: '#f9f9f9'
   },
   cardBtn: {
-    backgroundColor: '#7fd3c5',
+    backgroundColor: '#7fb8d3',
     marginVertical: 4,
     paddingHorizontal: 10,
     paddingVertical: 20,

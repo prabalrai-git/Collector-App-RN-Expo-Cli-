@@ -7,11 +7,13 @@ import CostomeDrawerContent from '../components/ui/CostomeDrawerContent'
 import LocationTrackingHomeScreen from '../screens/LocationTracking/LocationTrackingHomeScreen'
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Icon } from 'react-native-elements'
+import NotificationHomeScreen from '../screens/NotificationScreen/NotificationHomeScreen'
 
 const DraweNavigator = () => {
   const Drawer = createDrawerNavigator()
   const user = useSelector(state => state.storeUserData);
-  // console.log("user role", user.userData.usrUserId);
+  console.log("user role", user.userData.UserRole);
   // console.log('user', user.userData);
   let data = user.userData
   const navigation = useNavigation()
@@ -39,7 +41,7 @@ const DraweNavigator = () => {
   //       // setIsSignedIn(true)
   //     }
   //     else {
-       
+
   //     }
   //   } catch (e) {
   //   }
@@ -64,15 +66,16 @@ const DraweNavigator = () => {
       <Drawer.Screen
         name='Home'
         component={MainStackNavigator}
+
         options={{
           headerShown: false,
           // headerShadowVisible: false,
           title: 'Home',
-          tabBarIcon: ({ size, color }) => (
+          drawerIcon: ({ size, color }) => (
             <Icon
               name='home'
               color={'#FF7F00'}
-              type='entypo'
+              type='antdesign'
               style={styles.icon}
             ></Icon>
           )
@@ -101,11 +104,11 @@ const DraweNavigator = () => {
         options={{
           headerShown: false,
           title: 'Add Patient',
-          tabBarIcon: ({ size, color }) => (
+          drawerIcon: ({ size, color }) => (
             <Icon
-              name='new-message'
+              name='addusergroup'
               color={'#FF7F00'}
-              type='entypo'
+              type='antdesign'
               style={styles.icon}
             ></Icon>
           )
@@ -121,11 +124,11 @@ const DraweNavigator = () => {
 
           headerShown: false,
           title: 'Patient',
-          tabBarIcon: ({ size, color }) => (
+          drawerIcon: ({ size, color }) => (
             <Icon
-              name='new-message'
+              name='user'
               color={'#FF7F00'}
-              type='entypo'
+              type='antdesign'
               style={styles.icon}
             ></Icon>
           )
@@ -139,51 +142,72 @@ const DraweNavigator = () => {
           // tabBarHideOnKeyboard: true,
           headerShown: false,
           title: 'Total Sample',
-          tabBarIcon: ({ size, color }) => (
+          drawerIcon: ({ size, color }) => (
             <Icon
-              name='new-message'
+              name='test-tube-alt'
               color={'#FF7F00'}
-              type='entypo'
+              type='fontisto'
               style={styles.icon}
             ></Icon>
           )
         }}
       />
-      {/* {
-        user.userData.usrrole !== 3 && */}
       <Drawer.Screen
-        name='task'
-        component={TaskNavigator}
+        name='NotificationHome'
+        component={NotificationHomeScreen}
         options={{
+          // tabBarHideOnKeyboard: true,
           headerShown: false,
-          title: 'Task',
-          tabBarIcon: ({ size, color }) => (
+          title: 'Notification',
+          drawerIcon: ({ size, color }) => (
             <Icon
-              name='list'
+              name='bells'
               color={'#FF7F00'}
-              type='entypo'
+              type='antdesign'
               style={styles.icon}
             ></Icon>
           )
         }}
       />
-      {/* } */}
-      <Drawer.Screen
-        name='CollectorLocation'
-        component={CollectorLocation}
-        options={{
-          headerShown: false,
-          title: 'Location Tracking',
-          tabBarIcon: ({ size, color }) => (
-            <Icon
-              name='list'
-              color={'#FF7F00'}
-              type='entypo'
-              style={styles.icon}
-            ></Icon>
-          )
-        }}
-      />
+      {
+        user.userData.UserRole === 3 &&
+        <Drawer.Screen
+          name='task'
+          component={TaskNavigator}
+          options={{
+            headerShown: false,
+            title: 'Task',
+            drawerIcon: ({ size, color }) => (
+              <Icon
+                name='notification'
+                color={'#FF7F00'}
+                type='entypo'
+                style={styles.icon}
+              ></Icon>
+            )
+          }}
+        />
+      }
+      {
+        user.userData.UserRole === 2 &&
+        <Drawer.Screen
+          name='CollectorLocation'
+          component={CollectorLocation}
+          options={{
+            headerShown: false,
+            title: 'Location Tracking',
+            drawerIcon: ({ size, color }) => (
+              <Icon
+                name='find'
+                color={'#FF7F00'}
+                type='antdesign'
+                style={styles.icon}
+              ></Icon>
+            )
+          }}
+        />
+      }
+
 
     </Drawer.Navigator>
   )

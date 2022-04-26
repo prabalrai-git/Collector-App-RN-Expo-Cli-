@@ -168,14 +168,14 @@ export const GetHomeCollectionTestRequestTestListByRequestId = 'GetHomeCollectio
  */
 
 
-export const GetAddressOfClientByClientId=  'GetAddressOfClientByClientId'
+export const GetAddressOfClientByClientId = 'GetAddressOfClientByClientId'
 
 /**
  * @desc: get address of patient by patient ID *
  *  @param: ?clientId={clientId}
  */
 
-export const  GetCollectorRequestByCollectorWiseForWeekWithStatus = 'GetCollectorRequestByCollectorWiseForWeekWithStatus'
+export const GetCollectorRequestByCollectorWiseForWeekWithStatus = 'GetCollectorRequestByCollectorWiseForWeekWithStatus'
 
 /**
  * @desc: get list of request of week by collector id*
@@ -183,13 +183,13 @@ export const  GetCollectorRequestByCollectorWiseForWeekWithStatus = 'GetCollecto
  */
 
 
- export const GetCollectionRequestHistoryByPatientId = 'GetCollectionRequestHistoryByPatientId'
- /**
- * @desc: get list of total request of patient by client id and patient id*
- *  @param: ?patid={patid}&collectorId={collectorId}
- */
+export const GetCollectionRequestHistoryByPatientId = 'GetCollectionRequestHistoryByPatientId'
+/**
+* @desc: get list of total request of patient by client id and patient id*
+*  @param: ?patid={patid}&collectorId={collectorId}
+*/
 
- export const UpdateIsPaidStatusByCollector = 'UpdateIsPaidStatusByCollector'
+export const UpdateIsPaidStatusByCollector = 'UpdateIsPaidStatusByCollector'
 /**
  * @desc: update is paid status
  *  @param: ?userId={userId}&requestId={requestId}&ispaid={ispaid}&remarks={remarks}
@@ -212,5 +212,28 @@ export const GetUserTokenByUserId = 'GetUserTokenByUserId'
 
 /**
  * @desc: to get user token data
+ *  @param: ?uId={uId}
+ */
+
+export const InsertUpdateNotificationDetails = 'InsertUpdateNotificationDetails'
+
+/**
+ * @desc: to insert notification
+ *  @param: {
+              "NId": 1,
+              "UserIdFrom": 2,
+              "UserIdTo": 3,
+              "Title": "sample string 4",
+              "NotificationDesc": "sample string 5",
+              "EntryDate": "2022-04-26T17:28:31.0709654+05:45",
+              "NotficationPathName": "sample string 7",
+              "IsSeen": true
+            }
+ */
+
+export const GetcollectorNotificationByUserId = 'GetcollectorNotificationByUserId'
+
+/**
+ * @desc: to get notification list by user id
  *  @param: ?uId={uId}
  */

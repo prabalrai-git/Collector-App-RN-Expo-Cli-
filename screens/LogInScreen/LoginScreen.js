@@ -17,8 +17,8 @@ const windowWidth = Dimensions.get('window').width * 0.9;
 
 const LoginScreen = () => {
   const navigation = useNavigation()
-  const [username, setUserName] = useState('pacific');
-  const [password, setPassword] = useState('pacific123');
+  const [username, setUserName] = useState('admin');
+  const [password, setPassword] = useState('primetime');
   const [isLoading, setIsLoading] = useState(false);
   const [btnDis, setBtDis] = useState(true)
   const dispatch = useDispatch()
@@ -42,6 +42,7 @@ const LoginScreen = () => {
   const handleLogin = () => {
     setBtDis(true)
     setIsLoading(true);
+
     let data = {
       user: username,
       pass: password
@@ -52,27 +53,16 @@ const LoginScreen = () => {
         let andd = val?.validuserDetails;
         if (andd[0]?.usrUserId > 0) {
 
-          // console.log('add 0', andd[0]);
+          // console.log('add 0');
+          // return
 
           dispatch(GetTokenByUserId(andd[0].usrUserId, (res) => {
 
-            // console.log('toet token', res.userToken[0]);
-            
-            if (res?.userToken[0]) {
-              let updateTokenData = {
-                "CId": res.userToken[0].CId,
-                "UserId": andd[0].usrUserId,
-                "UserName": andd[0].usrusername,
-                "UserRole": andd[0].usrrole,
-                "UserToken": Token
-              }
-              if (res.userToken[0].UserToken === '') {
-                // inset if user token is empty
-                dispatch(InsertUpdateToken(updateTokenData, (res) => {
+            // console.log('toet token', res.userToken);
+            // return
 
-                }))
-              }
-            }else{
+            if (res?.userToken === undefined) {
+              console.log('log 2');
               let insertTokenData = {
                 "CId": 0,
                 "UserId": andd[0].usrUserId,
@@ -81,14 +71,52 @@ const LoginScreen = () => {
                 "UserToken": Token
               }
               dispatch(InsertUpdateToken(insertTokenData, (res) => {
-
+                if (res?.SuccessMsg === true) {
+                  console.log('log 2 sucessfyll');
+                  // cid add  from response
+                  let temp = {
+                    "CId": res?.CreatedId,
+                    "UserId": andd[0].usrUserId,
+                    "UserName": andd[0].usrusername,
+                    "UserRole": andd[0].usrrole,
+                    "UserToken": Token
+                  }
+                  dispatch(storeUserData(temp))
+                } else {
+                  console.log('log 2 error');
+                }
               }))
+            } else {
+              console.log('log 1');
+              let updateTokenData = {
+                "CId": res.userToken[0].CId,
+                "UserId": andd[0].usrUserId,
+                "UserName": andd[0].usrusername,
+                "UserRole": andd[0].usrrole,
+                "UserToken": Token
+              }
+              // if (res.userToken[0].UserToken === '') {
+                // inset if user token is empty
+                dispatch(InsertUpdateToken(updateTokenData, (res) => {
+                  if (res?.SuccessMsg === true) {
+                    console.log('log 1 sucessfyll');
+                    dispatch(storeUserData(updateTokenData))
+                  } else {
+                    // console.log('log 1 error');
+                    Alert.alert(
+                      'Server error !',
+                      'Please try again later'
+                    )
+                  }
+                }))
+              // }
+              
             }
 
             // console.log("res" , res.userToken[0].UserToken);
 
 
-            dispatch(storeUserData(andd[0]))
+
             setIsLoading(false);
           }))
 
@@ -160,7 +188,7 @@ const LoginScreen = () => {
         return;
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
-      console.log("login token", token);
+      // console.log("login token", token);
       setToken(token)
       setBtDis(false)
     } else {

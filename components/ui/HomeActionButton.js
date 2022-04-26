@@ -10,19 +10,23 @@ export const HomeActionButton = ({ data }) => {
   const navigation = useNavigation();
 
   return (
-    <TouchableOpacity
-      style={styles.btnContainer}
-      onPress={() => navigation.navigate(`${data.pathName}`)}
-    >
-      <Icon
-        name={data.icon}
-        color={'#FF7F00'}
-        type='antdesign'
-        style={styles.icon}
-        size={30}
-      ></Icon>
-      <Text style={styles.txt}>{data.name}</Text>
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity
+        style={styles.btnContainer}
+        onPress={() => navigation.navigate(`${data.pathName}`)}
+      >
+        <Icon
+          name={data.icon}
+          color={'#FF7F00'}
+          type={data.type}
+          style={styles.icon}
+          size={30}
+        ></Icon>
+        {/* <AddPatient></AddPatient> */}
+        <Text style={styles.txt}>{data.name}</Text>
+      </TouchableOpacity>
+    </>
+
 
   )
 }
@@ -32,7 +36,7 @@ export const InfoActionButton = (props) => {
   const navigation = useNavigation();
   return (
     <View
-      style={styles.btnContainer}
+      style={styles.btnContainer2}
     >
       <Icon
         name={props.icon}
@@ -50,16 +54,31 @@ export const InfoActionButton = (props) => {
 
 const styles = StyleSheet.create({
   btnContainer: {
-    width: windowWidth * 0.42,
+    width: windowWidth * 0.45,
     height: 100,
-    // borderWidth: 1,
-    // borderColor: '#232323',
-    margin: 10,
+    margin: 9,
     borderRadius: 18,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ffff',
-    shadowColor: "#7e9694",
+    shadowColor: "#7ac2bc",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+
+    elevation: 7,
+  },
+  btnContainer2: {
+    width: windowWidth * 0.45,
+    height: 100,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ffff',
+    shadowColor: "#60b6af",
     shadowOffset: {
       width: 0,
       height: 3,
