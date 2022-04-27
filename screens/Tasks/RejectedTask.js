@@ -35,7 +35,7 @@ const RejectedTask = () => {
 
 
   const handleClick = () => {
-    dispatch(GetCollectorRequestByCollectorWiseForWeek(user.userData.usrUserId, (res) => {
+    dispatch(GetCollectorRequestByCollectorWiseForWeek(user.userData.UserId, (res) => {
       if (res?.WeekWiseSampleDetailsByCollectorId.length > 0) {
         setPatietList(res.WeekWiseSampleDetailsByCollectorId)
         setdisComplete(true)

@@ -71,6 +71,12 @@ export const GetlocationofCollectorByDate = 'GetlocationofCollectorByDate'
  * @param: ?entrydate={entrydate}&userId={userId}
  */
 
+ export const GetCurrentLocationOfCollector = 'GetCurrentLocationOfCollector'
+
+ /**
+  * @desc: to get letest collector location single data
+  *  @param: ?userId={userId}
+  */
 export const GetTestListforHomeCollection = 'GetTestListforHomeCollection'
 
 /**
@@ -208,6 +214,13 @@ export const InsertUpdateCollectorToken = 'InsertUpdateCollectorToken'
  *  @param: 
  */
 
+export const GetListOfCollectors = 'GetListOfCollectors'
+
+/**
+ * @desc: to get list of collecors
+ *  @param: 
+ */
+
 export const GetUserTokenByUserId = 'GetUserTokenByUserId'
 
 /**
@@ -237,3 +250,4 @@ export const GetcollectorNotificationByUserId = 'GetcollectorNotificationByUserI
  * @desc: to get notification list by user id
  *  @param: ?uId={uId}
  */
+

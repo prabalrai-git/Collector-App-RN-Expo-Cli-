@@ -11,7 +11,7 @@ import AppButton from '../../components/ui/AppButton';
 import { StackActions, useNavigation } from '@react-navigation/native';
 
 const AddRefReq = ({ route }) => {
-  // console.log("route", route.params.data);
+  console.log("route", route.params.data);
   const navigation = useNavigation()
   const [Remarks, setRemarks] = useState('')
   const [PatientReferedBy, setPatientReferedBy] = useState('');
@@ -78,7 +78,7 @@ const AddRefReq = ({ route }) => {
     }))
 
   }, [])
-  console.log('red', referedList)
+  // console.log('red', referedList)
 
   const handleChangeReq = (e) => {
     if (e === undefined || e === '') {
@@ -97,12 +97,14 @@ const AddRefReq = ({ route }) => {
   }
 
   const handleSubmit = () => {
+    
     // console.log("route data", route.params.data)
     // console.log("date", `${time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate()}T${time.toLocaleTimeString()}`)
     // console.log('req, ref', PatientReferedBy, PatientRequestorBy)
     // console.log('remarks', Remarks)
-    setIsLoading(true)
-    setappBtnSis(true)
+
+    // setIsLoading(true)
+    // setappBtnSis(true)
 
     let today = new Date();
     const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -111,7 +113,7 @@ const AddRefReq = ({ route }) => {
 
     let data = {
       "CId": 0,
-      "CollectorId": user.userData.usrUserId,
+      "CollectorId": user.userData.UserId,
       "PatientFName": route.params.data.PatientFName,
       "PatientMName": route.params.data.PatientMName !== '' ? route.params.data.PatientMName : '',
       "PatientLName": route.params.data.PatientLName,
@@ -124,16 +126,19 @@ const AddRefReq = ({ route }) => {
       "PatientNationalId": 0,
       "Remarks": Remarks !== '' ? Remarks : '',
       "EntryDate": fialEntryDate,
-      "EnterBy": user.userData.usrUserId,
+      "EnterBy": user.userData.UserId,
       "CollectionReqDate": `${time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate()}T${time.toLocaleTimeString()}`,
     }
-    console.log('data', data)
+    // console.log('data', data)
+    // return
     let isValid = validate();
 
     // return
     if (isValid) {
       dispatch(AssignPatient(data, (res) => {
         if (res?.CreatedId > 0 && res?.SuccessMsg === true) {
+          // console.log('res', res)
+          // return
 
           setPatientReferedBy('');
           setPatientRequestorBy('');
@@ -155,7 +160,7 @@ const AddRefReq = ({ route }) => {
               },
               {
                 text: "yes", onPress: () => navigation.navigate('AddPatientSelectTest', {
-                  patinetId: res.CreatedId
+                  patinetId: res?.CreatedId
                 })
               }
             ]

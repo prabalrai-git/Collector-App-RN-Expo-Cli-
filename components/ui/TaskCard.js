@@ -50,7 +50,8 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed }) =
   const [isVisibe, setisVisibe] = useState(false);
   const [isRemarksVisible, setisRemarksVisible] = useState(false);
   const [Remarks, setRemarks] = useState('');
-  const user = useSelector(state => state.storeUserData);
+  const user = useSelector(state => state.storeUserData.userData);
+  // console.log('user', user);
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const text = data.CollectionReqDate;
@@ -84,14 +85,15 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed }) =
     // UpdateStatus
     let today = new Date();
     const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.toLocaleTimeString();
+
     const rData = {
       "SrId": 0,
       "RequestId": data.RequestId,
       "RequestStatusId": 3,
       //  "RequestStatusId": 1,
       "EntryDate": newDate,
-      "UserId": user.userData.usrUserId,
-      "Remarks": `accepted by user ${user.userData.usrUserId}`,
+      "UserId": user.UserId,
+      "Remarks": `accepted by user ${user.UserName}`,
     }
     // console.log('accepted data', rData);
     dispatch(UpdateStatus(rData, (res) => {
@@ -99,7 +101,21 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed }) =
       if (res?.SuccessMsg === true) {
         // console.log('potato sucess');
         setisVisibe(false);
-        navigation.navigate('AcceptedTask');
+
+        Alert.alert(
+          'Sucessfull !',
+          'Taxk accepted sucessfull',
+          [
+            {
+              text: 'OK', onPress: () => {
+                // PushNotification('rejected task', user.UserId, 1, Remarks)
+                navigation.navigate('AcceptedTask');
+              }
+            }
+          ]
+        )
+
+        
 
       }
     }))
@@ -107,6 +123,9 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed }) =
   }
 
   const handleReject = () => {
+    // PushNotification('rejected task', user.UserId, 1, Remarks)
+    // return
+
     let today = new Date();
     const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.toLocaleTimeString();
     const aData = {
@@ -114,7 +133,7 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed }) =
       "RequestId": data.RequestId,
       "RequestStatusId": 4,
       "EntryDate": newDate,
-      "UserId": user.userData.usrUserId,
+      "UserId": user.UserId,
       "Remarks": Remarks,
     }
     // console.log(aData);
@@ -134,7 +153,7 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed }) =
             [
               {
                 text: 'OK', onPress: () => {
-                  PushNotification('RejectedTask', user.userData.usrusername, 'admin', Remarks)
+                  // PushNotification('rejected task', user.UserId, 1, Remarks)
                   navigation.navigate('RejectedTask')
                   setisVisibe(!isVisibe)
                   setisRemarksVisible(false)

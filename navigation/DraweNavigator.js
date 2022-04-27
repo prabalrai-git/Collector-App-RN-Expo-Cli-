@@ -13,7 +13,7 @@ import NotificationHomeScreen from '../screens/NotificationScreen/NotificationHo
 const DraweNavigator = () => {
   const Drawer = createDrawerNavigator()
   const user = useSelector(state => state.storeUserData);
-  console.log("user role", user.userData.UserRole);
+  // console.log("user role", user.userData.UserRole);
   // console.log('user', user.userData);
   let data = user.userData
   const navigation = useNavigation()
@@ -169,8 +169,8 @@ const DraweNavigator = () => {
           )
         }}
       />
-      {
-        user.userData.UserRole === 3 &&
+      {/* {
+        user.userData.UserRole === 3 && */}
         <Drawer.Screen
           name='task'
           component={TaskNavigator}
@@ -187,9 +187,9 @@ const DraweNavigator = () => {
             )
           }}
         />
-      }
-      {
-        user.userData.UserRole === 2 &&
+      {/* } */}
+      {/* {
+        user.userData.UserRole === 2 && */}
         <Drawer.Screen
           name='CollectorLocation'
           component={CollectorLocation}
@@ -206,7 +206,7 @@ const DraweNavigator = () => {
             )
           }}
         />
-      }
+      {/* } */}
 
 
     </Drawer.Navigator>

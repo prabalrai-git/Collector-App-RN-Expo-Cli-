@@ -1,4 +1,4 @@
-import { GetlocationofCollectorByDate, InsertupdateCollectorLocationDetails } from "../constants/url";
+import { GetCurrentLocationOfCollector, GetListOfCollectors, GetlocationofCollectorByDate, InsertupdateCollectorLocationDetails } from "../constants/url";
 import { generateUrlEncodedData } from "../utils/generateUrlEncodedData";
 import { fetch, store } from "../utils/httpUtil";
 
@@ -41,6 +41,45 @@ export const GetlocationofCollectorByDateAndUserId = (data, sucessCallback) => {
         sucessCallback([])
       }
     } catch (error) {
+
+    }
+  }
+}
+
+export const GetCurrentLocationOfuser = (data, sucessCallback) => {
+  return async dispatch => {
+    // console.log();
+    try{
+      const response = await fetch(`${GetCurrentLocationOfCollector}?userId=${data}`);
+      if(response?.status === 200){
+        sucessCallback(response?.data)
+        console.log('sucessful in getting current location');
+      }else{
+        sucessCallback([])
+        console.log('error getting current location')
+      }
+    }
+    catch (error){
+
+    }
+  }
+}
+
+// GetListOfCollectors
+
+export const GetListOfCollector = (sucessCallback) => {
+  return async dispatch => {
+    try{
+      const response = await fetch(`${GetListOfCollectors}`);
+      if(response?.status === 200){
+        sucessCallback(response?.data)
+        console.log('sucessful in getting collector list');
+      }else{
+        sucessCallback([])
+        console.log('error getting current list')
+      }
+    }
+    catch (error){
 
     }
   }

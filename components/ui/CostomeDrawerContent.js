@@ -92,12 +92,14 @@ const CostomeDrawerContent = (props) => {
 
     const data = {
       "LId": 0,
-      "UserId": props.data.usrUserId,
+      "UserId": props.data.UserId,
       "Latitude": geolocation.latitude,
       "Longitude": geolocation.longitude,
       "EntryDate": newDate,
       "ClientId": 0
     }
+    // console.log('data location', props.data);
+    // return
     if (isActive === true) {
       dispatch(UpdateCollectorLocation(data, (res) => {
         // console.log('res', res);
@@ -137,7 +139,7 @@ const CostomeDrawerContent = (props) => {
     hasGeolocationPermission()
   }, [])
   // console.log("log out user 1",user.userData);
-  
+
   // "CId": 2,
   // "UserId": 1,
   // "UserName": "admin",
@@ -184,36 +186,36 @@ const CostomeDrawerContent = (props) => {
           </View>
         </View>
         <DrawerItemList {...props}></DrawerItemList>
-        {
-          props.data.usrrole === 3 &&
-            <View style={styles.geoLocationContainer}>
-              <Icon
-                name='location-pin'
-                color={'#FF7F00'}
-                type='entropy'
-                // style={styles.icon}
-                style={{
-                  marginRight: 10
-                }}
-              ></Icon>
-              {
-                isActive ?
-                  <Text style={{ color: '#767577', fontSize: 14, letterSpacing: 1 }}>
-                    Location activated
-                  </Text> :
-                  <Text style={{ color: '#767577', fontSize: 14, letterSpacing: 1 }}>
-                    Activate location
-                  </Text>
-              }
-              <Switch
-                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                thumbColor={isActive ? "#f5dd4b" : "#f4f3f4"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={toggleSwitch}
-                value={isActive}
-              />
-            </View>
-        }
+        {/* {
+          props.data.UserRole === 3 && */}
+          <View style={styles.geoLocationContainer}>
+            <Icon
+              name='location-pin'
+              color={'#FF7F00'}
+              type='entropy'
+              // style={styles.icon}
+              style={{
+                marginRight: 10
+              }}
+            ></Icon>
+            {
+              isActive ?
+                <Text style={{ color: '#767577', fontSize: 14, letterSpacing: 1 }}>
+                  Location activated
+                </Text> :
+                <Text style={{ color: '#767577', fontSize: 14, letterSpacing: 1 }}>
+                  Activate location
+                </Text>
+            }
+            <Switch
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={isActive ? "#f5dd4b" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isActive}
+            />
+          </View>
+        {/* // } */}
 
         <TouchableOpacity onPress={() => handleLogOut()} style={styles.logout}>
           <Icon

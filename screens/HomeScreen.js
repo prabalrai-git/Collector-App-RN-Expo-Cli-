@@ -27,7 +27,7 @@ const windowWidth = Dimensions.get('window').width;
 const HomeScreen = () => {
   const navigation = useNavigation();
   const user = useSelector(state => state.storeUserData);
-  // console.log(user.userData.usrrole);
+  // console.log(user.userData.UserName);
   const dispatch = useDispatch();
 
   
@@ -106,7 +106,7 @@ const HomeScreen = () => {
         <View style={styles.cardContainer}>
           <View style={styles.dis}>
             <Text style={[GlobalStyles.body, { color: '#3d4e58' }]}>Hi!</Text>
-            <Text style={[GlobalStyles.header, { color: '#205072' }]}>Admin</Text>
+            <Text style={[GlobalStyles.header, { color: '#205072' }]}>{user.userData.UserName}</Text>
             <Text style={[GlobalStyles.body, { color: '#3d4e58' }]}>Your target for today is to keep positive mindset and smile to everyone you meet.</Text>
           </View>
           {/* <Avatar

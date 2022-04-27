@@ -2,7 +2,7 @@ import { ActivityIndicator, Dimensions, Platform, StyleSheet, Text, TouchableOpa
 import React, { useEffect, useRef, useState } from 'react'
 import { Avatar, Icon } from 'react-native-elements'
 import MapView, { Marker, AnimatedRegion } from 'react-native-maps'
-import { GetlocationofCollectorByDateAndUserId } from '../../Services/appServices/Collector'
+import { GetCurrentLocationOfuser, GetlocationofCollectorByDateAndUserId } from '../../Services/appServices/Collector'
 import { useDispatch } from 'react-redux'
 import MarkerCostome from '../../components/ui/MarkerCostome'
 import { useNavigation } from '@react-navigation/native'
@@ -16,7 +16,7 @@ const LATITUDE_DELTA = 0.04;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const CollectorMapScreen = ({ route }) => {
-
+  console.log(route.params.data.UserId);
   const navigation = useNavigation()
   const dispatch = useDispatch()
   const [coordinate, setcoordinate] = useState({
@@ -32,18 +32,20 @@ const CollectorMapScreen = ({ route }) => {
   let today = new Date();
   const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
-  let cData = {
-    "entrydate": newDate,
-    "userId": route.params.data.UserId
-  }
+  // let cData = {
+  //   "entrydate": newDate,
+  //   "userId": route.params.data.UserId
+  // }
+  // new api to get location
 
   useEffect(() => {
     const interval = setInterval(() => {
-      dispatch(GetlocationofCollectorByDateAndUserId(cData, (res) => {
-        if (res?.collectorLocation.length > 0) {
-          let lat = Number(res?.collectorLocation[res?.collectorLocation.length - 1].Latitude);
-          let long = Number(res?.collectorLocation[res?.collectorLocation.length - 1].Longitude);
-          // console.log(lat, long);
+      dispatch(GetCurrentLocationOfuser(route.params.data.UserId, (res) => {
+        if (res?.currentcollectorLocation.length > 0) {
+          // let lat = Number(res?.collectorLocation[res?.collectorLocation.length - 1].Latitude);
+          // let long = Number(res?.collectorLocation[res?.collectorLocation.length - 1].Longitude);
+          let lat = Number(res?.currentcollectorLocation[0].Latitude);
+          let long = Number(res?.currentcollectorLocation[0].Longitude);
           setcoordinate({
             latitude: lat,
             longitude: long,

@@ -13,7 +13,7 @@ const windowWidth = Dimensions.get('window').width * 0.55;
 
 
 const AddPatientSelectTest = ({ route }) => {
-  console.log(route.params.userId);
+  console.log("reoute params", route.params.patinetId);
   const [data, setData] = useState([])
   const [selected, setSelected] = useState([]);
   const [total, setTotal] = useState(0);

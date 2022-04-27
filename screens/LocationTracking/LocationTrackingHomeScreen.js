@@ -6,6 +6,7 @@ import { useIsFocused, useNavigation } from '@react-navigation/native'
 import Header from '../../components/Header'
 import PatientInfoCard from '../../components/ui/PatientInfoCard'
 import { GetTokenByUserId } from '../../Services/appServices/loginService'
+import { GetListOfCollector } from '../../Services/appServices/Collector'
 
 const windowWidth = Dimensions.width;
 
@@ -19,9 +20,9 @@ const LocationTrackingHomeScreen = () => {
 
   useEffect(() => {
     if (isFocused) {
-      dispatch(GetTokenByUserId(0, (res) => {
+      dispatch(GetListOfCollector((res) => {
         // console.log('response', res.userToken);
-        setCollectorList(res.userToken)
+        setCollectorList(res.GetListOfCollectors)
       }))
     }
     setdisable(false)

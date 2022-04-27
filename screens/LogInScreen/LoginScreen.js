@@ -17,8 +17,8 @@ const windowWidth = Dimensions.get('window').width * 0.9;
 
 const LoginScreen = () => {
   const navigation = useNavigation()
-  const [username, setUserName] = useState('admin');
-  const [password, setPassword] = useState('primetime');
+  const [username, setUserName] = useState('pacific');
+  const [password, setPassword] = useState('pacific123');
   const [isLoading, setIsLoading] = useState(false);
   const [btnDis, setBtDis] = useState(true)
   const dispatch = useDispatch()
@@ -53,7 +53,7 @@ const LoginScreen = () => {
         let andd = val?.validuserDetails;
         if (andd[0]?.usrUserId > 0) {
 
-          // console.log('add 0');
+          // console.log('add 0', andd[0].usrUserId);
           // return
 
           dispatch(GetTokenByUserId(andd[0].usrUserId, (res) => {

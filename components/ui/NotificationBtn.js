@@ -1,9 +1,10 @@
 import { Dimensions, FlatList, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Avatar, Icon } from 'react-native-elements'
 import DateBadge from './DateBadge';
 import HamMenu from './HamMenu';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { GetNotificationByUserId } from '../../Services/appServices/Notificationservice';
 
 
 const newData = [
@@ -26,12 +27,31 @@ const newData = [
 
 const windowWidth = Dimensions.get('window').width;
 const NotificationBtn = () => {
-  const [modalVisible, setModalVisible] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false);
+  const user = useSelector(state => state.storeUserData.userData);
+  // console.log(" user", user.UserId);
   // GetNotificationByUserId
 
   const dispatch = useDispatch();
   const [Notification, setNotification] = useState();
 
+  useEffect(()=> {
+    dispatch(GetNotificationByUserId(user.UserId, (res) => {
+      // console.log(res?.notificationdetails);
+      setNotification(res?.notificationdetails)
+    }))
+  }, [modalVisible])
+
+  // console.log('notification list', Notification);
+
+  // "EntryDate": "2022-04-26T17:28:31.07",
+  //   "IsSeen": false,
+  //   "NId": 1,
+  //   "NotficationPathName": "sample string 7",
+  //   "NotificationDesc": "sample string 5",
+  //   "Title": "sample string 4",
+  //   "UserIdFrom": 3,
+  //   "UserIdTo": 1,
 
   const renderItem = ({ item }) => (
     <View style={styles.card}>
@@ -49,9 +69,9 @@ const NotificationBtn = () => {
         }
       ></Icon>
       <View style={styles.cardDetail}>
-        <Text style={styles.cardTitle}>{item.title}</Text>
-        <Text style={styles.cardDis}>{item.dis}</Text>
-        <DateBadge date={item.date}></DateBadge>
+        <Text style={styles.cardTitle}>{item.Title}</Text>
+        <Text style={styles.cardDis}>{item.NotificationDesc}</Text>
+        <DateBadge date={item.EntryDate}></DateBadge>
       </View>
 
     </View>
@@ -60,7 +80,9 @@ const NotificationBtn = () => {
 
   return (
     <View style={styles.top}>
-      <TouchableOpacity onPress={() => setModalVisible(true)}>
+      <TouchableOpacity onPress={() => {
+        setModalVisible(true)
+      }}>
         <Icon
           name='bells'
           color={'#9DD4E9'}
@@ -118,14 +140,14 @@ const NotificationBtn = () => {
 
             <FlatList
               // style={styles.container}
-              data={newData}
-              keyExtractor={(item, index) => `${item.Id}${index}`}
+              data={Notification}
+              keyExtractor={(item, index) => `${item.NId}${index}`}
               renderItem={renderItem}
             />
           </View>
         </View>
       </Modal>
-      
+
     </View>
   )
 }

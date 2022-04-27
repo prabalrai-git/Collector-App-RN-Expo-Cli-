@@ -93,6 +93,7 @@ const AddTestBillingScreen = ({ route }) => {
   const [btnDis, setBtnDis] = useState(false);
 
   const user = useSelector(state => state.storeUserData);
+  // console.log('user', user);
   const [paidStatus, setpaidStatus] = useState(1);
   const [ModalVisible, setModalVisible] = useState(false);
   const [PaymentCode, setPaymentCode] = useState('')
@@ -134,29 +135,30 @@ const AddTestBillingScreen = ({ route }) => {
       "DiscountAmount": discount,
       "GrandTotal": TotalAmount,
       "Remarks": Remarks,
-      "UserId": user.userData.usrUserId,
+      "UserId":  user.userData.UserId,
       "IsActive": true,
-      "CollectorId": user.userData.usrUserId,
+      "CollectorId":  user.userData.UserId,
       "CollectedDate": fialEntryDate,
       "IsPaid": isPaid,
       "RequestStatus": Status,
-      "PaymentType": `${paidStatus} - ${PaymentCode}`
+      "PaymentType": paidStatus === 'card' ? `${paidStatus} - ${PaymentCode}` : paidStatus,
     };
     // array of testdata
     const _HomeCollectionTestList = []
     route.params.tests.testList.map(e => {
+      
       _HomeCollectionTestList.push(
         {
           "SId": 0,
           "PatId": route.params.patinetId,
           "RequestId": 0,
-          "TestId": e.Id,
+          "TestId": e.TestId,
           "TestName": e.Test,
           "TestPrice": e.Price,
           "ClientId": 1,
           "IsActive": true,
           "EntryDate": fialEntryDate,
-          "UserId": user.userData.usrUserId
+          "UserId":  user.userData.UserId
         }
       )
     })
@@ -167,8 +169,14 @@ const AddTestBillingScreen = ({ route }) => {
       _HomeCollectionTestList
     }
 
+    // console.log('final data',  finalData);
+    // // console.log('test list', route.params.tests.testList);
+    // return
+  
+
     dispatch(InsertUpdateHomeCollection(finalData, (res) => {
       if (res?.SuccessMsg === true) { 
+        // return
         Alert.alert(
           "Saved!",
           "Test booked Sucessfully",
@@ -283,9 +291,9 @@ const AddTestBillingScreen = ({ route }) => {
               onValueChange={(itemValue) => setpaidStatus(itemValue)}
               mode='dropdown'
             >
-              <Picker.Item label='cash' value={'cash'} key={1} />
-              <Picker.Item label='card' value={'card'} key={2} />
-              <Picker.Item label='fone pay' value={'fone Pay'} key={3} />
+              <Picker.Item label='cash' value={'cash'} key={'cash'} />
+              <Picker.Item label='card' value={'card'} key={'card'} />
+              <Picker.Item label='fone pay' value={'fone Pay'} key={'fone Pay'} />
               {/* <Picker.Item label='Due' value={4} key={4} />
               <Picker.Item label='credit' value={5} key={5} /> */}
             </Picker>
@@ -373,7 +381,7 @@ const AddTestBillingScreen = ({ route }) => {
             />
             <View style={styles.cDetails}>
               <Text style={[styles.span, styles.span1]}>Luniva</Text>
-              <Text style={[styles.span, styles.span2]}>Care</Text>
+              <Text style={[styles.span, styles.span2]}>360</Text>
             </View>
             <AppButton title='close' onPress={() => setModalVisible(false)}></AppButton>
           </View>

@@ -142,7 +142,7 @@ const BilligScreen = ({ route }) => {
       "IsPaid": isPaid,
       // "IsPaid": true,
       "RequestStatus": Status,
-      "PaymentType": `${paidStatus} - ${PaymentCode}`
+      "PaymentType": paidStatus === 'card' ? `${paidStatus} - ${PaymentCode}` : paidStatus
     };
     // array of testdata
     const _HomeCollectionTestList = []

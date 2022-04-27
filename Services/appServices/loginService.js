@@ -39,6 +39,24 @@ export const InsertUpdateToken = (data, sucessCallback) => {
   }
 }
 
+export const GetTokenByUserIdApi = async (data, sucessCallback) => {
+  // return async dispatch => {
+    
+    try {
+      const response = await fetch(`${GetUserTokenByUserId}?uId=${data}`);
+      // console.log('data', data);
+      if (response?.status === 200) {
+        // console.log('get toeken sucess');
+        sucessCallback(response?.data)
+      } else {
+        // console.log('get toeken failed');
+        sucessCallback([])
+      }
+    } catch (error) {
+
+    }
+  // }
+}
 export const GetTokenByUserId = (data, sucessCallback) => {
   return async dispatch => {
     
