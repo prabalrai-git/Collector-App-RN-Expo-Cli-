@@ -9,9 +9,9 @@ export const AssignPatient = (data, returnData) => {
 
     try {
       let formData = generateUrlEncodedData(data)
-      console.log(data);
+      // console.log(data);
       const response = await storeNested(AssignCollectorForSampleCollection, JSON.stringify(data));
-      console.log(response);
+      // console.log(response);
       if (response?.status === 200) {
         returnData(response?.data)
       } else {
@@ -130,7 +130,7 @@ export const UpdateStatus = (data, sucessCallback) => {
       const response = await store(UpdateSampleRequestStatus, formData);
       if (response?.status === 200) {
         sucessCallback(response?.data)
-        // console.log('sucess');
+        console.log('sucess');
       } else {
         sucessCallback([])
       }

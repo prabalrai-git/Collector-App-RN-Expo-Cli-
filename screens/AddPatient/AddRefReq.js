@@ -9,9 +9,10 @@ import Filter from '../../components/ui/Filter';
 import { log } from 'react-native-reanimated';
 import AppButton from '../../components/ui/AppButton';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import { GetListOfCollector } from '../../Services/appServices/Collector';
 
 const AddRefReq = ({ route }) => {
-  console.log("route", route.params.data);
+  // console.log("route", route.params.data);
   const navigation = useNavigation()
   const [Remarks, setRemarks] = useState('')
   const [PatientReferedBy, setPatientReferedBy] = useState('');
@@ -23,7 +24,7 @@ const AddRefReq = ({ route }) => {
   const [referedList, setReferedList] = useState();
   const [referedListNew, setReferedListNew] = useState();
   const dispatch = useDispatch();
-  const user = useSelector(state => state.storeUserData);
+  const user = useSelector(state => state.storeUserData.userData);
   const [isLoading, setIsLoading] = useState(false);
   const [appBtnSis, setappBtnSis] = useState(false);
 
@@ -34,6 +35,11 @@ const AddRefReq = ({ route }) => {
 
   const [isVisibeReq, setisVisibeReq] = useState(false);
   const [isVisibeRef, setisVisibeRef] = useState(false);
+  const [isVisibeColl, setisVisibeColl] = useState(false);
+
+  const [CollectorList, setCollectorList] = useState();
+  const [PtientCollector, setPtientCollector] = useState();
+  const [PatientCollectorName, setPatientCollectorName] = useState();
 
   const [errors, setErrors] = useState({});
 
@@ -76,6 +82,9 @@ const AddRefReq = ({ route }) => {
       setReferedList(res?.ReferredDoctorList)
       setReferedListNew(res?.ReferredDoctorList)
     }))
+    dispatch(GetListOfCollector((res) => {
+      setCollectorList(res?.GetListOfCollectors)
+    }))
 
   }, [])
   // console.log('red', referedList)
@@ -97,7 +106,7 @@ const AddRefReq = ({ route }) => {
   }
 
   const handleSubmit = () => {
-    
+
     // console.log("route data", route.params.data)
     // console.log("date", `${time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate()}T${time.toLocaleTimeString()}`)
     // console.log('req, ref', PatientReferedBy, PatientRequestorBy)
@@ -113,7 +122,7 @@ const AddRefReq = ({ route }) => {
 
     let data = {
       "CId": 0,
-      "CollectorId": user.userData.UserId,
+      "CollectorId": user.UserRole === 2 ? PtientCollector : route.params.userData.CollectorId,
       "PatientFName": route.params.data.PatientFName,
       "PatientMName": route.params.data.PatientMName !== '' ? route.params.data.PatientMName : '',
       "PatientLName": route.params.data.PatientLName,
@@ -126,10 +135,10 @@ const AddRefReq = ({ route }) => {
       "PatientNationalId": 0,
       "Remarks": Remarks !== '' ? Remarks : '',
       "EntryDate": fialEntryDate,
-      "EnterBy": user.userData.UserId,
+      "EnterBy": user.UserId,
       "CollectionReqDate": `${time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate()}T${time.toLocaleTimeString()}`,
     }
-    // console.log('data', data)
+    console.log('data', data)
     // return
     let isValid = validate();
 
@@ -213,6 +222,10 @@ const AddRefReq = ({ route }) => {
       handleError('please enter Last Name', 'Requestor')
       isOpValid = false
     }
+    if (PtientCollector === '' || PtientCollector === undefined) {
+      handleError('please select collector', 'Collector')
+      isOpValid = false
+    }
     return isOpValid;
   }
 
@@ -283,6 +296,8 @@ const AddRefReq = ({ route }) => {
             color: 'red'
           }}>{errors.Requestor}</Text>
         </TouchableOpacity>
+
+
 
         <Modal
           animationType="slide"
@@ -363,6 +378,63 @@ const AddRefReq = ({ route }) => {
                     style={styles.cardBtn}
                   >
                     <Text style={styles.cardBtnTxt}>{item.Name}</Text>
+                  </TouchableOpacity>
+                )}
+              ></FlatList>
+            </View>
+          </View>
+        </Modal>
+        {/* collector */}
+        {
+          user.UserRole === 2 &&
+          <TouchableOpacity
+            onPress={() => {
+              handleError(null, 'Collector')
+              setisVisibeColl(!isVisibeColl)
+              setbtnDis(true)
+            }}
+            style={styles.TextInput}
+            disabled={btnDis}
+          // onFocus={() =>}
+          >
+            <Text style={styles.cLabel}>Set Collector</Text>
+            <View style={styles.inputField}>
+              <Text>{PatientCollectorName !== '' || PatientCollectorName !== undefined ? PatientCollectorName : ''}</Text>
+            </View>
+            <Text style={{
+              fontSize: 12,
+              color: 'red'
+            }}>{errors.Collector}</Text>
+          </TouchableOpacity>
+        }
+
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={isVisibeColl}
+          onRequestClose={() => {
+            setisVisibeColl(!isVisibeColl)
+            setbtnDis(false)
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View>
+              {/* <Filter data={CollectorList} returnData={handleChangeRef} forRef></Filter> */}
+              <FlatList
+                data={CollectorList}
+                keyExtractor={(item, index) => `${item.UserId}${index}`}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setPtientCollector(item.UserId)
+                      setPatientCollectorName(item.UserName)
+                      setisVisibeColl(false)
+                      setbtnDis(false)
+                    }}
+                    style={styles.cardBtn}
+                  >
+                    <Text style={styles.cardBtnTxt}>{item.UserName}</Text>
                   </TouchableOpacity>
                 )}
               ></FlatList>

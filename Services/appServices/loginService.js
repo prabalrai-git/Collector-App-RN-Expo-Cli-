@@ -28,10 +28,10 @@ export const InsertUpdateToken = (data, sucessCallback) => {
       const response = await store(InsertUpdateCollectorToken, formData);
       if (response?.status === 200) {
         sucessCallback(response?.data)
-        console.log('successfully inserted' )
+        // console.log('successfully inserted' )
       } else {
         sucessCallback([])
-        console.log('no no no inserted' )
+        // console.log('no no no inserted' )
       }
     } catch (error) {
 

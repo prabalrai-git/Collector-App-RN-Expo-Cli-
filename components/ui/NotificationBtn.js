@@ -143,6 +143,7 @@ const NotificationBtn = () => {
               data={Notification}
               keyExtractor={(item, index) => `${item.NId}${index}`}
               renderItem={renderItem}
+              inverted={true}
             />
           </View>
         </View>

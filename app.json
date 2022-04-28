@@ -20,16 +20,17 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "lunivaApp.collector",
+      "package": "luniva360.collector",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "config":
-      {"googleMaps": 
-        {
-        "apiKey": "AIzaSyBHsFY2CvPEIBknY3KKQZBjUNPxgLqWV2U"
-      }}
+      "config": {
+        "googleMaps": {
+            "apiKey": "AIzaSyBHsFY2CvPEIBknY3KKQZBjUNPxgLqWV2U"
+          }
+        },
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"

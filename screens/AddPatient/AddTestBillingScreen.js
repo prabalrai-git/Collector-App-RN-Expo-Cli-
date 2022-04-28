@@ -1,4 +1,4 @@
-import { Alert, Button, Dimensions, FlatList, Image, Modal, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, Button, Dimensions, FlatList, Image, Modal, Pressable, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AppButton from '../../components/ui/AppButton'
 import { useDispatch, useSelector } from 'react-redux'
@@ -6,6 +6,8 @@ import { GetStatus, InsertUpdateHomeCollection } from '../../Services/appService
 import { Picker } from '@react-native-picker/picker'
 import { StackActions, useNavigation } from '@react-navigation/native'
 import Header from '../../components/Header'
+import { GetListOfCollector } from '../../Services/appServices/Collector'
+import Filter from '../../components/ui/Filter'
 
 // "_HomeRequest": {
 //   "RId": 1, //?? =0
@@ -92,18 +94,35 @@ const AddTestBillingScreen = ({ route }) => {
   const navigation = useNavigation();
   const [btnDis, setBtnDis] = useState(false);
 
-  const user = useSelector(state => state.storeUserData);
+  const user = useSelector(state => state.storeUserData.userData);
   // console.log('user', user);
   const [paidStatus, setpaidStatus] = useState(1);
   const [ModalVisible, setModalVisible] = useState(false);
   const [PaymentCode, setPaymentCode] = useState('')
 
+  const [isVisibeRef, setisVisibeRef] = useState(false);
+  const [CollectorList, setCollectorList] = useState();
+  const [ColltorBtnDis, setColltorBtnDis] = useState();
+  const [PtientCollector, setPtientCollector] = useState();
+  const [PatientCollectorName, setPatientCollectorName] = useState();
+
   useEffect(() => {
     dispatch(GetStatus((res) => {
       setStatusList(res?.sampleStatus[0]);
     }))
+    dispatch(GetListOfCollector((res) => {
+      setCollectorList(res?.GetListOfCollectors)
+    }))
   }, [])
   // console.log(StatusList[0]);
+
+  const handleChangeRef = (e) => {
+    // if (e === undefined || e === '') {
+    //   setRequestorlistNew(reqestorList)
+    // } else {
+    //   setRequestorlistNew(e)
+    // }
+  }
 
   useEffect(() => {
     let temp = Number(route.params.tests.total) + Number(CollectionCharge) - Number(discount);
@@ -135,9 +154,9 @@ const AddTestBillingScreen = ({ route }) => {
       "DiscountAmount": discount,
       "GrandTotal": TotalAmount,
       "Remarks": Remarks,
-      "UserId":  user.userData.UserId,
+      "UserId": user.UserId,
       "IsActive": true,
-      "CollectorId":  user.userData.UserId,
+      "CollectorId": user.UserRole === 2 ? PtientCollector : user.UserId,
       "CollectedDate": fialEntryDate,
       "IsPaid": isPaid,
       "RequestStatus": Status,
@@ -146,7 +165,7 @@ const AddTestBillingScreen = ({ route }) => {
     // array of testdata
     const _HomeCollectionTestList = []
     route.params.tests.testList.map(e => {
-      
+
       _HomeCollectionTestList.push(
         {
           "SId": 0,
@@ -158,7 +177,7 @@ const AddTestBillingScreen = ({ route }) => {
           "ClientId": 1,
           "IsActive": true,
           "EntryDate": fialEntryDate,
-          "UserId":  user.userData.UserId
+          "UserId": user.UserId
         }
       )
     })
@@ -172,24 +191,41 @@ const AddTestBillingScreen = ({ route }) => {
     // console.log('final data',  finalData);
     // // console.log('test list', route.params.tests.testList);
     // return
-  
+
 
     dispatch(InsertUpdateHomeCollection(finalData, (res) => {
-      if (res?.SuccessMsg === true) { 
+      if (res?.SuccessMsg === true) {
         // return
-        Alert.alert(
-          "Saved!",
-          "Test booked Sucessfully",
-          [
-            {
-              text: "OK", onPress: () => {
-                const popAc = StackActions.pop(4);
-                navigation.dispatch(popAc);
-                navigation.navigate('Home');
+        if (user.UserRole === 2) {
+          Alert.alert(
+            "Saved!",
+            `Task asigned to ${PtientCollector}`,
+            [
+              {
+                text: "OK", onPress: () => {
+                  const popAc = StackActions.pop(4);
+                  navigation.dispatch(popAc);
+                  navigation.navigate('Home');
+                }
               }
-            }
-          ]
-        );
+            ]
+          );
+        }
+        else {
+          Alert.alert(
+            "Saved!",
+            "Test booked Sucessfully",
+            [
+              {
+                text: "OK", onPress: () => {
+                  const popAc = StackActions.pop(4);
+                  navigation.dispatch(popAc);
+                  navigation.navigate('Home');
+                }
+              }
+            ]
+          );
+        }
       }
       else {
         Alert.alert(
@@ -245,6 +281,17 @@ const AddTestBillingScreen = ({ route }) => {
           <Text style={styles.formLabel}>Total Amount</Text>
           <Text style={styles.inputField}>{TotalAmount}</Text>
         </View>
+
+        {
+          user.UserRole === 2 &&
+          <View style={styles.TextInput}>
+            <Text style={styles.formLabel}>Set Collector</Text>
+            <Pressable style={styles.inputField} onPress={() => setisVisibeRef(true)}>
+              <Text>{PatientCollectorName}</Text>
+            </Pressable>
+
+          </View>
+        }
 
         <View style={styles.TextInput}>
           <Text style={styles.formLabel}>Remarks</Text>
@@ -388,6 +435,38 @@ const AddTestBillingScreen = ({ route }) => {
 
         </View>
       </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isVisibeRef}
+        onRequestClose={() => {
+          setisVisibeRef(!isVisibeRef)
+          setColltorBtnDis(false)
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View>
+            <Filter data={CollectorList} returnData={handleChangeRef} forColl></Filter>
+            <FlatList
+              data={CollectorList}
+              keyExtractor={(item, index) => `${item.Id}${index}`}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    setPtientCollector(item.UserId)
+                    setPatientCollectorName(item.UserName)
+                    setisVisibeRef(false)
+                    setColltorBtnDis(false)
+                  }}
+                  style={styles.cardBtn}
+                >
+                  <Text style={styles.cardBtnTxt}>{item.UserName}</Text>
+                </TouchableOpacity>
+              )}
+            ></FlatList>
+          </View>
+        </View>
+      </Modal>
 
 
     </View>
@@ -519,4 +598,25 @@ const styles = StyleSheet.create({
   span2: {
     fontWeight: 'bold',
   },
+  cardBtn: {
+    backgroundColor: '#7fb8d3',
+    marginVertical: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 20,
+    borderRadius: 10,
+    width: Dimensions.get('window').width - 20,
+    marginLeft: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+  },
+  cardBtnTxt: {
+    color: '#fefefe',
+    letterSpacing: 1,
+    fontSize: 14,
+  }
 })

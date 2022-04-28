@@ -1,13 +1,16 @@
-import { Alert, Button, Dimensions, FlatList, Image, Modal, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, Button, Dimensions, FlatList, Image, Modal, Pressable, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AppButton from '../../components/ui/AppButton'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { GetStatus, InsertUpdateHomeCollection } from '../../Services/appServices/AssignPatient'
 import { Picker } from '@react-native-picker/picker'
 import { StackActions, useIsFocused, useNavigation } from '@react-navigation/native'
 import HamMenu from '../../components/ui/HamMenu'
 import BackBtn from '../../components/ui/BackBtn'
 import Header from '../../components/Header'
+import Filter from '../../components/ui/Filter'
+import { GetListOfCollector } from '../../Services/appServices/Collector'
+import { PushNotification } from '../../components/PushNotification'
 
 // "_HomeRequest": {
 //   "RId": 1, //?? =0
@@ -78,7 +81,7 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const BilligScreen = ({ route }) => {
-  // console.log('new data', route.params.userData);
+  // console.log('new data', route.params);
 
   const [CollectionCharge, setCollectionCharge] = useState(0);
   const [discount, setDiscount] = useState(0);
@@ -92,15 +95,26 @@ const BilligScreen = ({ route }) => {
   const navigation = useNavigation();
   const [btnDis, setBtnDis] = useState(false);
   const isFocused = useIsFocused();
+  const user = useSelector(state => state.storeUserData.userData);
+  // console.log("user", user);
 
   const [paidStatus, setpaidStatus] = useState(1);
   const [ModalVisible, setModalVisible] = useState(false);
   const [PaymentCode, setPaymentCode] = useState('')
 
+  const [isVisibeRef, setisVisibeRef] = useState(false);
+  const [CollectorList, setCollectorList] = useState();
+  const [ColltorBtnDis, setColltorBtnDis] = useState();
+  const [PtientCollector, setPtientCollector] = useState();
+  const [PatientCollectorName, setPatientCollectorName] = useState();
+
   useEffect(() => {
     dispatch(GetStatus((res) => {
       // setStatusList(res?.sampleStatus);
       setStatusList(res?.sampleStatus[0]);
+    }))
+    dispatch(GetListOfCollector((res) => {
+      setCollectorList(res?.GetListOfCollectors)
     }))
   }, [])
 
@@ -117,8 +131,17 @@ const BilligScreen = ({ route }) => {
     </View>
   ))
 
-  const handleSubmit = () => {
+  const handleChangeRef = (e) => {
+    // if (e === undefined || e === '') {
+    //   setRequestorlistNew(reqestorList)
+    // } else {
+    //   setRequestorlistNew(e)
+    // }
+  }
 
+  const handleSubmit = () => {
+    // PushNotification('asigned task', user.UserId, PtientCollector,  3, Remarks, user.UserName)
+    // return
 
     setBtnDis(true);
     let today = new Date();
@@ -137,7 +160,9 @@ const BilligScreen = ({ route }) => {
       "Remarks": Remarks,
       "UserId": route.params.userData.EnterBy,
       "IsActive": true,
-      "CollectorId": route.params.userData.CollectorId,
+      "CollectorId": user.UserRole === 2 ? PtientCollector : route.params.userData.CollectorId,
+      // PtientCollector
+      // route.params.userData.CollectorId
       "CollectedDate": fialEntryDate,
       "IsPaid": isPaid,
       // "IsPaid": true,
@@ -152,7 +177,7 @@ const BilligScreen = ({ route }) => {
           "SId": 0,
           "PatId": route.params.userData.CId,
           "RequestId": 0,
-          "TestId": e.Id,
+          "TestId": e.TestId,
           "TestName": e.Test,
           "TestPrice": e.Price,
           "ClientId": 1,
@@ -170,24 +195,42 @@ const BilligScreen = ({ route }) => {
       _HomeCollectionTestList
     }
 
-
-// console.log('final data', finalData);
-// return
+    // console.log('final data', finalData);
+    // return
     dispatch(InsertUpdateHomeCollection(finalData, (res) => {
       if (res?.SuccessMsg === true) {
-        Alert.alert(
-          "Saved!",
-          "Test booked Sucessfully",
-          [
-            {
-              text: "OK", onPress: () => {
-                const popAc = StackActions.pop(2);
-                navigation.dispatch(popAc);
-                // navigation.navigate('Home')
+        // console.log(res);
+        if (user.UserRole === 2) {
+          Alert.alert(
+            "Saved!",
+            `Task asigned to ${PtientCollector}`,
+            [
+              {
+                text: "OK", onPress: () => {
+                  const popAc = StackActions.pop(2);
+                  navigation.dispatch(popAc);
+                  // navigation.navigate('Home')
+                  PushNotification('asigned task', user.UserId, PtientCollector, res.CreatedId, Remarks, user.UserName)
+                }
               }
-            }
-          ]
-        );
+            ]
+          )
+        } else {
+          Alert.alert(
+            "Saved!",
+            "Test booked Sucessfully",
+            [
+              {
+                text: "OK", onPress: () => {
+                  const popAc = StackActions.pop(2);
+                  navigation.dispatch(popAc);
+                  // navigation.navigate('Home')
+                }
+              }
+            ]
+          )
+        }
+
       }
       else {
         Alert.alert(
@@ -245,6 +288,17 @@ const BilligScreen = ({ route }) => {
           <Text style={styles.formLabel}>Total Amount</Text>
           <Text style={styles.inputField}>{TotalAmount}</Text>
         </View>
+        {
+          user.UserRole === 2 &&
+          <View style={styles.TextInput}>
+            <Text style={styles.formLabel}>Set Collector</Text>
+            <Pressable style={styles.inputField} onPress={() => setisVisibeRef(true)}>
+              <Text>{PatientCollectorName}</Text>
+            </Pressable>
+
+          </View>
+        }
+
 
         <View style={styles.TextInput}>
           <Text style={styles.formLabel}>Remarks</Text>
@@ -375,6 +429,39 @@ const BilligScreen = ({ route }) => {
         </View>
       </Modal>
 
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isVisibeRef}
+        onRequestClose={() => {
+          setisVisibeRef(!isVisibeRef)
+          setColltorBtnDis(false)
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View>
+            <Filter data={CollectorList} returnData={handleChangeRef} forColl></Filter>
+            <FlatList
+              data={CollectorList}
+              keyExtractor={(item, index) => `${item.Id}${index}`}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    setPtientCollector(item.UserId)
+                    setPatientCollectorName(item.UserName)
+                    setisVisibeRef(false)
+                    setColltorBtnDis(false)
+                  }}
+                  style={styles.cardBtn}
+                >
+                  <Text style={styles.cardBtnTxt}>{item.UserName}</Text>
+                </TouchableOpacity>
+              )}
+            ></FlatList>
+          </View>
+        </View>
+      </Modal>
+
 
     </View>
   )
@@ -496,4 +583,25 @@ const styles = StyleSheet.create({
   span2: {
     fontWeight: 'bold',
   },
+  cardBtn: {
+    backgroundColor: '#7fb8d3',
+    marginVertical: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 20,
+    borderRadius: 10,
+    width: Dimensions.get('window').width - 20,
+    marginLeft: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+  },
+  cardBtnTxt: {
+    color: '#fefefe',
+    letterSpacing: 1,
+    fontSize: 14,
+  }
 }) 

@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Pressable, Image, FlatList, Alert, ScrollView } from 'react-native'
+import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Pressable, Image, FlatList, Alert, ScrollView, KeyboardAvoidingView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import AppButton from './AppButton';
@@ -45,8 +45,8 @@ const windowWidth = Dimensions.get('window').width
 // "TestTotalAmount": 5815,
 
 
-const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed }) => {
-  // console.log('data', data);
+const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed}) => {
+  // console.log('data task', data);
   const [isVisibe, setisVisibe] = useState(false);
   const [isRemarksVisible, setisRemarksVisible] = useState(false);
   const [Remarks, setRemarks] = useState('');
@@ -61,6 +61,7 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed }) =
     'latitude': null,
     'longitude': null
   });
+  let RequestPatientname = `${data.PatientFName} ${data.PatientMName} ${data.PatientLName}`
 
   useEffect(() => {
     dispatch(GetHomeCollectionTestRequestTestList(data.RequestId, (res) => {
@@ -108,22 +109,19 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed }) =
           [
             {
               text: 'OK', onPress: () => {
-                // PushNotification('rejected task', user.UserId, 1, Remarks)
+                PushNotification('accepted task', user.UserId, data.EnterBy,  data.RequestId, Remarks, user.UserName, RequestPatientname)
                 navigation.navigate('AcceptedTask');
               }
             }
           ]
         )
-
-        
-
       }
     }))
     retDis(false);
   }
 
   const handleReject = () => {
-    // PushNotification('rejected task', user.UserId, 1, Remarks)
+    // PushNotification('rejected task', user.UserId, 1,  data.RequestId,Remarks)
     // return
 
     let today = new Date();
@@ -153,7 +151,7 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed }) =
             [
               {
                 text: 'OK', onPress: () => {
-                  // PushNotification('rejected task', user.UserId, 1, Remarks)
+                  PushNotification('rejected task', user.UserId, data.EnterBy,  data.RequestId, Remarks, user.UserName, RequestPatientname)
                   navigation.navigate('RejectedTask')
                   setisVisibe(!isVisibe)
                   setisRemarksVisible(false)
@@ -233,7 +231,7 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed }) =
           }}
         >
 
-          <View style={styles.centeredView}>
+          <KeyboardAvoidingView style={styles.centeredView}>
             <ScrollView>
               <TouchableOpacity
                 style={{
@@ -258,6 +256,7 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed }) =
               </TouchableOpacity>
               {
                 isRemarksVisible ?
+              
                   <View style={styles.textInput}>
                     <Text style={styles.formLabel}>Please write remarks on why you want to decline</Text>
                     <TextInput
@@ -266,11 +265,12 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed }) =
                       onChangeText={(e) => setRemarks(e)}
                       style={styles.inputField}
                       multiline={true}
+                      
                     ></TextInput>
+                    {/* <TextInput></TextInput> */}
 
                     <AppButton title='Send' onPress={() => handleReject()}></AppButton>
                   </View>
-
                   :
                   <View style={styles.patInfocontainer}>
                     <View style={styles.profile}>
@@ -366,7 +366,9 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed }) =
                         flexDirection: 'row',
                         justifyContent: 'space-between'
                       }}>
-                        <CancleBtn title='Reject' color={'#e0c945'} onPress={() => setisRemarksVisible(true)}></CancleBtn>
+                        <CancleBtn title='Reject' color={'#e0c945'} onPress={() =>
+                          setisRemarksVisible(true)
+                          }></CancleBtn>
                         <Text>   </Text>
                         <AppButton title='Accept' onPress={() => handleAccept()}></AppButton>
                       </View>
@@ -377,7 +379,7 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed }) =
 
               }
             </ScrollView>
-          </View>
+          </KeyboardAvoidingView>
         </Modal>
       }
 
@@ -597,16 +599,17 @@ const styles = StyleSheet.create({
     width: 'auto'
   },
   centeredView: {
-    width: '100%',
+    // width: '100%',
     flex: 1,
     backgroundColor: '#f9f9f9'
+    
   },
   textInput: {
     width: "100%",
-    flex: 1,
+    // flex: 1,
     marginLeft: 10,
     marginTop: 80,
-    justifyContent: 'center',
+    // justifyContent: 'center',
   },
   module: {
     width: '100%',

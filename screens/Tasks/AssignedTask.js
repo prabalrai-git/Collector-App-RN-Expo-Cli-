@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, View } from 'react-native'
+import { FlatList, ScrollView, StyleSheet, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { dummyData } from '../../dumyData'
 import { useDispatch, useSelector } from 'react-redux'
@@ -92,12 +92,22 @@ const AssignedTask = () => {
 
   return (
     <View>
-      <FlatList
+      {/* <FlatList
         // data={PatietList}
         data={SortedData}
         renderItem={renderItem}
         keyExtractor={(item, index) => `${index}${item.RId}`}
-      />
+      /> */}
+      <ScrollView>
+
+      
+      {
+        SortedData !== undefined &&
+        SortedData.map((e, index) => (
+          <TaskCard data={e} AsignedTask disable={disable} retDis={handleDisable} key={`${index}${e.RId}`}/>
+        ))
+      }
+      </ScrollView>
     </View>
   )
 }

@@ -20,7 +20,7 @@ const LoginScreen = () => {
   const [username, setUserName] = useState('pacific');
   const [password, setPassword] = useState('pacific123');
   const [isLoading, setIsLoading] = useState(false);
-  const [btnDis, setBtDis] = useState(true)
+  const [btnDis, setBtDis] = useState(false)
   const dispatch = useDispatch()
   const [Token, setToken] = useState('')
 
@@ -86,20 +86,22 @@ const LoginScreen = () => {
                   console.log('log 2 error');
                 }
               }))
-            } else {
-              console.log('log 1');
+            } 
+            else {
+              // console.log('log 1');
               let updateTokenData = {
                 "CId": res.userToken[0].CId,
                 "UserId": andd[0].usrUserId,
                 "UserName": andd[0].usrusername,
                 "UserRole": andd[0].usrrole,
-                "UserToken": Token
+                // "UserToken": Token
+                "UserToken": 'dummy'
               }
               // if (res.userToken[0].UserToken === '') {
                 // inset if user token is empty
                 dispatch(InsertUpdateToken(updateTokenData, (res) => {
                   if (res?.SuccessMsg === true) {
-                    console.log('log 1 sucessfyll');
+                    // console.log('log 1 sucessfyll');
                     dispatch(storeUserData(updateTokenData))
                   } else {
                     // console.log('log 1 error');
@@ -190,7 +192,7 @@ const LoginScreen = () => {
       token = (await Notifications.getExpoPushTokenAsync()).data;
       // console.log("login token", token);
       setToken(token)
-      setBtDis(false)
+      // setBtDis(false)
     } else {
       alert('Must use physical device for Push Notifications');
     }

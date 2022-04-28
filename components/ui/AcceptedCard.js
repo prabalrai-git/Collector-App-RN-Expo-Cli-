@@ -11,6 +11,7 @@ import { Icon } from 'react-native-elements';
 import BadgeStatus from './BadgeStatus';
 import DateBadge from './DateBadge';
 import { GlobalStyles } from '../../GlobalStyle';
+import { PushNotification } from '../PushNotification';
 
 
 
@@ -48,7 +49,7 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
   const [isVisibe, setisVisibe] = useState(false);
   const [isRemarksVisible, setisRemarksVisible] = useState(false);
   const [Remarks, setRemarks] = useState('');
-  const user = useSelector(state => state.storeUserData);
+  const user = useSelector(state => state.storeUserData.userData);
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const text = data.CollectionReqDate;
@@ -56,6 +57,7 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
   const [TestList, setTestList] = useState();
   const [isPaid, setisPaid] = useState(false);
   const [Coordinate, setCoordinate] = useState(JSON.parse(data.PatientAddress));
+  let RequestPatientname = `${data.PatientFName} ${data.PatientMName} ${data.PatientLName}`
 
   useEffect(() => {
     setisPaid(data.IsPaid);
@@ -87,11 +89,11 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
       "RequestId": data.RequestId,
       "RequestStatusId": 5,
       "EntryDate": newDate,
-      "UserId": user.userData.usrUserId,
+      "UserId": user.usrUserId,
       "Remarks": Remarks === '' ? 'Sample Collected' : Remarks,
     }
     const pData = {
-      "userId": user.userData.usrUserId,
+      "userId": user.usrUserId,
       "requestId": data.RequestId,
       "ispaid": isPaid,
       "remarks": Remarks === '' ? 'Bill paid' : Remarks
@@ -101,31 +103,35 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
 
     // console.log("data", sData, "pdata",pData);
     // return
-    if (isPaid) {
+    if (isPaid === true) {
+      // console.log('paid');
+      // return
       dispatch(UpdateStatus(sData, (res) => {
+        // console.log('response of accepted task', res);
         if (res?.SuccessMsg === true) {
           dispatch(UpdatePaidStatus(pData, (res) => {
             // console.log("response sucess", res);
-            if (res === true) {
-              setRemarks('')
-              Alert.alert(
-                'Success !',
-                'Sample has been collected sucessfully',
-                [
-                  {
-                    text: 'OK', onPress: () => {
-                      setisVisibe(!isVisibe)
-                      refData(true)
-                    }
+            // if (res?.SuccessMsg === true) {
+            setRemarks('')
+            Alert.alert(
+              'Success !',
+              'Sample has been collected sucessfully',
+              [
+                {
+                  text: 'OK', onPress: () => {
+                    PushNotification('sample collected', user.UserId, data.EnterBy,  data.RequestId, Remarks, user.UserName, RequestPatientname)
+                    setisVisibe(!isVisibe)
+                    refData(true)
                   }
-                ]
-              )
-            }
+                }
+              ]
+            )
+            // }
           }))
         } else {
           Alert.alert(
             'Failure !',
-            'please enter the detail',
+            'Please collect the due',
             [
               {
                 text: 'OK', onPress: () => {
@@ -134,11 +140,19 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
             ]
           )
         }
-
         setbtnDis(false)
       }))
     } else {
-      console.log('error');
+      Alert.alert(
+        'Failure !',
+        'Please collect the due',
+        [
+          {
+            text: 'OK', onPress: () => {
+            }
+          }
+        ]
+      )
       setbtnDis(false)
     }
     retDis(false)
@@ -154,15 +168,16 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
       "RequestId": data.RequestId,
       "RequestStatusId": 6,
       "EntryDate": newDate,
-      "UserId": user.userData.usrUserId,
+      "UserId": user.usrUserId,
       "Remarks": 'Sample Droped in lab',
     }
 
     // console.log('drop  sample', sData);
     // return
     dispatch(UpdateStatus(sData, (res) => {
+      // console.log('response of accepted task', res);
       if (res?.SuccessMsg === true) {
-        setRemarks('')
+
         Alert.alert(
           'Success !',
           'Sample has been droped sucessfully',
@@ -170,13 +185,14 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
             {
               text: 'OK', onPress: () => {
                 setisVisibe(!isVisibe)
-                // setisRemarksVisible(false)
                 navigation.navigate('CompletedTask')
+                setRemarks('')
               }
             }
           ]
         )
       } else {
+
         Alert.alert(
           'Failure !',
           'server error, please try again later',
