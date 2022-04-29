@@ -73,7 +73,7 @@ export const GetListOfCollector = (sucessCallback) => {
       const response = await fetch(`${GetListOfCollectors}`);
       if(response?.status === 200){
         sucessCallback(response?.data)
-        console.log('sucessful in getting collector list');
+        // console.log('sucessful in getting collector list');
       }else{
         sucessCallback([])
         console.log('error getting current list')

@@ -13,7 +13,7 @@ const windowWidth = Dimensions.get('window').width * 0.55;
 
 
 const AddPatientSelectTest = ({ route }) => {
-  console.log("reoute params", route.params.patinetId);
+  // console.log("reoute params", route.params.data);
   const [data, setData] = useState([])
   const [selected, setSelected] = useState([]);
   const [total, setTotal] = useState(0);
@@ -110,6 +110,7 @@ const AddPatientSelectTest = ({ route }) => {
         screen: 'AddTestBillingScreen',
         params: {
           patinetId: route.params.patinetId,
+          data: route.params.data,
           tests: {
             total: total,
             testList: selected

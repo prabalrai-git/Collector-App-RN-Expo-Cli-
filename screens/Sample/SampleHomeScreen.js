@@ -35,8 +35,8 @@ const windowHeight = Dimensions.get('window').height;
 const SampleHomeScreen = () => {
   const dispatch = useDispatch();
   const [RequestList, setRequestList] = useState();
-  const user = useSelector(state => state.storeUserData);
-  // console.log(user.userData.usrUserId);
+  const user = useSelector(state => state.storeUserData.userData);
+  // console.log(user.UserId);
 
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
@@ -78,11 +78,12 @@ const SampleHomeScreen = () => {
   const handleClick = () => {
     const fromDate = `${FromDate.getFullYear() + "-" + (FromDate.getMonth() + 1) + "-" + FromDate.getDate()}`
     const toDate = `${ToDate.getFullYear() + "-" + (ToDate.getMonth() + 1) + "-" + ToDate.getDate()}`
-    const collectorId = 3
+    // const collectorId = 3
     const data = {
       'fromDate': fromDate,
       'toDate': toDate,
-      'collectorId': collectorId
+      'collectorId': user.UserId
+      // 'collectorId': 0
 
     }
     dispatch(GetSampleRequestListByCollector(data, (res) => {

@@ -44,7 +44,7 @@ export const GetTokenByUserIdApi = async (data, sucessCallback) => {
     
     try {
       const response = await fetch(`${GetUserTokenByUserId}?uId=${data}`);
-      // console.log('data', data);
+      // console.log('data', response?.status);
       if (response?.status === 200) {
         // console.log('get toeken sucess');
         sucessCallback(response?.data)

@@ -81,7 +81,7 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const BilligScreen = ({ route }) => {
-  // console.log('new data', route.params);
+  console.log('new data', route.params.userData.PatientFName);
 
   const [CollectionCharge, setCollectionCharge] = useState(0);
   const [discount, setDiscount] = useState(0);
@@ -107,6 +107,7 @@ const BilligScreen = ({ route }) => {
   const [ColltorBtnDis, setColltorBtnDis] = useState();
   const [PtientCollector, setPtientCollector] = useState();
   const [PatientCollectorName, setPatientCollectorName] = useState();
+  let RequestPatientname = `${route.params.userData.PatientFName} ${route.params.userData.PatientMName} ${route.params.userData.PatientLName}`
 
   useEffect(() => {
     dispatch(GetStatus((res) => {
@@ -140,7 +141,7 @@ const BilligScreen = ({ route }) => {
   }
 
   const handleSubmit = () => {
-    // PushNotification('asigned task', user.UserId, PtientCollector,  3, Remarks, user.UserName)
+    // PushNotification('asigned task', user.UserId, PtientCollector, 3, Remarks, user.UserName)
     // return
 
     setBtnDis(true);
@@ -210,7 +211,7 @@ const BilligScreen = ({ route }) => {
                   const popAc = StackActions.pop(2);
                   navigation.dispatch(popAc);
                   // navigation.navigate('Home')
-                  PushNotification('asigned task', user.UserId, PtientCollector, res.CreatedId, Remarks, user.UserName)
+                  PushNotification('asigned task', user.UserId, PtientCollector, res.CreatedId, Remarks, user.UserName, RequestPatientname)
                 }
               }
             ]

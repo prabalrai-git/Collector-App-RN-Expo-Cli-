@@ -8,6 +8,7 @@ import { StackActions, useNavigation } from '@react-navigation/native'
 import Header from '../../components/Header'
 import { GetListOfCollector } from '../../Services/appServices/Collector'
 import Filter from '../../components/ui/Filter'
+import { PushNotification } from '../../components/PushNotification'
 
 // "_HomeRequest": {
 //   "RId": 1, //?? =0
@@ -80,7 +81,7 @@ const windowHeight = Dimensions.get('window').height;
 // console.log('add billing section')
 
 const AddTestBillingScreen = ({ route }) => {
-  console.log('new data', route.params.patinetId);
+  // console.log('new data', route.params.data);
 
   const [CollectionCharge, setCollectionCharge] = useState(0);
   const [discount, setDiscount] = useState(0);
@@ -105,6 +106,7 @@ const AddTestBillingScreen = ({ route }) => {
   const [ColltorBtnDis, setColltorBtnDis] = useState();
   const [PtientCollector, setPtientCollector] = useState();
   const [PatientCollectorName, setPatientCollectorName] = useState();
+  let RequestPatientname = `${route.params.data.PatientFName} ${route.params.data.PatientMName} ${route.params.data.PatientLName}`
 
   useEffect(() => {
     dispatch(GetStatus((res) => {
@@ -206,6 +208,7 @@ const AddTestBillingScreen = ({ route }) => {
                   const popAc = StackActions.pop(4);
                   navigation.dispatch(popAc);
                   navigation.navigate('Home');
+                  PushNotification('asigned task', user.UserId, PtientCollector, res.CreatedId, Remarks, user.UserName, RequestPatientname)
                 }
               }
             ]

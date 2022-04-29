@@ -215,9 +215,9 @@ export const GetCollectionRequestHistory = (data, sucessCallback) => {
     try{
       // console.log("data 2", data.patid,  data.collectorId);
       const response = await fetch(`${GetCollectionRequestHistoryByPatientId}?patid=${data.patid}&collectorId=${data.collectorId}`)
-      // console.log("data 3", data.patid);
+      // console.log("data 3", response);
       if(response?.status === 200){
-        // console.log("sucess getting request history");
+        console.log("sucess getting request history");
         sucessCallback(response?.data)
       }if(response?.status === 404){
         console.log('404 not found');

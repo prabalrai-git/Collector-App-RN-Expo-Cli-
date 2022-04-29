@@ -26,6 +26,7 @@ const newData = [
 
 
 const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 const NotificationBtn = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const user = useSelector(state => state.storeUserData.userData);
@@ -139,11 +140,12 @@ const NotificationBtn = () => {
             </View>
 
             <FlatList
-              // style={styles.container}
+              style={styles.container}
               data={Notification}
               keyExtractor={(item, index) => `${item.NId}${index}`}
               renderItem={renderItem}
-              inverted={true}
+              // inverted={true}
+              // initialScrollIndex={1}
             />
           </View>
         </View>
@@ -206,5 +208,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 4,
     textAlign: 'justify'
+  },
+  container: {
+    // height: 600,
+    height: windowHeight - 60,
   }
 })

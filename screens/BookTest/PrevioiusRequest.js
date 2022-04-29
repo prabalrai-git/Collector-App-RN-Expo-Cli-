@@ -21,6 +21,7 @@ const PrevioiusRequest = ({ route }) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch()
   const user = useSelector(state => state.storeUserData);
+  // console.log('user');
   const [disable, setdisable] = useState(false)
   
   useEffect(() => {
@@ -39,8 +40,10 @@ const PrevioiusRequest = ({ route }) => {
   const handleClick = () => {
     let data = {
       patid: route.params.data.CId,
-      collectorId: user.userData.usrUserId
+      collectorId: user.userData.UserId
     }
+    // console.log("potato",data);
+    // return
     dispatch(GetCollectionRequestHistory(data, (res) => {
       if (res?.PatientWiseCollectionHistory.length > 0) {
         setPatietList(res.PatientWiseCollectionHistory)
@@ -51,7 +54,7 @@ const PrevioiusRequest = ({ route }) => {
 
 
   }
-  // console.log("[0a", PatietList);
+  console.log("[0a", PatietList);
 
   return (
     <View style={styles.mainContainer}>

@@ -20,7 +20,7 @@ const LoginScreen = () => {
   const [username, setUserName] = useState('pacific');
   const [password, setPassword] = useState('pacific123');
   const [isLoading, setIsLoading] = useState(false);
-  const [btnDis, setBtDis] = useState(false)
+  const [btnDis, setBtDis] = useState(true)
   const dispatch = useDispatch()
   const [Token, setToken] = useState('')
 
@@ -31,13 +31,13 @@ const LoginScreen = () => {
   const responseListener = useRef();
   // console.log('toet token', Token);
 
-  // useEffect(() => {
-  //   if (Token !== '') {
-  //     setBtDis(true)
-  //   } else {
-  //     setBtDis(false)
-  //   }
-  // }, [Token])
+  useEffect(() => {
+    if (Token !== '') {
+      setBtDis(false)
+    } else {
+      setBtDis(true)
+    }
+  }, [Token])
 
   const handleLogin = () => {
     setBtDis(true)
@@ -88,20 +88,21 @@ const LoginScreen = () => {
               }))
             } 
             else {
-              // console.log('log 1');
+              console.log('log 1');
               let updateTokenData = {
                 "CId": res.userToken[0].CId,
                 "UserId": andd[0].usrUserId,
                 "UserName": andd[0].usrusername,
                 "UserRole": andd[0].usrrole,
-                // "UserToken": Token
-                "UserToken": 'dummy'
+                "UserToken": Token
+                // "UserToken": 'dummy'
               }
+              // console.log('log 1 data', updateTokenData);
               // if (res.userToken[0].UserToken === '') {
                 // inset if user token is empty
                 dispatch(InsertUpdateToken(updateTokenData, (res) => {
                   if (res?.SuccessMsg === true) {
-                    // console.log('log 1 sucessfyll');
+                    console.log('log 1 sucessfyll');
                     dispatch(storeUserData(updateTokenData))
                   } else {
                     // console.log('log 1 error');
@@ -214,18 +215,20 @@ const LoginScreen = () => {
     <View style={styles.container}>
       <View style={styles.componyInfo}>
         <Image
-          source={require('../../assets/icon.png')}
+          source={require('../../assets/images/luniva360.png')}
           style={{
-            width: 200,
-            height: 200
+            width: 250,
+            height: 100
           }}
+          resizeMethod={"resize"}
         />
         {/* <View style={styles.cDetails}>
-          <Text style={[styles.span, styles.span1]}>Luniva</Text>
-          <Text style={[styles.span, styles.span2]}> 360</Text>
+          <Text style={[styles.span, styles.span1]}>Collector</Text>
+          <Text style={[styles.span, styles.span2]}> App</Text>
         </View> */}
 
       </View>
+      {/* <Text>{Token}</Text> */}
       <View style={styles.TextInputcontainer}>
         <Icon
           name='shop'
@@ -341,7 +344,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    // marginBottom: 20,
+    marginBottom: 40,
   },
   cDetails: {
     flexDirection: 'row',

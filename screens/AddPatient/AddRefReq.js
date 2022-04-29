@@ -169,7 +169,8 @@ const AddRefReq = ({ route }) => {
               },
               {
                 text: "yes", onPress: () => navigation.navigate('AddPatientSelectTest', {
-                  patinetId: res?.CreatedId
+                  patinetId: res?.CreatedId,
+                  data: data
                 })
               }
             ]

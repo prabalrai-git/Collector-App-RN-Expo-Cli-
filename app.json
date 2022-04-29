@@ -30,10 +30,22 @@
             "apiKey": "AIzaSyBHsFY2CvPEIBknY3KKQZBjUNPxgLqWV2U"
           }
         },
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "useNextNotificationsApi":true
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/96-96.png",
+          "color": "#ffffff",
+          "sounds": "./assets/sounds/mixkit-message-pop-alert-2354.wav"
+        }
+      ]
+    ]
+
   }
 }
