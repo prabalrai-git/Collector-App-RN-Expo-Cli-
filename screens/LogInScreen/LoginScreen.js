@@ -10,6 +10,7 @@ import { storeUserData } from '../../Services/store/slices/profileSlice'
 
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
+import LoginBtn from '../../components/ui/LoginBtn'
 // import NotificationBtn from '../components/ui/NotificationBtn';
 
 
@@ -23,6 +24,7 @@ const LoginScreen = () => {
   const [btnDis, setBtDis] = useState(true)
   const dispatch = useDispatch()
   const [Token, setToken] = useState('')
+  const [isInitalLoading, setisInitalLoading] = useState(true)
 
 
   const [expoPushToken, setExpoPushToken] = useState('');
@@ -34,8 +36,10 @@ const LoginScreen = () => {
   useEffect(() => {
     if (Token !== '') {
       setBtDis(false)
+      setisInitalLoading(false)
     } else {
       setBtDis(true)
+      setisInitalLoading(true)
     }
   }, [Token])
 
@@ -86,7 +90,7 @@ const LoginScreen = () => {
                   console.log('log 2 error');
                 }
               }))
-            } 
+            }
             else {
               console.log('log 1');
               let updateTokenData = {
@@ -99,21 +103,21 @@ const LoginScreen = () => {
               }
               // console.log('log 1 data', updateTokenData);
               // if (res.userToken[0].UserToken === '') {
-                // inset if user token is empty
-                dispatch(InsertUpdateToken(updateTokenData, (res) => {
-                  if (res?.SuccessMsg === true) {
-                    console.log('log 1 sucessfyll');
-                    dispatch(storeUserData(updateTokenData))
-                  } else {
-                    // console.log('log 1 error');
-                    Alert.alert(
-                      'Server error !',
-                      'Please try again later'
-                    )
-                  }
-                }))
+              // inset if user token is empty
+              dispatch(InsertUpdateToken(updateTokenData, (res) => {
+                if (res?.SuccessMsg === true) {
+                  console.log('log 1 sucessfyll');
+                  dispatch(storeUserData(updateTokenData))
+                } else {
+                  // console.log('log 1 error');
+                  Alert.alert(
+                    'Server error !',
+                    'Please try again later'
+                  )
+                }
+              }))
               // }
-              
+
             }
 
             // console.log("res" , res.userToken[0].UserToken);
@@ -167,6 +171,13 @@ const LoginScreen = () => {
 
 
   }, []);
+  _handleNotification = notification => {
+    this.setState({ notification: notification });
+  };
+
+  _handleNotificationResponse = response => {
+    console.log("response",response);
+  };
 
 
   Notifications.setNotificationHandler({
@@ -175,6 +186,7 @@ const LoginScreen = () => {
       shouldPlaySound: false,
       shouldSetBadge: false,
     }),
+    
   });
 
   async function registerForPushNotificationsAsync() {
@@ -213,81 +225,97 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.componyInfo}>
-        <Image
-          source={require('../../assets/images/luniva360.png')}
-          style={{
-            width: 250,
-            height: 100
-          }}
-          resizeMethod={"resize"}
-        />
-        {/* <View style={styles.cDetails}>
+      {
+        isInitalLoading ?
+          <View style={styles.loadingScreen}>
+            <Image
+              source={require('../../assets/images/luniva360.png')}
+              style={styles.loadingImage}
+              resizeMethod={"resize"}
+            />
+
+          </View>
+          :
+          <>
+            <View style={styles.componyInfo}>
+              <Image
+                source={require('../../assets/images/luniva360.png')}
+                style={{
+                  width: 250,
+                  height: 100
+                }}
+                resizeMethod={"resize"}
+              />
+              {/* <View style={styles.cDetails}>
           <Text style={[styles.span, styles.span1]}>Collector</Text>
           <Text style={[styles.span, styles.span2]}> App</Text>
         </View> */}
 
-      </View>
-      {/* <Text>{Token}</Text> */}
-      <View style={styles.TextInputcontainer}>
-        <Icon
-          name='shop'
-          color={global.secondary}
-          type='entypo'
-          style={styles.icon}
-        ></Icon>
-        <TextInput
-          style={styles.TextInput}
-          placeholder='clinet id..'
-          onChangeText={(name) => setUserName(name)}
-        ></TextInput>
-      </View>
+            </View>
+            {/* <Text>{Token}</Text> */}
+            <View style={styles.TextInputcontainer}>
+              <Icon
+                name='shop'
+                color={global.secondary}
+                type='entypo'
+                style={styles.icon}
+              ></Icon>
+              <TextInput
+                style={styles.TextInput}
+                placeholder='clinet id..'
+                onChangeText={(name) => setUserName(name)}
+              ></TextInput>
+            </View>
 
-      <View style={styles.TextInputcontainer}>
-        <Icon
-          name='user'
-          color={global.secondary}
-          type='entypo'
-          style={styles.icon}
-        ></Icon>
-        <TextInput
-          style={styles.TextInput}
-          placeholder='name..'
-          onChangeText={(name) => setUserName(name)}
-        ></TextInput>
-      </View>
+            <View style={styles.TextInputcontainer}>
+              <Icon
+                name='user'
+                color={global.secondary}
+                type='entypo'
+                style={styles.icon}
+              ></Icon>
+              <TextInput
+                style={styles.TextInput}
+                placeholder='name..'
+                onChangeText={(name) => setUserName(name)}
+              ></TextInput>
+            </View>
 
-      <View style={styles.TextInputcontainer}>
-        <Icon
-          name='key'
-          color={global.secondary}
-          type='fontisto'
-          style={styles.icon}
-        ></Icon>
-        <TextInput
-          style={styles.TextInput}
-          placeholder='password..'
-          onChangeText={(password) => setPassword(password)}
-          // keyboardType='visible-password'
-          secureTextEntry
-          textContentType='password'
-        ></TextInput>
-      </View>
-      <AppButton title='login' onPress={handleLogin} disabled={btnDis} />
+            <View style={styles.TextInputcontainer}>
+              <Icon
+                name='key'
+                color={global.secondary}
+                type='fontisto'
+                style={styles.icon}
+              ></Icon>
+              <TextInput
+                style={styles.TextInput}
+                placeholder='password..'
+                onChangeText={(password) => setPassword(password)}
+                // keyboardType='visible-password'
+                secureTextEntry
+                textContentType='password'
+              ></TextInput>
 
-      {
-        isLoading &&
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={isLoading}
-          style={styles.centeredView}>
-          <View style={styles.centeredView}>
+            </View>
+            <LoginBtn title='login' onPress={handleLogin} disabled={btnDis} />
 
-            <ActivityIndicator size="large" color={global.secondary} />
-          </View>
-        </Modal>
+            {
+              isLoading &&
+              <Modal
+                animationType="fade"
+                transparent={true}
+                visible={isLoading}
+                style={styles.centeredView}>
+                <View style={styles.centeredView}>
+
+                  <ActivityIndicator size="large" color={global.secondary} />
+                </View>
+              </Modal>
+            }
+          </>
       }
+
     </View>
   )
 }
@@ -305,7 +333,18 @@ const styles = StyleSheet.create({
     paddingRight: 1,
     backgroundColor: '#FDFEFE',
     // justifyContent: 'center',
-    paddingTop: 100,
+    // paddingTop: 100,
+  },
+  loadingScreen: {
+    width: '100%',
+    height: '100%',
+    // backgroundColor: 'red',
+    alignItems: 'center'
+  },
+  loadingImage: {
+    width: 250,
+    height: 100,
+    marginTop: 270,
   },
   title: {
     fontSize: 24,
@@ -345,6 +384,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 40,
+    marginTop: 200,
   },
   cDetails: {
     flexDirection: 'row',

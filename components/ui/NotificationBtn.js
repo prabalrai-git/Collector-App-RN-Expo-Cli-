@@ -5,24 +5,8 @@ import DateBadge from './DateBadge';
 import HamMenu from './HamMenu';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetNotificationByUserId } from '../../Services/appServices/Notificationservice';
+import { useNavigation } from '@react-navigation/native';
 
-
-const newData = [
-  {
-    'Id': 1,
-    'title': 'Notification 1',
-    'dis': 'something something something something something something',
-    'from': 'user name',
-    'date': '2022-5-6T6:50'
-  },
-  {
-    'Id': 2,
-    'title': 'Notification 3',
-    'dis': 'something something something something something something',
-    'from': 'user name',
-    'date': '2022-5-6T6:50'
-  },
-]
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -32,6 +16,7 @@ const NotificationBtn = () => {
   const user = useSelector(state => state.storeUserData.userData);
   // console.log(" user", user.UserId);
   // GetNotificationByUserId
+  const navigation = useNavigation()
 
   const dispatch = useDispatch();
   const [Notification, setNotification] = useState();
@@ -39,7 +24,7 @@ const NotificationBtn = () => {
   useEffect(()=> {
     dispatch(GetNotificationByUserId(user.UserId, (res) => {
       // console.log(res?.notificationdetails);
-      setNotification(res?.notificationdetails)
+      setNotification(res?.notificationdetails.reverse())
     }))
   }, [modalVisible])
 
@@ -53,9 +38,14 @@ const NotificationBtn = () => {
   //   "Title": "sample string 4",
   //   "UserIdFrom": 3,
   //   "UserIdTo": 1,
-
+  // NotificationHome
   const renderItem = ({ item }) => (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={() => {
+      setModalVisible(!modalVisible);
+      navigation.navigate('NotificationHome', {
+        data: item
+      })
+    }}>
       <Icon
         name='test-tube-alt'
         color={'#9DD4E9'}
@@ -75,7 +65,7 @@ const NotificationBtn = () => {
         <DateBadge date={item.EntryDate}></DateBadge>
       </View>
 
-    </View>
+    </TouchableOpacity>
   )
 
 

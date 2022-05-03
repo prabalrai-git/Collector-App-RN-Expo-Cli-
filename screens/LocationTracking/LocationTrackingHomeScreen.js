@@ -73,12 +73,6 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1
   },
-  bkgImg: {
-    paddingTop: 40,
-    width: Dimensions.get('window').width * 1,
-    // height: Dimensions.get('window').height * 1,
-    flex: 1,
-  },
   container: {
     // marginTop: 40,
     flex: 1

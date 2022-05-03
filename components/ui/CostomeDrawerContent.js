@@ -10,10 +10,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native'
 import { logout, storeUserData } from '../../Services/store/slices/profileSlice'
 import { InsertUpdateToken } from '../../Services/appServices/loginService'
+import * as TaskManager from 'expo-task-manager';
 
 
 const CostomeDrawerContent = (props) => {
   // console.log("props", props.data);
+  const LOCATION_TASK_NAME = 'background-location-task';
 
   const navigation = useNavigation()
   const [isActive, setIsActive] = useState(false);
@@ -25,10 +27,12 @@ const CostomeDrawerContent = (props) => {
     'latitude': null,
     'longitude': null
   });
-  const [gLocationStatus, setgLocationStatus] = useState(false);
+  const [gLocationStatus, setgLocationStatus] = useState('');
+
+  console.log('geolocation status', gLocationStatus);
 
   const toggleSwitch = () => {
-    if (gLocationStatus !== false) {
+    if (gLocationStatus === 'granted') {
       setIsActive(previousState => !previousState)
 
     } else {
@@ -49,11 +53,13 @@ const CostomeDrawerContent = (props) => {
       const { status } = await Location.requestForegroundPermissionsAsync();
       let finalStatus = status
       if (finalStatus === 'granted') {
-        // console.log('permission grated')
-        const userLocation = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest, maximumAge: 10000 })
-        // console.log("location 1st", userLocation);
+        console.log('permission grated')
+        const userLocation = await Location.getCurrentPositionAsync({ 
+          accuracy: Location.Accuracy.Balanced, maximumAge: 10000 
+        })
+        console.log("location 1st", userLocation);
         temp(userLocation);
-        setgLocationStatus(true);
+        setgLocationStatus('granted');
       }
       // if (finalStatus !== 'granted') {
       //   Alert.alert(
@@ -78,6 +84,17 @@ const CostomeDrawerContent = (props) => {
     }
   }
 
+  TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, error }) => {
+    if (error) {
+      // Error occurred - check `error.message` for more details.
+      return;
+    }
+    if (data) {
+      const { locations } = data;
+      // do something with the locations captured in the background
+      console.log('potato location');
+    }
+  });
   function temp(e) {
     setGeolocation({
       'latitude': e.coords.latitude,

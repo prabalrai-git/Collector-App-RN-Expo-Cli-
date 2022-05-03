@@ -1,18 +1,11 @@
 import { Dimensions, FlatList, Image, ImageBackground, Linking, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { DrawerActions, useNavigation } from '@react-navigation/native'
-import { Avatar, Icon } from 'react-native-elements';
 import { GlobalStyles } from '../GlobalStyle';
 import { HomeActionButton } from '../components/ui/HomeActionButton';
-// import GreetingCard from '../components/ui/GreetingCard'
-// import CardButton from '../components/ui/CardButton'
-import * as Location from "expo-location"
 
 import { Alert, Platform } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
-import { UpdateCollectorLocation } from '../Services/appServices/Collector';
-import HamMenu from '../components/ui/HamMenu';
-import Header from '../components/Header';
 
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
@@ -105,7 +98,7 @@ const HomeScreen = () => {
 
         <View style={styles.cardContainer}>
           <View style={styles.dis}>
-            <Text style={[GlobalStyles.body, { color: '#3d4e58' }]}>Hi!</Text>
+            <Text style={[GlobalStyles.heading, { color: '#3d4e58' }]}>Hi!</Text>
             <Text style={[GlobalStyles.header, { color: '#205072' }]}>{user.userData.UserName}</Text>
             <Text style={[GlobalStyles.body, { color: '#3d4e58' }]}>Your target for today is to keep positive mindset and smile to everyone you meet.</Text>
           </View>

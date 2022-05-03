@@ -2,6 +2,8 @@ import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-nati
 import React from 'react'
 import { Icon } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
+import { color } from 'react-native-reanimated';
+import { GlobalStyles } from '../../GlobalStyle';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -12,18 +14,20 @@ export const HomeActionButton = ({ data }) => {
   return (
     <>
       <TouchableOpacity
-        style={styles.btnContainer}
+        style={[styles.btnContainer,{
+          backgroundColor: data.color
+        }]}
         onPress={() => navigation.navigate(`${data.pathName}`)}
       >
         <Icon
           name={data.icon}
-          color={'#FF7F00'}
+          color={'#fefefe'}
           type={data.type}
           style={styles.icon}
           size={30}
         ></Icon>
         {/* <AddPatient></AddPatient> */}
-        <Text style={styles.txt}>{data.name}</Text>
+        <Text style={[GlobalStyles.btnTxt, {color: '#fefefe', marginTop: 10}]}>{data.name}</Text>
       </TouchableOpacity>
     </>
 
@@ -40,12 +44,12 @@ export const InfoActionButton = (props) => {
     >
       <Icon
         name={props.icon}
-        color={'#FF7F00'}
+        color={secondary}
         type={props.type}
         style={styles.icon}
         size={30}
       ></Icon>
-      <Text style={styles.txt}>{props.name}</Text>
+      <Text style={[GlobalStyles.btnTxt, {color: primary, marginTop: 10}]}>{props.name}</Text>
     </View>
 
   )
@@ -55,13 +59,13 @@ export const InfoActionButton = (props) => {
 const styles = StyleSheet.create({
   btnContainer: {
     width: windowWidth * 0.45,
-    height: 100,
+    height: 110,
     margin: 9,
     borderRadius: 18,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ffff',
-    shadowColor: "#7ac2bc",
+    shadowColor: "#88d4ce",
     shadowOffset: {
       width: 0,
       height: 3,
@@ -88,12 +92,12 @@ const styles = StyleSheet.create({
 
     elevation: 7,
   },
-  txt: {
-    marginTop: 10,
-    fontSize: 16,
-    fontWeight: 'bold',
-    letterSpacing: 1,
-    color: '#205072'
-  }
+  // txt: {
+  //   marginTop: 10,
+  //   fontSize: 16,
+  //   fontWeight: 'bold',
+  //   letterSpacing: 1,
+  //   color: '#fefefe'
+  // }
 
 })

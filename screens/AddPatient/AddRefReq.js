@@ -12,7 +12,7 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import { GetListOfCollector } from '../../Services/appServices/Collector';
 
 const AddRefReq = ({ route }) => {
-  // console.log("route", route.params.data);
+  // console.log("rout e", route.params.data);
   const navigation = useNavigation()
   const [Remarks, setRemarks] = useState('')
   const [PatientReferedBy, setPatientReferedBy] = useState('');
@@ -122,7 +122,7 @@ const AddRefReq = ({ route }) => {
 
     let data = {
       "CId": 0,
-      "CollectorId": user.UserRole === 2 ? PtientCollector : route.params.userData.CollectorId,
+      "CollectorId": user.UserRole === 2 ? PtientCollector : user.UserId,
       "PatientFName": route.params.data.PatientFName,
       "PatientMName": route.params.data.PatientMName !== '' ? route.params.data.PatientMName : '',
       "PatientLName": route.params.data.PatientLName,
@@ -141,7 +141,7 @@ const AddRefReq = ({ route }) => {
     console.log('data', data)
     // return
     let isValid = validate();
-
+    console.log("isValid", isValid)
     // return
     if (isValid) {
       dispatch(AssignPatient(data, (res) => {
@@ -223,10 +223,13 @@ const AddRefReq = ({ route }) => {
       handleError('please enter Last Name', 'Requestor')
       isOpValid = false
     }
-    if (PtientCollector === '' || PtientCollector === undefined) {
-      handleError('please select collector', 'Collector')
-      isOpValid = false
+    if (user.UserRole === 2) {
+      if (PtientCollector === '' || PtientCollector === undefined) {
+        handleError('please select collector', 'Collector')
+        isOpValid = false
+      }
     }
+
     return isOpValid;
   }
 

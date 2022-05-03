@@ -158,10 +158,51 @@ const DraweNavigator = () => {
         options={{
           // tabBarHideOnKeyboard: true,
           headerShown: false,
-          title: 'Notification',
+          // title: 'Notification',
+          // drawerIcon: ({ size, color }) => (
+          //   <Icon
+          //     name='bells'
+          //     color={'#FF7F00'}
+          //     type='antdesign'
+          //     style={styles.icon}
+          //   ></Icon>
+          // )
+          drawerLabel: () => null,
+          title: null,
+          drawerIcon: () => null,
+          drawerItemStyle: { display: 'none' }
+        }}
+      />
+      {/* {
+        user.userData.UserRole === 3 && */}
+      <Drawer.Screen
+        name='task'
+        component={TaskNavigator}
+        options={{
+          headerShown: false,
+          title: 'Task',
           drawerIcon: ({ size, color }) => (
             <Icon
-              name='bells'
+              name='notification'
+              color={'#FF7F00'}
+              type='entypo'
+              style={styles.icon}
+            ></Icon>
+          )
+        }}
+      />
+      {/* } */}
+      {/* {
+        user.userData.UserRole === 2 && */}
+      <Drawer.Screen
+        name='CollectorLocation'
+        component={CollectorLocation}
+        options={{
+          headerShown: false,
+          title: 'Location Tracking',
+          drawerIcon: ({ size, color }) => (
+            <Icon
+              name='find'
               color={'#FF7F00'}
               type='antdesign'
               style={styles.icon}
@@ -169,43 +210,6 @@ const DraweNavigator = () => {
           )
         }}
       />
-      {/* {
-        user.userData.UserRole === 3 && */}
-        <Drawer.Screen
-          name='task'
-          component={TaskNavigator}
-          options={{
-            headerShown: false,
-            title: 'Task',
-            drawerIcon: ({ size, color }) => (
-              <Icon
-                name='notification'
-                color={'#FF7F00'}
-                type='entypo'
-                style={styles.icon}
-              ></Icon>
-            )
-          }}
-        />
-      {/* } */}
-      {/* {
-        user.userData.UserRole === 2 && */}
-        <Drawer.Screen
-          name='CollectorLocation'
-          component={CollectorLocation}
-          options={{
-            headerShown: false,
-            title: 'Location Tracking',
-            drawerIcon: ({ size, color }) => (
-              <Icon
-                name='find'
-                color={'#FF7F00'}
-                type='antdesign'
-                style={styles.icon}
-              ></Icon>
-            )
-          }}
-        />
       {/* } */}
 
 

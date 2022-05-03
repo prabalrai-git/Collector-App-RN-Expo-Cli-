@@ -251,3 +251,8 @@ export const GetcollectorNotificationByUserId = 'GetcollectorNotificationByUserI
  *  @param: ?uId={uId}
  */
 
+export const GetSampleRequestDetailsByRequestId = 'GetSampleRequestDetailsByRequestId'
+/**
+ * @desc: get sample request details by request ir
+ *  @param: ?rId={rId}
+ */

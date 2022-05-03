@@ -6,11 +6,7 @@ import { Avatar, Icon } from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AppButton from '../../components/ui/AppButton';
 import SampleCard from './SampleCard';
-import HamMenu from '../../components/ui/HamMenu';
-import BackBtn from '../../components/ui/BackBtn';
-import Filter from '../../components/ui/Filter';
 import Header from '../../components/Header';
-import AcceptedCard from '../../components/ui/AcceptedCard';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -139,7 +135,7 @@ const SampleHomeScreen = () => {
                 is24Hour={true}
                 display="default"
                 onChange={onChangeFromData}
-                minimumDate={new Date()}
+                // minimumDate={new Date()}
               />
             }
 

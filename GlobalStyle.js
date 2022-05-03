@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Dimensions, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
+const windowWidth = Dimensions.width;
 const GlobalStyle = () => {
   return (
     <View>
@@ -12,10 +13,10 @@ const GlobalStyle = () => {
 export default GlobalStyle
 
 global.primary = '#205072',
-  global.secondary = '#FF7F00',
-  global.primaryBkg = '#fefefe',
-  global.secondaryBkg = '#f9f9f9',
-  global.secodaryCardColor = '#9DD4E9'
+global.secondary = '#FF7F00',
+global.primaryBkg = '#fefefe',
+global.secondaryBkg = '#f9f9f9',
+global.secodaryCardColor = '#9DD4E9'
 
 
 export const GlobalStyles = StyleSheet.create({
@@ -52,6 +53,11 @@ export const GlobalStyles = StyleSheet.create({
     fontWeight: 'normal',
     letterSpacing: 1,
   },
+  btnTxt: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    letterSpacing: 1,
+  },
 
   // containers
   boxShadow: {
@@ -70,5 +76,6 @@ export const GlobalStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fefefe58',
     justifyContent: 'center',
-  }
+  },
+
 })
