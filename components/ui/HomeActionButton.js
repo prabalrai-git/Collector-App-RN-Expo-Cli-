@@ -59,9 +59,12 @@ export const InfoActionButton = (props) => {
 const styles = StyleSheet.create({
   btnContainer: {
     width: windowWidth * 0.45,
-    height: 110,
-    margin: 9,
-    borderRadius: 18,
+    height: 120,
+    // margin: 9,
+    marginHorizontal: 9,
+    marginBottom: 9,
+    paddingHorizontal: 16,
+    borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ffff',

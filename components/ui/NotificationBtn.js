@@ -76,7 +76,7 @@ const NotificationBtn = () => {
       }}>
         <Icon
           name='bells'
-          color={'#9DD4E9'}
+          color={secodaryCardColor}
           type='antdesign'
           size={20}
           backgroundColor={'#ffffff'}
@@ -118,7 +118,7 @@ const NotificationBtn = () => {
                   color={'#fefefe'}
                   type='antdesign'
                   size={20}
-                  backgroundColor={'#9DD4E9'}
+                  backgroundColor={secodaryCardColor}
                   style={
                     {
                       borderRadius: 12,

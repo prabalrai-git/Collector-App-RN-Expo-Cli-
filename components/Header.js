@@ -33,7 +33,7 @@ export default Header
 
 const styles = StyleSheet.create({
   headercontainer: {
-    backgroundColor: '#8ED1FC',
+    backgroundColor: secodaryCardColor,
     width: windowWidth,
     borderBottomLeftRadius: 18,
     borderBottomRightRadius: 18,

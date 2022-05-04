@@ -62,7 +62,7 @@ const PreTestCard = ({ data, disable, retDis }) => {
               position: 'absolute',
               top: 10,
               right: 10,
-              backgroundColor: '#8ED1FC',
+              backgroundColor: secodaryCardColor,
               padding: 10,
               borderRadius: 50,
             }}

@@ -16,7 +16,9 @@ global.primary = '#205072',
 global.secondary = '#FF7F00',
 global.primaryBkg = '#fefefe',
 global.secondaryBkg = '#f9f9f9',
-global.secodaryCardColor = '#9DD4E9'
+// global.secodaryCardColor = '#9DD4E9'
+global.secodaryCardColor ="#9DD4E9"
+// global.secodaryCardColor = '#FF7F00'
 
 
 export const GlobalStyles = StyleSheet.create({

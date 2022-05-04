@@ -120,7 +120,7 @@ const SampleHomeScreen = () => {
                 <Text>{FromDate === '' ? 'FromDate..' : FromDate.toLocaleDateString()}</Text>
                 <Icon
                   name='calendar'
-                  color={'#8ED1FC'}
+                  color={secodaryCardColor}
                   type='entypo'
                   size={20}
                 ></Icon>
@@ -147,7 +147,7 @@ const SampleHomeScreen = () => {
                 <Text>{ToDate === '' ? 'ToDate..' : ToDate.toLocaleDateString()}</Text>
                 <Icon
                   name='calendar'
-                  color={'#8ED1FC'}
+                  color={secodaryCardColor}
                   type='entypo'
                   size={20}
                 ></Icon>
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F9F9F9',
   },
   top: {
-    backgroundColor: '#8ED1FC',
+    backgroundColor: secodaryCardColor,
     borderBottomLeftRadius: 18,
     borderBottomRightRadius: 18,
     overflow: 'hidden'
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   dateFiltercontainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#8ED1FC',
+    backgroundColor: secodaryCardColor,
     paddingHorizontal: 10,
     paddingVertical: 10,
   },

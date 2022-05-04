@@ -13,7 +13,7 @@ const HamMenu = () => {
     <TouchableOpacity onPress={() => handleButton()}>
       <Icon
         name='menu-unfold'
-        color={'#9DD4E9'}
+        color={secodaryCardColor}
         type='antdesign'
         size={20}
           backgroundColor={'#ffffff'}

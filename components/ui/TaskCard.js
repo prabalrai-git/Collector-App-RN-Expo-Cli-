@@ -238,7 +238,7 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed}) =>
                   position: 'absolute',
                   top: 10,
                   right: 10,
-                  backgroundColor: '#8ED1FC',
+                  backgroundColor: secodaryCardColor,
                   padding: 10,
                   borderRadius: 50,
                 }}
@@ -403,7 +403,7 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed}) =>
                     position: 'absolute',
                     top: 10,
                     right: 10,
-                    backgroundColor: '#8ED1FC',
+                    backgroundColor: secodaryCardColor,
                     padding: 10,
                     borderRadius: 50,
                   }}

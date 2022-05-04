@@ -5,8 +5,6 @@ import { Avatar, Icon } from 'react-native-elements'
 import { useDispatch, useSelector } from 'react-redux'
 import * as Location from "expo-location"
 import { UpdateCollectorLocation } from '../../Services/appServices/Collector'
-import { JumpingTransition } from 'react-native-reanimated'
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native'
 import { logout, storeUserData } from '../../Services/store/slices/profileSlice'
 import { InsertUpdateToken } from '../../Services/appServices/loginService'
@@ -22,23 +20,18 @@ const CostomeDrawerContent = (props) => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.storeUserData)
   // console.log(user);
+  const [gLocationStatus, setgLocationStatus] = useState(false);
 
-  const [geolocation, setGeolocation] = useState({
-    'latitude': null,
-    'longitude': null
-  });
-  const [gLocationStatus, setgLocationStatus] = useState('');
-
-  console.log('geolocation status', gLocationStatus);
+  // console.log('geolocation status', gLocationStatus);
 
   const toggleSwitch = () => {
-    if (gLocationStatus === 'granted') {
+    if (gLocationStatus === true) {
       setIsActive(previousState => !previousState)
 
     } else {
       Alert.alert(
-        'Location !',
-        'Please allow location to, to find.',
+        'Enable Location !',
+        'Please allow location enable gps tracking.',
         [
           { text: 'Cancel' },
           // we can automatically open our app in their settings
@@ -53,109 +46,52 @@ const CostomeDrawerContent = (props) => {
       const { status } = await Location.requestForegroundPermissionsAsync();
       let finalStatus = status
       if (finalStatus === 'granted') {
-        console.log('permission grated')
-        const userLocation = await Location.getCurrentPositionAsync({ 
-          accuracy: Location.Accuracy.Balanced, maximumAge: 10000 
-        })
-        console.log("location 1st", userLocation);
-        temp(userLocation);
-        setgLocationStatus('granted');
+        // console.log('permission grated')
+
+        setgLocationStatus(true);
+      } else {
+          Alert.alert(
+            'Enable Location !',
+            'Please allow location enable gps tracking.',
+            [
+              { text: 'Cancel' },
+              // we can automatically open our app in their settings
+              // so there's less friction in turning geolocation on
+              { text: 'Enable Geolocation', onPress: () => Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings() }
+            ]
+          )
       }
-      // if (finalStatus !== 'granted') {
-      //   Alert.alert(
-      //     'Warning',
-      //     'You will not search if you do not enable geolocation in this app. If you would like to search, please enable geolocation for Fin in your settings.',
-      //     [
-      //       { text: 'Cancel' },
-      //       // we can automatically open our app in their settings
-      //       // so there's less friction in turning geolocation on
-      //       { text: 'Enable Geolocation', onPress: () => Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings() }
-      //     ]
-      //   )
-      //   return false;
-      // }
     } catch (error) {
-      // Alert.alert(
-      //   'Error',
-      //   'Something went wrong while check your geolocation permissions, please try again later.',
-      //  [ { text: 'Enable Geolocation', onPress: () => Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings() }]
-      // );
-      // return false;
     }
   }
-
-  TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, error }) => {
-    if (error) {
-      // Error occurred - check `error.message` for more details.
-      return;
-    }
-    if (data) {
-      const { locations } = data;
-      // do something with the locations captured in the background
-      console.log('potato location');
-    }
-  });
-  function temp(e) {
-    setGeolocation({
-      'latitude': e.coords.latitude,
-      'longitude': e.coords.longitude,
+  // console.log('first is active', isActive);
+  if (isActive) {
+    // console.log("potato active");
+    Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
+      // accuracy: Location.Accuracy.Balanced, maximumAge: 10000,
+      accuracy: Location.Accuracy.Highest,
+      distanceInterval: 1, // minimum change (in meters) betweens updates
+      deferredUpdatesInterval: 7000,
+      timeInterval: 7000,
+      foregroundService: {
+        notificationTitle: 'Using your location',
+        notificationBody: 'To turn off, go back to the app and switch something off.',
+      },
     })
+  } else {
+    // console.log("potato inactive");
+    Location.hasStartedLocationUpdatesAsync(LOCATION_TASK_NAME).then((value) => {
+      if (value) {
+        Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
+      }
+    });
   }
 
-  const setCollectorData = () => {
-    hasGeolocationPermission()
-    let today = new Date();
-    const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.toLocaleTimeString();
 
-    const data = {
-      "LId": 0,
-      "UserId": props.data.UserId,
-      "Latitude": geolocation.latitude,
-      "Longitude": geolocation.longitude,
-      "EntryDate": newDate,
-      "ClientId": 0
-    }
-    // console.log('data location', props.data);
-    // return
-    if (isActive === true) {
-      dispatch(UpdateCollectorLocation(data, (res) => {
-        // console.log('res', res);
-        // return
-        if (res?.CreatedId > 0 && res?.SuccessMsg === true) {
-          // console.log(res)
-          // console.log("res", res);
-        } else {
-          console.log('some error occured while dispatch user location, api error map is still updated');
-        }
-      }))
-    } else {
-    }
-
-  }
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCollectorData()
-    }, 7000);
-    return () => clearInterval(interval)
-  }, [geolocation])
-  useEffect(() => {
-    // if (gLocationStatus === false) {
-    //   console.log('big potato');
-    //   Alert.alert(
-    //     'Location !',
-    //     'Please allow location to, to find.',
-    //     [
-    //       { text: 'Cancel' },
-    //       // we can automatically open our app in their settings
-    //       // so there's less friction in turning geolocation on
-    //       { text: 'Enable Geolocation', onPress: () => Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings() }
-    //     ]
-    //   )
-    // }
-    hasGeolocationPermission()
+    hasGeolocationPermission();
   }, [])
-  // console.log("log out user 1",user.userData);
 
   // "CId": 2,
   // "UserId": 1,
@@ -180,6 +116,39 @@ const CostomeDrawerContent = (props) => {
       }
     }))
   }
+  TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, error }) => {
+    let today = new Date();
+    const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.toLocaleTimeString();
+    if (error) {
+      // Error occurred - check `error.message` for more details.
+      return;
+    }
+    if (data) {
+      const { locations } = data;
+
+      const lData = {
+        "LId": 0,
+        "UserId": props.data.UserId,
+        "Latitude": locations[0].coords.latitude,
+        "Longitude": locations[0].coords.longitude,
+        "EntryDate": newDate,
+        "ClientId": 0
+      }
+      // return
+      if (isActive === true) {
+        // if (1 === 1) {
+        dispatch(UpdateCollectorLocation(lData, (res) => {
+          // console.log('res', res);
+          // return
+          if (res?.CreatedId > 0 && res?.SuccessMsg === true) {
+          } else {
+            // console.log('some error occured while dispatch user location, api error map is still updated');
+          }
+        }))
+      } else {
+      }
+    }
+  });
 
 
   return (
@@ -205,46 +174,46 @@ const CostomeDrawerContent = (props) => {
         <DrawerItemList {...props}></DrawerItemList>
         {/* {
           props.data.UserRole === 3 && */}
-          <View style={styles.geoLocationContainer}>
-            <Icon
-              name='location-pin'
-              color={'#FF7F00'}
-              type='entropy'
-              // style={styles.icon}
-              style={{
-                marginRight: 10
-              }}
-            ></Icon>
-            {
-              isActive ?
-                <Text style={{ color: '#767577', fontSize: 14, letterSpacing: 1 }}>
-                  Location activated
-                </Text> :
-                <Text style={{ color: '#767577', fontSize: 14, letterSpacing: 1 }}>
-                  Activate location
-                </Text>
-            }
-            <Switch
-              trackColor={{ false: "#767577", true: "#81b0ff" }}
-              thumbColor={isActive ? "#f5dd4b" : "#f4f3f4"}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={toggleSwitch}
-              value={isActive}
-            />
-          </View>
+        <View style={styles.geoLocationContainer}>
+          <Icon
+            name='location-pin'
+            color={primary}
+            type='entropy'
+            // style={styles.icon}
+            style={{
+              marginRight: 10
+            }}
+          ></Icon>
+          {
+            isActive ?
+              <Text style={{ color: primary, fontSize: 14, letterSpacing: 1 }}>
+                Location activated
+              </Text> :
+              <Text style={{ color: primary, fontSize: 14, letterSpacing: 1 }}>
+                Activate location
+              </Text>
+          }
+          <Switch
+            trackColor={{ false: "#767577", true: "#81b0ff" }}
+            thumbColor={isActive ? "#f5dd4b" : "#f4f3f4"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitch}
+            value={isActive}
+          />
+        </View>
         {/* // } */}
 
         <TouchableOpacity onPress={() => handleLogOut()} style={styles.logout}>
           <Icon
             name='logout'
-            color={'#FF7F00'}
+            color={primary}
             type='entropy'
             style={{
               marginRight: 30
             }}
           ></Icon>
           <Text style={{
-            color: '#767577'
+            color: primary
           }}>Log out</Text>
         </TouchableOpacity>
       </DrawerContentScrollView>
@@ -253,6 +222,8 @@ const CostomeDrawerContent = (props) => {
 }
 
 export default CostomeDrawerContent
+
+
 
 const styles = StyleSheet.create({
   navHeaderContainer: {
@@ -275,10 +246,12 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     color: '#205072',
     marginBottom: 5,
+    textTransform: 'capitalize',
   },
   subTitle: {
     fontSize: 14,
     letterSpacing: 1,
+    color: secondary,
   },
   geoLocationContainer: {
     // backgroundColor: 'blue'

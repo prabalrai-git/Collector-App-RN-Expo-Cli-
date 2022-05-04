@@ -53,14 +53,24 @@ const DraweNavigator = () => {
 
     <Drawer.Navigator
       drawerPosition="right"
-      // screenOptions={{
-      //   tabBarActiveTintColor: '#FF7F00',
-      // }}
-      // initialRouteName='Home'
+      screenOptions={{
+        drawerActiveTintColor: secondaryBkg,
+        drawerInactiveTintColor: primary,
+        drawerActiveBackgroundColor: primary,
+        drawerInactiveBackgroundColor: secondaryBkg,
+        drawerType: 'slide',
+        // drawerContentStyle: {
+        //   backgroundColor: 'red'
+        // }
+        drawerStyle: {
+          backgroundColor: secondaryBkg
+        }
+      }}
       drawerContent={(props) =>
       (
         <CostomeDrawerContent {...props} data={data} />
       )}
+      
     >
 
       <Drawer.Screen
@@ -70,11 +80,15 @@ const DraweNavigator = () => {
         options={{
           headerShown: false,
           // headerShadowVisible: false,
+          // drawerActiveBackgroundColor: "#57b2e6be",
+          // drawerActiveTintColor: '#fefefe',
+          // drawerType: 'slide',
+        
           title: 'Home',
           drawerIcon: ({ size, color }) => (
             <Icon
               name='home'
-              color={'#FF7F00'}
+              color={color}
               type='antdesign'
               style={styles.icon}
             ></Icon>
@@ -107,7 +121,7 @@ const DraweNavigator = () => {
           drawerIcon: ({ size, color }) => (
             <Icon
               name='addusergroup'
-              color={'#FF7F00'}
+              color={color}
               type='antdesign'
               style={styles.icon}
             ></Icon>
@@ -127,7 +141,7 @@ const DraweNavigator = () => {
           drawerIcon: ({ size, color }) => (
             <Icon
               name='user'
-              color={'#FF7F00'}
+              color={color}
               type='antdesign'
               style={styles.icon}
             ></Icon>
@@ -145,7 +159,7 @@ const DraweNavigator = () => {
           drawerIcon: ({ size, color }) => (
             <Icon
               name='test-tube-alt'
-              color={'#FF7F00'}
+              color={color}
               type='fontisto'
               style={styles.icon}
             ></Icon>
@@ -156,17 +170,7 @@ const DraweNavigator = () => {
         name='NotificationHome'
         component={NotificationHomeScreen}
         options={{
-          // tabBarHideOnKeyboard: true,
           headerShown: false,
-          // title: 'Notification',
-          // drawerIcon: ({ size, color }) => (
-          //   <Icon
-          //     name='bells'
-          //     color={'#FF7F00'}
-          //     type='antdesign'
-          //     style={styles.icon}
-          //   ></Icon>
-          // )
           drawerLabel: () => null,
           title: null,
           drawerIcon: () => null,
@@ -184,7 +188,7 @@ const DraweNavigator = () => {
           drawerIcon: ({ size, color }) => (
             <Icon
               name='notification'
-              color={'#FF7F00'}
+              color={color}
               type='entypo'
               style={styles.icon}
             ></Icon>
@@ -203,7 +207,7 @@ const DraweNavigator = () => {
           drawerIcon: ({ size, color }) => (
             <Icon
               name='find'
-              color={'#FF7F00'}
+              color={color}
               type='antdesign'
               style={styles.icon}
             ></Icon>

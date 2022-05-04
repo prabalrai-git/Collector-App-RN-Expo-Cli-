@@ -481,7 +481,7 @@ export default AddTestBillingScreen
 const styles = StyleSheet.create({
   mainContainer: {
     // paddingTop: 40,
-    backgroundColor: '#8ED1FC',
+    backgroundColor: secodaryCardColor,
     // justifyContent: 'center',
     // alignItems: 'center',
     flex: 1,
@@ -552,7 +552,7 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.45,
     paddingBottom: 30,
     width: windowWidth,
-    backgroundColor: '#8ED1FC',
+    backgroundColor: secodaryCardColor,
     paddingVertical: 10,
     justifyContent: 'center',
     alignItems: 'center',

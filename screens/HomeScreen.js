@@ -82,7 +82,6 @@ const HomeScreen = () => {
     <HomeActionButton data={item} />
   )
 
-  
 
   return (
     <View style={styles.maincontainer}>
@@ -140,8 +139,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: global.primaryBkg,
     borderRadius: 18,
-    paddingHorizontal: 20,
-    paddingVertical: 30,
+    paddingHorizontal: 16,
+    paddingVertical: 24,
     marginHorizontal: 10,
     marginTop: 40,
     shadowColor: "#86a3a3",
@@ -153,9 +152,6 @@ const styles = StyleSheet.create({
     shadowRadius: 9.51,
 
     elevation: 15,
-  },
-  dis: {
-    // width: windowWidth * 0.65,
   },
   flatContainer: {
     // width: windowWidth - 20,

@@ -25,7 +25,7 @@ const TabNavigator = () => {
         screenOptions={{
           tabBarLabelStyle: { fontSize: 12 },
           tabBarItemStyle: { width: 100 },
-          tabBarStyle: { backgroundColor: '#8ED1FC' },
+          tabBarStyle: { backgroundColor: secodaryCardColor },
           tabBarActiveTintColor: '#fefefe',
         }}
         initialRouteName='AssignedTask'
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     flex: 1,
     // paddingTop: 90,
-    backgroundColor: '#8ED1FC'
+    backgroundColor: secodaryCardColor
   },
 
 })
