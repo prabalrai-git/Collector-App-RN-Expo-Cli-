@@ -1,21 +1,22 @@
-import { Dimensions, Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, Dimensions, FlatList, Image, KeyboardAvoidingView, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { GetSampleRequestDetailsByRId } from '../../Services/appServices/Notificationservice';
-import { Icon } from 'react-native-elements';
 import AppButton from '../../components/ui/AppButton';
 import StatusBadge from '../../components/ui/StatusBadge';
 import MapView from 'react-native-maps';
 import MarkerCostome from '../../components/ui/MarkerCostome';
 import { GlobalStyles } from '../../GlobalStyle';
-import CancleBtn from '../../components/ui/CancleBtn';
 import Header from '../../components/Header';
 import { GetHomeCollectionTestRequestTestList } from '../../Services/appServices/AssignPatient';
 import { useIsFocused } from '@react-navigation/native';
+import CancleBtn from '../../components/ui/CancleBtn';
+import { GetListOfCollector, ReassignCollectorToCollector } from '../../Services/appServices/Collector';
+import Filter from '../../components/ui/Filter';
 
 const windowWidth = Dimensions.get('window').width
 const NotificationHomeScreen = ({ route }) => {
-  // console.log("route", route.params.data.NotficationPathName);
+  // console.log("route", route.params.data);
   const dispatch = useDispatch();
   const [UserData, setUserData] = useState();
   const [isRemarksVisible, setisRemarksVisible] = useState(false);
@@ -23,10 +24,18 @@ const NotificationHomeScreen = ({ route }) => {
   const [TestList, setTestList] = useState()
   const [Coordinate, setCoordinate] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [isVisibeRef, setisVisibeRef] = useState(false);
+  const [CollectorList, setCollectorList] = useState();
+  const [ColltorBtnDis, setColltorBtnDis] = useState(false);
+  const userId = useSelector(state => state.storeUserData.userData.UserId);
 
   const isFocused = useIsFocused()
+  let temp = [];
 
   useEffect(() => {
+    dispatch(GetListOfCollector((res) => {
+      setCollectorList(res?.GetListOfCollectors)
+    }))
     setIsLoading(true)
     setUserData()
     setCoordinate()
@@ -47,6 +56,11 @@ const NotificationHomeScreen = ({ route }) => {
   }, [isFocused])
 
   // console.log(isFocused);
+  if (UserData !== undefined) {
+    // console.log(UserData.SampleStatus);
+    temp = UserData.CollectionReqDate.split('T')
+  }
+
 
 
   // useEffect(() => {
@@ -72,6 +86,58 @@ const NotificationHomeScreen = ({ route }) => {
   // "RequestId": 94,
   // "RequestStatus": 1,
   // "SampleStatus": "Requested",
+
+  const handleAssigh = (id, name) => {
+    // userId
+    // requestId
+    // collectorId
+
+    let data = {
+      "userId": userId,
+      "requestId": route.params.data.NotficationPathName,
+      "collectorId": id
+    }
+    Alert.alert(
+      'Alert !',
+      `Do you want to assign task to ${name} `,
+      [
+        {
+          text: 'no',
+          onPress: () => { }
+        },
+        {
+          text: 'yes',
+          onPress: () => {
+            setisVisibeRef(false)
+            setColltorBtnDis(false)
+            dispatch(ReassignCollectorToCollector(data, (res) => {
+              if (res === true) {
+                // console.log('sucess')
+                Alert.alert(
+                  'Sucess !',
+                  `Assigned task to ${name} sucessfull`,
+                  [
+                    {
+                      text: 'ok',
+                      onPress: () => {
+
+                      }
+                    }
+                  ]
+                )
+              }
+              // else{
+              //   console.log('error');
+              // }
+            }))
+          }
+        }
+      ]
+    )
+
+    console.log("id", id, "name", name);
+
+  }
 
   return (
 
@@ -117,16 +183,16 @@ const NotificationHomeScreen = ({ route }) => {
                           </View>
                           <View style={{ flexDirection: 'row' }}>
                             <Text >Cliet ID : </Text>
-                            <Text style={{ color: "#FF7F00" }}>{UserData.PatId}</Text>
+                            <Text style={{ color: "#FF7F00" }}>{UserData.CId}</Text>
                           </View>
-                          {/* <View style={{ flexDirection: 'row' }}>
-                  <Text >Collection Date : </Text>
-                  <Text style={{ color: "#FF7F00" }}>{temp[0]}</Text>
-                </View>
-                <View style={{ flexDirection: 'row' }}>
-                  <Text >Collection Time : </Text>
-                  <Text style={{ color: "#FF7F00" }}>{temp[1]}</Text>
-                </View> */}
+                          <View style={{ flexDirection: 'row' }}>
+                            <Text >Collection Date : </Text>
+                            <Text style={{ color: "#FF7F00" }}>{temp[0]}</Text>
+                          </View>
+                          <View style={{ flexDirection: 'row' }}>
+                            <Text >Collection Time : </Text>
+                            <Text style={{ color: "#FF7F00" }}>{temp[1]}</Text>
+                          </View>
                         </View>
 
                       </View>
@@ -166,34 +232,84 @@ const NotificationHomeScreen = ({ route }) => {
                         }
                       </View>
 
-                      {/* <View style={[styles.module, GlobalStyles.boxShadow]}>
-                        <Text style={{
-                          color: '#fefefe',
-                          fontSize: 16,
-                          marginBottom: 10,
-                          fontWeight: 'bold',
-                          letterSpacing: 1,
-                        }}>Do you want to Accept or rect the task ?</Text>
-                        <View style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-between'
-                        }}>
-                          <CancleBtn title='Reject' color={'#e0c945'} onPress={() =>
-                            setisRemarksVisible(true)
-                          }></CancleBtn>
-                          <Text>   </Text>
-                          <AppButton title='Accept' onPress={() => handleAccept()}></AppButton>
+                      {
+                        UserData.SampleStatus === 'Requested' &&
+                        <View style={[styles.module, GlobalStyles.boxShadow]}>
+                          <Text style={{
+                            color: '#fefefe',
+                            fontSize: 16,
+                            marginBottom: 10,
+                            fontWeight: 'bold',
+                            letterSpacing: 1,
+                          }}>Do you want to Accept or rect the task ?</Text>
+                          <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between'
+                          }}>
+                            <CancleBtn title='Reject' color={'#e0c945'} onPress={() =>
+                              setisRemarksVisible(true)
+                            }></CancleBtn>
+                            <Text>   </Text>
+                            <AppButton title='Accept' onPress={() => handleAccept()}></AppButton>
+                          </View>
+
                         </View>
-
-                      </View> */}
-
+                      }
+                      {
+                        UserData.SampleStatus === 'Rejected' &&
+                        <>
+                          <View style={[styles.testList, { backgroundColor: '#eb5b48da' }]}>
+                            <Text style={{
+                              color: '#fefefe',
+                              fontSize: 18,
+                              marginBottom: 10,
+                              fontWeight: 'bold',
+                              letterSpacing: 1,
+                            }}>{`Sample Rejcted by ${route.params.data.UserIdFrom}`}</Text>
+                            <Text style={{
+                              color: '#fefefe',
+                              fontSize: 16,
+                              marginBottom: 10,
+                              letterSpacing: 1,
+                            }}>{route.params.data.NotificationDesc}</Text>
+                          </View>
+                          <AppButton disabled={ColltorBtnDis} title={'Re-asssign'} onPress={() => setisVisibeRef(!isVisibeRef)}></AppButton>
+                        </>
+                      }
                     </View>
-
                 }
               </ScrollView>
             }
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={isVisibeRef}
+              onRequestClose={() => {
+                setisVisibeRef(!isVisibeRef)
+                setColltorBtnDis(false)
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View>
+                  {/* <Filter data={CollectorList} returnData={handleChangeRef} forColl></Filter> */}
+                  <FlatList
+                    data={CollectorList}
+                    keyExtractor={(item, index) => `${item.Id}${index}`}
+                    renderItem={({ item }) => (
+                      <TouchableOpacity
+                        onPress={() => handleAssigh(item.UserId, item.UserName)}
+                        // setPtientCollector(item.UserId)
+                        // setPatientCollectorName(item.UserName)
+                        style={styles.cardBtn}
+                      >
+                        <Text style={styles.cardBtnTxt}>{item.UserName}</Text>
+                      </TouchableOpacity>
+                    )}
+                  ></FlatList>
+                </View>
+              </View>
+            </Modal>
           </>
-
       }
     </KeyboardAvoidingView>
   )
@@ -379,11 +495,32 @@ const styles = StyleSheet.create({
   },
   testList: {
     backgroundColor: '#9DD4E9',
-    marginLeft: 10,
+    // marginLeft: 10,
     marginVertical: 10,
     paddingHorizontal: 15,
     paddingVertical: 20,
     borderRadius: 18,
     width: windowWidth - 20,
   },
+  cardBtn: {
+    backgroundColor: '#7fb8d3',
+    marginVertical: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 20,
+    borderRadius: 10,
+    width: Dimensions.get('window').width - 20,
+    marginLeft: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+  },
+  cardBtnTxt: {
+    color: '#fefefe',
+    letterSpacing: 1,
+    fontSize: 14,
+  }
 })

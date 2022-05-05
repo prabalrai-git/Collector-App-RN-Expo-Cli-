@@ -1,4 +1,4 @@
-import { GetCurrentLocationOfCollector, GetListOfCollectors, GetlocationofCollectorByDate, InsertupdateCollectorLocationDetails } from "../constants/url";
+import { GetCurrentLocationOfCollector, GetListOfCollectors, GetlocationofCollectorByDate, InsertupdateCollectorLocationDetails, ReassignCollectorToRejectedSample } from "../constants/url";
 import { generateUrlEncodedData } from "../utils/generateUrlEncodedData";
 import { fetch, store } from "../utils/httpUtil";
 
@@ -80,6 +80,21 @@ export const GetListOfCollector = (sucessCallback) => {
       }
     }
     catch (error){
+
+    }
+  }
+}
+
+export const ReassignCollectorToCollector = (data, sucessCallback) => {
+  return async dispatch => {
+    try{
+      const response = await  store(`${ReassignCollectorToRejectedSample}?userId=${data.userId}&requestId=${data.requestId}&collectorId=${data.collectorId}`);
+      if(response?.status === 200){
+        sucessCallback(response?.data)
+      }else{
+        sucessCallback([])
+      }
+    }catch (error){
 
     }
   }

@@ -1,11 +1,13 @@
 import { Dimensions, FlatList, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Avatar, Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements'
 import DateBadge from './DateBadge';
 import HamMenu from './HamMenu';
 import { useDispatch, useSelector } from 'react-redux';
-import { GetNotificationByUserId } from '../../Services/appServices/Notificationservice';
+import { GetNotificationByUserId, UpdateNotificationFlag } from '../../Services/appServices/Notificationservice';
 import { useNavigation } from '@react-navigation/native';
+import { GlobalStyles } from '../../GlobalStyle';
+import SeenBadge from './SeenBadge';
 
 
 
@@ -20,15 +22,51 @@ const NotificationBtn = () => {
 
   const dispatch = useDispatch();
   const [Notification, setNotification] = useState();
+  const [SeenNotification, setSeenNotification] = useState();
+  const [UnseenNotification, setUnseenNotification] = useState();
+  const [ViewAllVisible, setViewAllVisible] = useState(false);
 
-  useEffect(()=> {
+  useEffect(() => {
     dispatch(GetNotificationByUserId(user.UserId, (res) => {
       // console.log(res?.notificationdetails);
       setNotification(res?.notificationdetails.reverse())
     }))
+    filterData()
   }, [modalVisible])
 
   // console.log('notification list', Notification);
+
+  const filterData = () => {
+    if (Notification !== undefined) {
+      let tempArr1 = []
+      let tempArr2 = []
+      Notification.map(e => {
+        if (e.IsSeen === false) {
+          tempArr1.push(e)
+        } else {
+          tempArr2.push(e)
+        }
+      })
+      // console.log('te3mp arr 1 not seen', tempArr2);
+      setUnseenNotification(tempArr1)
+      setSeenNotification(tempArr2)
+
+    }
+  }
+
+  // UpdateNotificationFlag
+  const handleClick = (el) => {
+    // console.log('el', el.NId);
+    dispatch(UpdateNotificationFlag(el.NId, (res) => {
+      if (res === true) {
+        setModalVisible(!modalVisible);
+        navigation.navigate('NotificationHome', {
+          data: el
+        })
+      }
+    }))
+
+  }
 
   // "EntryDate": "2022-04-26T17:28:31.07",
   //   "IsSeen": false,
@@ -40,17 +78,12 @@ const NotificationBtn = () => {
   //   "UserIdTo": 1,
   // NotificationHome
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.card} onPress={() => {
-      setModalVisible(!modalVisible);
-      navigation.navigate('NotificationHome', {
-        data: item
-      })
-    }}>
+    <TouchableOpacity style={[styles.card, GlobalStyles.boxShadow]} onPress={() => handleClick(item)}>
       <Icon
         name='test-tube-alt'
         color={'#9DD4E9'}
         type='fontisto'
-        size={20}
+        size={30}
         backgroundColor={'#ffffff'}
         style={
           {
@@ -60,9 +93,25 @@ const NotificationBtn = () => {
         }
       ></Icon>
       <View style={styles.cardDetail}>
-        <Text style={styles.cardTitle}>{item.Title}</Text>
-        <Text style={styles.cardDis}>{item.NotificationDesc}</Text>
-        <DateBadge date={item.EntryDate}></DateBadge>
+        <Text style={{
+          marginBottom: 4.5
+        }}>
+          <Text style={styles.cardTitle}>{item.Title}. </Text>
+          <Text style={styles.cardDis}>{item.NotificationDesc}</Text>
+        </Text>
+        <View style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between'
+        }}>
+          <DateBadge date={item.EntryDate}></DateBadge>
+          {
+            item.IsSeen === true &&
+            <SeenBadge></SeenBadge>
+          }
+
+
+        </View>
+
       </View>
 
     </TouchableOpacity>
@@ -106,19 +155,22 @@ const NotificationBtn = () => {
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisible(!modalVisible);
+          setViewAllVisible(false)
         }}
       >
         <View style={styles.centeredView}>
           <View>
             <View style={styles.header}>
-              <Text style={styles.title}>Notification</Text>
-              <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+              <TouchableOpacity onPress={() => {
+                setModalVisible(!modalVisible)
+                setViewAllVisible(false)
+              }}>
                 <Icon
-                  name={'close'}
-                  color={'#fefefe'}
+                  name={'left'}
+                  color={secodaryCardColor}
                   type='antdesign'
                   size={20}
-                  backgroundColor={secodaryCardColor}
+                  backgroundColor={'#fefefe'}
                   style={
                     {
                       borderRadius: 12,
@@ -127,15 +179,23 @@ const NotificationBtn = () => {
                   }
                 ></Icon>
               </TouchableOpacity>
+              <Text style={styles.title}>Notification</Text>
+              <TouchableOpacity onPress={() => setViewAllVisible(!ViewAllVisible)}>
+                <Text style={{
+                  color: '#fefefed1',
+                  fontSize: 14,
+                }}>{`${ViewAllVisible === true ? 'Unseen' : 'View all'}`} </Text>
+              </TouchableOpacity>
+
             </View>
 
             <FlatList
               style={styles.container}
-              data={Notification}
+              data={ViewAllVisible === true ? Notification : UnseenNotification}
               keyExtractor={(item, index) => `${item.NId}${index}`}
               renderItem={renderItem}
-              // inverted={true}
-              // initialScrollIndex={1}
+            // inverted={true}
+            // initialScrollIndex={1}
             />
           </View>
         </View>
@@ -162,38 +222,49 @@ const styles = StyleSheet.create({
 
   },
   title: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 'bold',
     letterSpacing: 1,
-    color: '#205072'
+    color: '#fefefefe'
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
     paddingVertical: 10,
+    backgroundColor: secodaryCardColor,
+    borderBottomLeftRadius: 18,
+    borderBottomRightRadius: 18,
+    alignItems: 'center',
+    // overflow: 'hidden';
   },
   card: {
-    backgroundColor: "#aae5f7ac",
-    paddingVertical: 15,
-    paddingHorizontal: 15,
+    // backgroundColor: "#aae5f7ac",
+    backgroundColor: '#cbf0fc',
+    width: windowWidth - 18,
+    marginHorizontal: 9,
+    paddingVertical: 9,
+    paddingHorizontal: 18,
     // alignItems: "center",
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 1,
+    marginTop: 9,
+    borderRadius: 18,
   },
   cardDetail: {
-    width: windowWidth * 0.75,
+    width: windowWidth * 0.7,
+    // width: 200,
+    // backgroundColor: 'blue'
   },
   cardTitle: {
-    color: '#fefefe',
-    fontSize: 16,
+    color: '#205072',
+    fontSize: 14,
     fontWeight: 'bold',
     letterSpacing: 1,
-    textTransform: 'capitalize'
+    textTransform: 'capitalize',
   },
   cardDis: {
-    color: '#205072',
+    color: '#2c2c309d',
     letterSpacing: 1,
     fontSize: 14,
     marginBottom: 4,

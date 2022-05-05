@@ -1,5 +1,5 @@
 
-import { GetcollectorNotificationByUserId, GetSampleRequestDetailsByRequestId, InsertUpdateNotificationDetails } from "../constants/url";
+import { GetcollectorNotificationByUserId, GetSampleRequestDetailsByRequestId, InsertUpdateNotificationDetails, UpdateNotificationSeenFlag } from "../constants/url";
 import { generateUrlEncodedData } from "../utils/generateUrlEncodedData";
 import { fetch, store } from "../utils/httpUtil"
 
@@ -41,19 +41,39 @@ export const InsertUpdateNotificationDetail = async (data, sucessCallback) => {
   }
 }
 
-export const GetSampleRequestDetailsByRId =(data, sucessCallback) => {
+export const GetSampleRequestDetailsByRId = (data, sucessCallback) => {
   return async dispatch => {
     try {
       const response = await fetch(`${GetSampleRequestDetailsByRequestId}?rId=${data}`);
       if (response?.status === 200) {
-        console.log('suecess rid');
+        // console.log('suecess rid');
         sucessCallback(response?.data);
       } else {
         sucessCallback([]);
-        console.log('error rid');
+        // console.log('error rid');
       }
     } catch (errror) {
 
     }
   }
 }
+
+export const UpdateNotificationFlag = (data, sucessCallback) => {
+  // console.log('not data', data);
+  return async dispatch => {
+    try {
+      const response = await store(`${UpdateNotificationSeenFlag}?notificationId=${data}&isSeen=true`);
+      if(response?.status === 200){
+        // console.log('sucess notification flag');
+        sucessCallback(response?.data)
+      }else{
+        // console.log('error notification flag');
+        sucessCallback([])
+      }
+
+    } catch (error) {
+
+    }
+  }
+}
+

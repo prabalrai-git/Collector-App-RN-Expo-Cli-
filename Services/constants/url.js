@@ -256,3 +256,18 @@ export const GetSampleRequestDetailsByRequestId = 'GetSampleRequestDetailsByRequ
  * @desc: get sample request details by request ir
  *  @param: ?rId={rId}
  */
+
+export const UpdateNotificationSeenFlag = 'UpdateNotificationSeenFlag'
+
+/**
+ * @desc: update notification is seen flag
+ *  @param: ?notificationId={notificationId}&isSeen={isSeen}
+ */
+
+// ReassignCollectorToRejectedSample?userId={userId}&requestId={requestId}&collectorId={collectorId}
+
+export const ReassignCollectorToRejectedSample = 'ReassignCollectorToRejectedSample'
+/**
+ * @desc: resign collector base of request id
+ *  @param: ?userId={userId}&requestId={requestId}&collectorId={collectorId}
+ */
