@@ -8,15 +8,15 @@ import MapView from 'react-native-maps';
 import MarkerCostome from '../../components/ui/MarkerCostome';
 import { GlobalStyles } from '../../GlobalStyle';
 import Header from '../../components/Header';
-import { GetHomeCollectionTestRequestTestList } from '../../Services/appServices/AssignPatient';
-import { useIsFocused } from '@react-navigation/native';
+import { GetHomeCollectionTestRequestTestList, UpdateStatus } from '../../Services/appServices/AssignPatient';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import CancleBtn from '../../components/ui/CancleBtn';
 import { GetListOfCollector, ReassignCollectorToCollector } from '../../Services/appServices/Collector';
-import Filter from '../../components/ui/Filter';
+import { PushNotification } from '../../components/PushNotification';
 
 const windowWidth = Dimensions.get('window').width
 const NotificationHomeScreen = ({ route }) => {
-  // console.log("route", route.params.data);
+  // console.log("route", route.params.data.UserIdFrom);
   const dispatch = useDispatch();
   const [UserData, setUserData] = useState();
   const [isRemarksVisible, setisRemarksVisible] = useState(false);
@@ -27,7 +27,9 @@ const NotificationHomeScreen = ({ route }) => {
   const [isVisibeRef, setisVisibeRef] = useState(false);
   const [CollectorList, setCollectorList] = useState();
   const [ColltorBtnDis, setColltorBtnDis] = useState(false);
-  const userId = useSelector(state => state.storeUserData.userData.UserId);
+  const user = useSelector(state => state.storeUserData.userData);
+  // console.log(user);
+  const navigation = useNavigation();
 
   const isFocused = useIsFocused()
   let temp = [];
@@ -36,10 +38,12 @@ const NotificationHomeScreen = ({ route }) => {
     dispatch(GetListOfCollector((res) => {
       setCollectorList(res?.GetListOfCollectors)
     }))
+    setisRemarksVisible(false)
     setIsLoading(true)
     setUserData()
     setCoordinate()
     setTestList();
+    setRemarks('')
 
     setTimeout(() => {
       dispatch(GetSampleRequestDetailsByRId(route.params.data.NotficationPathName, (res) => {
@@ -91,11 +95,17 @@ const NotificationHomeScreen = ({ route }) => {
     // userId
     // requestId
     // collectorId
+    // reqStatus
+    // sampleStatus
+    // remarks
 
     let data = {
-      "userId": userId,
+      "userId": user.UserId,
       "requestId": route.params.data.NotficationPathName,
-      "collectorId": id
+      "collectorId": id,
+      "reqStatus": 2,
+      "sampleStatus": 2,
+      "remarks": `Sample reasigned by ${user.UserName}`
     }
     Alert.alert(
       'Alert !',
@@ -112,7 +122,7 @@ const NotificationHomeScreen = ({ route }) => {
             setColltorBtnDis(false)
             dispatch(ReassignCollectorToCollector(data, (res) => {
               if (res === true) {
-                // console.log('sucess')
+                // console.log('sucess res')
                 Alert.alert(
                   'Sucess !',
                   `Assigned task to ${name} sucessfull`,
@@ -120,23 +130,115 @@ const NotificationHomeScreen = ({ route }) => {
                     {
                       text: 'ok',
                       onPress: () => {
-
+                        PushNotification('asigned task', user.UserId, route.params.data.UserIdFrom, route.params.data.NotficationPathName, `Sample reasigned by ${user.UserName}`, user.UserName, `${UserData.PatientFName} ${UserData.PatientMName} ${UserData.PatientLName}`)
+                        navigation.navigate('Home')
                       }
                     }
                   ]
                 )
               }
-              // else{
-              //   console.log('error');
-              // }
+              else{
+                // console.log('err')
+              }
             }))
           }
         }
       ]
     )
+  }
 
-    console.log("id", id, "name", name);
+  const handleAccept = () => {
+    // UpdateStatus
+    let today = new Date();
+    const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.toLocaleTimeString();
 
+    const rData = {
+      "SrId": 0,
+      "RequestId": route.params.data.NotficationPathName,
+      "RequestStatusId": 3,
+      //  "RequestStatusId": 1,
+      "EntryDate": newDate,
+      "UserId": user.UserId,
+      "Remarks": `accepted by user ${user.UserName}`,
+    }
+    // console.log('accepted data', rData);
+    dispatch(UpdateStatus(rData, (res) => {
+      // console.log('response', res);
+      if (res?.SuccessMsg === true) {
+        // console.log('potato sucess');
+        // setisVisibe(false);
+        Alert.alert(
+          'Sucessfull !',
+          'Taxk accepted sucessfull',
+          [
+            {
+              text: 'OK', onPress: () => {
+                PushNotification('accepted task', user.UserId, route.params.data.UserIdFrom, route.params.data.NotficationPathName, Remarks, user.UserName, `${UserData.PatientFName} ${UserData.PatientMName} ${UserData.PatientLName}`)
+                navigation.navigate('Home');
+              }
+            }
+          ]
+        )
+      }
+    }))
+    // retDis(false);
+  }
+
+  const handleReject = () => {
+    // PushNotification('rejected task', user.UserId, 1,  data.RequestId,Remarks)
+    // return
+
+    let today = new Date();
+    const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.toLocaleTimeString();
+    const aData = {
+      "SrId": 0,
+      "RequestId": route.params.data.NotficationPathName,
+      "RequestStatusId": 4,
+      "EntryDate": newDate,
+      "UserId": user.UserId,
+      "Remarks": Remarks,
+    }
+    // console.log(aData);
+    // return
+    if (Remarks !== '' || Remarks !== undefined) {
+      // PushNotification('RejectedTask', user.userData.usrusername, 'admin', Remarks)
+      // return
+
+      dispatch(UpdateStatus(aData, (res) => {
+        // console.log('response', res);
+        if (res?.SuccessMsg === true) {
+          // console.log('potato sucess, rejected');
+
+          Alert.alert(
+            'Sucessfull !',
+            'sucessfully rejected',
+            [
+              {
+                text: 'OK', onPress: () => {
+                  PushNotification('rejected task', user.UserId, route.params.data.UserIdFrom, route.params.data.NotficationPathName, Remarks, user.UserName, `${UserData.PatientFName} ${UserData.PatientMName} ${UserData.PatientLName}`)
+                  navigation.navigate('Home')
+                  // setisVisibe(!isVisibe)
+                  setisRemarksVisible(false)
+                  setRemarks('')
+                }
+              }
+            ]
+          )
+
+        }
+      }))
+    } else {
+      Alert.alert(
+        'Failure !',
+        'please enter the remarks',
+        [
+          {
+            text: 'OK', onPress: () => {
+            }
+          }
+        ]
+      )
+    }
   }
 
   return (
@@ -154,8 +256,14 @@ const NotificationHomeScreen = ({ route }) => {
                 {
                   isRemarksVisible ?
 
-                    <View style={styles.textInput}>
-                      <Text style={styles.formLabel}>Please write remarks on why you want to decline</Text>
+                    <View style={[styles.cardContainer, GlobalStyles.boxShadow, styles.cardCotainer, {
+                      marginTop: 10,
+                      // justifyContent: 'center',
+                      // textAlign: 'center',
+                      // alignItems: 'center',
+                      // flexDirection: 'column'
+                    }]}>
+                      <Text style={[GlobalStyles.body, styles.formLabel]}>Please write remarks on why you want to decline</Text>
                       <TextInput
                         value={Remarks}
                         placeholder='Remarks'
@@ -165,11 +273,17 @@ const NotificationHomeScreen = ({ route }) => {
 
                       ></TextInput>
                       {/* <TextInput></TextInput> */}
-
+                      {/* <CancleBtn title={'cancel'} onPress={()=> setisRemarksVisible(false)}></CancleBtn> */}
                       <AppButton title='Send' onPress={() => handleReject()}></AppButton>
+                      <Text></Text>
+                      <CancleBtn title={'cancel'} onPress={() => {
+                        setisRemarksVisible(false)
+                        setRemarks('')
+                      }}></CancleBtn>
+
                     </View>
                     :
-                    <View style={styles.patInfocontainer}>
+                    <View style={styles.cardCotainer}>
                       <View style={styles.profile}>
                         <Image
                           source={require('../../assets/images/user.png')}
@@ -233,27 +347,26 @@ const NotificationHomeScreen = ({ route }) => {
                       </View>
 
                       {
-                        UserData.SampleStatus === 'Requested' &&
-                        <View style={[styles.module, GlobalStyles.boxShadow]}>
-                          <Text style={{
-                            color: '#fefefe',
-                            fontSize: 16,
-                            marginBottom: 10,
-                            fontWeight: 'bold',
-                            letterSpacing: 1,
-                          }}>Do you want to Accept or rect the task ?</Text>
-                          <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between'
-                          }}>
-                            <CancleBtn title='Reject' color={'#e0c945'} onPress={() =>
-                              setisRemarksVisible(true)
-                            }></CancleBtn>
-                            <Text>   </Text>
-                            <AppButton title='Accept' onPress={() => handleAccept()}></AppButton>
-                          </View>
+                        UserData.SampleStatus === 'Requested' || UserData.SampleStatus === 'Assighned' ?
+                          <View style={[styles.module, GlobalStyles.boxShadow]}>
+                            <Text style={{
+                              color: '#fefefe',
+                              fontSize: 16,
+                              marginBottom: 10,
+                              fontWeight: 'bold',
+                              letterSpacing: 1,
+                            }}>Do you want to Accept or rect the task ?</Text>
+                            <View style={{
+                              flexDirection: 'row',
+                              justifyContent: 'space-between'
+                            }}>
+                              <CancleBtn title='Reject' color={'#e0c945'} onPress={() =>
+                                setisRemarksVisible(true)
+                              }></CancleBtn>
+                              <AppButton title='Accept' onPress={() => handleAccept()}></AppButton>
+                            </View>
 
-                        </View>
+                          </View> : null
                       }
                       {
                         UserData.SampleStatus === 'Rejected' &&
@@ -274,6 +387,22 @@ const NotificationHomeScreen = ({ route }) => {
                             }}>{route.params.data.NotificationDesc}</Text>
                           </View>
                           <AppButton disabled={ColltorBtnDis} title={'Re-asssign'} onPress={() => setisVisibeRef(!isVisibeRef)}></AppButton>
+                        </>
+                      }
+
+                      {
+                        UserData.SampleStatus === 'Accepted'  &&
+                        <>
+                          <View style={[styles.testList, { backgroundColor: '#48e6ebda' }]}>
+                            <Text style={{
+                              color: '#fefefe',
+                              fontSize: 18,
+                              marginBottom: 10,
+                              fontWeight: 'bold',
+                              letterSpacing: 1,
+                            }}>{`Sample Accepted by ${UserData.CollectorId}`}</Text>
+                           
+                          </View>
                         </>
                       }
                     </View>
@@ -319,8 +448,8 @@ export default NotificationHomeScreen
 
 const styles = StyleSheet.create({
   cardCotainer: {
-    width: windowWidth,
-    paddingHorizontal: 10,
+    width: windowWidth - 20,
+    marginLeft: 10,
   },
 
   cardBody: {
@@ -340,7 +469,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.29,
     shadowRadius: 4.65,
-
     elevation: 7,
   },
   card: {
@@ -377,16 +505,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9'
 
   },
-  textInput: {
-    width: "100%",
-    // flex: 1,
-    marginLeft: 10,
-    marginTop: 80,
-    // justifyContent: 'center',
-  },
   module: {
-    width: '100%',
-    // flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: '#9DD4E9',
     paddingHorizontal: 10,
@@ -396,21 +515,14 @@ const styles = StyleSheet.create({
   },
   inputField: {
     borderWidth: 1,
-    borderColor: 'red',
-    width: windowWidth - 20,
+    borderColor: '#b3afaf',
+    width: '100%',
     minHeight: 100,
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 10,
     marginVertical: 10,
   },
-
-  patInfocontainer: {
-    width: windowWidth - 20,
-    flex: 1,
-    marginLeft: 10,
-  },
-
   profile: {
     flexDirection: 'row',
     paddingVertical: 10,
@@ -443,11 +555,6 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
   },
-  // flatListContainer: {
-  //   width: windowWidth - 20,
-  //   marginHorizontal: 10,
-  //   flex: 0.55,
-  // },
   title: {
     fontSize: 20,
     color: '#205072',
@@ -473,9 +580,6 @@ const styles = StyleSheet.create({
     color: '#FF7F00'
   },
   remarks: {
-    // borderWidth: 1,
-    // borderColor: '#76968a',
-    // borderRadius: 5,
     marginTop: 6,
     paddingHorizontal: 6,
     paddingVertical: 10,
@@ -487,7 +591,6 @@ const styles = StyleSheet.create({
     textAlign: 'justify'
   },
   cardContainer: {
-    // borderWidth: 1,
     borderRadius: 18,
     backgroundColor: '#fefefe',
     paddingVertical: 16,
@@ -495,7 +598,6 @@ const styles = StyleSheet.create({
   },
   testList: {
     backgroundColor: '#9DD4E9',
-    // marginLeft: 10,
     marginVertical: 10,
     paddingHorizontal: 15,
     paddingVertical: 20,
@@ -522,5 +624,8 @@ const styles = StyleSheet.create({
     color: '#fefefe',
     letterSpacing: 1,
     fontSize: 14,
+  },
+  formLabel: {
+    color: secondary
   }
 })

@@ -88,7 +88,7 @@ export const GetListOfCollector = (sucessCallback) => {
 export const ReassignCollectorToCollector = (data, sucessCallback) => {
   return async dispatch => {
     try{
-      const response = await  store(`${ReassignCollectorToRejectedSample}?userId=${data.userId}&requestId=${data.requestId}&collectorId=${data.collectorId}`);
+      const response = await  store(`${ReassignCollectorToRejectedSample}?userId=${data.userId}&requestId=${data.requestId}&collectorId=${data.collectorId}&reqStatus=${data.reqStatus}&sampleStatus=${data.sampleStatus}&remarks=${data.remarks}`);
       if(response?.status === 200){
         sucessCallback(response?.data)
       }else{

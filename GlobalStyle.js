@@ -18,7 +18,7 @@ global.primaryBkg = '#fefefe',
 global.secondaryBkg = '#f9f9f9',
 // global.secodaryCardColor = '#9DD4E9'
 global.secodaryCardColor ="#93D0F1"
-// global.secodaryCardColor = '#FF7F00'
+// global.secodaryCardColor = '#205072'
 
 
 export const GlobalStyles = StyleSheet.create({
@@ -79,5 +79,10 @@ export const GlobalStyles = StyleSheet.create({
     backgroundColor: '#fefefe58',
     justifyContent: 'center',
   },
+
+  container: {
+    width: windowWidth - 20,
+    marginLeft: 10,
+  }
 
 })

@@ -71,12 +71,12 @@ export const GetlocationofCollectorByDate = 'GetlocationofCollectorByDate'
  * @param: ?entrydate={entrydate}&userId={userId}
  */
 
- export const GetCurrentLocationOfCollector = 'GetCurrentLocationOfCollector'
+export const GetCurrentLocationOfCollector = 'GetCurrentLocationOfCollector'
 
- /**
-  * @desc: to get letest collector location single data
-  *  @param: ?userId={userId}
-  */
+/**
+ * @desc: to get letest collector location single data
+ *  @param: ?userId={userId}
+ */
 export const GetTestListforHomeCollection = 'GetTestListforHomeCollection'
 
 /**
@@ -268,6 +268,8 @@ export const UpdateNotificationSeenFlag = 'UpdateNotificationSeenFlag'
 
 export const ReassignCollectorToRejectedSample = 'ReassignCollectorToRejectedSample'
 /**
+ * ReassignCollectorToRejectedSample?userId={userId}&requestId={requestId}&collectorId={collectorId}&reqStatus={reqStatus}&sampleStatus={sampleStatus}&remarks={remarks}
+ * 
  * @desc: resign collector base of request id
- *  @param: ?userId={userId}&requestId={requestId}&collectorId={collectorId}
+ *  @param: ?userId={userId}&requestId={requestId}&collectorId={collectorId}&reqStatus={reqStatus}&           sampleStatus={sampleStatus}&remarks={remarks}
  */

@@ -32,6 +32,7 @@ const NotificationBtn = () => {
       setNotification(res?.notificationdetails.reverse())
     }))
     filterData()
+    setViewAllVisible(false)
   }, [modalVisible])
 
   // console.log('notification list', Notification);

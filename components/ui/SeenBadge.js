@@ -12,7 +12,7 @@ const SeenBadge = () => {
         size={14}
       ></Icon>
       <Text style={{
-        color: "#8de0b9f0",
+        color: "#5bc493",
         marginLeft: 5,
       }}>seen</Text>
     </View>
