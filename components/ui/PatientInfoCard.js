@@ -9,6 +9,7 @@ import MarkerCostome from './MarkerCostome';
 import { Avatar, Icon } from 'react-native-elements';
 import { InfoActionButton } from './HomeActionButton';
 import { GetAddressOfClient } from '../../Services/appServices/AssignPatient';
+import { GlobalStyles } from '../../GlobalStyle';
 
 
 
@@ -115,94 +116,102 @@ const PatientInfoCard = ({ data, AsignedTask, disable, retDis }) => {
             // setisRemarksVisible(false)
             retDis(false);
           }}
+
         >
+          <View style={GlobalStyles.modalContainer}>
+            <View style={styles.centeredView}>
+              <TouchableOpacity
+                style={{
+                  position: 'absolute',
+                  top: 10,
+                  right: 10,
+                  backgroundColor: secodaryCardColor,
+                  padding: 10,
+                  borderRadius: 10,
+                }}
+                onPress={() => {
+                  setisVisibe(false)
+                  // setisRemarksVisible(false)
+                  retDis(false);
+                }}>
+                <Icon
+                  name={'close'}
+                  color={'#fefefe'}
+                  type='antdesign'
+                  size={20}
+                ></Icon>
+              </TouchableOpacity>
 
-          <View style={styles.centeredView}>
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                top: 10,
-                right: 10,
-                backgroundColor: secodaryCardColor,
-                padding: 10,
-                borderRadius: 50,
-              }}
-              onPress={() => {
-                setisVisibe(false)
-                // setisRemarksVisible(false)
-                retDis(false);
-              }}>
-              <Icon
-                name={'close'}
-                color={'#fefefe'}
-                type='antdesign'
-                size={20}
-              ></Icon>
-            </TouchableOpacity>
-
-            <View style={styles.patInfocontainer}>
-              <View style={styles.profile}>
-                <Image
-                  source={require('../../assets/images/user.png')}
-                  style={styles.profileImg}
-                ></Image>
-                <View style={styles.right}>
-                  <Text style={styles.name}>{data.PatientFName} {data.PatientMName} {data.PatientLName}</Text>
-                  <View style={styles.detail}>
-                    <Text >Cliet ID : </Text>
-                    <Text style={{ color: "#FF7F00" }}>{data.CId}</Text>
-                  </View>
-                  <View style={styles.detail}>
-                    <Text >gender: </Text>
-                    <Text style={{ color: "#FF7F00" }}>{data.PatientGender}</Text>
-                  </View>
-                  <View style={styles.detail}>
-                    <Text >age: </Text>
-                    <Text style={{ color: "#FF7F00" }}>{data.PatientAge}</Text>
-                  </View>
-                  <View style={styles.detail}>
-                    <Text >email: </Text>
-                    <Text style={{ color: "#FF7F00" }}>{data.PatientEmailId}</Text>
+              <View style={styles.patInfocontainer}>
+                <View style={styles.profile}>
+                  {/* <Image
+                    source={require('../../assets/images/user.png')}
+                    style={styles.profileImg}
+                  ></Image> */}
+                  <Icon
+                  name={'close'}
+                  // color={'#fefefe'}
+                  color={'red'}
+                  type='antdesign'
+                  size={20}
+                ></Icon>
+                  <View style={styles.right}>
+                    <Text style={styles.name}>{data.PatientFName} {data.PatientMName} {data.PatientLName}</Text>
+                    <View style={styles.detail}>
+                      <Text >Cliet ID : </Text>
+                      <Text style={{ color: "#FF7F00" }}>{data.CId}</Text>
+                    </View>
+                    <View style={styles.detail}>
+                      <Text >gender: </Text>
+                      <Text style={{ color: "#FF7F00" }}>{data.PatientGender}</Text>
+                    </View>
+                    <View style={styles.detail}>
+                      <Text >age: </Text>
+                      <Text style={{ color: "#FF7F00" }}>{data.PatientAge}</Text>
+                    </View>
+                    <View style={styles.detail}>
+                      <Text >email: </Text>
+                      <Text style={{ color: "#FF7F00" }}>{data.PatientEmailId}</Text>
+                    </View>
                   </View>
                 </View>
+
+                {/* <Text style={styles.title}>Adddress :</Text> */}
+                <View style={GlobalStyles.mapViewContainer}>
+                  <MapView
+                    style={GlobalStyles.map}
+                    initialRegion={{
+                      latitude: Coordinate.latitude === null || Coordinate.latitude === undefined ? 27.7172 : Coordinate.latitude,
+                      longitude: Coordinate.longitude === null || Coordinate.longitude === undefined ? 85.3240 : Coordinate.longitude,
+                      latitudeDelta: 0.00111922,
+                      longitudeDelta: 0.00111421,
+                    }}
+
+                  >
+                    <MarkerCostome
+                      coordinate={cMarker.latlng}
+                      title={cMarker.title}
+                      description={cMarker.description}
+                      forClient
+                    />
+                  </MapView>
+                </View>
+
+                <View style={styles.module}>
+                  <Pressable onPress={() => handleRequest()}>
+                    <InfoActionButton icon={'book'} name={'Previous Request'} type={'antdesign'}></InfoActionButton>
+                  </Pressable>
+                  <Pressable onPress={() => handleProceed()}>
+                    <InfoActionButton icon={'addfile'} name={'Book Test'} type={'antdesign'}></InfoActionButton>
+                  </Pressable>
+                </View>
+
               </View>
 
-              {/* <StatusBadge RequestStatus={data.RequestStatus}></StatusBadge> */}
-
-              <Text style={styles.title}>Adddress :</Text>
-              <View style={styles.mapViewContainer}>
-                <MapView
-                  style={styles.map}
-                  initialRegion={{
-                    latitude: Coordinate.latitude === null || Coordinate.latitude === undefined ? 27.7172 : Coordinate.latitude,
-                    longitude: Coordinate.longitude === null || Coordinate.longitude === undefined ? 85.3240 : Coordinate.longitude,
-                    latitudeDelta: 0.0111922,
-                    longitudeDelta: 0.0111421,
-                  }}
-
-                >
-                  <MarkerCostome
-                    coordinate={cMarker.latlng}
-                    title={cMarker.title}
-                    description={cMarker.description}
-                    forClient
-                  />
-                </MapView>
-              </View>
-
-              <View style={styles.module}>
-                <Pressable onPress={() => handleRequest()}>
-                  <InfoActionButton icon={'book'} name={'Previous Request'} type={'antdesign'}></InfoActionButton>
-                </Pressable>
-                <Pressable onPress={() => handleProceed()}>
-                  <InfoActionButton icon={'addfile'} name={'Book Test'} type={'antdesign'}></InfoActionButton>
-                </Pressable>
-              </View>
 
             </View>
-
-
           </View>
+
         </Modal>
       }
 
@@ -221,7 +230,7 @@ const styles = StyleSheet.create({
   },
   cardBody: {
     backgroundColor: "#fefefe",
-    marginVertical: 8,
+    marginTop: 10,
     paddingHorizontal: 15,
     paddingVertical: 10,
     flexDirection: 'row',
@@ -236,7 +245,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.29,
     shadowRadius: 4.65,
 
-    elevation: 7,
+    elevation: 2,
   },
   card: {
     width: windowWidth * 0.65,
@@ -267,7 +276,6 @@ const styles = StyleSheet.create({
   centeredView: {
     width: '100%',
     flex: 1,
-    backgroundColor: '#f9f9f9'
   },
   textInput: {
     width: "100%",
@@ -286,6 +294,7 @@ const styles = StyleSheet.create({
     width: windowWidth - 20,
     flex: 1,
     marginLeft: 10,
+    // backgroundColor: 'red'
   },
 
   profile: {
@@ -308,27 +317,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1.3,
     marginBottom: 6
   },
-  mapViewContainer: {
-    width: '100%',
-    flex: 0.45,
-    // backgroundColor: 'red',
-    borderRadius: 18,
-    marginVertical: 10,
-    overflow: 'hidden',
-    shadowColor: "#629fa1cc",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
 
-    elevation: 7,
-  },
-  map: {
-    width: '100%',
-    flex: 1,
-  },
   title: {
     fontSize: 16,
     color: '#205072',

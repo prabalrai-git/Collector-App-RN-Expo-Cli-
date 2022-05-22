@@ -31,7 +31,7 @@ const LoginScreen = () => {
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
-  // console.log('toet token', Token);
+  console.log('toet token', Token);
 
   useEffect(() => {
     if (Token !== '') {
@@ -117,13 +117,8 @@ const LoginScreen = () => {
                 }
               }))
               // }
-
             }
-
             // console.log("res" , res.userToken[0].UserToken);
-
-
-
             setIsLoading(false);
           }))
 
@@ -152,10 +147,10 @@ const LoginScreen = () => {
   useEffect(() => {
 
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-
     // This listener is fired whenever a notification is received while the app is foregrounded
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       setNotification(notification);
+      // console.log("potatpot");
     });
 
     // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
@@ -176,7 +171,7 @@ const LoginScreen = () => {
   };
 
   _handleNotificationResponse = response => {
-    console.log("response",response);
+    console.log("response", response);
   };
 
 
@@ -186,10 +181,11 @@ const LoginScreen = () => {
       shouldPlaySound: false,
       shouldSetBadge: false,
     }),
-    
+
   });
 
   async function registerForPushNotificationsAsync() {
+
     let token;
     if (Device.isDevice) {
       const { status: existingStatus } = await Notifications.getPermissionsAsync();
@@ -203,7 +199,8 @@ const LoginScreen = () => {
         return;
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
-      // console.log("login token", token);
+      // token = 'ExponentPushToken[ET7-LfDUYXePmkyQy8VyIl]'
+      console.log("login token", token);
       setToken(token)
       // setBtDis(false)
     } else {
@@ -233,7 +230,7 @@ const LoginScreen = () => {
               style={styles.loadingImage}
               resizeMethod={"resize"}
             />
-
+            {/* <Text>potato</Text> */}
           </View>
           :
           <>

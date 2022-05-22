@@ -35,6 +35,35 @@ export const HomeActionButton = ({ data }) => {
   )
 }
 
+export const HomeActionButton2 = ({ data }) => {
+  const navigation = useNavigation();
+
+  return (
+    <>
+      <TouchableOpacity
+        style={[styles.btnContainer3,{
+          // backgroundColor: data.color
+        }]}
+        onPress={() => navigation.navigate(`${data.pathName}`)}
+      >
+        <Icon
+          name={data.icon}
+          color={secondary}
+          type={data.type}
+          style={styles.icon}
+          size={30}
+        ></Icon>
+        {/* <AddPatient></AddPatient> */}
+        <Text style={[styles.txt, 
+          {color: '#232426', marginTop: 10}
+          ]}>{data.name}</Text>
+      </TouchableOpacity>
+    </>
+
+
+  )
+}
+
 
 export const InfoActionButton = (props) => {
   const navigation = useNavigation();
@@ -93,14 +122,30 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.29,
     shadowRadius: 4.65,
 
-    elevation: 7,
+    elevation: 2,
   },
-  // txt: {
-  //   marginTop: 10,
-  //   fontSize: 16,
-  //   fontWeight: 'bold',
-  //   letterSpacing: 1,
-  //   color: '#fefefe'
-  // }
+  btnContainer3: {
+    backgroundColor: '#fefefe',
+    marginLeft: 10,
+    marginBottom: 10,
+    // borderWidth: 1,
+    width: windowWidth * 0.3,
+    // margin: 10,
+    alignItems: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    textAlign: 'center',
+    borderRadius: 10,
+
+  },
+  txt: {
+    paddingTop: 4,
+    fontSize: 14,
+    fontWeight: "500",
+    letterSpacing: 1,
+    lineHeight: 16,
+    color: primary,
+    textAlign: 'center'
+  }
 
 })

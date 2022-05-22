@@ -241,7 +241,8 @@ const styles = StyleSheet.create({
   },
   card: {
     // backgroundColor: "#aae5f7ac",
-    backgroundColor: '#cbf0fc',
+    // backgroundColor: '#cbf0fc',
+    backgroundColor: primaryBkg,
     width: windowWidth - 18,
     marginHorizontal: 9,
     paddingVertical: 9,

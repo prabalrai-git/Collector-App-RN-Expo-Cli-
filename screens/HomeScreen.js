@@ -2,7 +2,7 @@ import { Dimensions, FlatList, Image, ImageBackground, Linking, StyleSheet, Swit
 import React, { useEffect, useRef, useState } from 'react'
 import { DrawerActions, useNavigation } from '@react-navigation/native'
 import { GlobalStyles } from '../GlobalStyle';
-import { HomeActionButton } from '../components/ui/HomeActionButton';
+import { HomeActionButton, HomeActionButton2 } from '../components/ui/HomeActionButton';
 
 import { Alert, Platform } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import NotificationBtn from '../components/ui/NotificationBtn';
+import Header from '../components/Header';
 
 
 
@@ -23,7 +24,7 @@ const HomeScreen = () => {
   // console.log(user.userData.UserName);
   const dispatch = useDispatch();
 
-  
+
   const navData = [
     {
       id: 1,
@@ -79,43 +80,45 @@ const HomeScreen = () => {
 
 
   const renderItem = ({ item }) => (
-    <HomeActionButton data={item} />
+    <HomeActionButton2 data={item} />
   )
 
 
   return (
     <View style={styles.maincontainer}>
-      <ImageBackground
+      {/* <ImageBackground
         source={require('../assets/images/bkg2.png')}
         resizeMode="cover"
         style={styles.bkgImg}
-      >
-        <View style={styles.hamMenu}>
-          {/* <HamMenu></HamMenu> */}
-          <NotificationBtn></NotificationBtn>
-        </View>
+      > */}
+      <View style={styles.hamMenu}>
+        <NotificationBtn></NotificationBtn>
+      </View>
+      {/* <Header homeScreen></Header> */}
 
-        <View style={styles.cardContainer}>
-          <View style={styles.dis}>
-            <Text style={[GlobalStyles.heading, { color: '#3d4e58' }]}>Hi!</Text>
-            <Text style={[GlobalStyles.header, { color: '#205072' }]}>{user.userData.UserName}</Text>
-            <Text style={[GlobalStyles.body, { color: '#3d4e58' }]}>Your target for today is to keep positive mindset and smile to everyone you meet.</Text>
-          </View>
-          {/* <Avatar
+      <View style={styles.cardContainer}>
+        <View style={styles.dis}>
+          <Text style={[GlobalStyles.heading, { color: '#3d4e58' }]}>Hi!</Text>
+          <Text style={[GlobalStyles.header, { color: '#205072' }]}>{user.userData.UserName}</Text>
+          <Text style={[GlobalStyles.body, { color: '#3d4e58' }]}>Your target for today is to keep positive mindset and smile to everyone you meet.</Text>
+        </View>
+        {/* <Avatar
             size={64}
             rounded
             source={require('../assets/images/user.png')}
           /> */}
-        </View>
-        
+      </View>
+      {/* <View style={styles.cardContainer2}> */}
         <FlatList
           data={navData}
           renderItem={renderItem}
           keyExtractor={item => item.id}
-          numColumns={2}
+          numColumns={3}
           style={styles.flatContainer}
         />
-      </ImageBackground>
+      {/* </View> */}
+
+      {/* </ImageBackground> */}
     </View>
   )
 }
@@ -127,7 +130,7 @@ export default HomeScreen
 const styles = StyleSheet.create({
   maincontainer: {
     flex: 1,
-    // backgroundColor: '#f9f9f9'
+    backgroundColor: '#f9f9f9'
   },
   bkgImg: {
     flex: 1,
@@ -142,7 +145,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 24,
     marginHorizontal: 10,
-    marginTop: 40,
+    marginTop: 10,
     shadowColor: "#86a3a3",
     shadowOffset: {
       width: 0,
@@ -151,7 +154,25 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.43,
     shadowRadius: 9.51,
 
-    elevation: 15,
+    elevation: 1,
+  },
+  cardContainer2: {
+    flexDirection: 'row',
+    width: windowWidth - 20,
+    justifyContent: 'space-between',
+    backgroundColor: global.primaryBkg,
+    borderRadius: 18,
+    marginHorizontal: 10,
+    marginTop: 10,
+    shadowColor: "#86a3a3",
+    shadowOffset: {
+      width: 0,
+      height: 7,
+    },
+    shadowOpacity: 0.43,
+    shadowRadius: 9.51,
+
+    elevation: 1,
   },
   flatContainer: {
     // width: windowWidth - 20,
@@ -163,6 +184,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     paddingHorizontal: 20,
-    marginHorizontal: 10
+    // marginHorizontal: 10,
+    // paddingHorizonal: 10,
+    paddingHorizontal: 10,
+    paddingTop: 40,
+    paddingBottom: 10,
+    backgroundColor: secodaryCardColor,
+    borderBottomLeftRadius: 18,
+    borderBottomRightRadius: 18,
   }
 })

@@ -10,7 +10,7 @@ const AddPatietHomeScreen = () => {
     <View >
       <Header title={'Add Ptient, select Gender'}></Header>
       <View style={styles.maincontainer}>
-      <Text style={styles.title}>Select your Gender</Text>
+    <Text style={styles.title}>Gender ?</Text>
         <View style={{
           flexDirection: 'row',
           justifyContent: 'space-evenly'
@@ -61,9 +61,13 @@ const styles = StyleSheet.create({
   maincontainer: {
     backgroundColor: '#fefefe',
     flexDirection: 'column',
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width,
-    paddingTop: 100,
+    // height: Dimensions.get('window').height,
+    width: Dimensions.get('window').width - 20,
+    // paddingTop: 100,
+    marginLeft: 10,
+    marginTop: 10,
+    borderRadius: 18,
+    paddingVertical: 20,
     // justifyContent: 'center'
   },
   title: {

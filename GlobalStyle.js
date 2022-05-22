@@ -13,11 +13,11 @@ const GlobalStyle = () => {
 export default GlobalStyle
 
 global.primary = '#205072',
-global.secondary = '#FF7F00',
-global.primaryBkg = '#fefefe',
-global.secondaryBkg = '#f9f9f9',
-// global.secodaryCardColor = '#9DD4E9'
-global.secodaryCardColor ="#93D0F1"
+  global.secondary = '#FF7F00',
+  global.primaryBkg = '#fefefe',
+  global.secondaryBkg = '#f9f9f9',
+  global.secodaryCardColor = '#F57F20'
+// global.secodaryCardColor ="#93D0F1"
 // global.secodaryCardColor = '#205072'
 
 
@@ -70,7 +70,7 @@ export const GlobalStyles = StyleSheet.create({
     },
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
-    elevation: 4,
+    elevation: 2,
   },
 
   // for loading
@@ -83,6 +83,34 @@ export const GlobalStyles = StyleSheet.create({
   container: {
     width: windowWidth - 20,
     marginLeft: 10,
-  }
+  },
+
+  modalContainer: {
+    backgroundColor: secondaryBkg,
+    flex: 1,
+    width: windowWidth,
+  },
+
+  mapViewContainer: {
+    width: '100%',
+    flex: 0.45,
+    // backgroundColor: 'red',
+    borderRadius: 18,
+    marginVertical: 10,
+    overflow: 'hidden',
+    shadowColor: "#32727e",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+
+    elevation: 2,
+  },
+  map: {
+    width: '100%',
+    flex: 1,
+  },
 
 })
