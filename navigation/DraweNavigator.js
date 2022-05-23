@@ -58,12 +58,14 @@ const DraweNavigator = () => {
         drawerInactiveTintColor: primary,
         drawerActiveBackgroundColor: primary,
         drawerInactiveBackgroundColor: secondaryBkg,
-        drawerType: 'slide',
+        drawerType: 'front',
+        
         // drawerContentStyle: {
         //   backgroundColor: 'red'
         // }
         drawerStyle: {
-          backgroundColor: secondaryBkg
+          backgroundColor: secondaryBkg,
+          borderRadius: 18,
         }
       }}
       drawerContent={(props) =>

@@ -57,20 +57,19 @@ const PreTestCard = ({ data, disable, retDis }) => {
       >
 
         <View style={styles.centeredView}>
-          <TouchableOpacity
+          <Pressable
             style={{
               position: 'absolute',
-              top: 10,
+              top: 7,
               right: 10,
               backgroundColor: secodaryCardColor,
               padding: 10,
-              borderRadius: 50,
+              borderRadius: 10,
             }}
             onPress={() => {
               setisVisibe(false)
               // setisRemarksVisible(false)
               retDis(false);
-              // setActive(true);
             }}>
             <Icon
               name={'close'}
@@ -78,77 +77,18 @@ const PreTestCard = ({ data, disable, retDis }) => {
               type='antdesign'
               size={20}
             ></Icon>
-          </TouchableOpacity>
-
-
+          </Pressable>
 
           <View style={styles.patInfocontainer}>
             <View style={styles.profile}>
-              <Image
-                source={require('../../assets/images/user.png')}
-                style={styles.profileImg}
-              ></Image>
-              <View style={styles.right}>
-                <Text style={styles.name}>{data.PatientFName} {data.PatientMName} {data.PatientLName}</Text>
-                <View style={{ flexDirection: 'row' }}>
-                  <Text >Request ID :</Text>
-                  <Text style={{ color: "#FF7F00" }}> {data.RId}</Text>
-                </View>
-                <View style={{ flexDirection: 'row' }}>
-                  <Text >Cliet ID : </Text>
-                  <Text style={{ color: "#FF7F00" }}>{data.PatId}</Text>
-                </View>
+              <View style={{ flexDirection: 'row', }}>
+                <Text style={[styles.name, { color: "#FF7F00" }]}>Request ID :</Text>
+                <Text style={styles.name}> {data.RId}</Text>
               </View>
-
             </View>
-
-            <StatusBadge RequestStatus={data.SampleStatus}></StatusBadge>
-
-
-            {/* <View style={styles.flatListContainer}>
-              <Text style={styles.title}>Tests</Text>
-              <FlatList
-                data={TestList}
-                renderItem={({ item, index }) =>
-                  <View style={styles.testCard}>
-                    <Text style={{
-                      fontSize: 16,
-                      color: '#fefefe',
-                      width: 25,
-                      height: 25,
-                      textAlign: 'center',
-                      borderRadius: 50,
-                      backgroundColor: '#205072',
-                    }}>{index + 1}</Text>
-                    <Text style={styles.testsText}>{item}</Text>
-                  </View>
-                }
-                keyExtractor={(item, index) => `${item.SId}${index}`}
-              />
-            </View>
-            <View>
-              <View style={styles.testCard}>
-                <Text style={styles.titleText}>Total</Text>
-                <Text style={styles.finsltestsPrice}>Rs.{data.TestTotalAmount}</Text>
-              </View>
-              <View style={styles.testCard}>
-                <Text style={styles.titleText}>Collection Charge</Text>
-                <Text style={styles.finsltestsPrice}>Rs.{data.CollectionCharge}</Text>
-              </View>
-              <View style={styles.testCard}>
-                <Text style={styles.titleText}>Discount Amout</Text>
-                <Text style={styles.finsltestsPrice}>Rs.{data.DiscountAmount}</Text>
-              </View>
-              <View style={styles.testCard}>
-                <Text style={styles.titleText}>Grand Total</Text>
-                <Text style={styles.finsltestsPrice}>Rs.{data.GrandTotal}</Text>
-              </View>
-            </View> */}
-
             <View style={[styles.cardContainer, GlobalStyles.boxShadow]}>
               <View style={styles.flatListContainer}>
                 <Text style={styles.title}>Tests</Text>
-
                 {
                   TestList !== undefined ?
                     TestList.map((e) => (
@@ -162,19 +102,19 @@ const PreTestCard = ({ data, disable, retDis }) => {
               <View>
                 <Text style={styles.title}>Payment Details</Text>
                 <View style={styles.testCard}>
-                  <Text style={styles.titleText}>Total</Text>
+                  <Text style={styles.testsText}>Total</Text>
                   <Text style={styles.finsltestsPrice}>Rs.{data.TestTotalAmount}</Text>
                 </View>
                 <View style={styles.testCard}>
-                  <Text style={styles.titleText}>Collection Charge</Text>
+                  <Text style={styles.testsText}>Collection Charge</Text>
                   <Text style={styles.finsltestsPrice}>Rs.{data.CollectionCharge}</Text>
                 </View>
                 <View style={styles.testCard}>
-                  <Text style={styles.titleText}>Discount Amout</Text>
+                  <Text style={styles.testsText}>Discount Amout</Text>
                   <Text style={styles.finsltestsPrice}>Rs.{data.DiscountAmount}</Text>
                 </View>
                 <View style={styles.testCard}>
-                  <Text style={styles.titleText}>Grand Total</Text>
+                  <Text style={styles.testsText}>Grand Total</Text>
                   <Text style={styles.finsltestsPrice}>Rs.{data.GrandTotal}</Text>
                 </View>
               </View>
@@ -301,16 +241,11 @@ const styles = StyleSheet.create({
     color: "#205072",
     marginBottom: 5,
   },
-  remarks: {
-    color: "#253539",
-    fontSize: 14,
-    letterSpacing: 2,
-    marginBottom: 5,
-  },
   centeredView: {
     width: '100%',
     flex: 1,
-    backgroundColor: '#F9F9F9'
+    backgroundColor: '#141516e1'
+    // backgroundColor: '#fefefe'
   },
 
   patInfocontainer: {
@@ -324,26 +259,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: 10,
   },
-  right: {
-    marginLeft: 10,
-  },
-  profileImg: {
-    width: 120,
-    height: 120,
-    borderRadius: 10,
-  },
   name: {
-    width: windowWidth * 0.6,
-    color: '#205072',
-    fontSize: 18,
+    // color: '#205072',
+    color: secondaryBkg,
+    fontSize: 24,
     fontWeight: 'bold',
     letterSpacing: 1.3,
     marginBottom: 6
   },
   flatListContainer: {
     width: windowWidth - 20,
-    marginHorizontal: 10,
-    // flex: 0.55,
     maxHeight: 200,
   },
   title: {
@@ -351,7 +276,7 @@ const styles = StyleSheet.create({
     color: '#205072',
     fontWeight: 'bold',
     letterSpacing: 1.3,
-    marginBottom: 10
+    marginVertical: 10
   },
   testCard: {
     flexDirection: 'row',
@@ -365,12 +290,6 @@ const styles = StyleSheet.create({
     color: "#232325",
     fontSize: 14,
     letterSpacing: 1.2,
-    // marginLeft: 20,
-    width: windowWidth * 0.75
-  },
-  testsPrice: {
-    width: windowWidth * 0.4,
-    color: '#FF7F00'
   },
   finsltestsPrice: {
     borderWidth: 1,
@@ -386,6 +305,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fefefe',
     paddingVertical: 16,
     paddingHorizontal: 10,
+    marginTop: 10,
   },
   testList: {
     backgroundColor: '#9DD4E9',
@@ -396,6 +316,6 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     width: windowWidth - 20,
 
-  },
+  }
 
 })

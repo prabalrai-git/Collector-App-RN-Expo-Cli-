@@ -9,6 +9,9 @@ import Header from '../../components/Header'
 import { GetListOfCollector } from '../../Services/appServices/Collector'
 import Filter from '../../components/ui/Filter'
 import { PushNotification } from '../../components/PushNotification'
+import { Icon } from 'react-native-elements'
+import GlobalStyle, { GlobalStyles } from '../../GlobalStyle'
+import CancleBtn from '../../components/ui/CancleBtn'
 
 // "_HomeRequest": {
 //   "RId": 1, //?? =0
@@ -96,7 +99,7 @@ const AddTestBillingScreen = ({ route }) => {
   const [btnDis, setBtnDis] = useState(false);
 
   const user = useSelector(state => state.storeUserData.userData);
-  // console.log('user', user);
+  console.log('user', user);
   const [paidStatus, setpaidStatus] = useState(1);
   const [ModalVisible, setModalVisible] = useState(false);
   const [PaymentCode, setPaymentCode] = useState('')
@@ -421,21 +424,50 @@ const AddTestBillingScreen = ({ route }) => {
         }}
       >
         <View style={styles.centeredView}>
+          <TouchableOpacity
+            style={{
+              position: 'absolute',
+              top: 10,
+              right: 10,
+              backgroundColor: secodaryCardColor,
+              padding: 10,
+              borderRadius: 10,
+            }}
+            onPress={() => {
+              setModalVisible(false)
+            }}>
+            <Icon
+              name={'close'}
+              color={'#fefefe'}
+              type='antdesign'
+              size={20}
+            ></Icon>
+          </TouchableOpacity>
           <Image
             source={require('../../assets/images/qr.png')}
             style={styles.qrBig}
           ></Image>
           <View style={styles.componyInfo}>
             <Image
-              source={require('../../assets/images/logo.png')}
+              source={require('../../assets/images/luniva360.png')}
+              style={{
+                width: 200,
+                height: 100
+              }}
             />
-            <View style={styles.cDetails}>
-              <Text style={[styles.span, styles.span1]}>Luniva</Text>
-              <Text style={[styles.span, styles.span2]}>360</Text>
-            </View>
-            <AppButton title='close' onPress={() => setModalVisible(false)}></AppButton>
+            <Text style={[GlobalStyles.title1, {
+              color: primary,
+              marginBottom: 4
+            }]}>{user.UserName}</Text>
+            <Text style={[GlobalStyles.body, {
+              color: '#242426',
+              marginBottom: 8
+            }]}>Collector no. {user.UserId}</Text>
+            <Text style={[GlobalStyles.heading, {
+              color: secondary,
+            }]}>Scan to pay amount</Text>
+            {/* <CancleBtn title='close' onPress={() => setModalVisible(false)}></CancleBtn> */}
           </View>
-
         </View>
       </Modal>
       <Modal
@@ -584,22 +616,6 @@ const styles = StyleSheet.create({
     // marginLeft: 10,
     borderRadius: 18,
     paddingVertical: 20,
-  },
-  cDetails: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    padding: 10,
-  },
-  span: {
-    color: "#FF7F00",
-    fontSize: 36,
-    letterSpacing: 3,
-  },
-  span1: {
-    fontWeight: 'normal',
-  },
-  span2: {
-    fontWeight: 'bold',
   },
   cardBtn: {
     backgroundColor: '#7fb8d3',

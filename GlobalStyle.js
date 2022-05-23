@@ -12,13 +12,14 @@ const GlobalStyle = () => {
 
 export default GlobalStyle
 
-global.primary = '#205072',
-  global.secondary = '#FF7F00',
-  global.primaryBkg = '#fefefe',
-  global.secondaryBkg = '#f9f9f9',
-  global.secodaryCardColor = '#F57F20'
+global.primary = '#205072'
+global.secondary = '#FF7F00'
+global.primaryBkg = '#fefefe'
+global.secondaryBkg = '#f9f9f9'
+global.secodaryCardColor = '#F57F20'
 // global.secodaryCardColor ="#93D0F1"
 // global.secodaryCardColor = '#205072'
+global.cancle = '#1a3e5786'
 
 
 export const GlobalStyles = StyleSheet.create({

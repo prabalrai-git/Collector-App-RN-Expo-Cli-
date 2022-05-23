@@ -10,6 +10,8 @@ import { log } from 'react-native-reanimated';
 import AppButton from '../../components/ui/AppButton';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { GetListOfCollector } from '../../Services/appServices/Collector';
+import ProceedBtn from '../../components/ui/ProceedBtn';
+import { GlobalStyles } from '../../GlobalStyle';
 
 const AddRefReq = ({ route }) => {
   // console.log("rout e", route.params.data);
@@ -327,7 +329,7 @@ const AddRefReq = ({ route }) => {
                       setisVisibeReq(false)
                       setbtnDis(false)
                     }}
-                    style={styles.cardBtn}
+                    style={[styles.cardBtn, GlobalStyles.boxShadow]}
                   >
                     <Text style={styles.cardBtnTxt}>{item.Requestor}</Text>
                   </TouchableOpacity>
@@ -367,7 +369,7 @@ const AddRefReq = ({ route }) => {
         >
           <View style={styles.centeredView}>
             <View>
-              <Filter data={referedList} returnData={handleChangeRef} forRef></Filter>
+              <Filter data={referedList} returnData={handleChangeRef} forRef ></Filter>
               <FlatList
                 data={referedListNew}
                 keyExtractor={(item, index) => `${item.Id}${index}`}
@@ -379,7 +381,7 @@ const AddRefReq = ({ route }) => {
                       setisVisibeRef(false)
                       setbtnDis(false)
                     }}
-                    style={styles.cardBtn}
+                    style={[styles.cardBtn, GlobalStyles.boxShadow]}
                   >
                     <Text style={styles.cardBtnTxt}>{item.Name}</Text>
                   </TouchableOpacity>
@@ -446,12 +448,12 @@ const AddRefReq = ({ route }) => {
           </View>
         </Modal>
 
-        <AppButton
+        <ProceedBtn
           title='submit'
           onPress={handleSubmit}
           disabled={appBtnSis}
         >
-        </AppButton>
+        </ProceedBtn>
 
         {
           isLoading &&
@@ -524,23 +526,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9'
   },
   cardBtn: {
-    backgroundColor: '#7fb8d3',
-    marginVertical: 4,
+    backgroundColor: primaryBkg,
+    marginTop: 8,
     paddingHorizontal: 10,
     paddingVertical: 20,
     borderRadius: 10,
     width: Dimensions.get('window').width - 20,
     marginLeft: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
   },
   cardBtnTxt: {
-    color: '#fefefe',
+    color: primary,
     letterSpacing: 1,
     fontSize: 14,
   }

@@ -6,6 +6,8 @@ import AppButton from '../../components/ui/AppButton';
 import CancleBtn from '../../components/ui/CancleBtn';
 import MapView from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
+import LoginBtn from '../../components/ui/LoginBtn';
+import ProceedBtn from '../../components/ui/ProceedBtn';
 
 const AddPatientDetals = ({ route }) => {
   // console.log("route", route.params.gender);
@@ -223,6 +225,28 @@ const AddPatientDetals = ({ route }) => {
 
         <BottomSheet modalProps={{}} isVisible={isVisible}>
           <View style={{ flex: 1 }}>
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                top: 10,
+                right: 10,
+                backgroundColor: secodaryCardColor,
+                padding: 10,
+                borderRadius: 10,
+                zIndex: 100
+              }}
+              onPress={() => {
+                setIsVisible(!isVisible);
+                // setisRemarksVisible(false)
+                // retDis(false)
+              }}>
+              <Icon
+                name={'close'}
+                color={'#fefefe'}
+                type='antdesign'
+                size={20}
+              ></Icon>
+            </TouchableOpacity>
             <MapView
               style={styles.map}
               initialRegion={{
@@ -258,11 +282,16 @@ const AddPatientDetals = ({ route }) => {
           </View>
 
         </BottomSheet>
-        <AppButton
-          title='Submit'
+        <ProceedBtn
+          title='Next'
           onPress={handleProceed}
           disabled={butDis}
-        ></AppButton>
+        ></ProceedBtn>
+        {/* <AppButton
+          title='Next'
+          onPress={handleProceed}
+          disabled={butDis}
+        ></AppButton> */}
 
       </View>
 
@@ -345,12 +374,12 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
 
   },
   cMarkerImg: {
     width: 20,
     resizeMode: 'contain',
   },
-  
+
 })

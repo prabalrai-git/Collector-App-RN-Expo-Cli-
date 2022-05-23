@@ -92,11 +92,20 @@ const PatientInfoCard = ({ data, AsignedTask, disable, retDis }) => {
       <Pressable disabled={disable} onPress={() => hadleEvent()} style={styles.cardCotainer}>
         <View style={styles.cardBody}>
           <View>
-            <Avatar
+            {/* <Avatar
               size={64}
               rounded
               source={require('../../assets/images/user.png')}
-            />
+            /> */}
+            <Icon
+              name={'user'}
+              color={'#fefefe'}
+              type='antdesign'
+              size={30}
+              backgroundColor={'#3caea4'}
+              borderRadius={50}
+              padding={10}
+            ></Icon>
           </View>
           <View style={styles.card}>
             <Text style={styles.ctitle}>{data.PatientFName} {data.PatientLName}</Text>
@@ -149,12 +158,15 @@ const PatientInfoCard = ({ data, AsignedTask, disable, retDis }) => {
                     style={styles.profileImg}
                   ></Image> */}
                   <Icon
-                  name={'close'}
-                  // color={'#fefefe'}
-                  color={'red'}
-                  type='antdesign'
-                  size={20}
-                ></Icon>
+                    name={'user'}
+                    color={primary}
+                    type='antdesign'
+                    size={90}
+                    padding={10}
+                    backgroundColor={primaryBkg}
+                    borderRadius={18}
+                    style={GlobalStyles.boxShadow}
+                  ></Icon>
                   <View style={styles.right}>
                     <Text style={styles.name}>{data.PatientFName} {data.PatientMName} {data.PatientLName}</Text>
                     <View style={styles.detail}>
@@ -169,10 +181,14 @@ const PatientInfoCard = ({ data, AsignedTask, disable, retDis }) => {
                       <Text >age: </Text>
                       <Text style={{ color: "#FF7F00" }}>{data.PatientAge}</Text>
                     </View>
-                    <View style={styles.detail}>
-                      <Text >email: </Text>
-                      <Text style={{ color: "#FF7F00" }}>{data.PatientEmailId}</Text>
-                    </View>
+                    {
+                      data.PatientEmailId !== "" ?
+                        <View style={styles.detail}>
+                          <Text >email: </Text>
+                          <Text style={{ color: "#FF7F00" }}>{data.PatientEmailId}</Text>
+                        </View> : null
+                    }
+
                   </View>
                 </View>
 
