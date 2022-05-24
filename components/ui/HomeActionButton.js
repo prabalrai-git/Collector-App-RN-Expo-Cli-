@@ -43,7 +43,7 @@ export const HomeActionButton2 = ({ data }) => {
       <TouchableOpacity
         style={[styles.btnContainer3,{
           // backgroundColor: data.color
-        }]}
+        }, GlobalStyles.boxShadow]}
         onPress={() => navigation.navigate(`${data.pathName}`)}
       >
         <Icon

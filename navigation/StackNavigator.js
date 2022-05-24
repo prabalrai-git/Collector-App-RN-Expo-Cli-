@@ -1,14 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet} from 'react-native'
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-// import HomeScreen from '../screens/HomeScreen'
-// import CollectSampleHomeScreen from '../screens/CollectSample'
-// import EnterFormScreen from '../screens/CollectSample/EnterFormScreen'
-// import SignatureCanvas from '../screens/CollectSample/SignatureCanvas'
-// import MapScreenn from '../screens/Tasks/MapScreenn'
-import TaskHomeScreen from '../screens/Tasks/TaskHomeScreen'
-import TaskInfoScreen from '../screens/Tasks/TaskInfoScreen'
-import MapScreen from '../screens/Tasks/MapScreen'
 import AddPatietHomeScreen from '../screens/AddPatient/AddPatietHomeScreen'
 import BookTestHomeScreen from '../screens/BookTest/BookTestHomeScreen'
 import SelectTest from '../screens/BookTest/SelectTest'
@@ -37,13 +29,6 @@ const MainStackNavigator = () => {
             headerShown: false,
           }}
         />
-        {/* <Stack.Screen
-          name='SampleHomeScreen'
-          component={SampleHomeScreen}
-          options={{
-            headerShown: false,
-          }}
-        /> */}
       </Stack.Group>
     </Stack.Navigator>
   )
@@ -78,19 +63,6 @@ const CollectSampleNavigator = () => {
     </Stack.Navigator>
   )
 }
-// const MapStackNavigator = () => {
-//   return(
-//     <Stack.Navigator>
-//       <Stack.Screen 
-//         name='MapScreenn'
-//         component={MapScreenn}
-//         // options={{
-//         //   headerShown: false,
-//         // }}
-//       />
-//     </Stack.Navigator>
-//   )
-// }
 
 const TaskNavigator = () => {
   return (
@@ -110,21 +82,6 @@ const TaskNavigator = () => {
             headerShown: false
           }}
         />
-
-        {/* <Stack.Screen
-          name='TaskInfoScreen'
-          component={TaskInfoScreen}
-          options={{
-            headerShown: false
-          }}
-        /> */}
-        {/* <Stack.Screen
-          name='MapScreen'
-          component={MapScreen}
-          options={{
-            headerShown: false
-          }}
-        /> */}
       </Stack.Group>
     </Stack.Navigator>
   )
@@ -222,13 +179,6 @@ const SampleCollectionNavigator = () => {
             headerShown: false,
           }}
         />
-        {/* <Stack.Screen
-          name='PatietInfoScreen'
-          component={PatietInfoScreen}
-          options={{
-            headerShown: false,
-          }}
-        /> */}
       </Stack.Group>
     </Stack.Navigator>
   )
@@ -256,12 +206,6 @@ const CollectorLocation = () => {
     </Stack.Navigator>
   )
 }
-
-
-
-
-
-
 
 export { MainStackNavigator, CollectSampleNavigator, TaskNavigator, AddPatietNavigator, BookTestNavigator, SampleCollectionNavigator, CollectorLocation }
 

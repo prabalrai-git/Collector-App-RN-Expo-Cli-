@@ -1,9 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import DraweNavigator from './DraweNavigator'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import LoginScreen from '../screens/LogInScreen/LoginScreen'
-import TabNavigator from './TabNavigator'
 import { useDispatch, useSelector } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { storeUserData } from '../Services/store/slices/profileSlice'

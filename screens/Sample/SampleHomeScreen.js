@@ -7,6 +7,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import AppButton from '../../components/ui/AppButton';
 import SampleCard from './SampleCard';
 import Header from '../../components/Header';
+import LodaingComp from '../../components/ui/LodaingComp';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -70,6 +71,7 @@ const SampleHomeScreen = () => {
     setToShow(true);
     setShow(false);
   };
+  // console.log("user role", user.UserRole);
 
   const handleClick = () => {
     const fromDate = `${FromDate.getFullYear() + "-" + (FromDate.getMonth() + 1) + "-" + FromDate.getDate()}`
@@ -78,10 +80,10 @@ const SampleHomeScreen = () => {
     const data = {
       'fromDate': fromDate,
       'toDate': toDate,
-      'collectorId': user.UserId
-      // 'collectorId': 0
+      'collectorId': user.UserRole !== 2 ? user.UserId : 0
 
     }
+    console.log('data', data);
     dispatch(GetSampleRequestListByCollector(data, (res) => {
       setRequestList(res.RequestList)
     }))
@@ -171,6 +173,7 @@ const SampleHomeScreen = () => {
 
 
         <View style={styles.listcontainer}>
+          <LodaingComp></LodaingComp>
           <FlatList
             data={RequestList}
             renderItem={renderItem}

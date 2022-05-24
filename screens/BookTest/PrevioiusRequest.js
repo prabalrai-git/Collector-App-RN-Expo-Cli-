@@ -6,6 +6,7 @@ import { useIsFocused } from '@react-navigation/native'
 import TaskCard from '../../components/ui/TaskCard'
 import Header from '../../components/Header'
 import PreTestCard from '../../components/ui/PreTestCard'
+import LodaingComp from '../../components/ui/LodaingComp'
 
 
 
@@ -23,13 +24,13 @@ const PrevioiusRequest = ({ route }) => {
   const user = useSelector(state => state.storeUserData);
   // console.log('user');
   const [disable, setdisable] = useState(false)
-  
+
   useEffect(() => {
     handleClick()
   }, [isFocused])
 
   const renderItem = ({ item }) => (
-    <PreTestCard data={item} disable={disable} retDis={handleDisable}/>
+    <PreTestCard data={item} disable={disable} retDis={handleDisable} />
   )
 
   const handleDisable = (e) => {
@@ -54,11 +55,15 @@ const PrevioiusRequest = ({ route }) => {
 
 
   }
-  console.log("[0a", PatietList);
 
   return (
     <View style={styles.mainContainer}>
       <Header></Header>
+      {
+        PatietList === undefined &&
+        <LodaingComp isLoading={true}></LodaingComp>
+      }
+
       <FlatList
         data={PatietList}
         renderItem={renderItem}

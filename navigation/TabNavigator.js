@@ -27,6 +27,8 @@ const TabNavigator = () => {
           tabBarItemStyle: { width: 100 },
           tabBarStyle: { backgroundColor: secodaryCardColor },
           tabBarActiveTintColor: '#fefefe',
+          // tabBarInactiveTintColor: 'red'
+          
         }}
         initialRouteName='AssignedTask'
         // keyboardDismissMode='none'

@@ -11,8 +11,9 @@ import MarkerCostome from './MarkerCostome';
 import { Icon } from 'react-native-elements';
 import BadgeStatus from './BadgeStatus';
 import DateBadge from './DateBadge';
-import { GlobalStyles } from '../../GlobalStyle';
+// import { GlobalStyles } from '../../GlobalStyle';
 import { PushNotification } from '../PushNotification';
+import { GlobalStyles } from '../../GlobalStyle';
 
 
 
@@ -192,7 +193,6 @@ const TaskCard = ({ data, AsignedTask, disable, retDis, rejected, completed}) =>
   // console.log('resons', data.remarks);
   return (
     <>
-
       <Pressable disabled={disable} onPress={() => hadleEvent()} style={styles.cardCotainer}>
         <View style={styles.cardBody}>
           <View style={styles.card}>
@@ -552,7 +552,8 @@ const styles = StyleSheet.create({
 
   cardBody: {
     backgroundColor: "#fefefe",
-    marginVertical: 8,
+    marginTop: 8,
+    marginBottom: 2,
     paddingHorizontal: 15,
     paddingVertical: 10,
     justifyContent: 'space-between',
@@ -560,15 +561,15 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 12,
     borderLeftWidth: 4,
     borderLeftColor: '#205072',
-    shadowColor: "#101010",
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
+    // shadowColor: "#101010",
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 3,
+    // },
+    // shadowOpacity: 0.29,
+    // shadowRadius: 4.65,
 
-    elevation: 7,
+    // elevation: 2,
   },
   card: {
     flexDirection: 'row',

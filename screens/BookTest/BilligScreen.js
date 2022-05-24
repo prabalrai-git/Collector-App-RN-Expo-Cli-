@@ -11,6 +11,8 @@ import Header from '../../components/Header'
 import Filter from '../../components/ui/Filter'
 import { GetListOfCollector } from '../../Services/appServices/Collector'
 import { PushNotification } from '../../components/PushNotification'
+import { Icon } from 'react-native-elements'
+import { GlobalStyles } from '../../GlobalStyle'
 
 // "_HomeRequest": {
 //   "RId": 1, //?? =0
@@ -411,22 +413,52 @@ const BilligScreen = ({ route }) => {
           setModalVisible(!ModalVisible);
         }}
       >
-        <View style={styles.centeredView}>
-          <Image
-            source={require('../../assets/images/qr.png')}
-            style={styles.qrBig}
-          ></Image>
+        <View style={styles.QrContainer}>
           <View style={styles.componyInfo}>
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                top: 10,
+                right: 10,
+                backgroundColor: secodaryCardColor,
+                padding: 10,
+                borderRadius: 10,
+              }}
+              onPress={() => {
+                setModalVisible(false)
+              }}>
+              <Icon
+                name={'close'}
+                color={'#fefefe'}
+                type='antdesign'
+                size={20}
+              ></Icon>
+            </TouchableOpacity>
             <Image
-              source={require('../../assets/images/logo.png')}
+              source={require('../../assets/images/qr.png')}
+              style={styles.qrBig}
+            ></Image>
+            <Image
+              source={require('../../assets/images/luniva360.png')}
+              style={{
+                width: 200,
+                height: 100
+              }}
             />
-            <View style={styles.cDetails}>
-              <Text style={[styles.span, styles.span1]}>Luniva</Text>
-              <Text style={[styles.span, styles.span2]}>Care</Text>
-            </View>
-            <AppButton title='close' onPress={() => setModalVisible(false)}></AppButton>
+            <Text style={[GlobalStyles.title1, {
+              color: primary,
+              marginBottom: 4
+            }]}>{user.UserName}</Text>
+            <Text style={[GlobalStyles.body, {
+              color: '#242426',
+              marginBottom: 8
+            }]}>Collector no. {user.UserId}</Text>
+            <Text style={[GlobalStyles.heading, {
+              color: secondary,
+              marginBottom: 20
+            }]}>Scan to pay amount</Text>
+            {/* <CancleBtn title='close' onPress={() => setModalVisible(false)}></CancleBtn> */}
           </View>
-
         </View>
       </Modal>
 
@@ -512,7 +544,7 @@ const styles = StyleSheet.create({
     color: '#fefefe'
   },
   testPrice: {
-    color: '#302b27',
+    color: '#fefefe',
     fontSize: 14
   },
   contaienr: {
@@ -552,56 +584,36 @@ const styles = StyleSheet.create({
     height: 40,
   },
   qrBig: {
-    width: 200,
-    height: 200,
+    width: 240,
+    height: 240,
     resizeMode: 'contain',
+    marginVertical: 45,
+  },
+  QrContainer: {
+    flex: 1,
+    justifyContent: 'flex-end'
   },
   componyInfo: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 50,
-    borderWidth: 1,
-    borderColor: '#f1f1df',
-    width: windowWidth - 20,
+    width: windowWidth,
     // marginLeft: 10,
     borderRadius: 18,
     paddingVertical: 20,
-  },
-  cDetails: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    padding: 10,
-  },
-  span: {
-    color: "#FF7F00",
-    fontSize: 36,
-    letterSpacing: 3,
-  },
-  span1: {
-    fontWeight: 'normal',
-  },
-  span2: {
-    fontWeight: 'bold',
+    backgroundColor: '#fefefe'
   },
   cardBtn: {
-    backgroundColor: '#7fb8d3',
-    marginVertical: 4,
+    backgroundColor: primaryBkg,
+    marginTop: 8,
     paddingHorizontal: 10,
     paddingVertical: 20,
     borderRadius: 10,
     width: Dimensions.get('window').width - 20,
     marginLeft: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
   },
   cardBtnTxt: {
-    color: '#fefefe',
+    color: primary,
     letterSpacing: 1,
     fontSize: 14,
   }

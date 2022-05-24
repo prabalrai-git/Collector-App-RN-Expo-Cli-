@@ -145,6 +145,8 @@ const AddTestBillingScreen = ({ route }) => {
 
 
   const handleSubmit = () => {
+    // console.log("collecoot", user.UserId);
+    // return
     setBtnDis(true);
     let today = new Date();
     const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -199,19 +201,21 @@ const AddTestBillingScreen = ({ route }) => {
 
 
     dispatch(InsertUpdateHomeCollection(finalData, (res) => {
+      let collectorID = user.UserRole === 2 ? PtientCollector : user.UserId
       if (res?.SuccessMsg === true) {
         // return
         if (user.UserRole === 2) {
           Alert.alert(
             "Saved!",
-            `Task asigned to ${PtientCollector}`,
+            `Task asigned to ${collectorID}`,
             [
               {
                 text: "OK", onPress: () => {
                   const popAc = StackActions.pop(4);
                   navigation.dispatch(popAc);
                   navigation.navigate('Home');
-                  PushNotification('asigned task', user.UserId, PtientCollector, res.CreatedId, Remarks, user.UserName, RequestPatientname)
+                  // if(user)
+                  PushNotification('asigned task', user.UserId, collectorID, res.CreatedId, Remarks, user.UserName, RequestPatientname)
                 }
               }
             ]
@@ -423,31 +427,31 @@ const AddTestBillingScreen = ({ route }) => {
           setModalVisible(!ModalVisible);
         }}
       >
-        <View style={styles.centeredView}>
-          <TouchableOpacity
-            style={{
-              position: 'absolute',
-              top: 10,
-              right: 10,
-              backgroundColor: secodaryCardColor,
-              padding: 10,
-              borderRadius: 10,
-            }}
-            onPress={() => {
-              setModalVisible(false)
-            }}>
-            <Icon
-              name={'close'}
-              color={'#fefefe'}
-              type='antdesign'
-              size={20}
-            ></Icon>
-          </TouchableOpacity>
-          <Image
-            source={require('../../assets/images/qr.png')}
-            style={styles.qrBig}
-          ></Image>
+        <View style={styles.QrContainer}>
           <View style={styles.componyInfo}>
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                top: 10,
+                right: 10,
+                backgroundColor: secodaryCardColor,
+                padding: 10,
+                borderRadius: 10,
+              }}
+              onPress={() => {
+                setModalVisible(false)
+              }}>
+              <Icon
+                name={'close'}
+                color={'#fefefe'}
+                type='antdesign'
+                size={20}
+              ></Icon>
+            </TouchableOpacity>
+            <Image
+              source={require('../../assets/images/qr.png')}
+              style={styles.qrBig}
+            ></Image>
             <Image
               source={require('../../assets/images/luniva360.png')}
               style={{
@@ -465,6 +469,7 @@ const AddTestBillingScreen = ({ route }) => {
             }]}>Collector no. {user.UserId}</Text>
             <Text style={[GlobalStyles.heading, {
               color: secondary,
+              marginBottom: 20
             }]}>Scan to pay amount</Text>
             {/* <CancleBtn title='close' onPress={() => setModalVisible(false)}></CancleBtn> */}
           </View>
@@ -552,7 +557,7 @@ const styles = StyleSheet.create({
     color: '#fefefe'
   },
   testPrice: {
-    color: '#232324',
+    color: "#fefefe",
     fontSize: 14
   },
   contaienr: {
@@ -591,7 +596,7 @@ const styles = StyleSheet.create({
   },
   centeredView: {
     flex: 1,
-    backgroundColor: '#fefefe',
+    backgroundColor: secondaryBkg,
     // opacity: 0.8,
     alignItems: 'center',
     justifyContent: 'space-evenly'
@@ -601,40 +606,35 @@ const styles = StyleSheet.create({
     height: 40,
   },
   qrBig: {
-    width: 200,
-    height: 200,
+    width: 240,
+    height: 240,
     resizeMode: 'contain',
+    marginVertical: 45,
+  },
+  QrContainer: {
+    flex: 1,
+    justifyContent: 'flex-end'
   },
   componyInfo: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 50,
-    borderWidth: 1,
-    borderColor: '#f1f1df',
-    width: windowWidth - 20,
-    // marginLeft: 10,
+    width: windowWidth,
     borderRadius: 18,
     paddingVertical: 20,
+    backgroundColor: '#fefefe'
   },
   cardBtn: {
-    backgroundColor: '#7fb8d3',
-    marginVertical: 4,
+    backgroundColor: primaryBkg,
+    marginTop: 8,
     paddingHorizontal: 10,
     paddingVertical: 20,
     borderRadius: 10,
     width: Dimensions.get('window').width - 20,
     marginLeft: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
   },
   cardBtnTxt: {
-    color: '#fefefe',
+    color: primary,
     letterSpacing: 1,
     fontSize: 14,
   }
