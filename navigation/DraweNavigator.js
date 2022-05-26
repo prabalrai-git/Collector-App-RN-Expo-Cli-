@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
-import { AddPatietNavigator, BookTestNavigator, CollectorLocation, CollectSampleNavigator, MainStackNavigator, SampleCollectionNavigator, TaskNavigator } from './StackNavigator'
+import { AddPatietNavigator, BookTestNavigator, CollectorLocation, CollectSampleNavigator, MainStackNavigator, ReportVerification, SampleCollectionNavigator, TaskNavigator } from './StackNavigator'
 import { useSelector } from 'react-redux'
 import CostomeDrawerContent from '../components/ui/CostomeDrawerContent'
 import LocationTrackingHomeScreen from '../screens/LocationTracking/LocationTrackingHomeScreen'
@@ -217,6 +217,23 @@ const DraweNavigator = () => {
         }}
       />
       {/* } */}
+
+      <Drawer.Screen
+        name='ReportVerification'
+        component={ReportVerification}
+        options={{
+          headerShown: false,
+          title: 'Report Verfication',
+          drawerIcon: ({ size, color }) => (
+            <Icon
+              name='file1'
+              color={color}
+              type='antdesign'
+              style={styles.icon}
+            ></Icon>
+          )
+        }}
+      />
 
 
     </Drawer.Navigator>

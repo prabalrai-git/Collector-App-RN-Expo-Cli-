@@ -1,35 +1,17 @@
-import { Button, Dimensions, FlatList, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { GetSampleRequestListByCollector } from '../../Services/appServices/AssignPatient';
-import { Avatar, Icon } from 'react-native-elements';
+import Header from '../../components/Header';
+import { Icon } from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AppButton from '../../components/ui/AppButton';
-import SampleCard from './SampleCard';
-import Header from '../../components/Header';
 import LodaingComp from '../../components/ui/LodaingComp';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-// "RId": 9,
-// "PatId": 12,
-// "CollectorId": 3,
-// "PatientFName": "Anib",
-// "PatientMName": "undefined",
-// "PatientLName": "Maharjan",
-// "PatientAge": "25",
-// "PatientGender": "male",
-// "CollectionReqDate": "2022-03-27T02:00:33",
-// "TestTotalAmount": 12500,
-// "CollectionCharge": 500,
-// "DiscountAmount": 200,
-// "GrandTotal": 12800,
-// "Remarks": "Special discount ",
-// "CollectedDate": "2022-03-21T12:20:27"
 
-
-
-const SampleHomeScreen = () => {
+const ReportVerifyScreen = () => {
   const dispatch = useDispatch();
   const [RequestList, setRequestList] = useState();
   const user = useSelector(state => state.storeUserData.userData);
@@ -72,50 +54,12 @@ const SampleHomeScreen = () => {
     setToShow(true);
     setShow(false);
   };
-  // console.log("user role", user.UserRole);
-
-  const handleClick = () => {
-    setisLoading(true)
-    const fromDate = `${FromDate.getFullYear() + "-" + (FromDate.getMonth() + 1) + "-" + FromDate.getDate()}`
-    const toDate = `${ToDate.getFullYear() + "-" + (ToDate.getMonth() + 1) + "-" + ToDate.getDate()}`
-    // const collectorId = 3
-    const data = {
-      'fromDate': fromDate,
-      'toDate': toDate,
-      'collectorId': user.UserRole !== 2 ? user.UserId : 0
-
-    }
-    console.log('data', data);
-    dispatch(GetSampleRequestListByCollector(data, (res) => {
-      setRequestList(res.RequestList)
-      setisLoading(false)
-    }))
-  }
-  // console.log('res', RequestList);
-  const refData = (res) => {
-    if (res === true) {
-      handleClick()
-    }
-  }
-
-
-  const renderItem = ({ item }) => (
-    <SampleCard data={item} refData={refData} disable={disable} retDis={handleDisable} />
-    // <AcceptedCard data={item} refData={refData}/>
-  )
-  const handleDisable = (e) => {
-    // console.log('disable', e)
-    setdisable(e)
-  }
-
-
-
   return (
     <View style={styles.mainContainer}>
 
       <View style={styles.container}>
         <View style={styles.top}>
-          <Header title={'Sample collection'}></Header>
+          <Header title={'Reports'}></Header>
           <View style={styles.dateFiltercontainer}>
             <TouchableOpacity
               onPress={showDatepicker}
@@ -178,23 +122,24 @@ const SampleHomeScreen = () => {
         <View style={styles.listcontainer}>
           {
             isLoading === false ?
-              <FlatList
-                data={RequestList}
-                renderItem={renderItem}
-                keyExtractor={item => item.RId}
-              ></FlatList>
+              // <FlatList
+              //   data={RequestList}
+              //   renderItem={renderItem}
+              //   keyExtractor={item => item.RId}
+              // ></FlatList>
+              null
               :
               <LodaingComp></LodaingComp>
           }
-          
 
         </View>
       </View>
+      
     </View >
   )
 }
 
-export default SampleHomeScreen
+export default ReportVerifyScreen
 
 const styles = StyleSheet.create({
 

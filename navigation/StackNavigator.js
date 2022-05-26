@@ -15,6 +15,7 @@ import AddPatientDetals from '../screens/AddPatient/AddPatientDetals'
 import AddRefReq from '../screens/AddPatient/AddRefReq'
 import LocationTrackingHomeScreen from '../screens/LocationTracking/LocationTrackingHomeScreen'
 import CollectorMapScreen from '../screens/LocationTracking/CollectorMapScreen'
+import ReportVerifyScreen from '../screens/ReportVerify/ReportVerifyScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -207,6 +208,22 @@ const CollectorLocation = () => {
   )
 }
 
-export { MainStackNavigator, CollectSampleNavigator, TaskNavigator, AddPatietNavigator, BookTestNavigator, SampleCollectionNavigator, CollectorLocation }
+const ReportVerification = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Group>
+        <Stack.Screen
+          name='ReportVerifyScreen'
+          component={ReportVerifyScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Stack.Group>
+    </Stack.Navigator>
+  )
+}
+
+export { MainStackNavigator, CollectSampleNavigator, TaskNavigator, AddPatietNavigator, BookTestNavigator, SampleCollectionNavigator, CollectorLocation , ReportVerification}
 
 const styles = StyleSheet.create({})

@@ -225,7 +225,7 @@ const AcceptedCard = ({ data, refData, disable, retDis }) => {
   return (
     <>
       <Pressable disabled={disable} onPress={() => hadleEvent()} style={styles.cardCotainer}>
-        <View style={styles.cardBody}>
+        <View style={[styles.cardBody, GlobalStyles.boxShadow]}>
           <View style={styles.card}>
             <Text style={styles.ctitle}>{data.PatientFName} {data.PatientLName}</Text>
             <Text style={styles.remarks}>Request Id: {data.RequestId}</Text>
