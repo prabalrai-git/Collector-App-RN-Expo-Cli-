@@ -10,6 +10,7 @@ import SelectedItem from '../../components/ui/SelectedItem';
 import { GlobalStyles } from '../../GlobalStyle';
 import CancleBtn from '../../components/ui/CancleBtn';
 import InputDate from '../../components/ui/InputDate';
+import { Picker } from '@react-native-picker/picker'
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -59,6 +60,13 @@ const ReportVerifyScreen = () => {
     setToShow(true);
     setShow(false);
   };
+
+  const onChangeFromDate = (e) => {
+    console.log('date e', e);
+  }
+  const onChangeToDate = (e) => {
+    console.log('date 222', e);
+  }
   return (
     <View style={styles.mainContainer}>
 
@@ -94,7 +102,6 @@ const ReportVerifyScreen = () => {
                   <View style={[styles.TxtInputContainer, {
                     marginTop: 20,
                   }]}>
-                    <Text style={styles.inputLabelTxt}>From</Text>
                     {/* <TouchableOpacity
                       onPress={showDatepicker}
                       style={styles.TextInput}
@@ -121,11 +128,12 @@ const ReportVerifyScreen = () => {
                       // minimumDate={new Date()}
                       />
                     } */}
-                    <InputDate></InputDate>
+                    <InputDate retData={onChangeFromDate} label={'From'}></InputDate>
                   </View>
 
                   <View style={styles.TxtInputContainer}>
-                    <Text style={styles.inputLabelTxt}>to</Text>
+                    <InputDate retData={onChangeToDate} label={'To'}></InputDate>
+                    {/* <Text style={styles.inputLabelTxt}>to</Text>
                     <TouchableOpacity
                       onPress={showToDatepicker}
                       style={styles.TextInput}
@@ -151,13 +159,13 @@ const ReportVerifyScreen = () => {
                         onChange={onChangeToData}
                         minimumDate={new Date()}
                       />
-                    }
+                    } */}
                   </View>
 
                   <View style={styles.TxtInputContainer}>
                     <Text style={styles.inputLabelTxt}>Fical year</Text>
                     <TouchableOpacity
-                      onPress={showToDatepicker}
+                      // onPress={showToDatepicker}
                       style={styles.TextInput}
                     >
                       <View style={styles.inputField}>
@@ -170,18 +178,19 @@ const ReportVerifyScreen = () => {
                         ></Icon>
                       </View>
                     </TouchableOpacity>
-                    {toshow &&
-                      <DateTimePicker
-                        testID="dateTimePicker"
-                        // timeZoneOffsetInMinutes={0}
-                        value={ToDate}
-                        mode={mode}
-                        is24Hour={true}
-                        display="default"
-                        onChange={onChangeToData}
-                        minimumDate={new Date()}
-                      />
-                    }
+                    <Picker
+                      // selectedValue={Status}
+                      // style={styles.TextInput}
+                      onValueChange={(itemValue) => setStatus(itemValue)}
+                      mode='dropdown'
+                    >
+                      {/* {
+                        1===1?
+                          <Picker.Item label={StatusList.SampleStatus} value={StatusList.StId} key={StatusList.StId} /> : null
+                      } */}
+                      <Picker.item label={'Potato'} />
+                      <Picker.item label={'Potato 1'} />
+                    </Picker>
                   </View>
                   <View style={styles.TxtInputContainer}>
                     <View style={styles.switchContainer}>
@@ -284,11 +293,9 @@ const ReportVerifyScreen = () => {
                     marginBottom: 20,
                   }}>
                     <AppButton title={"load"}></AppButton>
-                    <Text>     </Text>
+                    <Text>  </Text>
                     <CancleBtn title={'cancle'} onPress={() => setSerchFilter(!SerchFilter)}></CancleBtn>
                   </View>
-
-
                 </>
             }
           </View>

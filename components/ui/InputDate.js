@@ -5,7 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const InputDate = () => {
+const InputDate = ({retData, label}) => {
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [FromDate, setFromDate] = useState(new Date());
@@ -15,10 +15,12 @@ const InputDate = () => {
     if (mode == 'date') {
       const currentDate = selectedValue || date;
       setFromDate(currentDate);
+      retData(currentDate)
     } else {
     }
   };
 
+ 
 
 
   const showDatepicker = () => {
@@ -26,7 +28,7 @@ const InputDate = () => {
   };
   return (
     <>
-      <Text style={styles.inputLabelTxt}>From</Text>
+      <Text style={styles.inputLabelTxt}>{label}</Text>
       <TouchableOpacity
         onPress={showDatepicker}
         style={styles.TextInput}

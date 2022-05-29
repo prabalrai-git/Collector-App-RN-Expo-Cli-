@@ -273,3 +273,10 @@ export const ReassignCollectorToRejectedSample = 'ReassignCollectorToRejectedSam
  * @desc: resign collector base of request id
  *  @param: ?userId={userId}&requestId={requestId}&collectorId={collectorId}&reqStatus={reqStatus}&           sampleStatus={sampleStatus}&remarks={remarks}
  */
+
+export const GetFiscalYearCodeList = 'GetFiscalYearCodeList'
+
+/**
+ * @desc: Get list of fiscal year for report verification
+ *  @param: 
+ */
