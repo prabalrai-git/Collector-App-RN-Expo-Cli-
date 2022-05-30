@@ -1,17 +1,17 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-
-const BadgeStatus = ({RequestStatus, IsPaid}) => {
+// Report Completed
+const BadgeStatus = ({ RequestStatus, IsPaid }) => {
   return (
     <View>
       {
-      // IsPaid ?  
-        IsPaid === true  ?
-        <Text style={[styles.badge, { backgroundColor: '#a3ee19' }]}>paid</Text> : 
-        <Text style={[styles.badge,{ backgroundColor: '#e43333' } ]}>not paid</Text> 
+        // IsPaid ?  
+        IsPaid === true ?
+          <Text style={[styles.badge, { backgroundColor: '#a3ee19' }]}>paid</Text> :
+          <Text style={[styles.badge, { backgroundColor: '#e43333' }]}>not paid</Text>
         // : null
       }
-      
+
       {
         (RequestStatus === 'Requested' || RequestStatus === 'Asigned') ?
           <Text style={[styles.badge]}>pending</Text> : null
@@ -20,7 +20,7 @@ const BadgeStatus = ({RequestStatus, IsPaid}) => {
         (RequestStatus === 'Collected') ?
           <View>
             <Text style={[styles.badge]}>Not Dropped</Text>
-          <Text style={[styles.badge, { backgroundColor: '#19e0ee' }] }>{RequestStatus}</Text>
+            <Text style={[styles.badge, { backgroundColor: '#19e0ee' }]}>{RequestStatus}</Text>
           </View> : null
       }
       {
@@ -42,6 +42,15 @@ const BadgeStatus = ({RequestStatus, IsPaid}) => {
       {
         (RequestStatus === 'Report Dispatched') ?
           <Text style={[styles.badge, { backgroundColor: '#1db0dd' }]}>{RequestStatus}</Text> : null
+      }
+
+      {
+        (RequestStatus === 'Pending') ?
+          <Text style={[styles.badge, { backgroundColor: '#faf06a' }]}>{RequestStatus}</Text> : null
+      }
+      {
+        (RequestStatus === 'Report Completed') ?
+          <Text style={[styles.badge, { backgroundColor: '#a3ee19' }]}>{RequestStatus}</Text> : null
       }
 
     </View>

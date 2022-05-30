@@ -1,31 +1,57 @@
 
-import { GetFiscalYearCodeList } from "../constants/url"
-import { fetch, store } from "../utils/httpUtil"
+import { GetFiscalYearCodeList, GetPatientSampleSummaryStatus } from "../constants/url"
+// import { fetch, store } from "../utils/httpUtil"
+import {fetch, store} from '../utils/httpUtil'
 
 
-// export const GetNotificationByUserId = (data, sucessCallback) => {
+// export const GetFiscalYear = (sucessCallback) => {
 //   return async dispatch => {
-//     try {
-//       const response = await fetch(`${GetcollectorNotificationByUserId}?uId=${data}`)
-//       if (response?.status === 200) {
-//         // console.log('sucessfull noti');
-//         sucessCallback(response.data)
-//       } else {
-//         // console.log("notification error")
+//     try{
+//       const response = await fetch(GetFiscalYearCodeList)
+//       if(response?.status === 200){
+//         sucessCallback(response?.data)
+//       }else{
 //         sucessCallback([])
 //       }
-//     } catch (error) {
+//     }
+//     catch (error) {
 
 //     }
 //   }
+// }
 
-export const GetFicalYear = (data, sucessCallback) => {
+export const GetFiscalYear = (sucessCallback) => {
+  return async dispatch => {
+    
+    try {
+      const response = await fetch(GetFiscalYearCodeList);
+      // console.log('data', data);
+      if (response?.status === 200) {
+        // console.log('get toeken sucess');
+        sucessCallback(response?.data)
+      } else {
+        // console.log('get toeken failed');
+        sucessCallback([])
+      }
+    } catch (error) {
+
+    }
+  }
+}
+
+// GetPatientSampleSummaryStatus
+export const GetPatientSampleSummaryStatuS  = (data, sucessCallback) => {
+  // console.log("service data", data);
   return async dispatch => {
     try{
-      const response = await fetch(GetFiscalYearCodeList)
-      // if(response)
-    }
-    catch (error) {
+      const response = await fetch(`${GetPatientSampleSummaryStatus}?from=${data.from}&to=${data.to}&fiscalyearId=${data.fiscalyearId}&testin=${data.testin}&testnotin=${data.testnotin}&diagnosisin=${data.diagnosisin}&diagnosisnotin=${data.diagnosisnotin}`);
+      if(response?.status === 200){
+        // console.log('sucess', response?.data);
+        sucessCallback(response?.data)
+      }else{
+        console.log("error");
+      }
+    }catch (error){
 
     }
   }

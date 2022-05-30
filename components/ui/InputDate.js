@@ -8,13 +8,13 @@ const windowHeight = Dimensions.get('window').height;
 const InputDate = ({retData, label}) => {
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [FromDate, setFromDate] = useState(new Date());
+  const [CDate, setCDate] = useState(new Date());
 
   const onChangeFromData = (event, selectedValue) => {
     setShow(Platform.OS === 'ios');
     if (mode == 'date') {
       const currentDate = selectedValue || date;
-      setFromDate(currentDate);
+      setCDate(currentDate);
       retData(currentDate)
     } else {
     }
@@ -34,7 +34,8 @@ const InputDate = ({retData, label}) => {
         style={styles.TextInput}
       >
         <View style={styles.inputField}>
-          <Text>{FromDate === '' ? 'FromDate..' : FromDate.toLocaleDateString()}</Text>
+          
+          <Text>{CDate === '' ? 'CDate..' : CDate.toLocaleDateString()}</Text>
           <Icon
             name='calendar'
             color={secodaryCardColor}
@@ -47,7 +48,7 @@ const InputDate = ({retData, label}) => {
         <DateTimePicker
           testID="dateTimePicker"
           // timeZoneOffsetInMinutes={0}
-          value={FromDate}
+          value={CDate}
           mode={mode}
           is24Hour={true}
           display="default"

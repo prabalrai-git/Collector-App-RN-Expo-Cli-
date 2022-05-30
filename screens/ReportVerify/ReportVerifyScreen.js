@@ -1,16 +1,17 @@
 import { Dimensions, FlatList, Pressable, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../../components/Header';
-import { Icon, Input } from 'react-native-elements';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { Icon } from 'react-native-elements';
 import AppButton from '../../components/ui/AppButton';
-import LodaingComp from '../../components/ui/LodaingComp';
 import { useDispatch, useSelector } from 'react-redux';
 import SelectedItem from '../../components/ui/SelectedItem';
-import { GlobalStyles } from '../../GlobalStyle';
 import CancleBtn from '../../components/ui/CancleBtn';
 import InputDate from '../../components/ui/InputDate';
 import { Picker } from '@react-native-picker/picker'
+import { GetFiscalYear, GetPatientSampleSummaryStatuS } from '../../Services/appServices/ReportVerificationService';
+import ReportVerficationCard from '../../components/ui/ReportVerficationCard';
+
+
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -21,52 +22,72 @@ const ReportVerifyScreen = () => {
   const user = useSelector(state => state.storeUserData.userData);
   // console.log(user.UserId);
 
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
-  const [toshow, setToShow] = useState(false);
-  const [FromDate, setFromDate] = useState(new Date());
-  const [ToDate, setToDate] = useState(new Date());
 
   const [diagnosticIn, setdiagnosticIn] = useState(false)
   const [diagnosticOut, setdiagnosticOut] = useState(false)
   const [SerchFilter, setSerchFilter] = useState(false)
+  const [FiscalYear, setFiscalYear] = useState()
+  const [Status, setStatus] = useState(1);
+  const [PatientList, setPatientList] = useState();
+  const [FromDate, setFromDate] = useState('');
+  const [Todate, setTodate] = useState('')
 
-  const onChangeFromData = (event, selectedValue) => {
-    setShow(Platform.OS === 'ios');
-    setToShow(false);
-    if (mode == 'date') {
-      const currentDate = selectedValue || date;
-      setFromDate(currentDate);
-    } else {
-    }
-  };
-  const onChangeToData = (event, selectedValue) => {
-    setToShow(Platform.OS === 'ios');
-    setShow(false);
-    if (mode == 'date') {
-      const currentDate = selectedValue || date;
-      setToDate(currentDate);
-    } else {
-    }
-  };
-
-
-
-  const showDatepicker = () => {
-    setShow(true);
-    setToShow(false);
-  };
-  const showToDatepicker = () => {
-    setToShow(true);
-    setShow(false);
-  };
 
   const onChangeFromDate = (e) => {
-    console.log('date e', e);
+    // console.log('date e', e);
+    let temp1 = JSON.stringify(e)
+    let temp = temp1.split("T")
+    setFromDate(temp[0].slice(1));
   }
   const onChangeToDate = (e) => {
-    console.log('date 222', e);
+    // console.log('date 222', e);
+    let temp1 = JSON.stringify(e)
+    let temp = temp1.split("T")
+    setTodate(temp[0].slice(1));
   }
+
+  // console.log('focal year', typeof(FiscalYear));
+
+  useEffect(() => {
+    dispatch(GetFiscalYear((res) => {
+      // console.log('res', res.FIscalYearCode);
+      // console.log('res type', typeof(res.FIscalYearCode));
+      setFiscalYear(res?.FIscalYearCode)
+    }))
+  }, [])
+
+
+  const handleClick = () => {
+    // console.log('potato');
+    let data = {
+      // "from": FromDate,
+      // "to": Todate,
+      // 'ficalyera': Status
+      // "from": FromDate,
+      "from": "2020-1-1",
+      // "to": Todate,
+      "to": "2022-5-30",
+      "fiscalyearId": 1,
+      "testin": '',
+      "testnotin": '',
+      "diagnosisin": '',
+      "diagnosisnotin": '',
+    }
+    // console.log("data", data);
+    dispatch(GetPatientSampleSummaryStatuS(data, (res) => {
+
+      if (res !== []) {
+        console.log('res', res?.CovidDetails);
+        setPatientList(res?.CovidDetails)
+        setSerchFilter(false)
+      }
+    }))
+  }
+
+  const renderItem = ({item}) => (
+    <ReportVerficationCard data={item}/>
+  )
+
   return (
     <View style={styles.mainContainer}>
 
@@ -77,7 +98,7 @@ const ReportVerifyScreen = () => {
             {
               SerchFilter !== true ?
                 <Pressable
-                  onPress={() => setSerchFilter(!SerchFilter)}
+                  onPress={() => setSerchFilter(previousState => !previousState)}
                   style={{
                     width: '100%',
                     // backgroundColor: 'red',
@@ -102,95 +123,36 @@ const ReportVerifyScreen = () => {
                   <View style={[styles.TxtInputContainer, {
                     marginTop: 20,
                   }]}>
-                    {/* <TouchableOpacity
-                      onPress={showDatepicker}
-                      style={styles.TextInput}
-                    >
-                      <View style={styles.inputField}>
-                        <Text>{FromDate === '' ? 'FromDate..' : FromDate.toLocaleDateString()}</Text>
-                        <Icon
-                          name='calendar'
-                          color={secodaryCardColor}
-                          type='entypo'
-                          size={20}
-                        ></Icon>
-                      </View>
-                    </TouchableOpacity>
-                    {show &&
-                      <DateTimePicker
-                        testID="dateTimePicker"
-                        // timeZoneOffsetInMinutes={0}
-                        value={FromDate}
-                        mode={mode}
-                        is24Hour={true}
-                        display="default"
-                        onChange={onChangeFromData}
-                      // minimumDate={new Date()}
-                      />
-                    } */}
-                    <InputDate retData={onChangeFromDate} label={'From'}></InputDate>
+                    <InputDate retData={onChangeFromDate} label={'From'} fromDate={FromDate}></InputDate>
                   </View>
 
                   <View style={styles.TxtInputContainer}>
-                    <InputDate retData={onChangeToDate} label={'To'}></InputDate>
-                    {/* <Text style={styles.inputLabelTxt}>to</Text>
-                    <TouchableOpacity
-                      onPress={showToDatepicker}
-                      style={styles.TextInput}
-                    >
-                      <View style={styles.inputField}>
-                        <Text>{ToDate === '' ? 'ToDate..' : ToDate.toLocaleDateString()}</Text>
-                        <Icon
-                          name='calendar'
-                          color={secodaryCardColor}
-                          type='entypo'
-                          size={20}
-                        ></Icon>
-                      </View>
-                    </TouchableOpacity>
-                    {toshow &&
-                      <DateTimePicker
-                        testID="dateTimePicker"
-                        // timeZoneOffsetInMinutes={0}
-                        value={ToDate}
-                        mode={mode}
-                        is24Hour={true}
-                        display="default"
-                        onChange={onChangeToData}
-                        minimumDate={new Date()}
-                      />
-                    } */}
+                    <InputDate retData={onChangeToDate} label={'To'} toDate={Todate}></InputDate>
                   </View>
 
                   <View style={styles.TxtInputContainer}>
                     <Text style={styles.inputLabelTxt}>Fical year</Text>
-                    <TouchableOpacity
-                      // onPress={showToDatepicker}
-                      style={styles.TextInput}
-                    >
-                      <View style={styles.inputField}>
-                        <Text>{ToDate === '' ? 'ToDate..' : ToDate.toLocaleDateString()}</Text>
-                        <Icon
-                          name='calendar'
-                          color={secodaryCardColor}
-                          type='entypo'
-                          size={20}
-                        ></Icon>
-                      </View>
-                    </TouchableOpacity>
-                    <Picker
-                      // selectedValue={Status}
-                      // style={styles.TextInput}
-                      onValueChange={(itemValue) => setStatus(itemValue)}
-                      mode='dropdown'
-                    >
-                      {/* {
-                        1===1?
-                          <Picker.Item label={StatusList.SampleStatus} value={StatusList.StId} key={StatusList.StId} /> : null
-                      } */}
-                      <Picker.item label={'Potato'} />
-                      <Picker.item label={'Potato 1'} />
-                    </Picker>
+                    <View style={styles.TextInput}>
+                      <Picker
+                        selectedValue={Status}
+                        // style={styles.TextInput}
+                        onValueChange={(itemValue) => setStatus(itemValue)}
+                        mode='dropdown'
+                        // style={styles.TextInput}
+                        style={{
+                          width: "100%"
+                        }}
+                      >
+                        {
+                          FiscalYear !== [] ?
+                            FiscalYear.map(e => (
+                              <Picker.item label={e.Year} value={e.Id} key={e.Id} />
+                            ))
+                            : null
+                        }
+                      </Picker>
+                    </View>
+
                   </View>
                   <View style={styles.TxtInputContainer}>
                     <View style={styles.switchContainer}>
@@ -199,7 +161,7 @@ const ReportVerifyScreen = () => {
                         trackColor={{ false: "#767577", true: "#81b0ff" }}
                         thumbColor={diagnosticIn ? "#f5dd4b" : "#f4f3f4"}
                         ios_backgroundColor="#3e3e3e"
-                        onValueChange={() => setdiagnosticIn(!diagnosticIn)}
+                        onValueChange={() => setdiagnosticIn(previousState => !previousState)}
                         value={diagnosticIn}
                       />
                     </View>
@@ -213,7 +175,7 @@ const ReportVerifyScreen = () => {
                       }]}>
                         {/* <Text style={styles.inputLabelTxt}>Diagonstic Items</Text> */}
                         <TouchableOpacity
-                          onPress={showToDatepicker}
+                          // onPress={showToDatepicker}
                           style={styles.SelectInput}
                         >
                           <View style={{
@@ -221,13 +183,6 @@ const ReportVerifyScreen = () => {
                             flexWrap: 'wrap',
                             flexDirection: 'row'
                           }}>
-                            {/* <Text>{ToDate === '' ? 'ToDate..' : ToDate.toLocaleDateString()}</Text>
-                    <Icon
-                      name='calendar'
-                      color={secodaryCardColor}
-                      type='entypo'
-                      size={20}
-                    ></Icon> */}
                             <SelectedItem title={'titel one'}></SelectedItem>
                             <SelectedItem title={'titel one one'}></SelectedItem>
                             <SelectedItem title={'titel one two'}></SelectedItem>
@@ -251,7 +206,7 @@ const ReportVerifyScreen = () => {
                         trackColor={{ false: "#767577", true: "#81b0ff" }}
                         thumbColor={diagnosticOut ? "#f5dd4b" : "#f4f3f4"}
                         ios_backgroundColor="#3e3e3e"
-                        onValueChange={() => setdiagnosticOut(!diagnosticOut)}
+                        onValueChange={() => setdiagnosticOut(previousState => !previousState)}
                         value={diagnosticOut}
                       />
                     </View>
@@ -263,9 +218,8 @@ const ReportVerifyScreen = () => {
                         borderRadius: 10,
                         paddingVertical: 10,
                       }]}>
-                        {/* <Text style={styles.inputLabelTxt}>Diagonstic Items</Text> */}
                         <TouchableOpacity
-                          onPress={showToDatepicker}
+                          // onPress={showToDatepicker}
                           style={styles.SelectInput}
                         >
                           <View style={{
@@ -292,7 +246,7 @@ const ReportVerifyScreen = () => {
                     width: windowWidth - 40,
                     marginBottom: 20,
                   }}>
-                    <AppButton title={"load"}></AppButton>
+                    <AppButton title={"load"} onPress={() => handleClick()}></AppButton>
                     <Text>  </Text>
                     <CancleBtn title={'cancle'} onPress={() => setSerchFilter(!SerchFilter)}></CancleBtn>
                   </View>
@@ -312,6 +266,12 @@ const ReportVerifyScreen = () => {
               :
               <LodaingComp></LodaingComp>
           } */}
+
+          <FlatList
+            data={PatientList}
+            renderItem={renderItem}
+            keyExtractor={item => item.SampleId}
+          ></FlatList>
 
 
         </View>
@@ -405,8 +365,8 @@ const styles = StyleSheet.create({
   listcontainer: {
     justifyContent: 'center',
     width: windowWidth,
-    height: windowHeight * 0.86,
+    // height: windowHeight * 0.86,
     flexDirection: 'row',
-    backgroundColor: '#1a7086'
+    // backgroundColor: '#1a7086'
   },
 })

@@ -280,3 +280,11 @@ export const GetFiscalYearCodeList = 'GetFiscalYearCodeList'
  * @desc: Get list of fiscal year for report verification
  *  @param: 
  */
+
+export const GetPatientSampleSummaryStatus = 'GetPatientSampleSummaryStatus'
+
+// GetPatientSampleSummaryStatus?from={from}&to={to}&fiscalyearId={fiscalyearId}&testin={testin}&testnotin={testnotin}&diagnosisin={diagnosisin}&diagnosisnotin={diagnosisnotin}
+/**
+ * @desc: Get list of patient sample summary of ertain fiscal year, from date, to date
+ *  @param: ?from={from}&to={to}&fiscalyearId={fiscalyearId}&testin={testin}&testnotin={testnotin}&diagnosisin={diagnosisin}&diagnosisnotin={diagnosisnotin}
+ */
