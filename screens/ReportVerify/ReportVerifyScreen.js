@@ -31,6 +31,7 @@ const ReportVerifyScreen = () => {
   const [PatientList, setPatientList] = useState();
   const [FromDate, setFromDate] = useState('');
   const [Todate, setTodate] = useState('')
+  const [disable, setdisable] = useState(false);
 
 
   const onChangeFromDate = (e) => {
@@ -84,9 +85,14 @@ const ReportVerifyScreen = () => {
     }))
   }
 
-  const renderItem = ({item}) => (
-    <ReportVerficationCard data={item}/>
+  const renderItem = ({ item }) => (
+    <ReportVerficationCard data={item} retDis={handleDisable} disable={disable}/>
   )
+
+  const handleDisable = (e) => {
+    // console.log('disable', e)
+    setdisable(e)
+  }
 
   return (
     <View style={styles.mainContainer}>
@@ -271,6 +277,7 @@ const ReportVerifyScreen = () => {
             data={PatientList}
             renderItem={renderItem}
             keyExtractor={item => item.SampleId}
+            // inverted={true}
           ></FlatList>
 
 

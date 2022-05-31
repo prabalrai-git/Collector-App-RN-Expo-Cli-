@@ -1,60 +1,173 @@
-import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, FlatList, Modal, Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import { GlobalStyles } from '../../GlobalStyle'
 import BadgeStatus from './BadgeStatus'
+import { Icon } from 'react-native-elements'
+import { useDispatch } from 'react-redux'
+import { GetTestListToViewOrVerifyInSummaryReportS } from '../../Services/appServices/ReportVerificationService'
+import SortTestList from './SortTestList'
+import TestVerificationCard from './TestVerificationCard'
 
 const windowWidth = Dimensions.get('window').width
+const windowHeight = Dimensions.get('window').height
+//"BillPaymentType": "DueCollection",
+//"FiscalYearid": 1,
+//"Gender": "Female-2 yrs",
+//"PatientName": " Test  Test",
+//"Referrer": "Self",
+//"ReportDelivery": null,
+//"ReportPriority": "",
+//"ReportStatus": "Pending",
+//"ReportType": "Normal",
+//"Requestor": "Self",
+//"SampleId": 3,
+//"Test": "Glucose F, Complete Blood Count",
 
-// "BillPaymentType": "DueCollection",
-//       "FiscalYearid": 1,
-//       "Gender": "Female-2 yrs",
-//       "PatientName": " Test  Test",
-//       "Referrer": "Self",
-//       "ReportDelivery": null,
-//       "ReportPriority": "",
-//       "ReportStatus": "Pending",
-//       "ReportType": "Normal",
-//       "Requestor": "Self",
-//       "SampleId": 3,
-//       "Test": "Glucose F, Complete Blood Count",
+const ReportVerficationCard = ({ data, retDis, disable }) => {
 
-const ReportVerficationCard = ({ data }) => {
-
-  const [IsVisibele, setIsVisibele] = useState(false)
   const GenderAge = data.Gender.split("-")
-  console.log("g age",GenderAge );
+  // console.log("g age", GenderAge);
+  const [IsModalVisible, setIsModalVisible] = useState(false);
+  const [AllTestList, setAllTestList] = useState();
+  const dispatch = useDispatch()
 
-  const hadleEvent = () => {
-    setIsVisibele(prev => !prev)
+  const handleclick = () => {
+    retDis(true);
+    let nData = {
+      "sampleid": data.SampleId,
+      "fiscalyear": data.FiscalYearid
+    }
+
+    dispatch(GetTestListToViewOrVerifyInSummaryReportS(nData, (res) => {
+      // console.log('response', typeof (res?.RecordList));
+      if (res?.RecordList !== []) {
+        setAllTestList(res?.RecordList)
+      }
+    }))
+    SortTestList(AllTestList)
+    setIsModalVisible(prevState => !prevState)
   }
+
+  const renderItem = ({ item }) => (
+    <TestVerificationCard data={item}></TestVerificationCard>
+  )
+
   return (
     <>
-      <Pressable onPress={() => hadleEvent()} style={styles.cardCotainer}>
+      <Pressable onPress={() => handleclick()} style={styles.cardCotainer} disabled={disable}>
         <View style={[styles.cardBody, GlobalStyles.boxShadow, {
           // borderLeftColor: '#205072',
-          borderLeftColor: 'red',
+          borderLeftColor: data.ReportType === 'Normal' ? '#1db0dd' : '#e43333',
         }]}>
-          <View style={styles.card}>
-            <Text style={styles.ctitle}>Sample Id: {data.SampleId}</Text>
-            <Text style={styles.ctitle}>{data.PatientName}</Text>
-            <Text style={styles.ctitle}>{data.ReportType}</Text>
-            {/* <Text style={styles.remarks}>Request Id: {data.RequestId}</Text> */}
-            {/* <Text style={styles.cDate}>{data.CollectionReqDate}</Text> */}
-            {/* <DateBadge date={data.CollectionReqDate}></DateBadge> */}
-            {
-              IsVisibele &&
-              <View>
-                <Text style={styles.ctitle}>{GenderAge[0]}</Text>
-                <Text style={styles.ctitle}>{GenderAge[1]}</Text>
+          <View style={styles.cardtop}>
+            <View>
+              <Text style={[styles.ctitle, GlobalStyles.heading]}>Id: {data.SampleId}</Text>
+              <View style={styles.fdRow}>
+                <Text style={[styles.ctitle, GlobalStyles.body]}>Name: </Text>
+                <Text style={[styles.cBody, GlobalStyles.body]}>{data.PatientName}</Text>
               </View>
-            }
+              <View style={styles.fdRow}>
+                <Text style={[styles.ctitle, GlobalStyles.body]}>Report Type: </Text>
+                <Text style={[styles.cBody, GlobalStyles.body]}>{data.ReportType}</Text>
+              </View>
+            </View>
+            <BadgeStatus
+              RequestStatus={data.ReportStatus}
+              // IsPaid={true}
+              PaymentType={data.BillPaymentType}
+              ReportDelivery={data.ReportDelivery}
+
+            ></BadgeStatus>
           </View>
-          <BadgeStatus
-            RequestStatus={data.ReportStatus}
-            IsPaid={true}
-          ></BadgeStatus>
+          {/* <Text style={styles.remarks}>Request Id: {data.RequestId}</Text> */}
+          {/* <Text style={styles.cDate}>{data.CollectionReqDate}</Text> */}
+          {/* <DateBadge date={data.CollectionReqDate}></DateBadge> */}
+          {/* {
+            IsVisibele && */}
+          <>
+            <View style={[styles.fdRow, styles.spaceBetween]}>
+              <View style={styles.fdRow}>
+                <Text style={[styles.ctitle, GlobalStyles.body]}>Gender: </Text>
+                <Text style={[styles.cBody, GlobalStyles.body]}>{GenderAge[0]}</Text>
+
+              </View>
+              <View style={styles.fdRow}>
+                <Text style={[styles.ctitle, GlobalStyles.body]}>Age: </Text>
+                <Text style={[styles.cBody, GlobalStyles.body]}>{GenderAge[1]}</Text>
+              </View>
+            </View>
+            <View>
+              <Text style={[styles.ctitle, GlobalStyles.body]}>Referrer </Text>
+              <Text style={[styles.cBody, GlobalStyles.body]}>{data.Referrer}</Text>
+            </View>
+            <View>
+              <Text style={[styles.ctitle, GlobalStyles.body]}>Referrer:</Text>
+              <Text style={[styles.cBody, GlobalStyles.body]}>{data.Requestor}</Text>
+            </View>
+            <View>
+              <Text style={[styles.ctitle, GlobalStyles.body]}>Tests:</Text>
+              <Text style={[styles.cBody, GlobalStyles.body]}>{data.Test}</Text>
+            </View>
+            {/* <View>
+                <Text style={styles.ctitle}>Age: {data.Referrer}</Text>
+                <Text style={styles.ctitle}>Gender: {data.Requestor}</Text>
+              </View> */}
+          </>
+          {/* } */}
+
+
+
         </View>
       </Pressable>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={IsModalVisible}
+        onRequestClose={() => {
+          setIsModalVisible(!IsModalVisible)
+          retDis(false);
+          // setActive(true);
+        }}
+
+      >
+
+        <View style={styles.centeredView}>
+          <View style={GlobalStyles.modalContainer}>
+            <Text style={[GlobalStyles.heading]}>Test name</Text>
+            <Pressable
+              style={{
+                position: 'absolute',
+                top: 7,
+                right: 10,
+                backgroundColor: secodaryCardColor,
+                padding: 10,
+                borderRadius: 10,
+              }}
+              onPress={() => {
+                setIsModalVisible(!IsModalVisible)
+                retDis(false);
+              }}>
+              <Icon
+                name={'close'}
+                color={'#fefefe'}
+                type='antdesign'
+                size={20}
+              ></Icon>
+            </Pressable>
+            <View>
+
+            </View>
+            <FlatList
+              data={AllTestList}
+              renderItem={renderItem}
+              keyExtractor={item => item.DigId}
+            // inverted={true}
+            ></FlatList>
+          </View>
+
+
+        </View>
+      </Modal>
     </>
   )
 }
@@ -71,9 +184,9 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     paddingHorizontal: 15,
     paddingVertical: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    // flexDirection: 'row',
+    // justifyContent: 'space-between',
+    // alignItems: 'center',
     borderTopRightRadius: 12,
     borderBottomRightRadius: 12,
     borderLeftWidth: 6,
@@ -87,5 +200,27 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
 
     elevation: 7,
+  },
+  cardtop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  fdRow: {
+    flexDirection: 'row'
+  },
+  spaceBetween: {
+    justifyContent: 'space-between'
+  },
+  ctitle: {
+    color: primary
+  },
+  cBody: {
+    color: secondary
+  },
+  centeredView: {
+    width: '100%',
+    height: windowHeight,
+    // backgroundColor: '#141516e1'
+    // backgroundColor: '#fefefe'
   },
 })

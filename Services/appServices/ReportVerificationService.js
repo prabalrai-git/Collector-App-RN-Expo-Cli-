@@ -1,5 +1,5 @@
 
-import { GetFiscalYearCodeList, GetPatientSampleSummaryStatus } from "../constants/url"
+import { GetFiscalYearCodeList, GetPatientSampleSummaryStatus, GetTestListToViewOrVerifyInSummaryReport } from "../constants/url"
 // import { fetch, store } from "../utils/httpUtil"
 import {fetch, store} from '../utils/httpUtil'
 
@@ -50,6 +50,22 @@ export const GetPatientSampleSummaryStatuS  = (data, sucessCallback) => {
         sucessCallback(response?.data)
       }else{
         console.log("error");
+      }
+    }catch (error){
+
+    }
+  }
+}
+
+export const GetTestListToViewOrVerifyInSummaryReportS = (data, sucessCallback) => {
+  return async dispatch => {
+    try{
+      const response = await fetch(`${GetTestListToViewOrVerifyInSummaryReport}?sampleid=${data.sampleid}&fiscalyear=${data.fiscalyear}`);
+      if(response?.status === 200){
+        // console.log(response?.data);
+        sucessCallback(response?.data)
+      }else{
+        sucessCallback([])
       }
     }catch (error){
 

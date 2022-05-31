@@ -288,3 +288,10 @@ export const GetPatientSampleSummaryStatus = 'GetPatientSampleSummaryStatus'
  * @desc: Get list of patient sample summary of ertain fiscal year, from date, to date
  *  @param: ?from={from}&to={to}&fiscalyearId={fiscalyearId}&testin={testin}&testnotin={testnotin}&diagnosisin={diagnosisin}&diagnosisnotin={diagnosisnotin}
  */
+
+export const GetTestListToViewOrVerifyInSummaryReport = 'GetTestListToViewOrVerifyInSummaryReport'
+// GetTestListToViewOrVerifyInSummaryReport?sampleid={sampleid}&fiscalyear={fiscalyear}
+/**
+ * @desc: Get test list to view or verify the summery report by sample id of current fiscal year
+ *  @param: ?sampleid={sampleid}&fiscalyear={fiscalyear}
+ */

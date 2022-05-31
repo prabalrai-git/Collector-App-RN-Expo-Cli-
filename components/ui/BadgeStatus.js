@@ -1,57 +1,84 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 // Report Completed
-const BadgeStatus = ({ RequestStatus, IsPaid }) => {
+const BadgeStatus = ({ RequestStatus, IsPaid, PaymentType, ReportDelivery }) => {
+  // console.log("ReportDelivery", ReportDelivery);
+// Delivered Manual, undefined, null
+
   return (
     <View>
       {
-        // IsPaid ?  
-        IsPaid === true ?
-          <Text style={[styles.badge, { backgroundColor: '#a3ee19' }]}>paid</Text> :
-          <Text style={[styles.badge, { backgroundColor: '#e43333' }]}>not paid</Text>
-        // : null
+        IsPaid ?
+          IsPaid === true ?
+            <Text style={[styles.badge, { backgroundColor: '#a3ee19' }]}>paid</Text> :
+            <Text style={[styles.badge, { backgroundColor: '#e43333' }]}>not paid</Text>
+          : null
       }
 
       {
-        (RequestStatus === 'Requested' || RequestStatus === 'Asigned') ?
-          <Text style={[styles.badge]}>pending</Text> : null
+        (RequestStatus === 'Requested' || RequestStatus === 'Asigned') &&
+          <Text style={[styles.badge]}>pending</Text>
       }
       {
-        (RequestStatus === 'Collected') ?
+        (RequestStatus === 'Collected') &&
           <View>
             <Text style={[styles.badge]}>Not Dropped</Text>
             <Text style={[styles.badge, { backgroundColor: '#19e0ee' }]}>{RequestStatus}</Text>
-          </View> : null
+          </View>
       }
       {
-        (RequestStatus === 'Accepted') ?
+        (RequestStatus === 'Accepted') &&
           <View>
             <Text style={[styles.badge]}>pending</Text>
             <Text style={[styles.badge, { backgroundColor: '#a3ee19' }]}>{RequestStatus}</Text>
           </View>
-          : null
       }
       {
-        (RequestStatus === 'Rejected') ?
-          <Text style={[styles.badge, { backgroundColor: '#e43333' }]}>{RequestStatus}</Text> : null
+        (RequestStatus === 'Rejected') &&
+          <Text style={[styles.badge, { backgroundColor: '#e43333' }]}>{RequestStatus}</Text>
       }
       {
-        (RequestStatus === 'Lab Received') ?
-          <Text style={[styles.badge, { backgroundColor: '#33cfe4' }]}>{RequestStatus}</Text> : null
+        (RequestStatus === 'Lab Received') &&
+          <Text style={[styles.badge, { backgroundColor: '#33cfe4' }]}>{RequestStatus}</Text>
       }
       {
-        (RequestStatus === 'Report Dispatched') ?
-          <Text style={[styles.badge, { backgroundColor: '#1db0dd' }]}>{RequestStatus}</Text> : null
+        (RequestStatus === 'Report Dispatched') &&
+          <Text style={[styles.badge, { backgroundColor: '#1db0dd' }]}>{RequestStatus}</Text>
       }
 
       {
-        (RequestStatus === 'Pending') ?
-          <Text style={[styles.badge, { backgroundColor: '#faf06a' }]}>{RequestStatus}</Text> : null
+        (RequestStatus === 'Pending') &&
+        <Text style={[styles.badge, { backgroundColor: '#faf06a' }]}>{RequestStatus}</Text>
       }
       {
-        (RequestStatus === 'Report Completed') ?
-          <Text style={[styles.badge, { backgroundColor: '#a3ee19' }]}>{RequestStatus}</Text> : null
+        (RequestStatus === 'Report Completed') &&
+        <Text style={[styles.badge, { backgroundColor: '#a3ee19' }]}>{RequestStatus}</Text>
       }
+
+
+      {
+        PaymentType === "Cash" &&
+        <Text style={[styles.badge, { backgroundColor: '#a3ee19' }]}>{PaymentType}</Text>
+      }
+      {
+        PaymentType === "Bank" &&
+        <Text style={[styles.badge, { backgroundColor: '#a3ee19' }]}>{PaymentType}</Text>
+      }
+      {
+        PaymentType === "Credit" &&
+        <Text style={[styles.badge, { backgroundColor: '#1db0dd' }]}>{PaymentType}</Text>
+      }
+      {
+        PaymentType === "DueCollection" &&
+        <Text style={[styles.badge, { backgroundColor: '#faf06a' }]}>{PaymentType}</Text>
+      }
+      {
+        (ReportDelivery === undefined || ReportDelivery === null) ?
+        <Text style={[styles.badge, { backgroundColor: '#faf06a' }]}>Not Delivered</Text> :
+        <Text style={[styles.badge, { backgroundColor: '#a3ee19' }]}>{ReportDelivery}</Text>
+      }
+
+
 
     </View>
   )
