@@ -5,7 +5,7 @@ import AppButton from './AppButton'
 
 const windowWidth = Dimensions.get('window').width
 
-// "CheckedBy": null,
+//     "CheckedBy": null,
 //     "D_group": 2,
 //     "Designation": null,
 //     "DigId": 59,
@@ -30,6 +30,7 @@ const windowWidth = Dimensions.get('window').width
 //     "subresult": null,
 //     "subtestId": null,
 const TestVerificationCard = ({ data }) => {
+  console.log('pan id', data.PanId);
   return (
     <View style={styles.cardCotainer}>
       <View style={[styles.cardBody, GlobalStyles.boxShadow]}>
@@ -47,11 +48,6 @@ const TestVerificationCard = ({ data }) => {
         </View>
         <AppButton title={'verify'}></AppButton>
       </View>
-      {/* <Text style={styles.remarks}>Request Id: {data.RequestId}</Text> */}
-      {/* <Text style={styles.cDate}>{data.CollectionReqDate}</Text> */}
-      {/* <DateBadge date={data.CollectionReqDate}></DateBadge> */}
-
-
     </View>
   )
 }
@@ -84,9 +80,7 @@ const styles = StyleSheet.create({
     elevation: 7,
   },
   cardLeft: {
-    // flexDirection: 'row',
-    // justifyContent: 'space-between'
-    width: windowWidth * 0.6,
+    width: windowWidth * 0.5,
   },
   fdRow: {
     flexDirection: 'row'

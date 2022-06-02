@@ -1,4 +1,4 @@
-import { Dimensions, FlatList, Modal, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Alert, Dimensions, FlatList, Modal, Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import { GlobalStyles } from '../../GlobalStyle'
 import BadgeStatus from './BadgeStatus'
@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux'
 import { GetTestListToViewOrVerifyInSummaryReportS } from '../../Services/appServices/ReportVerificationService'
 import SortTestList from './SortTestList'
 import TestVerificationCard from './TestVerificationCard'
+import AppButton from './AppButton'
 
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
@@ -51,6 +52,19 @@ const ReportVerficationCard = ({ data, retDis, disable }) => {
   const renderItem = ({ item }) => (
     <TestVerificationCard data={item}></TestVerificationCard>
   )
+
+  const onVerifyAll = () => {
+    Alert.alert(
+      'Alert !',
+      'Are you sure you want to verify all ?',
+      [
+        {
+          text: 'OK', onPress: () => {
+          }
+        }
+      ]
+    )
+  }
 
   return (
     <>
@@ -133,36 +147,46 @@ const ReportVerficationCard = ({ data, retDis, disable }) => {
 
         <View style={styles.centeredView}>
           <View style={GlobalStyles.modalContainer}>
-            <Text style={[GlobalStyles.heading]}>Test name</Text>
-            <Pressable
-              style={{
-                position: 'absolute',
-                top: 7,
-                right: 10,
-                backgroundColor: secodaryCardColor,
-                padding: 10,
-                borderRadius: 10,
-              }}
-              onPress={() => {
-                setIsModalVisible(!IsModalVisible)
-                retDis(false);
-              }}>
-              <Icon
-                name={'close'}
-                color={'#fefefe'}
-                type='antdesign'
-                size={20}
-              ></Icon>
-            </Pressable>
+            <View style={styles.top}>
+              <Text style={[GlobalStyles.heading, {
+                color: '#fefefe'
+              }]}>Test name</Text>
+              <Pressable
+                style={{
+                  position: 'absolute',
+                  top: 7,
+                  right: 10,
+                  backgroundColor: '#fefefe',
+                  padding: 10,
+                  borderRadius: 10,
+                }}
+                onPress={() => {
+                  setIsModalVisible(!IsModalVisible)
+                  retDis(false);
+                }}>
+                <Icon
+                  name={'close'}
+                  color={secodaryCardColor}
+                  type='antdesign'
+                  size={20}
+                ></Icon>
+              </Pressable>
+            </View>
+
             <View>
 
             </View>
             <FlatList
               data={AllTestList}
               renderItem={renderItem}
-              keyExtractor={item => item.DigId}
+              keyExtractor={item => item.PanId}
             // inverted={true}
             ></FlatList>
+
+            <View style={[styles.bot, GlobalStyles.boxShadow]}>
+                <Text></Text>
+                <AppButton title="Verify All" onPress={() => onVerifyAll()}></AppButton>
+            </View>
           </View>
 
 
@@ -223,4 +247,20 @@ const styles = StyleSheet.create({
     // backgroundColor: '#141516e1'
     // backgroundColor: '#fefefe'
   },
+  top: {
+    height: 60,
+    paddingHorizontal: 10,
+    justifyContent: 'center',
+    borderBottomLeftRadius: 18,
+    borderBottomRightRadius: 18,
+    backgroundColor: secondary
+  },
+  bot:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#fefefe',
+    padding: 10,
+    borderTopRightRadius: 18,
+    borderTopLeftRadius: 18,
+  }
 })

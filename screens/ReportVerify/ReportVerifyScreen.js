@@ -25,7 +25,7 @@ const ReportVerifyScreen = () => {
 
   const [diagnosticIn, setdiagnosticIn] = useState(false)
   const [diagnosticOut, setdiagnosticOut] = useState(false)
-  const [SerchFilter, setSerchFilter] = useState(false)
+  const [SerchFilter, setSerchFilter] = useState(true)
   const [FiscalYear, setFiscalYear] = useState()
   const [Status, setStatus] = useState(1);
   const [PatientList, setPatientList] = useState();
@@ -50,10 +50,14 @@ const ReportVerifyScreen = () => {
   // console.log('focal year', typeof(FiscalYear));
 
   useEffect(() => {
+    // setSerchFilter(true)
     dispatch(GetFiscalYear((res) => {
       // console.log('res', res.FIscalYearCode);
       // console.log('res type', typeof(res.FIscalYearCode));
-      setFiscalYear(res?.FIscalYearCode)
+      if (res?.FIscalYearCode !== undefined) {
+        setFiscalYear(res?.FIscalYearCode)
+      }
+
     }))
   }, [])
 
@@ -78,7 +82,7 @@ const ReportVerifyScreen = () => {
     dispatch(GetPatientSampleSummaryStatuS(data, (res) => {
 
       if (res !== []) {
-        console.log('res', res?.CovidDetails);
+        // console.log('res', res?.CovidDetails);
         setPatientList(res?.CovidDetails)
         setSerchFilter(false)
       }
@@ -86,7 +90,7 @@ const ReportVerifyScreen = () => {
   }
 
   const renderItem = ({ item }) => (
-    <ReportVerficationCard data={item} retDis={handleDisable} disable={disable}/>
+    <ReportVerficationCard data={item} retDis={handleDisable} disable={disable} />
   )
 
   const handleDisable = (e) => {
@@ -150,7 +154,7 @@ const ReportVerifyScreen = () => {
                         }}
                       >
                         {
-                          FiscalYear !== [] ?
+                          FiscalYear !== undefined ?
                             FiscalYear.map(e => (
                               <Picker.item label={e.Year} value={e.Id} key={e.Id} />
                             ))
@@ -277,7 +281,7 @@ const ReportVerifyScreen = () => {
             data={PatientList}
             renderItem={renderItem}
             keyExtractor={item => item.SampleId}
-            // inverted={true}
+          // inverted={true}
           ></FlatList>
 
 

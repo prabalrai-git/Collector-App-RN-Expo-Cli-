@@ -295,3 +295,20 @@ export const GetTestListToViewOrVerifyInSummaryReport = 'GetTestListToViewOrVeri
  * @desc: Get test list to view or verify the summery report by sample id of current fiscal year
  *  @param: ?sampleid={sampleid}&fiscalyear={fiscalyear}
  */
+
+export const VerifyPatientReport = 'VerifyPatientReport'
+
+/**
+ * @desc: verfy test
+ *  @param:{
+            "Id": 1,
+            "RecordId": 2,
+            "CreatedBy": 3,
+            "CreatedOn": "2022-06-02T16:11:43.8805197+05:45",
+            "Remarks": "sample string 5",
+            "IsApproved": 6,
+            "IsVerifier": true,
+            "IsActive": true,
+            "IsCurrent": true
+          }
+ */

@@ -27,7 +27,7 @@ import React from 'react'
 // "subtestId": null,
 
 const SortTestList = (ele) => {
-  console.log('rele', ele);
+  // console.log('rele', ele);
 
   return
 }

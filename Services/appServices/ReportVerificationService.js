@@ -1,5 +1,6 @@
 
-import { GetFiscalYearCodeList, GetPatientSampleSummaryStatus, GetTestListToViewOrVerifyInSummaryReport } from "../constants/url"
+import { GetFiscalYearCodeList, GetPatientSampleSummaryStatus, GetTestListToViewOrVerifyInSummaryReport, VerifyPatientReport } from "../constants/url"
+import { generateUrlEncodedData } from "../utils/generateUrlEncodedData";
 // import { fetch, store } from "../utils/httpUtil"
 import {fetch, store} from '../utils/httpUtil'
 
@@ -64,6 +65,23 @@ export const GetTestListToViewOrVerifyInSummaryReportS = (data, sucessCallback) 
       if(response?.status === 200){
         // console.log(response?.data);
         sucessCallback(response?.data)
+      }else{
+        sucessCallback([])
+      }
+    }catch (error){
+
+    }
+  }
+}
+
+
+export const PostVerifyPatientReport = async (data, sucessCallback) => {
+  let formData = generateUrlEncodedData(data)
+  return dispatch => {
+    try{
+      const response = await store(VerifyPatientReport, formData);
+      if(response?.status === 200){
+
       }else{
         sucessCallback([])
       }
