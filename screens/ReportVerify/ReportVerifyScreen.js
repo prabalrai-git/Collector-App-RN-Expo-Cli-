@@ -280,7 +280,7 @@ const ReportVerifyScreen = () => {
           <FlatList
             data={PatientList}
             renderItem={renderItem}
-            keyExtractor={item => item.SampleId}
+            keyExtractor={(item, index) => `${item.SampleId}${index}`}
           // inverted={true}
           ></FlatList>
 
@@ -298,9 +298,12 @@ export default ReportVerifyScreen
 const styles = StyleSheet.create({
 
   mainContainer: {
-    flex: 1,
+    // flex: 1,
+    // height: '100%',
+    height: windowHeight,
     flexDirection: 'column',
     backgroundColor: '#F9F9F9',
+    // backgroundColor: 'red'
   },
   top: {
     backgroundColor: secodaryCardColor,
@@ -376,7 +379,7 @@ const styles = StyleSheet.create({
   listcontainer: {
     justifyContent: 'center',
     width: windowWidth,
-    // height: windowHeight * 0.86,
+    height: windowHeight,
     flexDirection: 'row',
     // backgroundColor: '#1a7086'
   },

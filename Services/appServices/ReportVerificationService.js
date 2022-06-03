@@ -75,13 +75,14 @@ export const GetTestListToViewOrVerifyInSummaryReportS = (data, sucessCallback) 
 }
 
 
-export const PostVerifyPatientReport = async (data, sucessCallback) => {
+export const PostVerifyPatientReport = (data, sucessCallback) => {
+  console.log("service data",data);
   let formData = generateUrlEncodedData(data)
-  return dispatch => {
+  return async dispatch => {
     try{
       const response = await store(VerifyPatientReport, formData);
       if(response?.status === 200){
-
+        sucessCallback(response?.data)
       }else{
         sucessCallback([])
       }

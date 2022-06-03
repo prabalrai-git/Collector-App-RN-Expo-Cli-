@@ -1,36 +1,97 @@
-import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Alert, Dimensions, Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { GlobalStyles } from '../../GlobalStyle'
 import AppButton from './AppButton'
+import { useDispatch, useSelector } from 'react-redux'
+import { PostVerifyPatientReport } from '../../Services/appServices/ReportVerificationService'
 
 const windowWidth = Dimensions.get('window').width
 
-//     "CheckedBy": null,
-//     "D_group": 2,
-//     "Designation": null,
-//     "DigId": 59,
-//     "GroupId": 4,
-//     "GroupName": "Renal Function Test(RFT)",
-//     "IsCulture": false,
-//     "Max": "135.0-146.0 ",
-//     "Method": "Ion selective electrode",
-//     "Note": null,
-//     "PanId": 137,
-//     "Panel": "BIO CHEMISTRY REPORT",
-//     "Range": null,
-//     "RegNo": null,
-//     "Specimen": "Serum(1ml)",
-//     "SubGroupId": false,
-//     "SubUnit": "",
-//     "TestResult": null,
-//     "TestSubType": null,
-//     "Testname": "Sodium",
-//     "Units": "mmol/L",
-//     "submethod": null,
-//     "subresult": null,
-//     "subtestId": null,
+// data Object {
+//   "CheckedBy": null,
+//   "D_group": 2,
+//   "Designation": null,
+//   "DigId": 38,
+//   "GroupId": 2,
+//   "GroupName": "BIO CHEMISTRY REPORT",
+//   "IsCulture": false,
+//   "Max": "60.0 - 130.0",
+//   "Method": "GOD-POD",
+//   "Note": null,
+//   "PanId": 0,
+//   "Panel": "BIO CHEMISTRY REPORT",
+//   "Range": null,
+//   "RecordId": 2,
+//   "RegNo": null,
+//   "Specimen": "Fluoride plasma(1ml) in Fasting",
+//   "SubGroupId": false,
+//   "SubUnit": "",
+//   "TestResult": null,
+//   "TestSubType": null,
+//   "Testname": "Glucose F(FBS)",
+//   "Units": "mg/dl",
+//   "submethod": null,
+//   "subresult": null,
+//   "subtestId": null,
+// }
+
+// PostVerifyPatientReport
+
 const TestVerificationCard = ({ data }) => {
-  console.log('pan id', data.PanId);
+  // console.log('pan id', data.PanId);
+  // console.log('data', data.RecordId);
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.storeUserData.userData)
+  // console.log(user);
+
+
+
+  const onVerify = () => {
+
+    let today = new Date();
+    const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.toLocaleTimeString();
+
+    
+    let nData = {
+      "Id": 0,
+      "RecordId": data.RecordId,
+      "CreatedBy": user.UserId,
+      "CreatedOn": newDate,
+      "Remarks": `verified by ${user.UserName}, user id ${user.UserId}`,
+      "IsApproved": user.UserId,
+      "IsVerifier": true,
+      "IsActive": true,
+      "IsCurrent": true
+    }
+    dispatch(PostVerifyPatientReport(nData, (res) => {
+      console.log("response", res);
+      if(res.SuccessMsg === true){
+        Alert.alert(
+          'Sucess !',
+          'sucessfully verified',
+          [
+            {
+              text: 'OK', onPress: () => {
+              }
+            }
+          ]
+        )
+      }else{
+        Alert.alert(
+          'Alert !',
+          'Server error, Please try again laer',
+          [
+            {
+              text: 'OK', onPress: () => {
+              }
+            }
+          ]
+        )
+      }
+    }))
+
+
+  }
   return (
     <View style={styles.cardCotainer}>
       <View style={[styles.cardBody, GlobalStyles.boxShadow]}>
@@ -44,9 +105,9 @@ const TestVerificationCard = ({ data }) => {
             <Text style={[styles.ctitle, GlobalStyles.caption]}>Range: </Text>
             <Text style={[styles.cBody, GlobalStyles.caption]}>{data.Max}</Text>
           </View>
-          
+
         </View>
-        <AppButton title={'verify'}></AppButton>
+        <AppButton title={'verify'} onPress={() => onVerify()}></AppButton>
       </View>
     </View>
   )

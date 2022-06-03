@@ -8,6 +8,7 @@ import { GetTestListToViewOrVerifyInSummaryReportS } from '../../Services/appSer
 import SortTestList from './SortTestList'
 import TestVerificationCard from './TestVerificationCard'
 import AppButton from './AppButton'
+import CancleBtn from './CancleBtn'
 
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
@@ -29,6 +30,7 @@ const ReportVerficationCard = ({ data, retDis, disable }) => {
   const GenderAge = data.Gender.split("-")
   // console.log("g age", GenderAge);
   const [IsModalVisible, setIsModalVisible] = useState(false);
+  const [IsDatVisible, setIsDatVisible] = useState(false);
   const [AllTestList, setAllTestList] = useState();
   const dispatch = useDispatch()
 
@@ -68,7 +70,10 @@ const ReportVerficationCard = ({ data, retDis, disable }) => {
 
   return (
     <>
-      <Pressable onPress={() => handleclick()} style={styles.cardCotainer} disabled={disable}>
+      <Pressable
+        onPress={() => handleclick()}
+        // onPress={() => setIsDatVisible(!IsDatVisible)}
+        style={styles.cardCotainer} disabled={disable}>
         <View style={[styles.cardBody, GlobalStyles.boxShadow, {
           // borderLeftColor: '#205072',
           borderLeftColor: data.ReportType === 'Normal' ? '#1db0dd' : '#e43333',
@@ -96,38 +101,40 @@ const ReportVerficationCard = ({ data, retDis, disable }) => {
           {/* <Text style={styles.remarks}>Request Id: {data.RequestId}</Text> */}
           {/* <Text style={styles.cDate}>{data.CollectionReqDate}</Text> */}
           {/* <DateBadge date={data.CollectionReqDate}></DateBadge> */}
-          {/* {
-            IsVisibele && */}
-          <>
-            <View style={[styles.fdRow, styles.spaceBetween]}>
-              <View style={styles.fdRow}>
-                <Text style={[styles.ctitle, GlobalStyles.body]}>Gender: </Text>
-                <Text style={[styles.cBody, GlobalStyles.body]}>{GenderAge[0]}</Text>
+          {
+            IsDatVisible &&
+            <>
+              <View style={[styles.fdRow, styles.spaceBetween]}>
+                <View style={styles.fdRow}>
+                  <Text style={[styles.ctitle, GlobalStyles.body]}>Gender: </Text>
+                  <Text style={[styles.cBody, GlobalStyles.body]}>{GenderAge[0]}</Text>
 
+                </View>
+                <View style={styles.fdRow}>
+                  <Text style={[styles.ctitle, GlobalStyles.body]}>Age: </Text>
+                  <Text style={[styles.cBody, GlobalStyles.body]}>{GenderAge[1]}</Text>
+                </View>
               </View>
-              <View style={styles.fdRow}>
-                <Text style={[styles.ctitle, GlobalStyles.body]}>Age: </Text>
-                <Text style={[styles.cBody, GlobalStyles.body]}>{GenderAge[1]}</Text>
+              <View>
+                <Text style={[styles.ctitle, GlobalStyles.body]}>Referrer </Text>
+                <Text style={[styles.cBody, GlobalStyles.body]}>{data.Referrer}</Text>
               </View>
-            </View>
-            <View>
-              <Text style={[styles.ctitle, GlobalStyles.body]}>Referrer </Text>
-              <Text style={[styles.cBody, GlobalStyles.body]}>{data.Referrer}</Text>
-            </View>
-            <View>
-              <Text style={[styles.ctitle, GlobalStyles.body]}>Referrer:</Text>
-              <Text style={[styles.cBody, GlobalStyles.body]}>{data.Requestor}</Text>
-            </View>
-            <View>
-              <Text style={[styles.ctitle, GlobalStyles.body]}>Tests:</Text>
-              <Text style={[styles.cBody, GlobalStyles.body]}>{data.Test}</Text>
-            </View>
-            {/* <View>
-                <Text style={styles.ctitle}>Age: {data.Referrer}</Text>
-                <Text style={styles.ctitle}>Gender: {data.Requestor}</Text>
-              </View> */}
-          </>
-          {/* } */}
+              <View>
+                <Text style={[styles.ctitle, GlobalStyles.body]}>Referrer:</Text>
+                <Text style={[styles.cBody, GlobalStyles.body]}>{data.Requestor}</Text>
+              </View>
+              <View>
+                <Text style={[styles.ctitle, GlobalStyles.body]}>Tests:</Text>
+                <Text style={[styles.cBody, GlobalStyles.body]}>{data.Test}</Text>
+              </View>
+              <View style={[styles.fdRow, {
+                justifyContent: "space-between"
+              }]}>
+                <CancleBtn title='verify one by one' onPress={() => handleclick()} ></CancleBtn>
+                <AppButton title='Verify All'></AppButton>
+              </View>
+            </>
+          }
 
 
 
@@ -182,11 +189,6 @@ const ReportVerficationCard = ({ data, retDis, disable }) => {
               keyExtractor={item => item.PanId}
             // inverted={true}
             ></FlatList>
-
-            <View style={[styles.bot, GlobalStyles.boxShadow]}>
-                <Text></Text>
-                <AppButton title="Verify All" onPress={() => onVerifyAll()}></AppButton>
-            </View>
           </View>
 
 
@@ -255,12 +257,4 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 18,
     backgroundColor: secondary
   },
-  bot:{
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: '#fefefe',
-    padding: 10,
-    borderTopRightRadius: 18,
-    borderTopLeftRadius: 18,
-  }
 })
