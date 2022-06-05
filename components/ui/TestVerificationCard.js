@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
   cardBody: {
     backgroundColor: "#fefefe",
-    marginVertical: 8,
+    marginTop: 8,
     paddingHorizontal: 15,
     paddingVertical: 10,
     flexDirection: 'row',

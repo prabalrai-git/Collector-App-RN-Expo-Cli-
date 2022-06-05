@@ -26,7 +26,7 @@ const windowHeight = Dimensions.get('window').height
 //"Test": "Glucose F, Complete Blood Count",
 
 const ReportVerficationCard = ({ data, retDis, disable }) => {
-
+  console.log('data', data);
   const GenderAge = data.Gender.split("-")
   // console.log("g age", GenderAge);
   const [IsModalVisible, setIsModalVisible] = useState(false);
@@ -79,7 +79,7 @@ const ReportVerficationCard = ({ data, retDis, disable }) => {
           borderLeftColor: data.ReportType === 'Normal' ? '#1db0dd' : '#e43333',
         }]}>
           <View style={styles.cardtop}>
-            <View>
+            <View style={styles.cardLeft}>
               <Text style={[styles.ctitle, GlobalStyles.heading]}>Id: {data.SampleId}</Text>
               <View style={styles.fdRow}>
                 <Text style={[styles.ctitle, GlobalStyles.body]}>Name: </Text>
@@ -98,9 +98,6 @@ const ReportVerficationCard = ({ data, retDis, disable }) => {
 
             ></BadgeStatus>
           </View>
-          {/* <Text style={styles.remarks}>Request Id: {data.RequestId}</Text> */}
-          {/* <Text style={styles.cDate}>{data.CollectionReqDate}</Text> */}
-          {/* <DateBadge date={data.CollectionReqDate}></DateBadge> */}
           {
             IsDatVisible &&
             <>
@@ -147,17 +144,42 @@ const ReportVerficationCard = ({ data, retDis, disable }) => {
         onRequestClose={() => {
           setIsModalVisible(!IsModalVisible)
           retDis(false);
-          // setActive(true);
         }}
-
       >
-
         <View style={styles.centeredView}>
           <View style={GlobalStyles.modalContainer}>
             <View style={styles.top}>
-              <Text style={[GlobalStyles.heading, {
-                color: '#fefefe'
-              }]}>Test name</Text>
+              <View style={styles.fdRow}>
+                <Text style={[GlobalStyles.heading, { color: '#fefefe', fontWeight: 'bold' }]}>Id: </Text>
+                <Text style={[GlobalStyles.heading, { color: '#fefefe' }]}>{data.SampleId}</Text>
+              </View>
+              <View style={styles.fdRow}>
+                <Text style={[styles.ctitle, GlobalStyles.body, { color: '#fefefe', fontWeight: 'bold' }]}>Name: </Text>
+                <Text style={[styles.cBody, GlobalStyles.body, { color: '#fefefe' }]}>{data.PatientName}</Text>
+              </View>
+              <View style={styles.fdRow}>
+                <Text style={[styles.ctitle, GlobalStyles.body, { color: '#fefefe', fontWeight: 'bold' }]}>Report Type: </Text>
+                <Text style={[styles.cBody, GlobalStyles.body, { color: '#fefefe' }]}>{data.ReportType}</Text>
+              </View>
+              <View style={[styles.fdRow, styles.spaceBetween]}>
+                <View style={styles.fdRow}>
+                  <Text style={[styles.ctitle, GlobalStyles.body, { color: '#fefefe', fontWeight: 'bold' }]}>Gender: </Text>
+                  <Text style={[styles.cBody, GlobalStyles.body, { color: '#fefefe' }]}>{GenderAge[0]}</Text>
+
+                </View>
+                <View style={styles.fdRow}>
+                  <Text style={[styles.ctitle, GlobalStyles.body, { color: '#fefefe', fontWeight: 'bold' }]}>Age: </Text>
+                  <Text style={[styles.cBody, GlobalStyles.body, { color: '#fefefe' }]}>{GenderAge[1]}</Text>
+                </View>
+              </View>
+              <View>
+                <Text style={[styles.ctitle, GlobalStyles.body, { color: '#fefefe', fontWeight: 'bold' }]}>Referrer </Text>
+                <Text style={[styles.cBody, GlobalStyles.body, { color: '#fefefe' }]}>{data.Referrer}</Text>
+              </View>
+              <View>
+                <Text style={[styles.ctitle, GlobalStyles.body, { color: '#fefefe', fontWeight: 'bold' }]}>Referrer:</Text>
+                <Text style={[styles.cBody, GlobalStyles.body, { color: '#fefefe' }]}>{data.Requestor}</Text>
+              </View>
               <Pressable
                 style={{
                   position: 'absolute',
@@ -186,7 +208,7 @@ const ReportVerficationCard = ({ data, retDis, disable }) => {
             <FlatList
               data={AllTestList}
               renderItem={renderItem}
-              keyExtractor={item => item.PanId}
+              keyExtractor={(item, index) => `${index}${item.PanId}`}
             // inverted={true}
             ></FlatList>
           </View>
@@ -231,6 +253,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
+  cardLeft: {
+    flex: 0.7,
+  },
   fdRow: {
     flexDirection: 'row'
   },
@@ -250,11 +275,13 @@ const styles = StyleSheet.create({
     // backgroundColor: '#fefefe'
   },
   top: {
-    height: 60,
+    // height: 60,
     paddingHorizontal: 10,
     justifyContent: 'center',
     borderBottomLeftRadius: 18,
     borderBottomRightRadius: 18,
-    backgroundColor: secondary
+    backgroundColor: secodaryCardColor,
+    paddingBottom: 15,
+    paddingTop: 10,
   },
 })

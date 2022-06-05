@@ -83,7 +83,7 @@ const ReportVerifyScreen = () => {
 
       if (res !== []) {
         // console.log('res', res?.CovidDetails);
-        setPatientList(res?.CovidDetails)
+        setPatientList(res?.CovidDetails.reverse())
         setSerchFilter(false)
       }
     }))
