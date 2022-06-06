@@ -76,7 +76,7 @@ export const GetTestListToViewOrVerifyInSummaryReportS = (data, sucessCallback) 
 
 
 export const PostVerifyPatientReport = (data, sucessCallback) => {
-  console.log("service data",data);
+  // console.log("service data",data);
   let formData = generateUrlEncodedData(data)
   return async dispatch => {
     try{

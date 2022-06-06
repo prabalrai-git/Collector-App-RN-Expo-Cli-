@@ -26,7 +26,7 @@ const windowHeight = Dimensions.get('window').height
 //"Test": "Glucose F, Complete Blood Count",
 
 const ReportVerficationCard = ({ data, retDis, disable }) => {
-  console.log('data', data);
+  // console.log('data', data);
   const GenderAge = data.Gender.split("-")
   // console.log("g age", GenderAge);
   const [IsModalVisible, setIsModalVisible] = useState(false);
@@ -35,6 +35,7 @@ const ReportVerficationCard = ({ data, retDis, disable }) => {
   const dispatch = useDispatch()
 
   const handleclick = () => {
+    console.log('clicked');
     retDis(true);
     let nData = {
       "sampleid": data.SampleId,

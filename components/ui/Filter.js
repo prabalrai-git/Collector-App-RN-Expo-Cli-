@@ -89,7 +89,7 @@ const Filter = ({ data, returnData, bookTestFilter, selectTestFilter, forReq, fo
         })
 
     }
-    console.log(data);
+    // console.log(data);
     // {
     //   forColl &&
     // }

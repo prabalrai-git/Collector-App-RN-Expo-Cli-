@@ -64,7 +64,7 @@ const TestVerificationCard = ({ data }) => {
       "IsCurrent": true
     }
     dispatch(PostVerifyPatientReport(nData, (res) => {
-      console.log("response", res);
+      // console.log("response", res);
       if(res.SuccessMsg === true){
         Alert.alert(
           'Sucess !',

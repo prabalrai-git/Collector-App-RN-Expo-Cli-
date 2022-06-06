@@ -30,6 +30,7 @@ const ReportVerifyScreen = () => {
   const [FiscalYear, setFiscalYear] = useState()
   const [Status, setStatus] = useState(1);
   const [PatientList, setPatientList] = useState();
+  const [NewPatientList, setNewPatientList] = useState();
   const [FromDate, setFromDate] = useState('');
   const [Todate, setTodate] = useState('')
   const [disable, setdisable] = useState(false);
@@ -90,7 +91,8 @@ const ReportVerifyScreen = () => {
 
       if (res !== []) {
         // console.log('res', res?.CovidDetails);
-        setPatientList(res?.CovidDetails.reverse())
+        setPatientList(res?.CovidDetails)
+        setNewPatientList(res?.CovidDetails)
         setSerchFilter(false)
       }
     }))
@@ -105,8 +107,13 @@ const ReportVerifyScreen = () => {
     setdisable(e)
   }
 
-  const handleChangeReq = () => {
-
+  const handleChangeReq = (e) => {
+    // console.log('new data', e)
+    if (e === undefined || e === '') {
+      setNewPatientList(PatientList)
+    } else {
+      setNewPatientList(e)
+    }
   }
 
   return (
@@ -270,13 +277,16 @@ const ReportVerifyScreen = () => {
               :
               <LodaingComp></LodaingComp>
           } */}
+          {
+            NewPatientList !== undefined &&
+            <FlatList
+              data={NewPatientList}
+              renderItem={renderItem}
+              keyExtractor={(item, index) => `${item.SampleId}${index}`}
+            // inverted={true}
+            ></FlatList>
+          }
 
-          <FlatList
-            data={PatientList}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => `${item.SampleId}${index}`}
-          // inverted={true}
-          ></FlatList>
 
 
         </View>
