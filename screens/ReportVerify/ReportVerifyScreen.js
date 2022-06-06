@@ -1,7 +1,7 @@
 import { Dimensions, FlatList, Pressable, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Header from '../../components/Header';
-import { Icon } from 'react-native-elements';
+import { Icon, SearchBar } from 'react-native-elements';
 import AppButton from '../../components/ui/AppButton';
 import { useDispatch, useSelector } from 'react-redux';
 import SelectedItem from '../../components/ui/SelectedItem';
@@ -10,6 +10,7 @@ import InputDate from '../../components/ui/InputDate';
 import { Picker } from '@react-native-picker/picker'
 import { GetFiscalYear, GetPatientSampleSummaryStatuS } from '../../Services/appServices/ReportVerificationService';
 import ReportVerficationCard from '../../components/ui/ReportVerficationCard';
+import Filter from '../../components/ui/Filter';
 
 
 
@@ -50,6 +51,7 @@ const ReportVerifyScreen = () => {
   // console.log('focal year', typeof(FiscalYear));
 
   useEffect(() => {
+
     // setSerchFilter(true)
     dispatch(GetFiscalYear((res) => {
       // console.log('res', res.FIscalYearCode);
@@ -62,23 +64,28 @@ const ReportVerifyScreen = () => {
   }, [])
 
 
+
+
   const handleClick = () => {
     // console.log('potato');
+    let today = new Date();
+    const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + 'T' + today.toLocaleTimeString();
+
+    setPatientList([])
     let data = {
       // "from": FromDate,
       // "to": Todate,
       // 'ficalyera': Status
-      // "from": FromDate,
-      "from": "2020-1-1",
-      // "to": Todate,
-      "to": "2022-5-30",
+      // "from": "2020-1-1",
+      // "to": "2022-5-30",
+      "from": FromDate != '' ? FromDate : newDate,
+      "to": Todate != '' ? Todate : newDate,
       "fiscalyearId": 1,
       "testin": '',
       "testnotin": '',
       "diagnosisin": '',
       "diagnosisnotin": '',
     }
-    // console.log("data", data);
     dispatch(GetPatientSampleSummaryStatuS(data, (res) => {
 
       if (res !== []) {
@@ -98,38 +105,25 @@ const ReportVerifyScreen = () => {
     setdisable(e)
   }
 
+  const handleChangeReq = () => {
+
+  }
+
   return (
     <View style={styles.mainContainer}>
 
       <View style={styles.container}>
         <View style={styles.top}>
           <Header title={'Reports'}></Header>
-          <View style={styles.InputContainer}>
+          <View>
             {
               SerchFilter !== true ?
-                <Pressable
-                  onPress={() => setSerchFilter(previousState => !previousState)}
-                  style={{
-                    width: '100%',
-                    // backgroundColor: 'red',
-                    flexDirection: 'row',
-                    padding: 10,
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <Text style={{
-                    fontSize: 14,
-                    color: primary
-                  }}>Search</Text>
-                  <Icon
-                    name='search1'
-                    color={primary}
-                    type='antdesign'
-                    size={20}
-                  ></Icon>
-                </Pressable>
+                <View style={styles.filterContainer}>
+                  <AppButton title={"load Item"} onPress={() => setSerchFilter(previousState => !previousState)}></AppButton>
+                  <Filter data={PatientList} returnData={handleChangeReq} forVerification></Filter>
+                </View>
                 :
-                <>
+                <View style={styles.InputContainer}>
                   <View style={[styles.TxtInputContainer, {
                     marginTop: 20,
                   }]}>
@@ -260,7 +254,7 @@ const ReportVerifyScreen = () => {
                     <Text>  </Text>
                     <CancleBtn title={'cancle'} onPress={() => setSerchFilter(!SerchFilter)}></CancleBtn>
                   </View>
-                </>
+                </View>
             }
           </View>
         </View>
@@ -356,9 +350,19 @@ const styles = StyleSheet.create({
     // paddingVertical: 20,
     // paddingTop: 40,
     // paddingBottom: 20,
-    borderRadius: 18,
+    borderRadius: 10,
     flexDirection: 'column',
     backgroundColor: '#fefefefe',
+    overflow: 'hidden'
+  },
+  filterContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: windowWidth - 20,
+    marginLeft: 10,
+    // marginTop: 10,
+    borderRadius: 10,
     overflow: 'hidden'
   },
   txtInput: {

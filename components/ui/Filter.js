@@ -1,8 +1,10 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Dimensions, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SearchBar } from 'react-native-elements'
 
-const Filter = ({ data, returnData, bookTestFilter, selectTestFilter, forReq, forRef, forColl }) => {
+
+const windowWidth = Dimensions.width * 0.5;
+const Filter = ({ data, returnData, bookTestFilter, selectTestFilter, forReq, forRef, forVerification }) => {
   // console.log(data);
   // console.log("data" ,data.Test);
   const [search, setSearch] = useState("");
@@ -77,6 +79,17 @@ const Filter = ({ data, returnData, bookTestFilter, selectTestFilter, forReq, fo
           )
         })
     }
+    {
+      forVerification &&
+        data !== undefined &&
+        data.map(e => {
+          e.PatientName.toLowerCase().includes(val.toLowerCase())
+            ?
+            pushArr.push(e) : ''
+        })
+
+    }
+    console.log(data);
     // {
     //   forColl &&
     // }
@@ -91,19 +104,38 @@ const Filter = ({ data, returnData, bookTestFilter, selectTestFilter, forReq, fo
 
   return (
     <View>
-      <SearchBar
-        placeholder="Type Here..."
-        onChangeText={e => setSearch(e)}
-        value={search}
-        platform='ios'
-        containerStyle={{ backgroundColor: secodaryCardColor }}
-        inputContainerStyle={{ backgroundColor: '#fefefe' }}
-        cancelButtonProps={{
-          color: '#fefefe'
-        }}
-      // showLoading = {true}
-      ></SearchBar>
-    </View>
+      {
+        forVerification ?
+          < SearchBar
+            placeholder="Type Here..."
+            onChangeText={e => setSearch(e)}
+            value={search}
+            platform='ios'
+            containerStyle={{ backgroundColor: secodaryCardColor, width: 240 }}
+            inputContainerStyle={{ backgroundColor: '#fefefe' }}
+            cancelButtonProps={{
+              color: '#fefefe'
+            }}
+          // showLoading = {true}
+          ></SearchBar>
+
+          :
+          <SearchBar
+            placeholder="Type Here..."
+            onChangeText={e => setSearch(e)}
+            value={search}
+            platform='ios'
+            containerStyle={{ backgroundColor: secodaryCardColor }}
+            inputContainerStyle={{ backgroundColor: '#fefefe' }}
+            cancelButtonProps={{
+              color: '#fefefe'
+            }}
+          // showLoading = {true}
+          ></SearchBar>
+      }
+
+
+    </View >
   )
 }
 
