@@ -1,23 +1,31 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useEffect } from 'react'
-import { createDrawerNavigator } from '@react-navigation/drawer'
-import { AddPatietNavigator, BookTestNavigator, CollectorLocation, CollectSampleNavigator, MainStackNavigator, ReportVerification, SampleCollectionNavigator, TaskNavigator } from './StackNavigator'
-import { useSelector } from 'react-redux'
-import CostomeDrawerContent from '../components/ui/CostomeDrawerContent'
-import LocationTrackingHomeScreen from '../screens/LocationTracking/LocationTrackingHomeScreen'
-import { useNavigation } from '@react-navigation/native'
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Icon } from 'react-native-elements'
-import NotificationHomeScreen from '../screens/NotificationScreen/NotificationHomeScreen'
+import { StyleSheet, Text, View } from "react-native";
+import React, { useEffect } from "react";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  AddPatietNavigator,
+  BookTestNavigator,
+  CollectorLocation,
+  CollectSampleNavigator,
+  MainStackNavigator,
+  ReportVerification,
+  SampleCollectionNavigator,
+  TaskNavigator,
+} from "./StackNavigator";
+import { useSelector } from "react-redux";
+import CostomeDrawerContent from "../components/ui/CostomeDrawerContent";
+// import LocationTrackingHomeScreen from '../screens/LocationTracking/LocationTrackingHomeScreen'
+import { useNavigation } from "@react-navigation/native";
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Icon } from "react-native-elements";
+import NotificationHomeScreen from "../screens/NotificationScreen/NotificationHomeScreen";
 
 const DraweNavigator = () => {
-  const Drawer = createDrawerNavigator()
-  const user = useSelector(state => state.storeUserData);
+  const Drawer = createDrawerNavigator();
+  const user = useSelector((state) => state.storeUserData);
   // console.log("user role", user.userData.UserRole);
   // console.log('user', user.userData);
-  let data = user.userData
-  const navigation = useNavigation()
-
+  let data = user.userData;
+  const navigation = useNavigation();
 
   // user.userData === undefined ?
   //   navigation.navigate('LoginScreen')
@@ -48,9 +56,7 @@ const DraweNavigator = () => {
 
   // }
 
-
   return (
-
     <Drawer.Navigator
       drawerPosition="right"
       screenOptions={{
@@ -58,43 +64,37 @@ const DraweNavigator = () => {
         drawerInactiveTintColor: primary,
         drawerActiveBackgroundColor: primary,
         drawerInactiveBackgroundColor: secondaryBkg,
-        drawerType: 'front',
-        
+        drawerType: "front",
+
         // drawerContentStyle: {
         //   backgroundColor: 'red'
         // }
         drawerStyle: {
           backgroundColor: secondaryBkg,
           borderRadius: 18,
-        }
+        },
       }}
-      drawerContent={(props) =>
-      (
-        <CostomeDrawerContent {...props} data={data} />
-      )}
-      
+      drawerContent={(props) => <CostomeDrawerContent {...props} data={data} />}
     >
-
       <Drawer.Screen
-        name='Home'
+        name="Home"
         component={MainStackNavigator}
-
         options={{
           headerShown: false,
           // headerShadowVisible: false,
           // drawerActiveBackgroundColor: "#57b2e6be",
           // drawerActiveTintColor: '#fefefe',
           // drawerType: 'slide',
-        
-          title: 'Home',
+
+          title: "Home",
           drawerIcon: ({ size, color }) => (
             <Icon
-              name='home'
+              name="home"
               color={color}
-              type='antdesign'
+              type="antdesign"
               style={styles.icon}
             ></Icon>
-          )
+          ),
         }}
       />
       {/* <Drawer.Screen
@@ -114,132 +114,128 @@ const DraweNavigator = () => {
         }}
       /> */}
       <Drawer.Screen
-        name='AddPatient'
-
+        name="AddPatient"
         component={AddPatietNavigator}
         options={{
           headerShown: false,
-          title: 'Add Patient',
+          title: "Add Patient",
           drawerIcon: ({ size, color }) => (
             <Icon
-              name='addusergroup'
+              name="addusergroup"
               color={color}
-              type='antdesign'
+              type="antdesign"
               style={styles.icon}
             ></Icon>
-          )
+          ),
         }}
       />
 
-
       <Drawer.Screen
-        name='BookTest'
+        name="BookTest"
         component={BookTestNavigator}
         options={{
           // tabBarHideOnKeyboard: true,
 
           headerShown: false,
-          title: 'Patient',
+          title: "Patient",
           drawerIcon: ({ size, color }) => (
             <Icon
-              name='user'
+              name="user"
               color={color}
-              type='antdesign'
+              type="antdesign"
               style={styles.icon}
             ></Icon>
-          )
+          ),
         }}
       />
 
       <Drawer.Screen
-        name='SampleHome'
+        name="SampleHome"
         component={SampleCollectionNavigator}
         options={{
           // tabBarHideOnKeyboard: true,
           headerShown: false,
-          title: 'Total Sample',
+          title: "Total Sample",
           drawerIcon: ({ size, color }) => (
             <Icon
-              name='test-tube-alt'
+              name="test-tube-alt"
               color={color}
-              type='fontisto'
+              type="fontisto"
               style={styles.icon}
             ></Icon>
-          )
+          ),
         }}
       />
       <Drawer.Screen
-        name='NotificationHome'
+        name="NotificationHome"
         component={NotificationHomeScreen}
         options={{
           headerShown: false,
           drawerLabel: () => null,
           title: null,
           drawerIcon: () => null,
-          drawerItemStyle: { display: 'none' }
+          drawerItemStyle: { display: "none" },
         }}
       />
       {/* {
         user.userData.UserRole === 3 && */}
       <Drawer.Screen
-        name='task'
+        name="task"
         component={TaskNavigator}
         options={{
           headerShown: false,
-          title: 'Task',
+          title: "Task",
           drawerIcon: ({ size, color }) => (
             <Icon
-              name='notification'
+              name="notification"
               color={color}
-              type='entypo'
+              type="entypo"
               style={styles.icon}
             ></Icon>
-          )
+          ),
         }}
       />
       {/* } */}
       {/* {
         user.userData.UserRole === 2 && */}
       <Drawer.Screen
-        name='CollectorLocation'
+        name="CollectorLocation"
         component={CollectorLocation}
         options={{
           headerShown: false,
-          title: 'Location Tracking',
+          title: "Location Tracking",
           drawerIcon: ({ size, color }) => (
             <Icon
-              name='find'
+              name="find"
               color={color}
-              type='antdesign'
+              type="antdesign"
               style={styles.icon}
             ></Icon>
-          )
+          ),
         }}
       />
       {/* } */}
 
       <Drawer.Screen
-        name='ReportVerification'
+        name="ReportVerification"
         component={ReportVerification}
         options={{
           headerShown: false,
-          title: 'Report Verfication',
+          title: "Report Verfication",
           drawerIcon: ({ size, color }) => (
             <Icon
-              name='file1'
+              name="file1"
               color={color}
-              type='antdesign'
+              type="antdesign"
               style={styles.icon}
             ></Icon>
-          )
+          ),
         }}
       />
-
-
     </Drawer.Navigator>
-  )
-}
+  );
+};
 
-export default DraweNavigator
+export default DraweNavigator;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

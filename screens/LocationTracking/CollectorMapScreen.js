@@ -1,36 +1,46 @@
-import { ActivityIndicator, Dimensions, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
-import { Avatar, Icon } from 'react-native-elements'
-import MapView, { Marker, AnimatedRegion } from 'react-native-maps'
-import { GetCurrentLocationOfuser, GetlocationofCollectorByDateAndUserId } from '../../Services/appServices/Collector'
-import { useDispatch } from 'react-redux'
-import MarkerCostome from '../../components/ui/MarkerCostome'
-import { useNavigation } from '@react-navigation/native'
-import Header from '../../components/Header'
-import { GlobalStyles } from '../../GlobalStyle'
+import {
+  ActivityIndicator,
+  Dimensions,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { Avatar, Icon } from "react-native-elements";
+import MapView, { Marker, AnimatedRegion } from "react-native-maps";
+import {
+  GetCurrentLocationOfuser,
+  GetlocationofCollectorByDateAndUserId,
+} from "../../Services/appServices/Collector";
+import { useDispatch } from "react-redux";
+import MarkerCostome from "../../components/ui/MarkerCostome";
+import { useNavigation } from "@react-navigation/native";
+import Header from "../../components/Header";
+import { GlobalStyles } from "../../GlobalStyle";
 
-
-const screen = Dimensions.get('window');
+const screen = Dimensions.get("window");
 const ASPECT_RATIO = screen.width / screen.height;
 const LATITUDE_DELTA = 0.04;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const CollectorMapScreen = ({ route }) => {
   console.log(route.params.data.UserId);
-  const navigation = useNavigation()
-  const dispatch = useDispatch()
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [coordinate, setcoordinate] = useState({
     latitude: 27.7172,
-    longitude: 85.3240,
+    longitude: 85.324,
     latitudeDelta: LATITUDE_DELTA,
-    longitudeDelta: LONGITUDE_DELTA
-
-  })
+    longitudeDelta: LONGITUDE_DELTA,
+  });
 
   const [isLoading, setisLoading] = useState(true);
 
   let today = new Date();
-  const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+  const newDate =
+    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
 
   // let cData = {
   //   "entrydate": newDate,
@@ -40,65 +50,67 @@ const CollectorMapScreen = ({ route }) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      dispatch(GetCurrentLocationOfuser(route.params.data.UserId, (res) => {
-        if (res?.currentcollectorLocation.length > 0) {
-          // let lat = Number(res?.collectorLocation[res?.collectorLocation.length - 1].Latitude);
-          // let long = Number(res?.collectorLocation[res?.collectorLocation.length - 1].Longitude);
-          let lat = Number(res?.currentcollectorLocation[0].Latitude);
-          let long = Number(res?.currentcollectorLocation[0].Longitude);
-          setcoordinate({
-            latitude: lat,
-            longitude: long,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA
-          })
-          setisLoading(false)
+      let isMounted = true;
+      dispatch(
+        GetCurrentLocationOfuser(route.params.data.UserId, (res) => {
+          if (res?.currentcollectorLocation.length > 0) {
+            // let lat = Number(res?.collectorLocation[res?.collectorLocation.length - 1].Latitude);
+            // let long = Number(res?.collectorLocation[res?.collectorLocation.length - 1].Longitude);
+            let lat = Number(res?.currentcollectorLocation[0].Latitude);
+            let long = Number(res?.currentcollectorLocation[0].Longitude);
+            if (isMounted) {
+              setcoordinate({
+                latitude: lat,
+                longitude: long,
+                latitudeDelta: LATITUDE_DELTA,
+                longitudeDelta: LONGITUDE_DELTA,
+              });
+            }
 
-        }
-      }))
+            setisLoading(false);
+          }
+        })
+      );
     }, 1000);
-    return () => clearInterval(interval)
-
-  }, [])
+    return () => {
+      clearInterval(interval);
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <View style={styles.mainContainer}>
       <Header title={`${route.params.data.UserName} Location`}></Header>
 
-
       <View style={styles.mapViewContainer}>
-        {
-          isLoading ?
-            <View style={GlobalStyles.loadingcontainer}>
-              <ActivityIndicator size="large" color={global.secondary} />
-            </View>
-
-            :
-            <MapView
-              style={styles.map}
-              initialRegion={{
-                latitude: coordinate.latitude,
-                longitude: coordinate.longitude,
-                latitudeDelta: LATITUDE_DELTA,
-                longitudeDelta: LONGITUDE_DELTA
-              }}
-            >
-              <MarkerCostome
-                coordinate={coordinate}
-                title={route.params.data.UserName}
-                description={`user Id:${route.params.data.UserId}`}
-                forCollector
-              />
-            </MapView>
-        }
-
-
+        {isLoading ? (
+          <View style={GlobalStyles.loadingcontainer}>
+            <ActivityIndicator size="large" color={global.secondary} />
+          </View>
+        ) : (
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: coordinate.latitude,
+              longitude: coordinate.longitude,
+              latitudeDelta: LATITUDE_DELTA,
+              longitudeDelta: LONGITUDE_DELTA,
+            }}
+          >
+            <MarkerCostome
+              coordinate={coordinate}
+              title={route.params.data.UserName}
+              description={`user Id:${route.params.data.UserId}`}
+              forCollector
+            />
+          </MapView>
+        )}
 
         <View style={styles.bSheet}>
           <Avatar
             size={64}
             rounded
-            source={require('../../assets/images/user.png')}
+            source={require("../../assets/images/user.png")}
           />
           <View style={styles.details}>
             <Text style={styles.title}>{route.params.data.UserName}</Text>
@@ -107,40 +119,40 @@ const CollectorMapScreen = ({ route }) => {
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 
-export default CollectorMapScreen
+export default CollectorMapScreen;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    width: '100%',
+    width: "100%",
     flex: 0.9,
     // backgroundColor: 'red'
   },
   mapViewContainer: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     borderRadius: 18,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   map: {
-    width: '100%',
+    width: "100%",
     flex: 1,
   },
   bSheet: {
-    position: 'absolute',
+    position: "absolute",
     zIndex: 100,
     bottom: 0,
     left: 10,
     right: 10,
-    backgroundColor: '#fefefe',
+    backgroundColor: "#fefefe",
     borderTopRightRadius: 18,
     borderTopLeftRadius: 18,
     paddingHorizontal: 10,
     paddingVertical: 20,
     shadowColor: "#000",
-    flexDirection: 'row',
+    flexDirection: "row",
     // justifyContent: 'space-between',
     shadowOffset: {
       width: 0,
@@ -156,17 +168,17 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   title: {
-    color: '#205072',
+    color: "#205072",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     letterSpacing: 1,
-    textTransform: 'capitalize'
+    textTransform: "capitalize",
   },
   dis: {
-    color: '#FF7F00',
+    color: "#FF7F00",
     letterSpacing: 1,
     fontSize: 14,
     marginBottom: 4,
-    textAlign: 'justify'
-  }
-})
+    textAlign: "justify",
+  },
+});

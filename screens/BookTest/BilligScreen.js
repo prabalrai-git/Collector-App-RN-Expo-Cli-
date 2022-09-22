@@ -1,18 +1,39 @@
-import { Alert, Button, Dimensions, FlatList, Image, Modal, Pressable, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import AppButton from '../../components/ui/AppButton'
-import { useDispatch, useSelector } from 'react-redux'
-import { GetStatus, InsertUpdateHomeCollection } from '../../Services/appServices/AssignPatient'
-import { Picker } from '@react-native-picker/picker'
-import { StackActions, useIsFocused, useNavigation } from '@react-navigation/native'
-import HamMenu from '../../components/ui/HamMenu'
-import BackBtn from '../../components/ui/BackBtn'
-import Header from '../../components/Header'
-import Filter from '../../components/ui/Filter'
-import { GetListOfCollector } from '../../Services/appServices/Collector'
-import { PushNotification } from '../../components/PushNotification'
-import { Icon } from 'react-native-elements'
-import { GlobalStyles } from '../../GlobalStyle'
+import {
+  Alert,
+  Button,
+  Dimensions,
+  FlatList,
+  Image,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Switch,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import AppButton from "../../components/ui/AppButton";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  GetStatus,
+  InsertUpdateHomeCollection,
+} from "../../Services/appServices/AssignPatient";
+import { Picker } from "@react-native-picker/picker";
+import {
+  StackActions,
+  useIsFocused,
+  useNavigation,
+} from "@react-navigation/native";
+import HamMenu from "../../components/ui/HamMenu";
+import BackBtn from "../../components/ui/BackBtn";
+import Header from "../../components/Header";
+import Filter from "../../components/ui/Filter";
+import { GetListOfCollector } from "../../Services/appServices/Collector";
+import { PushNotification } from "../../components/PushNotification";
+import { Icon } from "react-native-elements";
+import { GlobalStyles } from "../../GlobalStyle";
 
 // "_HomeRequest": {
 //   "RId": 1, //?? =0
@@ -39,7 +60,6 @@ import { GlobalStyles } from '../../GlobalStyle'
 //     "EntryDate": "2022-03-18T16:55:21.2181249+05:45",
 //     "UserId": 10
 //   },
-
 
 // new  from route Object {
 //   "tests": Object {
@@ -79,60 +99,64 @@ import { GlobalStyles } from '../../GlobalStyle'
 //   },
 // }
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 const BilligScreen = ({ route }) => {
-  console.log('new data', route.params.userData.PatientFName);
-
   const [CollectionCharge, setCollectionCharge] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [TotalAmount, setTotalAmount] = useState(route.params.tests.total);
-  const [Remarks, setRemarks] = useState('');
+  const [Remarks, setRemarks] = useState("");
   const [isPaid, SetisPaid] = useState(true);
-  const toggleSwitch = () => SetisPaid(previousState => !previousState);
+  const toggleSwitch = () => SetisPaid((previousState) => !previousState);
   const [Status, setStatus] = useState();
-  const [StatusList, setStatusList] = useState()
+  const [StatusList, setStatusList] = useState();
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [btnDis, setBtnDis] = useState(false);
   const isFocused = useIsFocused();
-  const user = useSelector(state => state.storeUserData.userData);
+  const user = useSelector((state) => state.storeUserData.userData);
   // console.log("user", user);
 
   const [paidStatus, setpaidStatus] = useState(1);
   const [ModalVisible, setModalVisible] = useState(false);
-  const [PaymentCode, setPaymentCode] = useState('')
+  const [PaymentCode, setPaymentCode] = useState("");
 
   const [isVisibeRef, setisVisibeRef] = useState(false);
   const [CollectorList, setCollectorList] = useState();
   const [ColltorBtnDis, setColltorBtnDis] = useState();
   const [PtientCollector, setPtientCollector] = useState();
   const [PatientCollectorName, setPatientCollectorName] = useState();
-  let RequestPatientname = `${route.params.userData.PatientFName} ${route.params.userData.PatientMName} ${route.params.userData.PatientLName}`
+  let RequestPatientname = `${route.params.userData.PatientFName} ${route.params.userData.PatientMName} ${route.params.userData.PatientLName}`;
 
   useEffect(() => {
-    dispatch(GetStatus((res) => {
-      // setStatusList(res?.sampleStatus);
-      setStatusList(res?.sampleStatus[0]);
-    }))
-    dispatch(GetListOfCollector((res) => {
-      setCollectorList(res?.GetListOfCollectors)
-    }))
-  }, [])
+    dispatch(
+      GetStatus((res) => {
+        // setStatusList(res?.sampleStatus);
+        setStatusList(res?.sampleStatus[0]);
+      })
+    );
+    dispatch(
+      GetListOfCollector((res) => {
+        setCollectorList(res?.GetListOfCollectors);
+      })
+    );
+  }, []);
 
   useEffect(() => {
-    let temp = Number(route.params.tests.total) + Number(CollectionCharge) - Number(discount);
+    let temp =
+      Number(route.params.tests.total) +
+      Number(CollectionCharge) -
+      Number(discount);
     setTotalAmount(temp);
+  }, [discount, CollectionCharge]);
 
-  }, [discount, CollectionCharge])
-
-  const renderItem = (({ item }) => (
+  const renderItem = ({ item }) => (
     <View style={styles.testContainer}>
       <Text style={styles.testTitle}>{item.Test}</Text>
       <Text style={styles.testPrice}>Rs.{item.Price}</Text>
     </View>
-  ))
+  );
 
   const handleChangeRef = (e) => {
     // if (e === undefined || e === '') {
@@ -140,7 +164,7 @@ const BilligScreen = ({ route }) => {
     // } else {
     //   setRequestorlistNew(e)
     // }
-  }
+  };
 
   const handleSubmit = () => {
     // PushNotification('asigned task', user.UserId, PtientCollector, 3, Remarks, user.UserName)
@@ -148,115 +172,119 @@ const BilligScreen = ({ route }) => {
 
     setBtnDis(true);
     let today = new Date();
-    const newDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    const newDate =
+      today.getFullYear() +
+      "-" +
+      (today.getMonth() + 1) +
+      "-" +
+      today.getDate();
     const newTime = today.toLocaleTimeString();
-    const fialEntryDate = newDate + 'T' + newTime;
-
+    const fialEntryDate = newDate + "T" + newTime;
 
     const _HomeRequest = {
-      "RId": 0,
-      "PatId": route.params.userData.CId,
-      "TestTotalAmount": route.params.tests.total,
-      "CollectionCharge": CollectionCharge,
-      "DiscountAmount": discount,
-      "GrandTotal": TotalAmount,
-      "Remarks": Remarks,
-      "UserId": route.params.userData.EnterBy,
-      "IsActive": true,
-      "CollectorId": user.UserRole === 2 ? PtientCollector : route.params.userData.CollectorId,
+      RId: 0,
+      PatId: route.params.userData.CId,
+      TestTotalAmount: route.params.tests.total,
+      CollectionCharge: CollectionCharge,
+      DiscountAmount: discount,
+      GrandTotal: TotalAmount,
+      Remarks: Remarks,
+      UserId: route.params.userData.EnterBy,
+      IsActive: true,
+      CollectorId:
+        user.UserRole === 2
+          ? PtientCollector
+          : route.params.userData.CollectorId,
       // PtientCollector
       // route.params.userData.CollectorId
-      "CollectedDate": fialEntryDate,
-      "IsPaid": isPaid,
+      CollectedDate: fialEntryDate,
+      IsPaid: isPaid,
       // "IsPaid": true,
-      "RequestStatus": Status,
-      "PaymentType": paidStatus === 'card' ? `${paidStatus} - ${PaymentCode}` : paidStatus
+      RequestStatus: Status,
+      PaymentType:
+        paidStatus === "card" ? `${paidStatus} - ${PaymentCode}` : paidStatus,
     };
     // array of testdata
-    const _HomeCollectionTestList = []
-    route.params.tests.testList.map(e => {
-      _HomeCollectionTestList.push(
-        {
-          "SId": 0,
-          "PatId": route.params.userData.CId,
-          "RequestId": 0,
-          "TestId": e.TestId,
-          "TestName": e.Test,
-          "TestPrice": e.Price,
-          "ClientId": 1,
-          "IsActive": true,
-          "EntryDate": fialEntryDate,
-          "UserId": route.params.userData.EnterBy
-        }
-      )
-    })
+    const _HomeCollectionTestList = [];
+    route.params.tests.testList.map((e) => {
+      _HomeCollectionTestList.push({
+        SId: 0,
+        PatId: route.params.userData.CId,
+        RequestId: 0,
+        TestId: e.TestId,
+        TestName: e.Test,
+        TestPrice: e.Price,
+        ClientId: 1,
+        IsActive: true,
+        EntryDate: fialEntryDate,
+        UserId: route.params.userData.EnterBy,
+      });
+    });
     // console.log(_HomeCollectionTestList);
     // fial object to sed
 
     const finalData = {
       _HomeRequest,
-      _HomeCollectionTestList
-    }
+      _HomeCollectionTestList,
+    };
 
     // console.log('final data', finalData);
     // return
-    dispatch(InsertUpdateHomeCollection(finalData, (res) => {
-      if (res?.SuccessMsg === true) {
-        // console.log(res);
-        if (user.UserRole === 2) {
-          Alert.alert(
-            "Saved!",
-            `Task asigned to ${PtientCollector}`,
-            [
+    dispatch(
+      InsertUpdateHomeCollection(finalData, (res) => {
+        if (res?.SuccessMsg === true) {
+          // console.log(res);
+          if (user.UserRole === 2) {
+            Alert.alert("Saved!", `Task asigned to ${PtientCollector}`, [
               {
-                text: "OK", onPress: () => {
+                text: "OK",
+                onPress: () => {
                   const popAc = StackActions.pop(2);
                   navigation.dispatch(popAc);
                   // navigation.navigate('Home')
-                  PushNotification('asigned task', user.UserId, PtientCollector, res.CreatedId, Remarks, user.UserName, RequestPatientname)
-                }
-              }
-            ]
-          )
+                  PushNotification(
+                    "asigned task",
+                    user.UserId,
+                    PtientCollector,
+                    res.CreatedId,
+                    Remarks,
+                    user.UserName,
+                    RequestPatientname
+                  );
+                },
+              },
+            ]);
+          } else {
+            Alert.alert("Saved!", "Test booked Sucessfully", [
+              {
+                text: "OK",
+                onPress: () => {
+                  const popAc = StackActions.pop(2);
+                  navigation.dispatch(popAc);
+                  // navigation.navigate('Home')
+                },
+              },
+            ]);
+          }
         } else {
-          Alert.alert(
-            "Saved!",
-            "Test booked Sucessfully",
-            [
-              {
-                text: "OK", onPress: () => {
-                  const popAc = StackActions.pop(2);
-                  navigation.dispatch(popAc);
-                  // navigation.navigate('Home')
-                }
-              }
-            ]
-          )
+          Alert.alert("Failed!", "Test booked Failed", [
+            { text: "OK", onPress: () => setBtnDis(false) },
+          ]);
         }
-
-      }
-      else {
-        Alert.alert(
-          "Failed!",
-          "Test booked Failed",
-          [
-            { text: "OK", onPress: () => setBtnDis(false) }
-          ]
-        );
-      }
-    }))
-    setBtnDis(false)
-  }
+      })
+    );
+    setBtnDis(false);
+  };
   return (
     <View style={styles.mainContainer}>
       {/* <HamMenu></HamMenu>
         <BackBtn></BackBtn> */}
-      <Header title={'bill'}></Header>
+      <Header title={"bill"}></Header>
       <View style={styles.fatlistfContainer}>
         <FlatList
           data={route.params.tests.testList}
           renderItem={renderItem}
-          keyExtractor={item => `${item.Id}${item.Test}`}
+          keyExtractor={(item) => `${item.Id}${item.Test}`}
         ></FlatList>
       </View>
 
@@ -269,10 +297,10 @@ const BilligScreen = ({ route }) => {
           <Text style={styles.formLabel}>Collector Charge</Text>
           <TextInput
             value={CollectionCharge}
-            placeholder='Collector Charge'
+            placeholder="Collector Charge"
             onChangeText={(e) => setCollectionCharge(e)}
             style={styles.inputField}
-            keyboardType='numeric'
+            keyboardType="numeric"
           ></TextInput>
         </View>
 
@@ -280,10 +308,10 @@ const BilligScreen = ({ route }) => {
           <Text style={styles.formLabel}>Discount Amount</Text>
           <TextInput
             value={discount}
-            placeholder='Discount Amount'
+            placeholder="Discount Amount"
             onChangeText={(e) => setDiscount(e)}
             style={styles.inputField}
-            keyboardType='numeric'
+            keyboardType="numeric"
           ></TextInput>
         </View>
 
@@ -291,37 +319,36 @@ const BilligScreen = ({ route }) => {
           <Text style={styles.formLabel}>Total Amount</Text>
           <Text style={styles.inputField}>{TotalAmount}</Text>
         </View>
-        {
-          user.UserRole === 2 &&
+        {user.UserRole === 2 && (
           <View style={styles.TextInput}>
             <Text style={styles.formLabel}>Set Collector</Text>
-            <Pressable style={styles.inputField} onPress={() => setisVisibeRef(true)}>
+            <Pressable
+              style={styles.inputField}
+              onPress={() => setisVisibeRef(true)}
+            >
               <Text>{PatientCollectorName}</Text>
             </Pressable>
-
           </View>
-        }
-
+        )}
 
         <View style={styles.TextInput}>
           <Text style={styles.formLabel}>Remarks</Text>
           <TextInput
             value={Remarks}
-            placeholder='Remarks'
+            placeholder="Remarks"
             onChangeText={(e) => setRemarks(e)}
             style={styles.inputField}
-          // keyboardType='numeric'
+            // keyboardType='numeric'
           ></TextInput>
         </View>
         <View style={styles.TextInput}>
           <Text style={styles.formLabel}>Status</Text>
           <View style={styles.inputField}>
-
             <Picker
               selectedValue={Status}
               // style={styles.TextInput}
               onValueChange={(itemValue) => setStatus(itemValue)}
-              mode='dropdown'
+              mode="dropdown"
             >
               {/* {
                 StatusList !== undefined ?
@@ -329,10 +356,13 @@ const BilligScreen = ({ route }) => {
                     <Picker.Item label={item.SampleStatus} value={item.StId} key={index} />
                   )) : null
               } */}
-              {
-                StatusList !== undefined ?
-                  <Picker.Item label={StatusList.SampleStatus} value={StatusList.StId} key={StatusList.StId} /> : null
-              }
+              {StatusList !== undefined ? (
+                <Picker.Item
+                  label={StatusList.SampleStatus}
+                  value={StatusList.StId}
+                  key={StatusList.StId}
+                />
+              ) : null}
             </Picker>
           </View>
         </View>
@@ -340,51 +370,50 @@ const BilligScreen = ({ route }) => {
         <View style={styles.TextInput}>
           <Text style={styles.formLabel}>Payment mode</Text>
           <View style={styles.inputField}>
-
             <Picker
               selectedValue={paidStatus}
               // style={styles.TextInput}
               onValueChange={(itemValue) => setpaidStatus(itemValue)}
-              mode='dropdown'
+              mode="dropdown"
             >
-              <Picker.Item label='cash' value={'cash'} key={1} />
-              <Picker.Item label='card' value={'card'} key={2} />
-              <Picker.Item label='fone pay' value={'fone Pay'} key={3} />
+              <Picker.Item label="cash" value={"cash"} key={1} />
+              <Picker.Item label="card" value={"card"} key={2} />
+              <Picker.Item label="fone pay" value={"fone Pay"} key={3} />
               {/* <Picker.Item label='Due' value={'due'} key={4} />
               <Picker.Item label='credit' value={'credit'} key={5} /> */}
             </Picker>
           </View>
         </View>
-        {
-          paidStatus === 'fone Pay' ?
-            <TouchableOpacity onPress={() => setModalVisible(true)} style={{
+        {paidStatus === "fone Pay" ? (
+          <TouchableOpacity
+            onPress={() => setModalVisible(true)}
+            style={{
               // width: windowWidth - 20,
               borderWidth: 1,
-              borderColor: '#f1f1df',
+              borderColor: "#f1f1df",
               // justifyContent:'center',
-              alignItems: 'center',
+              alignItems: "center",
               padding: 10,
-            }}>
-              <Image
-                source={require('../../assets/images/qr.png')}
-                style={styles.qrSmall}
-              ></Image>
-            </TouchableOpacity> : null
-        }
-        {
-          paidStatus === 'card' ?
-            <View style={styles.TextInput}>
-              <Text style={styles.formLabel}>Payment Code</Text>
-              <TextInput
-                value={PaymentCode}
-                placeholder='PaymentCode'
-                onChangeText={(e) => setPaymentCode(e)}
-                style={styles.inputField}
+            }}
+          >
+            <Image
+              source={require("../../assets/images/qr.png")}
+              style={styles.qrSmall}
+            ></Image>
+          </TouchableOpacity>
+        ) : null}
+        {paidStatus === "card" ? (
+          <View style={styles.TextInput}>
+            <Text style={styles.formLabel}>Payment Code</Text>
+            <TextInput
+              value={PaymentCode}
+              placeholder="PaymentCode"
+              onChangeText={(e) => setPaymentCode(e)}
+              style={styles.inputField}
               // keyboardType='numeric'
-              ></TextInput>
-            </View>
-            : null
-        }
+            ></TextInput>
+          </View>
+        ) : null}
 
         <View style={styles.TextInput}>
           <Text style={styles.formLabel}>IsPaid</Text>
@@ -396,14 +425,17 @@ const BilligScreen = ({ route }) => {
             value={isPaid}
           />
         </View>
-        <AppButton title='Submit' onPress={() => handleSubmit()} disabled={btnDis}></AppButton>
+        <AppButton
+          title="Submit"
+          onPress={() => handleSubmit()}
+          disabled={btnDis}
+        ></AppButton>
         {/* <Button title='kill it' onPress={() => {
 
           const popAc = StackActions.pop(2);
           navigation.dispatch(popAc);
         }}></Button> */}
       </View>
-
 
       <Modal
         animationType="slide"
@@ -417,7 +449,7 @@ const BilligScreen = ({ route }) => {
           <View style={styles.componyInfo}>
             <TouchableOpacity
               style={{
-                position: 'absolute',
+                position: "absolute",
                 top: 10,
                 right: 10,
                 backgroundColor: secodaryCardColor,
@@ -425,38 +457,60 @@ const BilligScreen = ({ route }) => {
                 borderRadius: 10,
               }}
               onPress={() => {
-                setModalVisible(false)
-              }}>
+                setModalVisible(false);
+              }}
+            >
               <Icon
-                name={'close'}
-                color={'#fefefe'}
-                type='antdesign'
+                name={"close"}
+                color={"#fefefe"}
+                type="antdesign"
                 size={20}
               ></Icon>
             </TouchableOpacity>
             <Image
-              source={require('../../assets/images/qr.png')}
+              source={require("../../assets/images/qr.png")}
               style={styles.qrBig}
             ></Image>
             <Image
-              source={require('../../assets/images/luniva360.png')}
+              source={require("../../assets/images/luniva360.png")}
               style={{
                 width: 200,
-                height: 100
+                height: 100,
               }}
             />
-            <Text style={[GlobalStyles.title1, {
-              color: primary,
-              marginBottom: 4
-            }]}>{user.UserName}</Text>
-            <Text style={[GlobalStyles.body, {
-              color: '#242426',
-              marginBottom: 8
-            }]}>Collector no. {user.UserId}</Text>
-            <Text style={[GlobalStyles.heading, {
-              color: secondary,
-              marginBottom: 20
-            }]}>Scan to pay amount</Text>
+            <Text
+              style={[
+                GlobalStyles.title1,
+                {
+                  color: primary,
+                  marginBottom: 4,
+                },
+              ]}
+            >
+              {user.UserName}
+            </Text>
+            <Text
+              style={[
+                GlobalStyles.body,
+                {
+                  color: "#242426",
+                  marginBottom: 8,
+                },
+              ]}
+            >
+              Collector no. {user.UserId}
+            </Text>
+            <Text
+              style={[
+                GlobalStyles.heading,
+                {
+                  color: secondary,
+                  marginBottom: 20,
+                },
+              ]}
+            >
+              Scan to pay amount
+            </Text>
             {/* <CancleBtn title='close' onPress={() => setModalVisible(false)}></CancleBtn> */}
           </View>
         </View>
@@ -467,23 +521,27 @@ const BilligScreen = ({ route }) => {
         transparent={true}
         visible={isVisibeRef}
         onRequestClose={() => {
-          setisVisibeRef(!isVisibeRef)
-          setColltorBtnDis(false)
+          setisVisibeRef(!isVisibeRef);
+          setColltorBtnDis(false);
         }}
       >
         <View style={styles.centeredView}>
           <View>
-            <Filter data={CollectorList} returnData={handleChangeRef} forColl></Filter>
+            <Filter
+              data={CollectorList}
+              returnData={handleChangeRef}
+              forColl
+            ></Filter>
             <FlatList
               data={CollectorList}
               keyExtractor={(item, index) => `${item.Id}${index}`}
               renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={() => {
-                    setPtientCollector(item.UserId)
-                    setPatientCollectorName(item.UserName)
-                    setisVisibeRef(false)
-                    setColltorBtnDis(false)
+                    setPtientCollector(item.UserId);
+                    setPatientCollectorName(item.UserName);
+                    setisVisibeRef(false);
+                    setColltorBtnDis(false);
                   }}
                   style={styles.cardBtn}
                 >
@@ -494,13 +552,11 @@ const BilligScreen = ({ route }) => {
           </View>
         </View>
       </Modal>
-
-
     </View>
-  )
-}
+  );
+};
 
-export default BilligScreen
+export default BilligScreen;
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -509,59 +565,56 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     // alignItems: 'center',
     flex: 1,
-
   },
   TextInput: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingHorizontal: 10,
     marginBottom: 10,
     width: windowWidth,
-
   },
   inputField: {
     borderWidth: 1,
-    borderColor: '#f1f1df',
+    borderColor: "#f1f1df",
     borderRadius: 5,
     // backgroundColor: 'red'
     width: windowWidth * 0.45,
     height: 40,
-    justifyContent: 'center',
+    justifyContent: "center",
     paddingHorizontal: 4,
   },
   testContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     width: windowWidth * 0.9,
     marginBottom: 5,
-    alignItems: 'center',
-
+    alignItems: "center",
   },
   testTitle: {
     width: windowWidth * 0.6,
     fontSize: 14,
     letterSpacing: 1,
-    color: '#fefefe'
+    color: "#fefefe",
   },
   testPrice: {
-    color: '#fefefe',
-    fontSize: 14
+    color: "#fefefe",
+    fontSize: 14,
   },
   contaienr: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
-    backgroundColor: '#fefefe',
+    backgroundColor: "#fefefe",
     borderTopLeftRadius: 18,
     borderTopRightRadius: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     paddingVertical: 15,
   },
   formLabel: {
     color: "#4688B3",
     fontSize: 16,
     letterSpacing: 1,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   fatlistfContainer: {
     height: windowHeight * 0.45,
@@ -569,15 +622,15 @@ const styles = StyleSheet.create({
     width: windowWidth,
     backgroundColor: secodaryCardColor,
     paddingVertical: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   centeredView: {
     flex: 1,
-    backgroundColor: '#fefefe',
+    backgroundColor: "#fefefe",
     // opacity: 0.8,
-    alignItems: 'center',
-    justifyContent: 'space-evenly'
+    alignItems: "center",
+    justifyContent: "space-evenly",
   },
   qrSmall: {
     width: 40,
@@ -586,22 +639,22 @@ const styles = StyleSheet.create({
   qrBig: {
     width: 240,
     height: 240,
-    resizeMode: 'contain',
+    resizeMode: "contain",
     marginVertical: 45,
   },
   QrContainer: {
     flex: 1,
-    justifyContent: 'flex-end'
+    justifyContent: "flex-end",
   },
   componyInfo: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
     width: windowWidth,
     // marginLeft: 10,
     borderRadius: 18,
     paddingVertical: 20,
-    backgroundColor: '#fefefe'
+    backgroundColor: "#fefefe",
   },
   cardBtn: {
     backgroundColor: primaryBkg,
@@ -609,12 +662,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 20,
     borderRadius: 10,
-    width: Dimensions.get('window').width - 20,
+    width: Dimensions.get("window").width - 20,
     marginLeft: 10,
   },
   cardBtnTxt: {
     color: primary,
     letterSpacing: 1,
     fontSize: 14,
-  }
-}) 
+  },
+});

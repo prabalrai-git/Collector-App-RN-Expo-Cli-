@@ -1,16 +1,25 @@
-import { Button, Dimensions, FlatList, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { GetSampleRequestListByCollector } from '../../Services/appServices/AssignPatient';
-import { Avatar, Icon } from 'react-native-elements';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import AppButton from '../../components/ui/AppButton';
-import SampleCard from './SampleCard';
-import Header from '../../components/Header';
-import LodaingComp from '../../components/ui/LodaingComp';
+import {
+  Button,
+  Dimensions,
+  FlatList,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { GetSampleRequestListByCollector } from "../../Services/appServices/AssignPatient";
+import { Avatar, Icon } from "react-native-elements";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import AppButton from "../../components/ui/AppButton";
+import SampleCard from "./SampleCard";
+import Header from "../../components/Header";
+import LodaingComp from "../../components/ui/LodaingComp";
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 // "RId": 9,
 // "PatId": 12,
 // "CollectorId": 3,
@@ -27,15 +36,13 @@ const windowHeight = Dimensions.get('window').height;
 // "Remarks": "Special discount ",
 // "CollectedDate": "2022-03-21T12:20:27"
 
-
-
 const SampleHomeScreen = () => {
   const dispatch = useDispatch();
   const [RequestList, setRequestList] = useState();
-  const user = useSelector(state => state.storeUserData.userData);
+  const user = useSelector((state) => state.storeUserData.userData);
   // console.log(user.UserId);
 
-  const [mode, setMode] = useState('date');
+  const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
   const [toshow, setToShow] = useState(false);
   const [FromDate, setFromDate] = useState(new Date());
@@ -44,25 +51,23 @@ const SampleHomeScreen = () => {
   const [isLoading, setisLoading] = useState(false);
 
   const onChangeFromData = (event, selectedValue) => {
-    setShow(Platform.OS === 'ios');
+    setShow(Platform.OS === "ios");
     setToShow(false);
-    if (mode == 'date') {
+    if (mode == "date") {
       const currentDate = selectedValue || date;
       setFromDate(currentDate);
     } else {
     }
   };
   const onChangeToData = (event, selectedValue) => {
-    setToShow(Platform.OS === 'ios');
+    setToShow(Platform.OS === "ios");
     setShow(false);
-    if (mode == 'date') {
+    if (mode == "date") {
       const currentDate = selectedValue || date;
       setToDate(currentDate);
     } else {
     }
   };
-
-
 
   const showDatepicker = () => {
     setShow(true);
@@ -75,63 +80,77 @@ const SampleHomeScreen = () => {
   // console.log("user role", user.UserRole);
 
   const handleClick = () => {
-    setisLoading(true)
-    const fromDate = `${FromDate.getFullYear() + "-" + (FromDate.getMonth() + 1) + "-" + FromDate.getDate()}`
-    const toDate = `${ToDate.getFullYear() + "-" + (ToDate.getMonth() + 1) + "-" + ToDate.getDate()}`
+    setisLoading(true);
+    const fromDate = `${
+      FromDate.getFullYear() +
+      "-" +
+      (FromDate.getMonth() + 1) +
+      "-" +
+      FromDate.getDate()
+    }`;
+    const toDate = `${
+      ToDate.getFullYear() +
+      "-" +
+      (ToDate.getMonth() + 1) +
+      "-" +
+      ToDate.getDate()
+    }`;
     // const collectorId = 3
     const data = {
-      'fromDate': fromDate,
-      'toDate': toDate,
-      'collectorId': user.UserRole !== 2 ? user.UserId : 0
-
-    }
-    console.log('data', data);
-    dispatch(GetSampleRequestListByCollector(data, (res) => {
-      setRequestList(res.RequestList)
-      setisLoading(false)
-    }))
-  }
+      fromDate: fromDate,
+      toDate: toDate,
+      collectorId: user.UserRole !== 2 ? user.UserId : 0,
+    };
+    dispatch(
+      GetSampleRequestListByCollector(data, (res) => {
+        setRequestList(res.RequestList);
+        setisLoading(false);
+      })
+    );
+  };
   // console.log('res', RequestList);
   const refData = (res) => {
     if (res === true) {
-      handleClick()
+      handleClick();
     }
-  }
-
+  };
 
   const renderItem = ({ item }) => (
-    <SampleCard data={item} refData={refData} disable={disable} retDis={handleDisable} />
+    <SampleCard
+      data={item}
+      refData={refData}
+      disable={disable}
+      retDis={handleDisable}
+    />
     // <AcceptedCard data={item} refData={refData}/>
-  )
+  );
   const handleDisable = (e) => {
     // console.log('disable', e)
-    setdisable(e)
-  }
-
-
+    setdisable(e);
+  };
 
   return (
     <View style={styles.mainContainer}>
-
       <View style={styles.container}>
         <View style={styles.top}>
-          <Header title={'Sample collection'}></Header>
+          <Header title={"Sample collection"}></Header>
           <View style={styles.dateFiltercontainer}>
-            <TouchableOpacity
-              onPress={showDatepicker}
-              style={styles.TextInput}
-            >
+            <TouchableOpacity onPress={showDatepicker} style={styles.TextInput}>
               <View style={styles.inputField}>
-                <Text>{FromDate === '' ? 'FromDate..' : FromDate.toLocaleDateString()}</Text>
+                <Text>
+                  {FromDate === ""
+                    ? "FromDate.."
+                    : FromDate.toLocaleDateString()}
+                </Text>
                 <Icon
-                  name='calendar'
+                  name="calendar"
                   color={secodaryCardColor}
-                  type='entypo'
+                  type="entypo"
                   size={20}
                 ></Icon>
               </View>
             </TouchableOpacity>
-            {show &&
+            {show && (
               <DateTimePicker
                 testID="dateTimePicker"
                 // timeZoneOffsetInMinutes={0}
@@ -140,25 +159,27 @@ const SampleHomeScreen = () => {
                 is24Hour={true}
                 display="default"
                 onChange={onChangeFromData}
-              // minimumDate={new Date()}
+                // minimumDate={new Date()}
               />
-            }
+            )}
 
             <TouchableOpacity
               onPress={showToDatepicker}
               style={styles.TextInput}
             >
               <View style={styles.inputField}>
-                <Text>{ToDate === '' ? 'ToDate..' : ToDate.toLocaleDateString()}</Text>
+                <Text>
+                  {ToDate === "" ? "ToDate.." : ToDate.toLocaleDateString()}
+                </Text>
                 <Icon
-                  name='calendar'
+                  name="calendar"
                   color={secodaryCardColor}
-                  type='entypo'
+                  type="entypo"
                   size={20}
                 ></Icon>
               </View>
             </TouchableOpacity>
-            {toshow &&
+            {toshow && (
               <DateTimePicker
                 testID="dateTimePicker"
                 // timeZoneOffsetInMinutes={0}
@@ -169,73 +190,68 @@ const SampleHomeScreen = () => {
                 onChange={onChangeToData}
                 minimumDate={new Date()}
               />
-            }
-            <AppButton title='Search' onPress={() => handleClick()}></AppButton>
+            )}
+            <AppButton title="Search" onPress={() => handleClick()}></AppButton>
           </View>
         </View>
 
-
         <View style={styles.listcontainer}>
-          {
-            isLoading === false ?
-              <FlatList
-                data={RequestList}
-                renderItem={renderItem}
-                keyExtractor={item => item.RId}
-              ></FlatList>
-              :
-              <LodaingComp></LodaingComp>
-          }
-          
-
+          {isLoading === false ? (
+            <FlatList
+              data={RequestList}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.RId}
+            ></FlatList>
+          ) : (
+            <LodaingComp></LodaingComp>
+          )}
         </View>
       </View>
-    </View >
-  )
-}
+    </View>
+  );
+};
 
-export default SampleHomeScreen
+export default SampleHomeScreen;
 
 const styles = StyleSheet.create({
-
   mainContainer: {
     flex: 1,
-    flexDirection: 'column',
-    position: 'relative',
-    backgroundColor: '#F9F9F9',
+    flexDirection: "column",
+    position: "relative",
+    backgroundColor: "#F9F9F9",
   },
   top: {
     backgroundColor: secodaryCardColor,
     borderBottomLeftRadius: 18,
     borderBottomRightRadius: 18,
-    overflow: 'hidden'
+    overflow: "hidden",
   },
   dateFiltercontainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     backgroundColor: secodaryCardColor,
     paddingHorizontal: 10,
     paddingVertical: 10,
   },
   TextInput: {
     width: windowWidth * 0.3,
-    alignItems: 'center',
-    backgroundColor: '#fefefe',
+    alignItems: "center",
+    backgroundColor: "#fefefe",
     borderRadius: 5,
-    justifyContent: 'center'
+    justifyContent: "center",
   },
   inputField: {
-    width: '100%',
+    width: "100%",
     paddingHorizontal: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 
   listcontainer: {
-    justifyContent: 'center',
+    justifyContent: "center",
     width: windowWidth,
     height: windowHeight * 0.86,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
-})
+});

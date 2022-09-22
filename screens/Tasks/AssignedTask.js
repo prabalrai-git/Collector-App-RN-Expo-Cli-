@@ -1,11 +1,13 @@
-import { FlatList, ScrollView, StyleSheet, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { dummyData } from '../../dumyData'
-import { useDispatch, useSelector } from 'react-redux'
-import { GetCollectorRequestByCollectorWiseForWeek, GetSampleRequestListByCollector } from '../../Services/appServices/AssignPatient'
-import TaskCard from '../../components/ui/TaskCard'
-import { useIsFocused } from '@react-navigation/native'
-
+import { FlatList, ScrollView, StyleSheet, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { dummyData } from "../../dumyData";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  GetCollectorRequestByCollectorWiseForWeek,
+  GetSampleRequestListByCollector,
+} from "../../Services/appServices/AssignPatient";
+import TaskCard from "../../components/ui/TaskCard";
+import { useIsFocused } from "@react-navigation/native";
 
 // Object {
 //   "CId": 75,
@@ -27,7 +29,6 @@ import { useIsFocused } from '@react-navigation/native'
 //   "SampleStatus": "Lab Received",
 // },
 
-
 const AssignedTask = () => {
   const [asignedData, setAsignedData] = useState(dummyData.RequestList);
   // const [asignedData, setAsignedData] = useState();
@@ -38,57 +39,58 @@ const AssignedTask = () => {
   const dispatch = useDispatch();
   const [disComplete, setdisComplete] = useState(false);
   const isFocused = useIsFocused();
-  const user = useSelector(state => state.storeUserData);
-  const [disable, setdisable] = useState(false)
+  const user = useSelector((state) => state.storeUserData);
+  const [disable, setdisable] = useState(false);
 
-// console.log("user ", user.userData.usrUserId);
+  // console.log("user ", user.userData.usrUserId);
   useEffect(() => {
-    handleRequestList()
-    setdisable(false)
-  }, [isFocused])
+    handleRequestList();
+    setdisable(false);
+  }, [isFocused]);
 
   useEffect(() => {
-    sortData()
-    setdisComplete(false)
-  }, [disComplete])
-
+    sortData();
+    setdisComplete(false);
+  }, [disComplete]);
 
   const renderItem = ({ item }) => (
-    <TaskCard data={item} AsignedTask disable={disable} retDis={handleDisable}/>
-  )
+    <TaskCard
+      data={item}
+      AsignedTask
+      disable={disable}
+      retDis={handleDisable}
+    />
+  );
   const handleDisable = (e) => {
     // console.log('disable', e)
-    setdisable(e)
-  }
-
+    setdisable(e);
+  };
 
   const handleRequestList = () => {
-    dispatch(GetCollectorRequestByCollectorWiseForWeek(user.userData.UserId, (res) => {
-      if (res?.WeekWiseSampleDetailsByCollectorId.length > 0) {
-        setPatietList(res.WeekWiseSampleDetailsByCollectorId)
-        setdisComplete(true)
-      } else {
-        console.log('no data found sss');
-      }
-
-    }))
-
-  }
-// console.log(PatietList);
+    dispatch(
+      GetCollectorRequestByCollectorWiseForWeek(user.userData.UserId, (res) => {
+        if (res?.WeekWiseSampleDetailsByCollectorId.length > 0) {
+          setPatietList(res.WeekWiseSampleDetailsByCollectorId);
+          setdisComplete(true);
+        } else {
+        }
+      })
+    );
+  };
+  // console.log(PatietList);
   const sortData = () => {
-    let tempArr = []
-    PatietList.map(e => {
+    let tempArr = [];
+    PatietList.map((e) => {
       // console.log(e.RequestStatus);
       if (e.SampleStatus !== null) {
-        e.SampleStatus.includes('Requested') || e.SampleStatus.includes('Asigned') ?
-          tempArr.push(e)
-          :
-          ''
+        e.SampleStatus.includes("Requested") ||
+        e.SampleStatus.includes("Asigned")
+          ? tempArr.push(e)
+          : "";
       }
       setSortedData(tempArr);
-    })
-  }
-
+    });
+  };
 
   return (
     <View>
@@ -99,19 +101,21 @@ const AssignedTask = () => {
         keyExtractor={(item, index) => `${index}${item.RId}`}
       /> */}
       <ScrollView>
-
-      
-      {
-        SortedData !== undefined &&
-        SortedData.map((e, index) => (
-          <TaskCard data={e} AsignedTask disable={disable} retDis={handleDisable} key={`${index}${e.RId}`}/>
-        ))
-      }
+        {SortedData !== undefined &&
+          SortedData.map((e, index) => (
+            <TaskCard
+              data={e}
+              AsignedTask
+              disable={disable}
+              retDis={handleDisable}
+              key={`${index}${e.RId}`}
+            />
+          ))}
       </ScrollView>
     </View>
-  )
-}
+  );
+};
 
-export default AssignedTask
+export default AssignedTask;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

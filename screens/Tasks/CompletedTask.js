@@ -1,13 +1,12 @@
-import { FlatList, StyleSheet, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { GetCollectorRequestByCollectorWiseForWeek, GetSampleRequestListByCollector } from '../../Services/appServices/AssignPatient'
-import { useIsFocused } from '@react-navigation/native'
-import TaskCard from '../../components/ui/TaskCard'
-
-
-
-
+import { FlatList, StyleSheet, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  GetCollectorRequestByCollectorWiseForWeek,
+  GetSampleRequestListByCollector,
+} from "../../Services/appServices/AssignPatient";
+import { useIsFocused } from "@react-navigation/native";
+import TaskCard from "../../components/ui/TaskCard";
 
 const CompletedTask = () => {
   const [PatietList, setPatietList] = useState();
@@ -16,29 +15,27 @@ const CompletedTask = () => {
   const [disComplete, setdisComplete] = useState(false);
   const [SortedData, setSortedData] = useState();
   const isFocused = useIsFocused();
-  const dispatch = useDispatch()
-  const user = useSelector(state => state.storeUserData);
-  const [disable, setdisable] = useState(false)
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.storeUserData);
+  const [disable, setdisable] = useState(false);
 
   useEffect(() => {
-    handleClick()
-  }, [isFocused])
+    handleClick();
+  }, [isFocused]);
 
   const renderItem = ({ item }) => (
-    <TaskCard data={item}completed disable={disable} retDis={handleDisable}/>
-  )
+    <TaskCard data={item} completed disable={disable} retDis={handleDisable} />
+  );
 
   const handleDisable = (e) => {
     // console.log('disable', e)
-    setdisable(e)
-  }
+    setdisable(e);
+  };
 
   useEffect(() => {
-    sortData()
-    setdisComplete(false)
-  }, [disComplete])
-
-
+    sortData();
+    setdisComplete(false);
+  }, [disComplete]);
 
   const handleClick = () => {
     // const fromDate = `${FromDate.getFullYear() + "-" + (FromDate.getMonth() + 1) + "-" + FromDate.getDate()}`
@@ -50,55 +47,48 @@ const CompletedTask = () => {
     //   'collectorId': collectorId
 
     // }
-    dispatch(GetCollectorRequestByCollectorWiseForWeek(user.userData.UserId, (res) => {
-      if (res?.WeekWiseSampleDetailsByCollectorId.length > 0) {
-        setPatietList(res.WeekWiseSampleDetailsByCollectorId)
-        setdisComplete(true)
-      } else {
-        console.log('no data found');
-      }
-    }))
-
-    
-  }
+    dispatch(
+      GetCollectorRequestByCollectorWiseForWeek(user.userData.UserId, (res) => {
+        if (res?.WeekWiseSampleDetailsByCollectorId.length > 0) {
+          setPatietList(res.WeekWiseSampleDetailsByCollectorId);
+          setdisComplete(true);
+        } else {
+        }
+      })
+    );
+  };
 
   const sortData = () => {
-    let tempArr = []
+    let tempArr = [];
     if (PatietList !== undefined) {
-      PatietList.map(e => {
+      PatietList.map((e) => {
         if (e.SampleStatus !== null) {
-          e.SampleStatus.includes('Lab Received') ?
-            tempArr.push(e)
-            :
-            ''
+          e.SampleStatus.includes("Lab Received") ? tempArr.push(e) : "";
         }
         setSortedData(tempArr);
-      })
+      });
     } else {
-      console.log('no list data found');
     }
-
-  }
+  };
 
   return (
     <View style={styles.mainContainer}>
-      
       <FlatList
         data={SortedData}
         renderItem={renderItem}
-        keyExtractor={(item,index) => `${index}${item.RId}`}
+        keyExtractor={(item, index) => `${index}${item.RId}`}
       />
     </View>
-  )
-}
+  );
+};
 
-export default CompletedTask
+export default CompletedTask;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-    flex: 1
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    flex: 1,
   },
-})
+});

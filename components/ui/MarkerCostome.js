@@ -1,34 +1,33 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { Marker } from 'react-native-maps'
-import collector from '../../assets/images/collector.png'
+import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { Marker } from "react-native-maps";
+import collector from "../../assets/images/collector.png";
 
 const MarkerCostome = (props) => {
-  console.log(props.coordinate);
   return (
     <>
-      {props.forCollector &&
+      {props.forCollector && (
         <Marker
           coordinate={props.coordinate}
           title={props.title}
           description={props.description}
           image={collector}
-        // width= {'20px'}
+          // width= {'20px'}
         />
-      }
-      {props.forClient &&
+      )}
+      {props.forClient && (
         <Marker
           coordinate={props.coordinate}
           title={props.title}
           description={props.description}
           // image={collector}
-        // width= {'20px'}
+          // width= {'20px'}
         />
-      }
+      )}
     </>
-  )
-}
+  );
+};
 
-export default MarkerCostome
+export default MarkerCostome;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
