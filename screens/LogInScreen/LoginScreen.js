@@ -43,7 +43,6 @@ const LoginScreen = () => {
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
-  console.log("toet token", Token);
 
   useEffect(() => {
     if (Token !== "") {
