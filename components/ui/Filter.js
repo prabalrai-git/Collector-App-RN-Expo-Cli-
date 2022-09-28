@@ -1,10 +1,17 @@
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { SearchBar } from 'react-native-elements'
-
+import { Dimensions, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { SearchBar } from "react-native-elements";
 
 const windowWidth = Dimensions.width * 0.5;
-const Filter = ({ data, returnData, bookTestFilter, selectTestFilter, forReq, forRef, forVerification }) => {
+const Filter = ({
+  data,
+  returnData,
+  bookTestFilter,
+  selectTestFilter,
+  forReq,
+  forRef,
+  forVerification,
+}) => {
   // console.log(data);
   // console.log("data" ,data.Test);
   const [search, setSearch] = useState("");
@@ -13,14 +20,12 @@ const Filter = ({ data, returnData, bookTestFilter, selectTestFilter, forReq, fo
     const pushArr = [];
     {
       selectTestFilter &&
-        data.map(e => {
-          (
-            e.Test.toLowerCase().includes(val.toLowerCase())
-              ?
-              pushArr.push(e) : ''
-            // console.log('e', e.Test)
-          )
-        })
+        data.map((e) => {
+          e.Test.toLowerCase().includes(val.toLowerCase())
+            ? pushArr.push(e)
+            : "";
+          // console.log('e', e.Test)
+        });
     }
     // "CId": 18,
     // "CollectionReqDate": "2022-03-20T13:07:21.643",
@@ -42,103 +47,90 @@ const Filter = ({ data, returnData, bookTestFilter, selectTestFilter, forReq, fo
     {
       bookTestFilter &&
         data !== undefined &&
-        data.map(e => {
-          (
-            e.PatientFName.toLowerCase().includes(val.toLowerCase()) ||
-              e.PatientLName.toLowerCase().includes(val.toLowerCase())
-              ?
-              pushArr.push(e) : ''
-            // console.log('e', e.Test)
-          )
-        })
-
+        data.map((e) => {
+          e.PatientFName.toLowerCase().includes(val.toLowerCase()) ||
+          e.PatientLName.toLowerCase().includes(val.toLowerCase())
+            ? pushArr.push(e)
+            : "";
+          // console.log('e', e.Test)
+        });
     }
     // console.log("pushed arrr",pushArr);
 
     {
       forReq &&
         data !== undefined &&
-        data.map(e => {
-          (
-            e.Requestor.toLowerCase().includes(val.toLowerCase())
-              ?
-              pushArr.push(e) : ''
-            // console.log('e', e.Test)
-          )
-        })
+        data.map((e) => {
+          e.Requestor.toLowerCase().includes(val.toLowerCase())
+            ? pushArr.push(e)
+            : "";
+          // console.log('e', e.Test)
+        });
     }
     {
       forRef &&
         data !== undefined &&
-        data.map(e => {
-          (
-            e.Name.toLowerCase().includes(val.toLowerCase())
-              ?
-              pushArr.push(e) : ''
-            // console.log('e', e.Test)
-          )
-        })
+        data.map((e) => {
+          e.Name.toLowerCase().includes(val.toLowerCase())
+            ? pushArr.push(e)
+            : "";
+          // console.log('e', e.Test)
+        });
     }
     {
       forVerification &&
         data !== undefined &&
-        data.map(e => {
+        data.map((e) => {
           e.PatientName.toLowerCase().includes(val.toLowerCase())
-            ?
-            pushArr.push(e) : ''
-        })
-
+            ? pushArr.push(e)
+            : "";
+        });
     }
     // console.log(data);
     // {
     //   forColl &&
     // }
 
-    returnData(pushArr)
+    returnData(pushArr);
   };
 
   useEffect(() => {
-    handlSearch(search)
-  }, [search])
-
+    handlSearch(search);
+  }, [search]);
 
   return (
     <View>
-      {
-        forVerification ?
-          < SearchBar
-            placeholder="Type Here..."
-            onChangeText={e => setSearch(e)}
-            value={search}
-            platform='ios'
-            containerStyle={{ backgroundColor: secodaryCardColor, width: 240 }}
-            inputContainerStyle={{ backgroundColor: '#fefefe' }}
-            cancelButtonProps={{
-              color: '#fefefe'
-            }}
+      {forVerification ? (
+        <SearchBar
+          placeholder="Search..."
+          onChangeText={(e) => setSearch(e)}
+          value={search}
+          platform="ios"
+          containerStyle={{ backgroundColor: secodaryCardColor, width: 240 }}
+          inputContainerStyle={{ backgroundColor: "#fefefe" }}
+          cancelButtonProps={{
+            color: "#fefefe",
+          }}
           // showLoading = {true}
-          ></SearchBar>
-
-          :
-          <SearchBar
-            placeholder="Type Here..."
-            onChangeText={e => setSearch(e)}
-            value={search}
-            platform='ios'
-            containerStyle={{ backgroundColor: secodaryCardColor }}
-            inputContainerStyle={{ backgroundColor: '#fefefe' }}
-            cancelButtonProps={{
-              color: '#fefefe'
-            }}
+        ></SearchBar>
+      ) : (
+        <SearchBar
+          placeholder="Search..."
+          onChangeText={(e) => setSearch(e)}
+          value={search}
+          platform="ios"
+          containerStyle={{ backgroundColor: secodaryCardColor }}
+          inputContainerStyle={{ backgroundColor: "#fefefe" }}
+          cancelButtonProps={{
+            color: "#fefefe",
+          }}
           // showLoading = {true}
-          ></SearchBar>
-      }
+        ></SearchBar>
+      )}
+    </View>
+  );
+};
 
+export default Filter;
 
-    </View >
-  )
-}
-
-export default Filter
-
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

@@ -262,7 +262,7 @@ const AddRefReq = ({ route }) => {
 
   return (
     <View style={styles.maincontainer}>
-      <Header title={"Add Patient, ref req"}></Header>
+      <Header title={"Add Referer & Requestor"}></Header>
       <View style={styles.container}>
         <TouchableOpacity onPress={showDatepicker} style={styles.TextInput}>
           <Text style={styles.cLabel}>Date and Time</Text>
@@ -295,9 +295,9 @@ const AddRefReq = ({ route }) => {
 
         <Input
           value={Remarks}
-          placeholder="remarks"
+          placeholder="Enter remarks"
           onChangeText={(e) => setRemarks(e)}
-          label="remarks"
+          label="Remarks"
           inputContainerStyle={{
             borderWidth: 1,
             borderColor: "#f1f1df",

@@ -140,7 +140,7 @@ const AddPatientSelectTest = ({ route }) => {
         data={data}
         returnData={handleChange}
         selectTestFilter
-        title={"Select Test"}
+        title={"Select Tests"}
       ></Header>
       <View style={styles.container}>
         {/* <Filter data={data} returnData={handleChange} selectTestFilter></Filter> */}
@@ -170,7 +170,7 @@ const AddPatientSelectTest = ({ route }) => {
         <View style={styles.modalBkg}>
           <Modal
             animationType="slide"
-            transparent={true}
+            transparent={false}
             visible={modalVisible}
             onRequestClose={() => {
               setModalVisible(!modalVisible);
@@ -189,7 +189,7 @@ const AddPatientSelectTest = ({ route }) => {
                     </View>
                     <View>
                       <CancleBtn
-                        title="remove"
+                        title="Remove"
                         onPress={() => RemoveItem(e)}
                       ></CancleBtn>
                     </View>
@@ -208,11 +208,11 @@ const AddPatientSelectTest = ({ route }) => {
                         <Text style={styles.textStyle}>cancle</Text>
                       </Pressable> */}
                   <CancleBtn
-                    title={"cancel"}
+                    title={"Cancel"}
                     onPress={() => setModalVisible(!modalVisible)}
                   ></CancleBtn>
                   <AppButton
-                    title="proceed"
+                    title="Proceed"
                     onPress={() => handleProceed()}
                   ></AppButton>
                 </View>

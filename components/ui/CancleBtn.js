@@ -10,7 +10,7 @@ const CancleBtn = (props) => {
         onPress={props.onPress}
         buttonStyle={styles.secondaryBtn}
         type={"clear"}
-        titleStyle={{ color: cancle, fontSize: 14 }}
+        titleStyle={{ color: "white", fontSize: 15 }}
       >
         {/* <Text style={styles.txt}>{props.title}</Text> */}
       </Button>
@@ -27,9 +27,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingVertical: 10,
     borderRadius: 8,
-    // backgroundColor: '#f5dd4b',
+    backgroundColor: "red",
     borderWidth: 1,
-    borderColor: "#1a3e5786",
+    borderColor: "red",
     maxWidth: Dimensions.get("window").width * 0.95,
   },
 });

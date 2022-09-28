@@ -1,38 +1,48 @@
-import { Dimensions, FlatList, ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { GetPatientList } from '../../Services/appServices/AssignPatient'
-import { useIsFocused, useNavigation } from '@react-navigation/native'
-import Header from '../../components/Header'
-import PatientInfoCard from '../../components/ui/PatientInfoCard'
-import { GetTokenByUserId } from '../../Services/appServices/loginService'
-import { GetListOfCollector } from '../../Services/appServices/Collector'
+import {
+  Dimensions,
+  FlatList,
+  ImageBackground,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { GetPatientList } from "../../Services/appServices/AssignPatient";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import Header from "../../components/Header";
+import PatientInfoCard from "../../components/ui/PatientInfoCard";
+import { GetTokenByUserId } from "../../Services/appServices/loginService";
+import { GetListOfCollector } from "../../Services/appServices/Collector";
 
 const windowWidth = Dimensions.width;
 
 const LocationTrackingHomeScreen = () => {
   const [CollectorList, setCollectorList] = useState();
-  const [NewData, setNewData] = useState([])
+  const [NewData, setNewData] = useState([]);
   const isFocused = useIsFocused();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [disable, setdisable] = useState(false);
   const navigation = useNavigation();
 
   useEffect(() => {
     if (isFocused) {
-      dispatch(GetListOfCollector((res) => {
-        // console.log('response', res.userToken);
-        setCollectorList(res.GetListOfCollectors)
-      }))
+      dispatch(
+        GetListOfCollector((res) => {
+          // console.log('response', res.userToken);
+          setCollectorList(res.GetListOfCollectors);
+        })
+      );
     }
-    setdisable(false)
+    setdisable(false);
   }, [isFocused]);
 
   const hadleEvent = (e) => {
-    navigation.navigate('CollectorMapScreen', {
-      data: e
-    })
-  }
+    navigation.navigate("CollectorMapScreen", {
+      data: e,
+    });
+  };
 
   const renderItem = ({ item }) => (
     <Pressable onPress={() => hadleEvent(item)} style={styles.cardCotainer}>
@@ -47,35 +57,32 @@ const LocationTrackingHomeScreen = () => {
           {/* <BadgeStatus RequestStatus={data.SampleStatus} IsPaid={data.IsPaid}></BadgeStatus> */}
         </View>
       </View>
-
     </Pressable>
-  )
-
-
+  );
 
   return (
     <View style={styles.mainContainer}>
-      <Header title={'collector'}></Header>
+      <Header title={"Collectors"}></Header>
       <View style={styles.container}>
         <FlatList
           data={CollectorList}
           renderItem={renderItem}
-          keyExtractor={item => `${item.CId}${item.UserId}`}
+          keyExtractor={(item) => `${item.CId}${item.UserId}`}
         />
       </View>
     </View>
-  )
-}
+  );
+};
 
-export default LocationTrackingHomeScreen
+export default LocationTrackingHomeScreen;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1
+    flex: 1,
   },
   container: {
     // marginTop: 40,
-    flex: 1
+    flex: 1,
   },
   cardCotainer: {
     width: windowWidth,
@@ -87,11 +94,11 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     paddingHorizontal: 15,
     paddingVertical: 10,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     borderTopRightRadius: 12,
     borderBottomRightRadius: 12,
     borderLeftWidth: 4,
-    borderLeftColor: '#205072',
+    borderLeftColor: "#205072",
     shadowColor: "#101010",
     shadowOffset: {
       width: 0,
@@ -103,9 +110,9 @@ const styles = StyleSheet.create({
     elevation: 7,
   },
   card: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   ctitle: {
     fontSize: 18,
@@ -128,12 +135,11 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
     backgroundColor: "#ff7f00",
     borderRadius: 10,
-    width: 'auto'
+    width: "auto",
   },
   centeredView: {
-    width: '100%',
+    width: "100%",
     flex: 1,
-    backgroundColor: '#f9f9f9',
-
+    backgroundColor: "#f9f9f9",
   },
-})
+});

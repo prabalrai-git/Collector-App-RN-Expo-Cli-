@@ -6,6 +6,7 @@ import {
   Image,
   Modal,
   Pressable,
+  ScrollView,
   StyleSheet,
   Switch,
   Text,
@@ -248,7 +249,7 @@ const AddTestBillingScreen = ({ route }) => {
               },
             ]);
           } else {
-            Alert.alert("Saved!", "Test booked Sucessfully", [
+            Alert.alert("Saved!", "Test booked Successfully", [
               {
                 text: "OK",
                 onPress: () => {
@@ -270,7 +271,8 @@ const AddTestBillingScreen = ({ route }) => {
   };
   return (
     <View style={styles.mainContainer}>
-      <Header title={"bill"}></Header>
+      <Header title={"Bill"}></Header>
+
       <View style={styles.fatlistfContainer}>
         <FlatList
           data={route.params.tests.testList}
@@ -287,7 +289,7 @@ const AddTestBillingScreen = ({ route }) => {
         <View style={styles.TextInput}>
           <Text style={styles.formLabel}>Collector Charge</Text>
           <TextInput
-            value={CollectionCharge}
+            value={CollectionCharge.toString()}
             placeholder="Collector Charge"
             onChangeText={(e) => setCollectionCharge(e)}
             style={styles.inputField}
@@ -298,7 +300,7 @@ const AddTestBillingScreen = ({ route }) => {
         <View style={styles.TextInput}>
           <Text style={styles.formLabel}>Discount Amount</Text>
           <TextInput
-            value={discount}
+            value={discount.toString()}
             placeholder="Discount Amount"
             onChangeText={(e) => setDiscount(e)}
             style={styles.inputField}
@@ -369,10 +371,10 @@ const AddTestBillingScreen = ({ route }) => {
               onValueChange={(itemValue) => setpaidStatus(itemValue)}
               mode="dropdown"
             >
-              <Picker.Item label="cash" value={"cash"} key={"cash"} />
-              <Picker.Item label="card" value={"card"} key={"card"} />
+              <Picker.Item label="Cash" value={"cash"} key={"cash"} />
+              <Picker.Item label="Card" value={"card"} key={"card"} />
               <Picker.Item
-                label="fone pay"
+                label="Fone Pay"
                 value={"fone Pay"}
                 key={"fone Pay"}
               />
@@ -415,15 +417,19 @@ const AddTestBillingScreen = ({ route }) => {
         <View style={styles.TextInput}>
           <Text style={styles.formLabel}>IsPaid</Text>
           <Switch
-            trackColor={{ false: "#767577", true: "#81b0ff" }}
-            thumbColor={isPaid ? "#f5dd4b" : "#f4f3f4"}
+            trackColor={{ false: "grey", true: "grey" }}
+            thumbColor={isPaid ? "green" : "#f4f3f4"}
             ios_backgroundColor="#3e3e3e"
             onValueChange={toggleSwitch}
             value={isPaid}
+            style={{
+              marginRight: 90,
+              transform: [{ scaleX: 1.4 }, { scaleY: 1.4 }],
+            }}
           />
         </View>
         <AppButton
-          title="handleSubmit"
+          title="Proceed"
           onPress={() => handleSubmit()}
           disabled={btnDis}
         ></AppButton>
@@ -579,7 +585,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 10,
-    marginBottom: 10,
+    marginBottom: 14,
     width: windowWidth,
   },
   inputField: {
@@ -601,13 +607,13 @@ const styles = StyleSheet.create({
   },
   testTitle: {
     width: windowWidth * 0.6,
-    fontSize: 14,
+    fontSize: 12,
     letterSpacing: 1,
     color: "#fefefe",
   },
   testPrice: {
     color: "#fefefe",
-    fontSize: 14,
+    fontSize: 12,
   },
   contaienr: {
     position: "absolute",

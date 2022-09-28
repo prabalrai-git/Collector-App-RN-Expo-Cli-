@@ -1,19 +1,27 @@
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Modal,
+  TextInput,
+  Pressable,
+  Image,
+  FlatList,
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import StatusBadge from "./StatusBadge";
+import MapView from "react-native-maps";
+import MarkerCostome from "./MarkerCostome";
+import { Avatar, Icon } from "react-native-elements";
+import { InfoActionButton } from "./HomeActionButton";
+import { GetAddressOfClient } from "../../Services/appServices/AssignPatient";
+import { GlobalStyles } from "../../GlobalStyle";
 
-import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Pressable, Image, FlatList } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
-import StatusBadge from './StatusBadge';
-import MapView from 'react-native-maps';
-import MarkerCostome from './MarkerCostome';
-import { Avatar, Icon } from 'react-native-elements';
-import { InfoActionButton } from './HomeActionButton';
-import { GetAddressOfClient } from '../../Services/appServices/AssignPatient';
-import { GlobalStyles } from '../../GlobalStyle';
-
-
-
-const windowWidth = Dimensions.get('window').width
+const windowWidth = Dimensions.get("window").width;
 
 // "SrId": 1,
 //  "RequestId": 2,
@@ -21,7 +29,6 @@ const windowWidth = Dimensions.get('window').width
 //  "EntryDate": "2022-03-22T10:57:37.8717928+05:45",
 //  "UserId": 5,
 //  "Remarks": "sample string 6"
-
 
 // "CollectedDate": "2022-04-03T17:15:03",
 // "CollectionCharge": 500,
@@ -41,55 +48,64 @@ const windowWidth = Dimensions.get('window').width
 // "RequestStatus": "Requested",
 // "TestTotalAmount": 5815,
 
-
-
 const PatientInfoCard = ({ data, AsignedTask, disable, retDis }) => {
   // console.log('data', data);
   const [isVisibe, setisVisibe] = useState(false);
-  const user = useSelector(state => state.storeUserData);
-  const dispatch = useDispatch()
-  const navigation = useNavigation()
+  const user = useSelector((state) => state.storeUserData);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
   const [Coordinate, setCoordinate] = useState({
-    'latitude': null,
-    'longitude': null
+    latitude: null,
+    longitude: null,
   });
   useEffect(() => {
-    dispatch(GetAddressOfClient(data.CId, (res) => {
-      let temp = JSON.parse(res.clientAddress[0].PatientAddress)
-      setCoordinate(temp)
-    }))
-  }, [])
+    dispatch(
+      GetAddressOfClient(data.CId, (res) => {
+        let temp = JSON.parse(res.clientAddress[0].PatientAddress);
+        setCoordinate(temp);
+      })
+    );
+  }, []);
 
   const handleProceed = () => {
-    navigation.navigate('SelectTest', {
-      data: data
-    })
-    setisVisibe(false)
-  }
+    navigation.navigate("SelectTest", {
+      data: data,
+    });
+    setisVisibe(false);
+  };
   const handleRequest = () => {
-    navigation.navigate('PrevioiusRequest', { data: data })
-    setisVisibe(false)
-  }
-
+    navigation.navigate("PrevioiusRequest", { data: data });
+    setisVisibe(false);
+  };
 
   const hadleEvent = () => {
-    setisVisibe(true)
+    setisVisibe(true);
     retDis(true);
-  }
+  };
 
   const cMarker = {
     latlng: {
-      latitude: Coordinate.latitude === null || Coordinate.latitude === undefined ? 27.7172 : Coordinate.latitude,
-      longitude: Coordinate.longitude === null || Coordinate.longitude === undefined ? 85.3240 : Coordinate.longitude
+      latitude:
+        Coordinate.latitude === null || Coordinate.latitude === undefined
+          ? 27.7172
+          : Coordinate.latitude,
+      longitude:
+        Coordinate.longitude === null || Coordinate.longitude === undefined
+          ? 85.324
+          : Coordinate.longitude,
       // latitude: 27.7172,
       // longitude: 85.3240,
     },
-    title: 'title',
-    description: 'somethindg'
-  }
+    title: "title",
+    description: "somethindg",
+  };
   return (
     <>
-      <Pressable disabled={disable} onPress={() => hadleEvent()} style={styles.cardCotainer}>
+      <Pressable
+        disabled={disable}
+        onPress={() => hadleEvent()}
+        style={styles.cardCotainer}
+      >
         <View style={styles.cardBody}>
           <View>
             {/* <Avatar
@@ -98,40 +114,40 @@ const PatientInfoCard = ({ data, AsignedTask, disable, retDis }) => {
               source={require('../../assets/images/user.png')}
             /> */}
             <Icon
-              name={'user'}
-              color={'#fefefe'}
-              type='antdesign'
+              name={"user"}
+              color={"#fefefe"}
+              type="antdesign"
               size={30}
-              backgroundColor={'#3caea4'}
+              backgroundColor={"#3caea4"}
               borderRadius={50}
               padding={10}
             ></Icon>
           </View>
           <View style={styles.card}>
-            <Text style={styles.ctitle}>{data.PatientFName} {data.PatientLName}</Text>
+            <Text style={styles.ctitle}>
+              {data.PatientFName} {data.PatientLName}
+            </Text>
             <Text style={styles.remarks}>Client Id: {data.CId}</Text>
           </View>
           {/* <BadgeStatus RequestStatus={data.RequestStatus}></BadgeStatus> */}
         </View>
       </Pressable>
-      {
-        AsignedTask &&
+      {AsignedTask && (
         <Modal
           animationType="slide"
           transparent={true}
           visible={isVisibe}
           onRequestClose={() => {
-            setisVisibe(!isVisibe)
+            setisVisibe(!isVisibe);
             // setisRemarksVisible(false)
             retDis(false);
           }}
-
         >
           <View style={GlobalStyles.modalContainer}>
             <View style={styles.centeredView}>
               <TouchableOpacity
                 style={{
-                  position: 'absolute',
+                  position: "absolute",
                   top: 10,
                   right: 10,
                   backgroundColor: secodaryCardColor,
@@ -139,14 +155,15 @@ const PatientInfoCard = ({ data, AsignedTask, disable, retDis }) => {
                   borderRadius: 10,
                 }}
                 onPress={() => {
-                  setisVisibe(false)
+                  setisVisibe(false);
                   // setisRemarksVisible(false)
                   retDis(false);
-                }}>
+                }}
+              >
                 <Icon
-                  name={'close'}
-                  color={'#fefefe'}
-                  type='antdesign'
+                  name={"close"}
+                  color={"#fefefe"}
+                  type="antdesign"
                   size={20}
                 ></Icon>
               </TouchableOpacity>
@@ -158,9 +175,9 @@ const PatientInfoCard = ({ data, AsignedTask, disable, retDis }) => {
                     style={styles.profileImg}
                   ></Image> */}
                   <Icon
-                    name={'user'}
+                    name={"user"}
                     color={primary}
-                    type='antdesign'
+                    type="antdesign"
                     size={90}
                     padding={10}
                     backgroundColor={primaryBkg}
@@ -168,27 +185,34 @@ const PatientInfoCard = ({ data, AsignedTask, disable, retDis }) => {
                     style={GlobalStyles.boxShadow}
                   ></Icon>
                   <View style={styles.right}>
-                    <Text style={styles.name}>{data.PatientFName} {data.PatientMName} {data.PatientLName}</Text>
+                    <Text style={styles.name}>
+                      {data.PatientFName} {data.PatientMName}{" "}
+                      {data.PatientLName}
+                    </Text>
                     <View style={styles.detail}>
-                      <Text >Cliet ID : </Text>
+                      <Text>Cliet ID : </Text>
                       <Text style={{ color: "#FF7F00" }}>{data.CId}</Text>
                     </View>
                     <View style={styles.detail}>
-                      <Text >gender: </Text>
-                      <Text style={{ color: "#FF7F00" }}>{data.PatientGender}</Text>
+                      <Text>Gender: </Text>
+                      <Text style={{ color: "#FF7F00" }}>
+                        {data.PatientGender}
+                      </Text>
                     </View>
                     <View style={styles.detail}>
-                      <Text >age: </Text>
-                      <Text style={{ color: "#FF7F00" }}>{data.PatientAge}</Text>
+                      <Text>Age: </Text>
+                      <Text style={{ color: "#FF7F00" }}>
+                        {data.PatientAge}
+                      </Text>
                     </View>
-                    {
-                      data.PatientEmailId !== "" ?
-                        <View style={styles.detail}>
-                          <Text >email: </Text>
-                          <Text style={{ color: "#FF7F00" }}>{data.PatientEmailId}</Text>
-                        </View> : null
-                    }
-
+                    {data.PatientEmailId !== "" ? (
+                      <View style={styles.detail}>
+                        <Text>Email: </Text>
+                        <Text style={{ color: "#FF7F00" }}>
+                          {data.PatientEmailId}
+                        </Text>
+                      </View>
+                    ) : null}
                   </View>
                 </View>
 
@@ -197,12 +221,19 @@ const PatientInfoCard = ({ data, AsignedTask, disable, retDis }) => {
                   <MapView
                     style={GlobalStyles.map}
                     initialRegion={{
-                      latitude: Coordinate.latitude === null || Coordinate.latitude === undefined ? 27.7172 : Coordinate.latitude,
-                      longitude: Coordinate.longitude === null || Coordinate.longitude === undefined ? 85.3240 : Coordinate.longitude,
+                      latitude:
+                        Coordinate.latitude === null ||
+                        Coordinate.latitude === undefined
+                          ? 27.7172
+                          : Coordinate.latitude,
+                      longitude:
+                        Coordinate.longitude === null ||
+                        Coordinate.longitude === undefined
+                          ? 85.324
+                          : Coordinate.longitude,
                       latitudeDelta: 0.00111922,
                       longitudeDelta: 0.00111421,
                     }}
-
                   >
                     <MarkerCostome
                       coordinate={cMarker.latlng}
@@ -215,29 +246,30 @@ const PatientInfoCard = ({ data, AsignedTask, disable, retDis }) => {
 
                 <View style={styles.module}>
                   <Pressable onPress={() => handleRequest()}>
-                    <InfoActionButton icon={'book'} name={'Previous Request'} type={'antdesign'}></InfoActionButton>
+                    <InfoActionButton
+                      icon={"book"}
+                      name={"Previous Request"}
+                      type={"antdesign"}
+                    ></InfoActionButton>
                   </Pressable>
                   <Pressable onPress={() => handleProceed()}>
-                    <InfoActionButton icon={'addfile'} name={'Book Test'} type={'antdesign'}></InfoActionButton>
+                    <InfoActionButton
+                      icon={"addfile"}
+                      name={"Book Test"}
+                      type={"antdesign"}
+                    ></InfoActionButton>
                   </Pressable>
                 </View>
-
               </View>
-
-
             </View>
           </View>
-
         </Modal>
-      }
-
-
-
+      )}
     </>
-  )
-}
+  );
+};
 
-export default PatientInfoCard
+export default PatientInfoCard;
 
 const styles = StyleSheet.create({
   cardCotainer: {
@@ -249,9 +281,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingHorizontal: 15,
     paddingVertical: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     borderRadius: 12,
     shadowColor: "#81e0f1d3",
     shadowOffset: {
@@ -268,7 +300,7 @@ const styles = StyleSheet.create({
   },
   ctitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     letterSpacing: 2,
     color: "#205072",
     marginBottom: 5,
@@ -287,23 +319,23 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
     backgroundColor: "#ff7f00",
     borderRadius: 10,
-    width: 'auto'
+    width: "auto",
   },
   centeredView: {
-    width: '100%',
+    width: "100%",
     flex: 1,
   },
   textInput: {
     width: "100%",
     flex: 1,
     marginLeft: 10,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   module: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginTop: 10,
   },
   patInfocontainer: {
@@ -314,7 +346,7 @@ const styles = StyleSheet.create({
   },
 
   profile: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingVertical: 10,
   },
   right: {
@@ -327,22 +359,22 @@ const styles = StyleSheet.create({
   },
   name: {
     width: windowWidth * 0.5,
-    color: '#205072',
+    color: "#205072",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     letterSpacing: 1.3,
-    marginBottom: 6
+    marginBottom: 6,
   },
 
   title: {
     fontSize: 16,
-    color: '#205072',
-    fontWeight: 'bold',
+    color: "#205072",
+    fontWeight: "bold",
     letterSpacing: 1.3,
     // marginBottom: 10
   },
   detail: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingBottom: 3,
-  }
-})
+  },
+});

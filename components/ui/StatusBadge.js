@@ -5,7 +5,7 @@ const StatusBadge = ({ RequestStatus, IsPaid }) => {
   return (
     <View style={styles.badgeContainer}>
       {IsPaid === true ? (
-        <Text style={[styles.badge, { backgroundColor: "#a3ee19" }]}>paid</Text>
+        <Text style={[styles.badge, { backgroundColor: "#a3ee19" }]}>Paid</Text>
       ) : (
         <Text style={[styles.badge, { backgroundColor: "#e43333" }]}>
           not paid
@@ -13,12 +13,12 @@ const StatusBadge = ({ RequestStatus, IsPaid }) => {
       )}
       {RequestStatus === "Requested" || RequestStatus === "Asigned" ? (
         <View style={styles.badgeContainer}>
-          <Text style={[styles.badge]}>pending</Text>
+          <Text style={[styles.badge]}>Pending</Text>
         </View>
       ) : null}
       {RequestStatus === "Collected" ? (
         <View style={styles.badgeContainer}>
-          <Text style={[styles.badge]}>pending</Text>
+          <Text style={[styles.badge]}>Pending</Text>
           <Text style={[styles.badge, { backgroundColor: "#19e0ee" }]}>
             {RequestStatus}
           </Text>
@@ -26,7 +26,7 @@ const StatusBadge = ({ RequestStatus, IsPaid }) => {
       ) : null}
       {RequestStatus === "Accepted" ? (
         <View style={styles.badgeContainer}>
-          <Text style={[styles.badge]}>pending</Text>
+          <Text style={[styles.badge]}>Pending</Text>
           <Text style={[styles.badge, { backgroundColor: "#a3ee19" }]}>
             {RequestStatus}
           </Text>
@@ -41,7 +41,7 @@ const StatusBadge = ({ RequestStatus, IsPaid }) => {
       ) : null}
       {RequestStatus === "Lab Received" ? (
         <View style={styles.badgeContainer}>
-          <Text style={[styles.badge]}>pending</Text>
+          <Text style={[styles.badge]}>Pending</Text>
           <Text style={[styles.badge, { backgroundColor: "#19e0ee" }]}>
             Collected
           </Text>
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   },
   badge: {
     backgroundColor: "#f3ff49",
-    color: "#fefefe",
+    color: "black",
     paddingHorizontal: 6,
     paddingVertical: 3,
     borderRadius: 20,

@@ -71,7 +71,6 @@ const RejectedTask = () => {
         setSortedData(tempArr);
       });
     } else {
-      console.log("no list data found , rejected");
     }
   };
 

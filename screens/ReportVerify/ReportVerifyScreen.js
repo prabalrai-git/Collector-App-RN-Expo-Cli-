@@ -139,7 +139,7 @@ const ReportVerifyScreen = () => {
             {SerchFilter !== true ? (
               <View style={styles.filterContainer}>
                 <AppButton
-                  title={"load Item"}
+                  title={"Load Item"}
                   onPress={() =>
                     setSerchFilter((previousState) => !previousState)
                   }
@@ -204,13 +204,17 @@ const ReportVerifyScreen = () => {
                   <View style={styles.switchContainer}>
                     <Text style={styles.inputLabelTxt}>Diagnostic In</Text>
                     <Switch
-                      trackColor={{ false: "#767577", true: "#81b0ff" }}
-                      thumbColor={diagnosticIn ? "#f5dd4b" : "#f4f3f4"}
+                      trackColor={{ false: "grey", true: "grey" }}
+                      thumbColor={diagnosticIn ? "green" : "#f4f3f4"}
                       ios_backgroundColor="#3e3e3e"
                       onValueChange={() =>
                         setdiagnosticIn((previousState) => !previousState)
                       }
                       value={diagnosticIn}
+                      style={{
+                        marginRight: 90,
+                        transform: [{ scaleX: 1.4 }, { scaleY: 1.4 }],
+                      }}
                     />
                   </View>
                   {diagnosticIn && (
@@ -258,14 +262,19 @@ const ReportVerifyScreen = () => {
                 <View style={styles.TxtInputContainer}>
                   <View style={styles.switchContainer}>
                     <Text style={styles.inputLabelTxt}>Diagnostic Out</Text>
+
                     <Switch
-                      trackColor={{ false: "#767577", true: "#81b0ff" }}
-                      thumbColor={diagnosticOut ? "#f5dd4b" : "#f4f3f4"}
+                      trackColor={{ false: "grey", true: "grey" }}
+                      thumbColor={diagnosticOut ? "green" : "#f4f3f4"}
                       ios_backgroundColor="#3e3e3e"
                       onValueChange={() =>
                         setdiagnosticOut((previousState) => !previousState)
                       }
                       value={diagnosticOut}
+                      style={{
+                        marginRight: 90,
+                        transform: [{ scaleX: 1.4 }, { scaleY: 1.4 }],
+                      }}
                     />
                   </View>
                   {diagnosticOut && (
@@ -317,12 +326,12 @@ const ReportVerifyScreen = () => {
                   }}
                 >
                   <AppButton
-                    title={"load"}
+                    title={"Load"}
                     onPress={() => handleClick()}
                   ></AppButton>
                   <Text> </Text>
                   <CancleBtn
-                    title={"cancle"}
+                    title={"Cancle"}
                     onPress={() => setSerchFilter(!SerchFilter)}
                   ></CancleBtn>
                 </View>

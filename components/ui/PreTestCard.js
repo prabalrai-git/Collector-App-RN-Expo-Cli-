@@ -1,16 +1,19 @@
-import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, Pressable, Image, FlatList } from 'react-native'
-import React, { useState } from 'react'
-import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
-import StatusBadge from './StatusBadge';
-import { Icon } from 'react-native-elements';
-import BadgeStatus from './BadgeStatus';
-import DateBadge from './DateBadge';
-import { GlobalStyles } from '../../GlobalStyle';
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  View,
+  Modal,
+  Pressable,
+} from "react-native";
+import React, { useState } from "react";
 
+import { Icon } from "react-native-elements";
+import BadgeStatus from "./BadgeStatus";
+import DateBadge from "./DateBadge";
+import { GlobalStyles } from "../../GlobalStyle";
 
-const windowWidth = Dimensions.get('window').width
-
+const windowWidth = Dimensions.get("window").width;
 
 const PreTestCard = ({ data, disable, retDis }) => {
   // console.log('data', data.SampleStatus);
@@ -22,17 +25,20 @@ const PreTestCard = ({ data, disable, retDis }) => {
   const hadleEvent = () => {
     setisVisibe(true);
     retDis(true);
-  }
-
+  };
 
   return (
     <>
-      <Pressable disabled={disable} onPress={() => hadleEvent()} style={styles.cardCotainer}>
+      <Pressable
+        disabled={disable}
+        onPress={() => hadleEvent()}
+        style={styles.cardCotainer}
+      >
         <View style={styles.cardBody}>
           <Icon
-            name={'lab-flask'}
-            color={'#FF7F00'}
-            type='entypo'
+            name={"lab-flask"}
+            color={"#FF7F00"}
+            type="entypo"
             style={styles.icon}
             size={30}
           ></Icon>
@@ -49,17 +55,15 @@ const PreTestCard = ({ data, disable, retDis }) => {
         transparent={true}
         visible={isVisibe}
         onRequestClose={() => {
-          setisVisibe(!isVisibe)
+          setisVisibe(!isVisibe);
           retDis(false);
           // setActive(true);
         }}
-
       >
-
         <View style={styles.centeredView}>
           <Pressable
             style={{
-              position: 'absolute',
+              position: "absolute",
               top: 7,
               right: 10,
               backgroundColor: secodaryCardColor,
@@ -67,145 +71,180 @@ const PreTestCard = ({ data, disable, retDis }) => {
               borderRadius: 10,
             }}
             onPress={() => {
-              setisVisibe(false)
+              setisVisibe(false);
               // setisRemarksVisible(false)
               retDis(false);
-            }}>
+            }}
+          >
             <Icon
-              name={'close'}
-              color={'#fefefe'}
-              type='antdesign'
+              name={"close"}
+              color={"#fefefe"}
+              type="antdesign"
               size={20}
             ></Icon>
           </Pressable>
 
           <View style={styles.patInfocontainer}>
             <View style={styles.profile}>
-              <View style={{ flexDirection: 'row', }}>
-                <Text style={[styles.name, { color: "#FF7F00" }]}>Request ID :</Text>
+              <View style={{ flexDirection: "row" }}>
+                <Text style={[styles.name, { color: "#FF7F00" }]}>
+                  Request ID :
+                </Text>
                 <Text style={styles.name}> {data.RId}</Text>
               </View>
             </View>
             <View style={[styles.cardContainer, GlobalStyles.boxShadow]}>
               <View style={styles.flatListContainer}>
                 <Text style={styles.title}>Tests</Text>
-                {
-                  TestList !== undefined ?
-                    TestList.map((e) => (
+                {TestList !== undefined
+                  ? TestList.map((e) => (
                       <View style={styles.testCard} key={e.TestName}>
                         <Text style={styles.testsText}>{e}</Text>
                         {/* <Text style={styles.testsPrice}>Rs.{e.TestPrice}</Text> */}
                       </View>
-                    )) : null
-                }
+                    ))
+                  : null}
               </View>
               <View>
                 <Text style={styles.title}>Payment Details</Text>
                 <View style={styles.testCard}>
                   <Text style={styles.testsText}>Total</Text>
-                  <Text style={styles.finsltestsPrice}>Rs.{data.TestTotalAmount}</Text>
+                  <Text style={styles.finsltestsPrice}>
+                    Rs.{data.TestTotalAmount}
+                  </Text>
                 </View>
                 <View style={styles.testCard}>
                   <Text style={styles.testsText}>Collection Charge</Text>
-                  <Text style={styles.finsltestsPrice}>Rs.{data.CollectionCharge}</Text>
+                  <Text style={styles.finsltestsPrice}>
+                    Rs.{data.CollectionCharge}
+                  </Text>
                 </View>
                 <View style={styles.testCard}>
                   <Text style={styles.testsText}>Discount Amout</Text>
-                  <Text style={styles.finsltestsPrice}>Rs.{data.DiscountAmount}</Text>
+                  <Text style={styles.finsltestsPrice}>
+                    Rs.{data.DiscountAmount}
+                  </Text>
                 </View>
                 <View style={styles.testCard}>
                   <Text style={styles.testsText}>Grand Total</Text>
-                  <Text style={styles.finsltestsPrice}>Rs.{data.GrandTotal}</Text>
+                  <Text style={styles.finsltestsPrice}>
+                    Rs.{data.GrandTotal}
+                  </Text>
                 </View>
               </View>
             </View>
 
-            {
-              data.SampleStatus === "Rejected" &&
-              <View style={[styles.testList, { backgroundColor: '#f36f5e' }]}>
-                <Text style={{
-                  color: '#fefefe',
-                  fontSize: 18,
-                  marginBottom: 10,
-                  fontWeight: 'bold',
-                  letterSpacing: 1,
-                }}>Sample Rejcted</Text>
-                <Text style={{
-                  color: '#fefefe',
-                  fontSize: 16,
-                  marginBottom: 10,
-                  letterSpacing: 1,
-                }}>Due to perticular reason, the sample has been rejected.</Text>
+            {data.SampleStatus === "Rejected" && (
+              <View style={[styles.testList, { backgroundColor: "#f36f5e" }]}>
+                <Text
+                  style={{
+                    color: "#fefefe",
+                    fontSize: 18,
+                    marginBottom: 10,
+                    fontWeight: "bold",
+                    letterSpacing: 1,
+                  }}
+                >
+                  Sample Rejcted
+                </Text>
+                <Text
+                  style={{
+                    color: "#fefefe",
+                    fontSize: 16,
+                    marginBottom: 10,
+                    letterSpacing: 1,
+                  }}
+                >
+                  Due to perticular reason, the sample has been rejected.
+                </Text>
               </View>
-            }
+            )}
 
-            {
-              data.SampleStatus === "Collected" &&
-              <View style={[styles.testList, { backgroundColor: '#f36f5e' }]}>
-                <Text style={{
-                  color: '#fefefe',
-                  fontSize: 18,
-                  marginBottom: 10,
-                  fontWeight: 'bold',
-                  letterSpacing: 1,
-                }}>Sample Collected</Text>
-                <Text style={{
-                  color: '#fefefe',
-                  fontSize: 16,
-                  marginBottom: 10,
-                  letterSpacing: 1,
-                }}>Sample has been collected, by user ID</Text>
+            {data.SampleStatus === "Collected" && (
+              <View style={[styles.testList, { backgroundColor: "#f36f5e" }]}>
+                <Text
+                  style={{
+                    color: "#fefefe",
+                    fontSize: 18,
+                    marginBottom: 10,
+                    fontWeight: "bold",
+                    letterSpacing: 1,
+                  }}
+                >
+                  Sample Collected
+                </Text>
+                <Text
+                  style={{
+                    color: "#fefefe",
+                    fontSize: 16,
+                    marginBottom: 10,
+                    letterSpacing: 1,
+                  }}
+                >
+                  Sample has been collected, by user ID
+                </Text>
               </View>
-            }
+            )}
 
-            {
-              data.SampleStatus === "Lab Received" &&
-              <View style={[styles.testList, { backgroundColor: '#5ebcf3' }]}>
-                <Text style={{
-                  color: '#fefefe',
-                  fontSize: 18,
-                  marginBottom: 10,
-                  fontWeight: 'bold',
-                  letterSpacing: 1,
-                }}>Sample Lab Collected</Text>
-                <Text style={{
-                  color: '#fefefe',
-                  fontSize: 16,
-                  marginBottom: 10,
-                  letterSpacing: 1,
-                }}>Sample has been received By lab</Text>
+            {data.SampleStatus === "Lab Received" && (
+              <View style={[styles.testList, { backgroundColor: "#5ebcf3" }]}>
+                <Text
+                  style={{
+                    color: "#fefefe",
+                    fontSize: 18,
+                    marginBottom: 10,
+                    fontWeight: "bold",
+                    letterSpacing: 1,
+                  }}
+                >
+                  Sample Lab Collected
+                </Text>
+                <Text
+                  style={{
+                    color: "#fefefe",
+                    fontSize: 16,
+                    marginBottom: 10,
+                    letterSpacing: 1,
+                  }}
+                >
+                  Sample has been received By lab
+                </Text>
               </View>
-            }
+            )}
 
-            {
-              data.SampleStatus === "Report Dispatched" &&
-              <View style={[styles.testList, { backgroundColor: '#5ebcf3' }]}>
-                <Text style={{
-                  color: '#fefefe',
-                  fontSize: 18,
-                  marginBottom: 10,
-                  fontWeight: 'bold',
-                  letterSpacing: 1,
-                }}>Report Dispatched</Text>
-                <Text style={{
-                  color: '#fefefe',
-                  fontSize: 16,
-                  marginBottom: 10,
-                  letterSpacing: 1,
-                }}>The Report is submited</Text>
+            {data.SampleStatus === "Report Dispatched" && (
+              <View style={[styles.testList, { backgroundColor: "#5ebcf3" }]}>
+                <Text
+                  style={{
+                    color: "#fefefe",
+                    fontSize: 18,
+                    marginBottom: 10,
+                    fontWeight: "bold",
+                    letterSpacing: 1,
+                  }}
+                >
+                  Report Dispatched
+                </Text>
+                <Text
+                  style={{
+                    color: "#fefefe",
+                    fontSize: 16,
+                    marginBottom: 10,
+                    letterSpacing: 1,
+                  }}
+                >
+                  The Report is submited
+                </Text>
               </View>
-            }
-
+            )}
           </View>
         </View>
       </Modal>
-
-
     </>
-  )
-}
+  );
+};
 
-export default PreTestCard
+export default PreTestCard;
 
 const styles = StyleSheet.create({
   cardCotainer: {
@@ -217,13 +256,13 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     paddingHorizontal: 15,
     paddingVertical: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     borderTopRightRadius: 12,
     borderBottomRightRadius: 12,
     borderLeftWidth: 4,
-    borderLeftColor: '#205072',
+    borderLeftColor: "#205072",
     shadowColor: "#101010",
     shadowOffset: {
       width: 0,
@@ -242,9 +281,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   centeredView: {
-    width: '100%',
+    width: "100%",
     flex: 1,
-    backgroundColor: '#141516e1'
+    backgroundColor: "#141516e1",
     // backgroundColor: '#fefefe'
   },
 
@@ -252,20 +291,19 @@ const styles = StyleSheet.create({
     width: windowWidth - 20,
     flex: 1,
     marginLeft: 10,
-
   },
 
   profile: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingVertical: 10,
   },
   name: {
     // color: '#205072',
     color: secondaryBkg,
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     letterSpacing: 1.3,
-    marginBottom: 6
+    marginBottom: 6,
   },
   flatListContainer: {
     width: windowWidth - 20,
@@ -273,18 +311,18 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    color: '#205072',
-    fontWeight: 'bold',
+    color: "#205072",
+    fontWeight: "bold",
     letterSpacing: 1.3,
-    marginVertical: 10
+    marginVertical: 10,
   },
   testCard: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginVertical: 3,
     // paddingHorizontal: 5,
     borderRadius: 5,
-    width: '100%',
-    justifyContent: 'space-between'
+    width: "100%",
+    justifyContent: "space-between",
   },
   testsText: {
     color: "#232325",
@@ -293,7 +331,7 @@ const styles = StyleSheet.create({
   },
   finsltestsPrice: {
     borderWidth: 1,
-    borderColor: '#efed11',
+    borderColor: "#efed11",
     width: 100,
     paddingHorizontal: 10,
     paddingVertical: 3,
@@ -302,20 +340,18 @@ const styles = StyleSheet.create({
   cardContainer: {
     // borderWidth: 1,
     borderRadius: 18,
-    backgroundColor: '#fefefe',
+    backgroundColor: "#fefefe",
     paddingVertical: 16,
     paddingHorizontal: 10,
     marginTop: 10,
   },
   testList: {
-    backgroundColor: '#9DD4E9',
+    backgroundColor: "#9DD4E9",
     // marginLeft: 10,
     marginVertical: 10,
     paddingHorizontal: 15,
     paddingVertical: 20,
     borderRadius: 18,
     width: windowWidth - 20,
-
-  }
-
-})
+  },
+});
