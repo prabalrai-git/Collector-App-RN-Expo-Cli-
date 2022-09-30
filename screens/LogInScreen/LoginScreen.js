@@ -4,22 +4,21 @@ import {
   Dimensions,
   Image,
   Modal,
-  StatusBar,
   StyleSheet,
   TextInput,
   View,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   getLoginApi,
   GetTokenByUserId,
   InsertUpdateToken,
 } from "../../Services/appServices/loginService";
 import { Icon, Text } from "react-native-elements";
-import AppButton from "../../components/ui/AppButton";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// import AppButton from "../../components/ui/AppButton";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 import { storeUserData } from "../../Services/store/slices/profileSlice";
 
 import * as Device from "expo-device";

@@ -1,12 +1,16 @@
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import { Icon } from 'react-native-elements'
-import { useNavigation } from '@react-navigation/native';
-import { color } from 'react-native-reanimated';
-import { GlobalStyles } from '../../GlobalStyle';
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React from "react";
+import { Icon } from "react-native-elements";
+import { useNavigation } from "@react-navigation/native";
+import { GlobalStyles } from "../../GlobalStyle";
 
-const windowWidth = Dimensions.get('window').width;
-
+const windowWidth = Dimensions.get("window").width;
 
 export const HomeActionButton = ({ data }) => {
   const navigation = useNavigation();
@@ -14,26 +18,31 @@ export const HomeActionButton = ({ data }) => {
   return (
     <>
       <TouchableOpacity
-        style={[styles.btnContainer,{
-          backgroundColor: data.color
-        }]}
+        style={[
+          styles.btnContainer,
+          {
+            backgroundColor: data.color,
+          },
+        ]}
         onPress={() => navigation.navigate(`${data.pathName}`)}
       >
         <Icon
           name={data.icon}
-          color={'#fefefe'}
+          color={"#fefefe"}
           type={data.type}
           style={styles.icon}
           size={30}
         ></Icon>
         {/* <AddPatient></AddPatient> */}
-        <Text style={[GlobalStyles.btnTxt, {color: '#fefefe', marginTop: 10}]}>{data.name}</Text>
+        <Text
+          style={[GlobalStyles.btnTxt, { color: "#fefefe", marginTop: 10 }]}
+        >
+          {data.name}
+        </Text>
       </TouchableOpacity>
     </>
-
-
-  )
-}
+  );
+};
 
 export const HomeActionButton2 = ({ data }) => {
   const navigation = useNavigation();
@@ -41,9 +50,13 @@ export const HomeActionButton2 = ({ data }) => {
   return (
     <>
       <TouchableOpacity
-        style={[styles.btnContainer3,{
-          // backgroundColor: data.color
-        }, GlobalStyles.boxShadow]}
+        style={[
+          styles.btnContainer3,
+          {
+            // backgroundColor: data.color
+          },
+          GlobalStyles.boxShadow,
+        ]}
         onPress={() => navigation.navigate(`${data.pathName}`)}
       >
         <Icon
@@ -54,23 +67,18 @@ export const HomeActionButton2 = ({ data }) => {
           size={30}
         ></Icon>
         {/* <AddPatient></AddPatient> */}
-        <Text style={[styles.txt, 
-          {color: '#232426', marginTop: 10}
-          ]}>{data.name}</Text>
+        <Text style={[styles.txt, { color: "#232426", marginTop: 10 }]}>
+          {data.name}
+        </Text>
       </TouchableOpacity>
     </>
-
-
-  )
-}
-
+  );
+};
 
 export const InfoActionButton = (props) => {
   const navigation = useNavigation();
   return (
-    <View
-      style={styles.btnContainer2}
-    >
+    <View style={styles.btnContainer2}>
       <Icon
         name={props.icon}
         color={secondary}
@@ -78,12 +86,12 @@ export const InfoActionButton = (props) => {
         style={styles.icon}
         size={30}
       ></Icon>
-      <Text style={[GlobalStyles.btnTxt, {color: primary, marginTop: 10}]}>{props.name}</Text>
+      <Text style={[GlobalStyles.btnTxt, { color: primary, marginTop: 10 }]}>
+        {props.name}
+      </Text>
     </View>
-
-  )
-}
-
+  );
+};
 
 const styles = StyleSheet.create({
   btnContainer: {
@@ -94,9 +102,9 @@ const styles = StyleSheet.create({
     marginBottom: 9,
     paddingHorizontal: 16,
     borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ffff',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ffff",
     shadowColor: "#88d4ce",
     shadowOffset: {
       width: 0,
@@ -111,9 +119,9 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.45,
     height: 100,
     borderRadius: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ffff',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ffff",
     shadowColor: "#60b6af",
     shadowOffset: {
       width: 0,
@@ -125,18 +133,17 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   btnContainer3: {
-    backgroundColor: '#fefefe',
+    backgroundColor: "#fefefe",
     marginLeft: 10,
     marginBottom: 10,
     // borderWidth: 1,
     width: windowWidth * 0.3,
     // margin: 10,
-    alignItems: 'center',
+    alignItems: "center",
     paddingVertical: 20,
     paddingHorizontal: 10,
-    textAlign: 'center',
+    textAlign: "center",
     borderRadius: 10,
-
   },
   txt: {
     paddingTop: 4,
@@ -145,7 +152,6 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     lineHeight: 16,
     color: primary,
-    textAlign: 'center'
-  }
-
-})
+    textAlign: "center",
+  },
+});

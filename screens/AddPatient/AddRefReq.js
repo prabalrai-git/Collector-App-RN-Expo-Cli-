@@ -1,5 +1,4 @@
 import {
-  Button,
   Dimensions,
   Modal,
   StyleSheet,
@@ -7,7 +6,6 @@ import {
   TouchableOpacity,
   View,
   FlatList,
-  Pressable,
   ActivityIndicator,
   Alert,
 } from "react-native";
@@ -22,8 +20,6 @@ import {
 } from "../../Services/appServices/AssignPatient";
 import { useDispatch, useSelector } from "react-redux";
 import Filter from "../../components/ui/Filter";
-import { log } from "react-native-reanimated";
-import AppButton from "../../components/ui/AppButton";
 import { StackActions, useNavigation } from "@react-navigation/native";
 import { GetListOfCollector } from "../../Services/appServices/Collector";
 import ProceedBtn from "../../components/ui/ProceedBtn";

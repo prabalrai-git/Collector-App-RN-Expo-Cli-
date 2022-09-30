@@ -1,30 +1,12 @@
-import {
-  Dimensions,
-  FlatList,
-  Image,
-  ImageBackground,
-  Linking,
-  StyleSheet,
-  Switch,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import React, { useEffect, useRef, useState } from "react";
-import { DrawerActions, useNavigation } from "@react-navigation/native";
+import { Dimensions, FlatList, StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { useNavigation } from "@react-navigation/native";
 import { GlobalStyles } from "../GlobalStyle";
-import {
-  HomeActionButton,
-  HomeActionButton2,
-} from "../components/ui/HomeActionButton";
+import { HomeActionButton2 } from "../components/ui/HomeActionButton";
 
-import { Alert, Platform } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
-import * as Device from "expo-device";
-import * as Notifications from "expo-notifications";
 import NotificationBtn from "../components/ui/NotificationBtn";
-import Header from "../components/Header";
 
 const windowWidth = Dimensions.get("window").width;
 const HomeScreen = () => {

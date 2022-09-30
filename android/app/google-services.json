@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "516166403646",
+    "project_id": "collecot-app-v1",
+    "storage_bucket": "collecot-app-v1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:516166403646:android:70b7c6d4269e4148f3336f",
+        "android_client_info": {
+          "package_name": "luniva360.collector"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "516166403646-r3kipbal83arpt0o408tl79ink8pkqlu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpNg2ecrk6_JMAbROxkloWFl3CQsg-hKU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "516166403646-r3kipbal83arpt0o408tl79ink8pkqlu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

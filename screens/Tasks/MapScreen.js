@@ -1,6 +1,5 @@
 import {
   Dimensions,
-  PermissionsAndroid,
   StyleSheet,
   View,
   Alert,
@@ -12,11 +11,11 @@ import {
   FlatList,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import MapView, { Marker } from "react-native-maps";
+import MapView from "react-native-maps";
 import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
 import MarkerCostome from "../../components/ui/MarkerCostome";
-import { Avatar, Button, Text } from "react-native-elements";
+import { Avatar, Text } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
 import { UpdateCollectorLocation } from "../../Services/appServices/Collector";
 import AppButton from "../../components/ui/AppButton";

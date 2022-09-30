@@ -5,18 +5,14 @@ import {
   View,
   TouchableOpacity,
   Modal,
-  TextInput,
   Pressable,
-  Image,
-  FlatList,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
-import StatusBadge from "./StatusBadge";
 import MapView from "react-native-maps";
 import MarkerCostome from "./MarkerCostome";
-import { Avatar, Icon } from "react-native-elements";
+import { Icon } from "react-native-elements";
 import { InfoActionButton } from "./HomeActionButton";
 import { GetAddressOfClient } from "../../Services/appServices/AssignPatient";
 import { GlobalStyles } from "../../GlobalStyle";

@@ -1,6 +1,6 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux';
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 const ReqRefPicker = () => {
   const dispatch = useDispatch();
@@ -11,25 +11,27 @@ const ReqRefPicker = () => {
   const [ReferedListNew, setReferedListNew] = useState();
 
   useEffect(() => {
-    dispatch(GetRequestor((res) => {
-      // console.log(res);
-      setRequestorlist(res?.requestorList)
-      setRequestorlistNew(res?.requestorList)
-    }))
-    dispatch(GetReferred((res) => {
-      // console.log(res);
-      setReferedList(res?.ReferredDoctorList)
-      setReferedListNew(res?.ReferredDoctorList)
-
-    }))
-
-  }, [])
+    dispatch(
+      GetRequestor((res) => {
+        // console.log(res);
+        setRequestorlist(res?.requestorList);
+        setRequestorlistNew(res?.requestorList);
+      })
+    );
+    dispatch(
+      GetReferred((res) => {
+        // console.log(res);
+        setReferedList(res?.ReferredDoctorList);
+        setReferedListNew(res?.ReferredDoctorList);
+      })
+    );
+  }, []);
 
   return (
     <View>
       <TouchableOpacity
         style={{
-          position: 'absolute',
+          position: "absolute",
           top: 10,
           right: 10,
           backgroundColor: secodaryCardColor,
@@ -37,22 +39,23 @@ const ReqRefPicker = () => {
           borderRadius: 50,
         }}
         onPress={() => {
-          setisVisibeRef(false)
+          setisVisibeRef(false);
           // setisRemarksVisible(false)
           // retDis(false);
-        }}>
+        }}
+      >
         <Icon
-          name={'close'}
-          color={'#fefefe'}
-          type='antdesign'
+          name={"close"}
+          color={"#fefefe"}
+          type="antdesign"
           size={20}
         ></Icon>
       </TouchableOpacity>
       <Filter data={ReferedList} returnData={handleChangeReq} forReq></Filter>
     </View>
-  )
-}
+  );
+};
 
-export default ReqRefPicker
+export default ReqRefPicker;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

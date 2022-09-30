@@ -1,11 +1,8 @@
-import { FlatList, ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { dummyData } from "../../dumyData";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  GetCollectorRequestByCollectorWiseForWeek,
-  GetSampleRequestListByCollector,
-} from "../../Services/appServices/AssignPatient";
+import { GetCollectorRequestByCollectorWiseForWeek } from "../../Services/appServices/AssignPatient";
 import TaskCard from "../../components/ui/TaskCard";
 import { useIsFocused } from "@react-navigation/native";
 

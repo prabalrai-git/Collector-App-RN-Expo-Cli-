@@ -3,12 +3,9 @@ import {
   Dimensions,
   FlatList,
   Modal,
-  Pressable,
   StyleSheet,
   Text,
   View,
-  Button,
-  ImageBackground,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";

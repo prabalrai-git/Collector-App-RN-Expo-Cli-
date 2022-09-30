@@ -2,18 +2,12 @@ import {
   Dimensions,
   FlatList,
   ImageBackground,
-  ScrollView,
   StyleSheet,
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Text } from "react-native-elements";
-import TaskCard from "../../components/ui/TaskCard";
 import { useDispatch } from "react-redux";
-import {
-  GetPatientList,
-  GetSampleRequestListByCollector,
-} from "../../Services/appServices/AssignPatient";
+import { GetSampleRequestListByCollector } from "../../Services/appServices/AssignPatient";
 import HamMenu from "../../components/ui/HamMenu";
 import BackBtn from "../../components/ui/BackBtn";
 import SampleCard from "../Sample/SampleCard";

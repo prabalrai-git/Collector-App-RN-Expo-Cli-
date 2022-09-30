@@ -1,8 +1,8 @@
-import { Button, Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import { CheckBox } from 'react-native-elements';
+import { Dimensions, StyleSheet, Text, View } from "react-native";
+import React, { useState, useEffect } from "react";
+import { CheckBox } from "react-native-elements";
 
-const windowWidth = Dimensions.get('window').width * 0.65;
+const windowWidth = Dimensions.get("window").width * 0.65;
 // "Id": 22,
 // "Price": 2700,
 // "Seq": 79,
@@ -12,23 +12,22 @@ const windowWidth = Dimensions.get('window').width * 0.65;
 const SelectTestCard = ({ data, retData, arrData }) => {
   // console.log("stt",data);
   const [slected, setSelected] = useState(false);
-  
+
   useEffect(() => {
-    if(arrData.includes(data)){
+    if (arrData.includes(data)) {
       setSelected(true);
-    }else{
-      setSelected(false)
+    } else {
+      setSelected(false);
     }
-  }, [retData])
+  }, [retData]);
 
   const selectedFun = (e) => {
-
-    retData(e)
+    retData(e);
     // setSelected(!slected)e
-  }
+  };
 
   return (
-    <View >
+    <View>
       <View style={styles.container}>
         <View style={styles.card}>
           <View style={styles.left}>
@@ -36,37 +35,35 @@ const SelectTestCard = ({ data, retData, arrData }) => {
             <Text style={styles.price}>Rs. {data.Price}</Text>
           </View>
           <View style={styles.right}>
-
             <CheckBox
-            checked={slected}
-            checkedColor={'#4688B3'}
-            uncheckedColor={'dimgray'}
-            onPress={() => selectedFun(data)}
-          />
-          {/* <Button onPress={() => selectedFun(data)} title={'add'}></Button> */}
+              checked={slected}
+              checkedColor={"#4688B3"}
+              uncheckedColor={"dimgray"}
+              onPress={() => selectedFun(data)}
+            />
+            {/* <Button onPress={() => selectedFun(data)} title={'add'}></Button> */}
           </View>
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 
-export default SelectTestCard
+export default SelectTestCard;
 
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 10,
     marginVertical: 5,
-    
   },
   card: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 10,
-    backgroundColor: '#fefefe',
-    alignItems: 'center',
+    backgroundColor: "#fefefe",
+    alignItems: "center",
     shadowColor: "#ecdcae",
     shadowOffset: {
       width: 0,
@@ -76,9 +73,8 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
 
     elevation: 5,
-  
   },
-  'card:last-child': {
+  "card:last-child": {
     marginBottom: 100,
   },
   title: {
@@ -86,6 +82,6 @@ const styles = StyleSheet.create({
     width: windowWidth,
   },
   price: {
-    color: '#FFC285'
-  }
-})
+    color: "#FFC285",
+  },
+});

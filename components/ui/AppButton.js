@@ -1,10 +1,4 @@
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import React from "react";
 import { Button } from "react-native-elements";
 

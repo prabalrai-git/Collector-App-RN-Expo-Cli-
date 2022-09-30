@@ -1,19 +1,15 @@
 import {
   Dimensions,
   FlatList,
-  ImageBackground,
   Pressable,
   StyleSheet,
   Text,
   View,
 } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { GetPatientList } from "../../Services/appServices/AssignPatient";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import Header from "../../components/Header";
-import PatientInfoCard from "../../components/ui/PatientInfoCard";
-import { GetTokenByUserId } from "../../Services/appServices/loginService";
 import { GetListOfCollector } from "../../Services/appServices/Collector";
 
 const windowWidth = Dimensions.width;

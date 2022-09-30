@@ -1,13 +1,9 @@
 import { Dimensions, FlatList, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  GetCollectorRequestByCollectorWiseForWeek,
-  GetSampleRequestListByCollector,
-} from "../../Services/appServices/AssignPatient";
+import { GetCollectorRequestByCollectorWiseForWeek } from "../../Services/appServices/AssignPatient";
 import { useIsFocused } from "@react-navigation/native";
 import AcceptedCard from "../../components/ui/AcceptedCard";
-import SampleCard from "../Sample/SampleCard";
 
 const AcceptedTask = () => {
   const [PatietList, setPatietList] = useState();

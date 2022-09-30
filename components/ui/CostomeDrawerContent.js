@@ -1,13 +1,11 @@
 import {
   Alert,
   Image,
-  ImageBackground,
   StyleSheet,
   Switch,
   Text,
   View,
   Linking,
-  Pressable,
   TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
@@ -220,16 +218,19 @@ const CostomeDrawerContent = (props) => {
           ></Icon>
           {isActive ? (
             <Text style={{ color: primary, fontSize: 14, letterSpacing: 1 }}>
-              Location activated
+              Location Enabled
             </Text>
           ) : (
             <Text style={{ color: primary, fontSize: 14, letterSpacing: 1 }}>
-              Activate location
+              Enable Location
             </Text>
           )}
           <Switch
-            trackColor={{ false: "#767577", true: "#81b0ff" }}
-            thumbColor={isActive ? "#f5dd4b" : "#f4f3f4"}
+            trackColor={{ false: "grey", true: "grey" }}
+            thumbColor={isActive ? "green" : "#f4f3f4"}
+            style={{
+              transform: [{ scaleX: 1.4 }, { scaleY: 1.4 }],
+            }}
             ios_backgroundColor="#3e3e3e"
             onValueChange={toggleSwitch}
             value={isActive}

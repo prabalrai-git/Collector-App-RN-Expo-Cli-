@@ -8,7 +8,6 @@ import {
   TextInput,
   Pressable,
   Image,
-  FlatList,
   Switch,
   Alert,
   ScrollView,

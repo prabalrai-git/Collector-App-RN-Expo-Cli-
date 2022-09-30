@@ -3,26 +3,19 @@ import {
   Dimensions,
   FlatList,
   Modal,
-  Pressable,
   StyleSheet,
   Text,
   View,
-  Button,
-  ImageBackground,
-  ScrollView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AppButton from "../../components/ui/AppButton";
 import SelectTestCard from "../../components/ui/SelectTestCard";
-import Filter from "../../components/ui/Filter";
 import { useDispatch } from "react-redux";
 import {
   GetTestList,
   MostPopularTestList,
 } from "../../Services/appServices/AssignPatient";
-import HamMenu from "../../components/ui/HamMenu";
-import BackBtn from "../../components/ui/BackBtn";
 import CancleBtn from "../../components/ui/CancleBtn";
 import Header from "../../components/Header";
 

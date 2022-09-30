@@ -1,6 +1,3 @@
-import { Text, View } from 'react-native'
-import React from 'react'
-
 // "CheckedBy": null,
 // "D_group": 1,
 // "Designation": null,
@@ -29,7 +26,7 @@ import React from 'react'
 const SortTestList = (ele) => {
   // console.log('rele', ele);
 
-  return
-}
+  return;
+};
 
-export default SortTestList
+export default SortTestList;

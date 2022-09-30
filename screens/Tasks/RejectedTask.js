@@ -1,20 +1,8 @@
-import {
-  Dimensions,
-  FlatList,
-  ImageBackground,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Text } from "react-native-elements";
 import TaskCard from "../../components/ui/TaskCard";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  GetCollectorRequestByCollectorWiseForWeek,
-  GetPatientList,
-  GetSampleRequestListByCollector,
-} from "../../Services/appServices/AssignPatient";
+import { GetCollectorRequestByCollectorWiseForWeek } from "../../Services/appServices/AssignPatient";
 import { useIsFocused } from "@react-navigation/native";
 
 const RejectedTask = () => {

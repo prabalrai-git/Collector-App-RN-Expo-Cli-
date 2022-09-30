@@ -1,8 +1,6 @@
 import {
-  Button,
   Dimensions,
   FlatList,
-  ImageBackground,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -11,7 +9,7 @@ import {
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GetSampleRequestListByCollector } from "../../Services/appServices/AssignPatient";
-import { Avatar, Icon } from "react-native-elements";
+import { Icon } from "react-native-elements";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import AppButton from "../../components/ui/AppButton";
 import SampleCard from "./SampleCard";

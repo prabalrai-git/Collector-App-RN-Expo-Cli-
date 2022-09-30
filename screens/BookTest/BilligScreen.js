@@ -1,6 +1,5 @@
 import {
   Alert,
-  Button,
   Dimensions,
   FlatList,
   Image,
@@ -26,8 +25,6 @@ import {
   useIsFocused,
   useNavigation,
 } from "@react-navigation/native";
-import HamMenu from "../../components/ui/HamMenu";
-import BackBtn from "../../components/ui/BackBtn";
 import Header from "../../components/Header";
 import Filter from "../../components/ui/Filter";
 import { GetListOfCollector } from "../../Services/appServices/Collector";
@@ -420,13 +417,13 @@ const BilligScreen = ({ route }) => {
           <Switch
             trackColor={{ false: "grey", true: "grey" }}
             thumbColor={isPaid ? "green" : "#f4f3f4"}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch}
-            value={isPaid}
             style={{
               marginRight: 90,
               transform: [{ scaleX: 1.4 }, { scaleY: 1.4 }],
             }}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitch}
+            value={isPaid}
           />
         </View>
         <AppButton

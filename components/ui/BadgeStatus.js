@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 // Report Completed
 const BadgeStatus = ({
   RequestStatus,

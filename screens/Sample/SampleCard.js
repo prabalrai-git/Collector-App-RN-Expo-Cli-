@@ -8,13 +8,12 @@ import {
   TextInput,
   Pressable,
   Image,
-  FlatList,
   Switch,
   Alert,
   ScrollView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import AppButton from "../../components/ui/AppButton";
 import { useDispatch, useSelector } from "react-redux";
 import {

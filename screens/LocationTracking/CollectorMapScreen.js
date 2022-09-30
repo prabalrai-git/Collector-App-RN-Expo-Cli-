@@ -1,19 +1,14 @@
 import {
   ActivityIndicator,
   Dimensions,
-  Platform,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
-import { Avatar, Icon } from "react-native-elements";
-import MapView, { Marker, AnimatedRegion } from "react-native-maps";
-import {
-  GetCurrentLocationOfuser,
-  GetlocationofCollectorByDateAndUserId,
-} from "../../Services/appServices/Collector";
+import React, { useEffect, useState } from "react";
+import { Avatar } from "react-native-elements";
+import MapView from "react-native-maps";
+import { GetCurrentLocationOfuser } from "../../Services/appServices/Collector";
 import { useDispatch } from "react-redux";
 import MarkerCostome from "../../components/ui/MarkerCostome";
 import { useNavigation } from "@react-navigation/native";

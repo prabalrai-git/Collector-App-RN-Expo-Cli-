@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import React from "react";
 import { Marker } from "react-native-maps";
 import collector from "../../assets/images/collector.png";

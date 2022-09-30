@@ -14,7 +14,6 @@ import AppButton from "../../components/ui/AppButton";
 import CancleBtn from "../../components/ui/CancleBtn";
 import MapView from "react-native-maps";
 import { useNavigation } from "@react-navigation/native";
-import LoginBtn from "../../components/ui/LoginBtn";
 import ProceedBtn from "../../components/ui/ProceedBtn";
 
 const AddPatientDetals = ({ route }) => {
@@ -268,7 +267,7 @@ const AddPatientDetals = ({ route }) => {
             </View>
             <View style={styles.bSheet}>
               <CancleBtn
-                title="cancel"
+                title="Cancel"
                 onPress={() => setIsVisible(false)}
               ></CancleBtn>
               {/* <View>
@@ -276,7 +275,7 @@ const AddPatientDetals = ({ route }) => {
                   <Text>longitude:{JSON.stringify(region.longitude)}</Text>
                 </View> */}
               <AppButton
-                title="save"
+                title="Save"
                 onPress={() => handleAddress(region.latitude, region.longitude)}
               ></AppButton>
               {/* <Button title='save' onPress={() => handleAddress(region.latitude, region.longitude)} /> */}

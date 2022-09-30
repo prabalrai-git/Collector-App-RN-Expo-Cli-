@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SearchBar } from "react-native-elements";
 

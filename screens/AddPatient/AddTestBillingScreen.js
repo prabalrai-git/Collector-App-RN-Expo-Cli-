@@ -1,12 +1,10 @@
 import {
   Alert,
-  Button,
   Dimensions,
   FlatList,
   Image,
   Modal,
   Pressable,
-  ScrollView,
   StyleSheet,
   Switch,
   Text,
@@ -28,8 +26,7 @@ import { GetListOfCollector } from "../../Services/appServices/Collector";
 import Filter from "../../components/ui/Filter";
 import { PushNotification } from "../../components/PushNotification";
 import { Icon } from "react-native-elements";
-import GlobalStyle, { GlobalStyles } from "../../GlobalStyle";
-import CancleBtn from "../../components/ui/CancleBtn";
+import { GlobalStyles } from "../../GlobalStyle";
 
 // "_HomeRequest": {
 //   "RId": 1, //?? =0

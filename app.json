@@ -4,18 +4,16 @@
     "slug": "luniva-360-collector",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -27,11 +25,11 @@
       },
       "config": {
         "googleMaps": {
-            "apiKey": "AIzaSyBHsFY2CvPEIBknY3KKQZBjUNPxgLqWV2U"
-          }
-        },
+          "apiKey": "AIzaSyBHsFY2CvPEIBknY3KKQZBjUNPxgLqWV2U"
+        }
+      },
       "googleServicesFile": "./google-services.json",
-      "useNextNotificationsApi":true
+      "useNextNotificationsApi": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -42,10 +40,14 @@
         {
           "icon": "./assets/96-96.png",
           "color": "#ffffff",
-          "sounds": "./assets/sounds/mixkit-message-pop-alert-2354.wav"
+          "sounds": ["./assets/sounds/mixkit-message-pop-alert-2354.wav"]
         }
       ]
-    ]
-
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "544422a3-c0ae-4574-9167-2b2ae74c26c2"
+      }
+    }
   }
 }

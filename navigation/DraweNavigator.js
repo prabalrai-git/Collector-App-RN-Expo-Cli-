@@ -1,11 +1,10 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useEffect } from "react";
+import { StyleSheet } from "react-native";
+import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import {
   AddPatietNavigator,
   BookTestNavigator,
   CollectorLocation,
-  CollectSampleNavigator,
   MainStackNavigator,
   ReportVerification,
   SampleCollectionNavigator,
