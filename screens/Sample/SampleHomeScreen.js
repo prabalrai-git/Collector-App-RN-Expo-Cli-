@@ -131,7 +131,7 @@ const SampleHomeScreen = () => {
     <View style={styles.mainContainer}>
       <View style={styles.container}>
         <View style={styles.top}>
-          <Header title={"Sample collection"}></Header>
+          <Header title={"Sample Collection"}></Header>
           <View style={styles.dateFiltercontainer}>
             <TouchableOpacity onPress={showDatepicker} style={styles.TextInput}>
               <View style={styles.inputField}>

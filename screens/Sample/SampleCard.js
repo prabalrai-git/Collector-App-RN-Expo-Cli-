@@ -67,7 +67,7 @@ const SampleCard = ({ data, refData, disable, retDis }) => {
   const text = data.CollectionReqDate;
   const temp = text.split("T");
   const [TestList, setTestList] = useState();
-  const [isPaid, setisPaid] = useState(false);
+  const [isPaid, setisPaid] = useState(true);
   const [modalActive, setmodalActive] = useState("close");
   const [Coordinate, setCoordinate] = useState({
     latitude: null,
@@ -241,7 +241,7 @@ const SampleCard = ({ data, refData, disable, retDis }) => {
       // longitude: 85.3240,
     },
     title: "title",
-    description: "somethindg",
+    description: "something",
   };
   // console.log('data', data.RequestStatus);
   return (
@@ -432,7 +432,7 @@ const SampleCard = ({ data, refData, disable, retDis }) => {
                         letterSpacing: 1,
                       }}
                     >
-                      Due to perticular reason, the sample has been rejected.
+                      Due to some reason, the sample has been rejected.
                     </Text>
                   </View>
                 ) : (

@@ -23,6 +23,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
+      "icon": "./assets/96-96.png",
+
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyBHsFY2CvPEIBknY3KKQZBjUNPxgLqWV2U"

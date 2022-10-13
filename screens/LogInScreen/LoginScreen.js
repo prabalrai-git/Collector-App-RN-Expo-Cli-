@@ -30,8 +30,8 @@ const windowWidth = Dimensions.get("window").width * 0.9;
 
 const LoginScreen = () => {
   const navigation = useNavigation();
-  const [username, setUserName] = useState("pacific");
-  const [password, setPassword] = useState("pacific123");
+  const [username, setUserName] = useState();
+  const [password, setPassword] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [btnDis, setBtDis] = useState(true);
   const dispatch = useDispatch();
@@ -165,7 +165,7 @@ const LoginScreen = () => {
     // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        // navigation.navigate('BookTest')
+        // navigation.navigate("BookTest");
       });
 
     return () => {
@@ -185,8 +185,8 @@ const LoginScreen = () => {
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
       shouldShowAlert: true,
-      shouldPlaySound: false,
-      shouldSetBadge: false,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
     }),
   });
 

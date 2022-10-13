@@ -15,7 +15,9 @@ export const PushNotification = async (
     let token;
     await GetTokenByUserIdApi(el, (res) => {
       // console.log('response', res?.userToken[0].UserToken);
-      token = res?.userToken[0].UserToken;
+      // console.log("deathTriggeggfhrd", res, "fgfg");
+
+      token = res?.userToken[1].UserToken;
       // console.log('temp 1', abv);
     });
 
@@ -77,7 +79,7 @@ export const PushNotification = async (
     message = {
       to: toSendToken,
       sound: "default",
-      title: `${fromName} asigned you task `,
+      title: `${fromName} assigned you task `,
       body:
         Remarks === undefined || Remarks === ""
           ? `please review the asigned task of ${RequestPatientname}`
@@ -94,7 +96,7 @@ export const PushNotification = async (
       Title: `${fromName} asigned you task ${RequestPatientname}`,
       NotificationDesc:
         Remarks === undefined || Remarks === ""
-          ? `please review the asigned task of ${RequestPatientname}`
+          ? `please review the assigned task of ${RequestPatientname}`
           : `Patient name:${RequestPatientname}, remarks: ${Remarks}`,
       EntryDate: newDate,
       NotficationPathName: pathname,
@@ -188,6 +190,6 @@ Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
     shouldPlaySound: true,
-    shouldSetBadge: false,
+    shouldSetBadge: true,
   }),
 });

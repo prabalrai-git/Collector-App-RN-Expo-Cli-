@@ -111,7 +111,10 @@ const NotificationBtn = () => {
             marginBottom: 4.5,
           }}
         >
-          <Text style={styles.cardTitle}>{item.Title}. </Text>
+          <Text style={styles.cardTitle}>
+            {item.Title}. {"\n"}
+          </Text>
+
           <Text style={styles.cardDis}>{item.NotificationDesc}</Text>
         </Text>
         <View
@@ -188,7 +191,7 @@ const NotificationBtn = () => {
                   }}
                 ></Icon>
               </TouchableOpacity>
-              <Text style={styles.title}>Notification</Text>
+              <Text style={styles.title}>Notifications</Text>
               <TouchableOpacity
                 onPress={() => setViewAllVisible(!ViewAllVisible)}
               >
