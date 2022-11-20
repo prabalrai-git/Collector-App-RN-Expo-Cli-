@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "516166403646",
-    "project_id": "collecot-app-v1",
-    "storage_bucket": "collecot-app-v1.appspot.com"
+    "project_number": "601807913040",
+    "project_id": "collectorapp-e811e",
+    "storage_bucket": "collectorapp-e811e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:516166403646:android:70b7c6d4269e4148f3336f",
+        "mobilesdk_app_id": "1:601807913040:android:00d0b2c47f71d0c5db9155",
         "android_client_info": {
           "package_name": "luniva360.collector"
         }
       },
       "oauth_client": [
         {
-          "client_id": "516166403646-r3kipbal83arpt0o408tl79ink8pkqlu.apps.googleusercontent.com",
+          "client_id": "601807913040-o0ctnqtermpm8r5uscjcm0sds20u5ei4.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBpNg2ecrk6_JMAbROxkloWFl3CQsg-hKU"
+          "current_key": "AIzaSyCbuRp-VijjefyEIjYzW7EAqc2df2BomEk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "516166403646-r3kipbal83arpt0o408tl79ink8pkqlu.apps.googleusercontent.com",
+              "client_id": "601807913040-o0ctnqtermpm8r5uscjcm0sds20u5ei4.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -60,7 +60,7 @@ const windowWidth = Dimensions.get("window").width;
 const AcceptedCard = ({ data, refData, disable, retDis }) => {
   // console.log("accepted data", data)
   const [isVisibe, setisVisibe] = useState(false);
-  const [isRemarksVisible, setisRemarksVisible] = useState(false);
+  // const [isRemarksVisible, setisRemarksVisible] = useState(false);
   const [Remarks, setRemarks] = useState("");
   const user = useSelector((state) => state.storeUserData.userData);
   const dispatch = useDispatch();
